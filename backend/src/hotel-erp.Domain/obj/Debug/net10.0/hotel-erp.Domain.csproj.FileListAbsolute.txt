@@ -1,0 +1,11 @@
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\bin\Debug\net10.0\hotel-erp.Domain.deps.json
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\bin\Debug\net10.0\hotel-erp.Domain.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\bin\Debug\net10.0\hotel-erp.Domain.pdb
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\hotel-erp.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\hotel-erp.Domain.AssemblyInfoInputs.cache
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\hotel-erp.Domain.AssemblyInfo.cs
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\hotel-erp.Domain.csproj.CoreCompileInputs.cache
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\hotel-erp.Domain.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\refint\hotel-erp.Domain.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\hotel-erp.Domain.pdb
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\ref\hotel-erp.Domain.dll

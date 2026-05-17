@@ -1,0 +1,916 @@
+2026-05-15 10:13:38.560 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 10:13:38.613 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 10:13:38.614 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 10:24:49.296 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 10:24:50.423 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 10:24:50.430 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 10:24:50.432 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 10:24:51.082 -06:00 [ERR] An error occurred using the connection to database 'hotel_erp_db' on server 'tcp://localhost:5432'.
+2026-05-15 10:24:51.094 -06:00 [FTL] Application terminated unexpectedly
+Npgsql.PostgresException (0x80004005): 28P01: la autentificaci�n password fall� para el usuario �user�
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.AuthenticateSASL(List`1 mechanisms, String username, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Authenticate(String username, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.HistoryRepository.GetAppliedMigrationsAsync(CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlHistoryRepository.GetAppliedMigrationsAsync(CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlMigrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at hotel_erp.Infrastructure.Persistence.DatabaseSeeder.SeedAsync(ApplicationDbContext context) in C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Infrastructure\Persistence\DatabaseSeeder.cs:line 11
+   at Program.<Main>$(String[] args) in C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\Program.cs:line 112
+  Exception data:
+    Severity: FATAL
+    SqlState: 28P01
+    MessageText: la autentificaci�n password fall� para el usuario �user�
+    File: auth.c
+    Line: 320
+    Routine: auth_failed
+2026-05-15 10:27:12.617 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 10:27:14.295 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 10:27:14.302 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 10:27:14.302 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 10:27:14.998 -06:00 [ERR] An error occurred using the connection to database 'hotel_erp_db' on server 'tcp://localhost:5432'.
+2026-05-15 10:27:15.012 -06:00 [FTL] Application terminated unexpectedly
+Npgsql.PostgresException (0x80004005): 28P01: la autentificaci�n password fall� para el usuario �user�
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.AuthenticateSASL(List`1 mechanisms, String username, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Authenticate(String username, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.HistoryRepository.GetAppliedMigrationsAsync(CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlHistoryRepository.GetAppliedMigrationsAsync(CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlMigrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at hotel_erp.Infrastructure.Persistence.DatabaseSeeder.SeedAsync(ApplicationDbContext context) in C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Infrastructure\Persistence\DatabaseSeeder.cs:line 11
+   at Program.<Main>$(String[] args) in c:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\Program.cs:line 112
+  Exception data:
+    Severity: FATAL
+    SqlState: 28P01
+    MessageText: la autentificaci�n password fall� para el usuario �user�
+    File: auth.c
+    Line: 320
+    Routine: auth_failed
+2026-05-15 11:32:15.405 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 11:32:17.585 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 11:32:17.592 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 11:32:17.593 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 11:32:18.588 -06:00 [ERR] Failed executing DbCommand (61ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-05-15 11:32:22.791 -06:00 [INF] Database seeded successfully
+2026-05-15 11:39:53.020 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 11:39:54.678 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 11:39:54.686 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 11:39:54.689 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 11:39:56.706 -06:00 [INF] Database seeded successfully
+2026-05-15 11:57:25.438 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 11:57:26.959 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 11:57:26.967 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 11:57:26.969 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 11:57:28.867 -06:00 [INF] Database seeded successfully
+2026-05-15 12:00:15.127 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 12:00:17.235 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:00:17.243 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:00:17.245 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:00:19.504 -06:00 [INF] Database seeded successfully
+2026-05-15 12:01:04.213 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 12:01:04.553 -06:00 [INF] HTTP POST /api/auth/login responded 200 in 2222.8562 ms
+2026-05-15 12:11:21.631 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:11:21.715 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:11:21.715 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:16:16.397 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 12:16:18.261 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:16:18.305 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:16:18.307 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:16:20.729 -06:00 [INF] Database seeded successfully
+2026-05-15 12:21:51.798 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 12:21:53.395 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:21:53.400 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:21:53.402 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:21:54.689 -06:00 [INF] Database seeded successfully
+2026-05-15 12:22:29.162 -06:00 [INF] HTTP GET /api/cai responded 200 in 555.0736 ms
+2026-05-15 12:22:29.274 -06:00 [INF] HTTP GET /api/cai responded 200 in 105.9336 ms
+2026-05-15 12:22:29.288 -06:00 [INF] HTTP GET /api/reservations responded 200 in 685.2234 ms
+2026-05-15 12:22:29.317 -06:00 [INF] HTTP GET /api/reservations responded 200 in 22.5052 ms
+2026-05-15 12:23:26.759 -06:00 [INF] HTTP POST /api/guests responded 400 in 121.2939 ms
+2026-05-15 12:24:12.723 -06:00 [INF] HTTP GET /api/cai responded 200 in 14.6868 ms
+2026-05-15 12:24:12.734 -06:00 [INF] HTTP GET /api/cai responded 200 in 3.9724 ms
+2026-05-15 12:26:49.354 -06:00 [INF] HTTP GET /api/room-types responded 200 in 110.9295 ms
+2026-05-15 12:26:49.368 -06:00 [INF] HTTP GET /api/room-types responded 200 in 7.6663 ms
+2026-05-15 12:27:07.382 -06:00 [INF] HTTP GET /api/rooms responded 200 in 312.1649 ms
+2026-05-15 12:27:07.396 -06:00 [INF] HTTP GET /api/rooms responded 200 in 6.3793 ms
+2026-05-15 12:27:21.707 -06:00 [INF] HTTP GET /api/reservations responded 200 in 34.3025 ms
+2026-05-15 12:27:21.719 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.2135 ms
+2026-05-15 12:27:23.295 -06:00 [INF] HTTP GET /api/guests responded 200 in 81.8598 ms
+2026-05-15 12:27:23.305 -06:00 [INF] HTTP GET /api/guests responded 200 in 4.5290 ms
+2026-05-15 12:27:38.661 -06:00 [INF] HTTP GET /api/guests responded 200 in 104.1275 ms
+2026-05-15 12:27:52.950 -06:00 [INF] HTTP GET /api/cai responded 200 in 8.4721 ms
+2026-05-15 12:27:52.966 -06:00 [INF] HTTP GET /api/cai responded 200 in 4.6364 ms
+2026-05-15 12:27:53.032 -06:00 [INF] HTTP GET /api/reservations responded 200 in 90.0136 ms
+2026-05-15 12:27:53.043 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.7919 ms
+2026-05-15 12:27:54.444 -06:00 [INF] HTTP GET /api/room-types responded 200 in 8.8778 ms
+2026-05-15 12:27:54.454 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.7143 ms
+2026-05-15 12:27:57.307 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.7144 ms
+2026-05-15 12:27:57.322 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.9924 ms
+2026-05-15 12:27:58.878 -06:00 [INF] HTTP GET /api/guests responded 200 in 4.0427 ms
+2026-05-15 12:27:58.888 -06:00 [INF] HTTP GET /api/guests responded 200 in 2.6612 ms
+2026-05-15 12:28:13.573 -06:00 [INF] HTTP GET /api/guests responded 200 in 3.0705 ms
+2026-05-15 12:28:28.654 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 274.2048 ms
+2026-05-15 12:29:03.025 -06:00 [INF] HTTP POST /api/checkin responded 404 in 0.6607 ms
+2026-05-15 12:29:08.450 -06:00 [INF] HTTP POST /api/checkin responded 404 in 0.6867 ms
+2026-05-15 12:41:23.794 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:41:23.871 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:41:23.871 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:41:48.615 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 12:41:50.174 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:41:50.181 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:41:50.183 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 12:41:52.178 -06:00 [INF] Database seeded successfully
+2026-05-15 13:03:45.485 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 13:03:47.153 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 13:03:47.161 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 13:03:47.163 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 13:03:49.076 -06:00 [INF] Database seeded successfully
+2026-05-15 13:04:47.250 -06:00 [INF] HTTP POST /api/guests responded 401 in 152.6748 ms
+2026-05-15 13:04:47.541 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 246.8222 ms
+2026-05-15 13:04:51.957 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 13:04:52.178 -06:00 [INF] HTTP POST /api/auth/login responded 200 in 1361.0822 ms
+2026-05-15 13:05:18.929 -06:00 [INF] HTTP POST /api/guests responded 201 in 297.4286 ms
+2026-05-15 13:05:24.811 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 245.8067 ms
+2026-05-15 13:05:46.443 -06:00 [INF] HTTP POST /api/reservations responded 201 in 233.2814 ms
+2026-05-15 13:05:46.628 -06:00 [INF] HTTP POST /api/reservations/checkin responded 200 in 175.3367 ms
+2026-05-15 13:05:46.739 -06:00 [INF] HTTP GET /api/reservations responded 200 in 59.8259 ms
+2026-05-15 13:05:46.753 -06:00 [INF] HTTP GET /api/reservations responded 200 in 6.7703 ms
+2026-05-15 13:05:56.236 -06:00 [INF] HTTP GET /api/rooms responded 200 in 29.4015 ms
+2026-05-15 13:05:56.283 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.9400 ms
+2026-05-15 13:05:56.328 -06:00 [INF] HTTP GET /api/room-types responded 200 in 49.1935 ms
+2026-05-15 13:05:56.339 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.6176 ms
+2026-05-15 13:06:01.524 -06:00 [INF] HTTP GET /api/reservations responded 200 in 6.0025 ms
+2026-05-15 13:06:01.536 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.5666 ms
+2026-05-15 13:06:07.302 -06:00 [INF] HTTP GET /api/cai responded 200 in 61.5410 ms
+2026-05-15 13:06:07.311 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.4244 ms
+2026-05-15 13:06:07.430 -06:00 [INF] HTTP GET /api/reservations responded 200 in 190.0121 ms
+2026-05-15 13:06:07.440 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.2350 ms
+2026-05-15 13:06:10.174 -06:00 [INF] HTTP GET /api/folios/by-reservation/019e2d07-cc25-70bb-9446-4a525188f896 responded 200 in 46.7704 ms
+2026-05-15 13:06:10.275 -06:00 [INF] HTTP GET /api/guests/019e2d07-60e6-7fbc-b1d5-8be85059ff7a responded 200 in 92.0149 ms
+2026-05-15 13:06:29.146 -06:00 [INF] HTTP POST /api/invoices responded 201 in 228.9477 ms
+2026-05-15 13:06:29.208 -06:00 [INF] HTTP POST /api/reservations/checkout/019e2d07-cc25-70bb-9446-4a525188f896 responded 200 in 51.6188 ms
+2026-05-15 13:06:29.312 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df/print responded 200 in 94.6950 ms
+2026-05-15 13:12:25.184 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 92.6232 ms
+2026-05-15 13:12:25.193 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 3.0763 ms
+2026-05-15 13:12:26.141 -06:00 [INF] HTTP GET /api/cai responded 200 in 6.6937 ms
+2026-05-15 13:12:26.151 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.5510 ms
+2026-05-15 13:12:27.231 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 5.6816 ms
+2026-05-15 13:12:27.243 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 2.6497 ms
+2026-05-15 13:12:28.403 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.2412 ms
+2026-05-15 13:12:28.415 -06:00 [INF] HTTP GET /api/cai responded 200 in 3.2909 ms
+2026-05-15 13:12:29.486 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 3.3389 ms
+2026-05-15 13:12:29.494 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 2.2819 ms
+2026-05-15 13:12:30.057 -06:00 [INF] HTTP GET /api/cash-registers/019e2cb2-4b28-77b0-a489-072af5e63ea1/movements responded 200 in 56.2926 ms
+2026-05-15 13:12:36.846 -06:00 [INF] HTTP GET /api/cash-registers/019e2cb2-4b28-77b0-a489-072af5e63ea1/movements responded 200 in 3.1190 ms
+2026-05-15 13:12:38.151 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.2520 ms
+2026-05-15 13:12:38.162 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.7107 ms
+2026-05-15 13:13:28.423 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 109.1282 ms
+2026-05-15 13:13:28.459 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 28.9605 ms
+2026-05-15 13:13:32.233 -06:00 [INF] HTTP GET /api/guests responded 200 in 30.7078 ms
+2026-05-15 13:13:32.246 -06:00 [INF] HTTP GET /api/guests responded 200 in 3.7370 ms
+2026-05-15 13:13:52.132 -06:00 [INF] HTTP GET /api/reservations responded 200 in 19.4944 ms
+2026-05-15 13:13:52.146 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.6228 ms
+2026-05-15 13:13:52.599 -06:00 [INF] HTTP GET /api/cai responded 200 in 5.0265 ms
+2026-05-15 13:13:52.611 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.4648 ms
+2026-05-15 13:13:52.686 -06:00 [INF] HTTP GET /api/reservations responded 200 in 92.3256 ms
+2026-05-15 13:13:52.693 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.8108 ms
+2026-05-15 13:13:58.487 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 5.3400 ms
+2026-05-15 13:13:58.497 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 3.6134 ms
+2026-05-15 13:13:59.335 -06:00 [INF] HTTP GET /api/cai responded 200 in 12.8300 ms
+2026-05-15 13:13:59.353 -06:00 [INF] HTTP GET /api/cai responded 200 in 3.9148 ms
+2026-05-15 13:14:00.270 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 16.5782 ms
+2026-05-15 13:14:00.281 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.7250 ms
+2026-05-15 13:14:01.101 -06:00 [INF] HTTP GET /api/rooms responded 200 in 10.7967 ms
+2026-05-15 13:14:01.107 -06:00 [INF] HTTP GET /api/room-types responded 200 in 12.7373 ms
+2026-05-15 13:14:01.119 -06:00 [INF] HTTP GET /api/rooms responded 200 in 7.6267 ms
+2026-05-15 13:14:01.122 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.7947 ms
+2026-05-15 13:14:10.207 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 3.1254 ms
+2026-05-15 13:14:10.215 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 2.1325 ms
+2026-05-15 13:14:10.602 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.1112 ms
+2026-05-15 13:14:10.611 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.1821 ms
+2026-05-15 13:14:11.320 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 1.6765 ms
+2026-05-15 13:14:11.328 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 2.1800 ms
+2026-05-15 13:14:11.843 -06:00 [INF] HTTP GET /api/cai responded 200 in 1.9521 ms
+2026-05-15 13:14:11.854 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.1658 ms
+2026-05-15 13:14:12.322 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 7.0719 ms
+2026-05-15 13:14:12.337 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 6.1201 ms
+2026-05-15 13:14:13.488 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df responded 200 in 19.0986 ms
+2026-05-15 13:14:13.510 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df/print responded 200 in 7.0384 ms
+2026-05-15 15:44:46.794 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 15:44:46.864 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 15:44:46.864 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 15:46:35.598 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 15:46:37.460 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 15:46:37.501 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 15:46:37.503 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 15:46:40.098 -06:00 [INF] Database seeded successfully
+2026-05-15 16:03:18.140 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 16:03:19.962 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 16:03:19.970 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 16:03:19.974 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 16:03:23.337 -06:00 [INF] Database seeded successfully
+2026-05-15 16:12:42.122 -06:00 [INF] HTTP GET /api/invoices/search responded 401 in 166.0703 ms
+2026-05-15 16:12:42.164 -06:00 [INF] HTTP GET /api/invoices/search responded 401 in 13.4238 ms
+2026-05-15 16:12:42.474 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 288.8121 ms
+2026-05-15 16:12:42.474 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 323.1815 ms
+2026-05-15 16:12:50.542 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 16:12:50.729 -06:00 [INF] HTTP POST /api/auth/login responded 200 in 1421.6153 ms
+2026-05-15 16:13:00.927 -06:00 [INF] HTTP GET /api/cai responded 200 in 200.2275 ms
+2026-05-15 16:13:00.938 -06:00 [INF] HTTP GET /api/cai responded 200 in 5.0442 ms
+2026-05-15 16:13:09.969 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 256.3621 ms
+2026-05-15 16:13:09.984 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 7.4665 ms
+2026-05-15 16:13:14.192 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 54.3469 ms
+2026-05-15 16:13:14.202 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 3.2462 ms
+2026-05-15 16:23:21.859 -06:00 [INF] HTTP PUT /api/settings/business responded 200 in 79.1317 ms
+2026-05-15 16:23:55.433 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 42.3465 ms
+2026-05-15 16:23:55.443 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 2.8427 ms
+2026-05-15 16:23:56.682 -06:00 [INF] HTTP GET /api/cai responded 200 in 7.7469 ms
+2026-05-15 16:23:56.692 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.0021 ms
+2026-05-15 16:23:57.698 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 25.1047 ms
+2026-05-15 16:23:57.709 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 6.3464 ms
+2026-05-15 16:23:59.058 -06:00 [INF] HTTP GET /api/guests responded 200 in 85.4103 ms
+2026-05-15 16:23:59.065 -06:00 [INF] HTTP GET /api/guests responded 200 in 3.1173 ms
+2026-05-15 16:24:09.964 -06:00 [INF] HTTP GET /api/reservations responded 200 in 114.2988 ms
+2026-05-15 16:24:09.974 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.9690 ms
+2026-05-15 16:24:14.256 -06:00 [INF] HTTP GET /api/reservations responded 200 in 41.7828 ms
+2026-05-15 16:24:14.291 -06:00 [INF] HTTP GET /api/reservations responded 200 in 28.5610 ms
+2026-05-15 16:24:20.092 -06:00 [INF] HTTP GET /api/room-types responded 200 in 51.4611 ms
+2026-05-15 16:24:20.101 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.5977 ms
+2026-05-15 16:26:23.950 -06:00 [INF] HTTP PUT /api/room-types/019e2cb2-4988-7624-93f4-bc036c40e3c2 responded 204 in 132.9511 ms
+2026-05-15 16:26:23.963 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.5451 ms
+2026-05-15 16:26:52.558 -06:00 [INF] HTTP PUT /api/room-types/019e2cb2-49a8-77ef-ad06-bc410f7ed108 responded 204 in 35.0031 ms
+2026-05-15 16:26:52.569 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.4223 ms
+2026-05-15 16:27:30.837 -06:00 [INF] HTTP PUT /api/room-types/019e2cb2-49a8-7f41-9c09-a60e3105387e responded 204 in 34.6719 ms
+2026-05-15 16:27:30.848 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.0265 ms
+2026-05-15 16:28:30.276 -06:00 [INF] HTTP PUT /api/room-types/019e2cb2-49a8-7db6-87a1-b2b4b0377a0e responded 204 in 157.3394 ms
+2026-05-15 16:28:30.289 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.1838 ms
+2026-05-15 16:28:45.507 -06:00 [INF] HTTP GET /api/room-types responded 200 in 4.3387 ms
+2026-05-15 16:28:45.522 -06:00 [INF] HTTP GET /api/room-types responded 200 in 4.0555 ms
+2026-05-15 16:28:49.681 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.6353 ms
+2026-05-15 16:28:49.695 -06:00 [INF] HTTP GET /api/room-types responded 200 in 7.9786 ms
+2026-05-15 16:28:49.882 -06:00 [INF] HTTP GET /api/rooms responded 200 in 204.9751 ms
+2026-05-15 16:28:49.893 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.3886 ms
+2026-05-15 16:32:32.603 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-49d7-7dd7-9278-18e80fff2e06 responded 204 in 48.3096 ms
+2026-05-15 16:32:32.621 -06:00 [INF] HTTP GET /api/rooms responded 200 in 6.2763 ms
+2026-05-15 16:32:32.782 -06:00 [INF] HTTP GET /api/room-types responded 200 in 164.0856 ms
+2026-05-15 16:32:36.065 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a05-7308-a91b-ec27d49b2914 responded 204 in 46.0512 ms
+2026-05-15 16:32:36.082 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.6229 ms
+2026-05-15 16:32:36.082 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.9370 ms
+2026-05-15 16:32:37.923 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a06-731a-9235-511ba6e1d44d responded 204 in 4.0465 ms
+2026-05-15 16:32:37.944 -06:00 [INF] HTTP GET /api/rooms responded 200 in 5.7070 ms
+2026-05-15 16:32:37.946 -06:00 [INF] HTTP GET /api/room-types responded 200 in 4.3349 ms
+2026-05-15 16:32:39.502 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a06-73fc-873b-85cae7ecb56a responded 204 in 6.6642 ms
+2026-05-15 16:32:39.524 -06:00 [INF] HTTP GET /api/rooms responded 200 in 5.4521 ms
+2026-05-15 16:32:39.526 -06:00 [INF] HTTP GET /api/room-types responded 200 in 6.2030 ms
+2026-05-15 16:32:41.093 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a06-74a2-bf76-886fc9c7f4a2 responded 204 in 38.7649 ms
+2026-05-15 16:32:41.107 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.4902 ms
+2026-05-15 16:32:41.107 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.5702 ms
+2026-05-15 16:32:42.700 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a06-7507-b7bd-3c51dd93cded responded 204 in 38.7173 ms
+2026-05-15 16:32:42.716 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.4456 ms
+2026-05-15 16:32:42.719 -06:00 [INF] HTTP GET /api/rooms responded 200 in 5.2902 ms
+2026-05-15 16:32:44.186 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a06-750b-81ce-dbe4095d279f responded 204 in 36.9839 ms
+2026-05-15 16:32:44.202 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.1916 ms
+2026-05-15 16:32:44.203 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.3591 ms
+2026-05-15 16:32:45.898 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a06-76a8-acc8-6a5bdf921265 responded 204 in 36.6230 ms
+2026-05-15 16:32:45.914 -06:00 [INF] HTTP GET /api/rooms responded 200 in 4.4047 ms
+2026-05-15 16:32:45.922 -06:00 [INF] HTTP GET /api/room-types responded 200 in 5.5338 ms
+2026-05-15 16:32:47.794 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a06-79aa-9a0a-b05980af3ad3 responded 204 in 38.1084 ms
+2026-05-15 16:32:47.810 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.8488 ms
+2026-05-15 16:32:47.812 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.4425 ms
+2026-05-15 16:32:49.657 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a06-7a09-b54f-1e31b0f59123 responded 204 in 37.1287 ms
+2026-05-15 16:32:49.673 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.6922 ms
+2026-05-15 16:32:49.682 -06:00 [INF] HTTP GET /api/room-types responded 200 in 5.9626 ms
+2026-05-15 16:32:52.408 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a06-7b9e-8ef3-79648e8fa187 responded 204 in 36.5962 ms
+2026-05-15 16:32:52.423 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.5526 ms
+2026-05-15 16:32:52.426 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.5906 ms
+2026-05-15 16:32:53.967 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a07-7103-9603-7fc49ea6f7ab responded 204 in 36.6962 ms
+2026-05-15 16:32:53.982 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.5913 ms
+2026-05-15 16:32:53.984 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.9550 ms
+2026-05-15 16:32:55.256 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a07-7202-957d-11a8c49f748e responded 204 in 37.4425 ms
+2026-05-15 16:32:55.272 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.6561 ms
+2026-05-15 16:32:55.273 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.6511 ms
+2026-05-15 16:32:56.804 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a07-72d4-b988-f27c870079fc responded 204 in 37.2991 ms
+2026-05-15 16:32:56.819 -06:00 [INF] HTTP GET /api/rooms responded 200 in 4.0714 ms
+2026-05-15 16:32:56.822 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.1291 ms
+2026-05-15 16:32:58.453 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a07-7320-b84b-64e62ef2047c responded 204 in 3.9188 ms
+2026-05-15 16:32:58.473 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.2380 ms
+2026-05-15 16:32:58.475 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.6365 ms
+2026-05-15 16:33:00.107 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a07-742e-9be3-42828b641a70 responded 204 in 4.8267 ms
+2026-05-15 16:33:00.130 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.6465 ms
+2026-05-15 16:33:00.130 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.8423 ms
+2026-05-15 16:33:01.663 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a07-744a-9026-7c5760b54ad9 responded 204 in 3.3099 ms
+2026-05-15 16:33:01.679 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.4043 ms
+2026-05-15 16:33:01.679 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.9979 ms
+2026-05-15 16:33:03.059 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a07-7b23-bb04-43694e028768 responded 204 in 36.8083 ms
+2026-05-15 16:33:03.073 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.3388 ms
+2026-05-15 16:33:03.074 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.7352 ms
+2026-05-15 16:33:04.969 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a07-7f6d-bbdf-73ca82cfb010 responded 204 in 37.2691 ms
+2026-05-15 16:33:04.983 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.5805 ms
+2026-05-15 16:33:04.984 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.6782 ms
+2026-05-15 16:33:08.566 -06:00 [INF] HTTP DELETE /api/rooms/019e2cb2-4a07-7bb1-9d14-8845628da3ba responded 204 in 41.5719 ms
+2026-05-15 16:33:08.578 -06:00 [INF] HTTP GET /api/rooms responded 200 in 1.7007 ms
+2026-05-15 16:33:08.578 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.5295 ms
+2026-05-15 16:33:12.333 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.5286 ms
+2026-05-15 16:33:12.344 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.3998 ms
+2026-05-15 16:33:13.447 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.4898 ms
+2026-05-15 16:33:13.447 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.8720 ms
+2026-05-15 16:33:13.459 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.3659 ms
+2026-05-15 16:33:13.462 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.3804 ms
+2026-05-15 16:34:07.455 -06:00 [INF] HTTP POST /api/rooms responded 201 in 119.6035 ms
+2026-05-15 16:34:07.468 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.8859 ms
+2026-05-15 16:34:07.520 -06:00 [INF] HTTP GET /api/room-types responded 200 in 54.0948 ms
+2026-05-15 16:34:23.943 -06:00 [INF] HTTP POST /api/rooms responded 201 in 41.4704 ms
+2026-05-15 16:34:23.954 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.0078 ms
+2026-05-15 16:34:23.957 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.5278 ms
+2026-05-15 16:34:43.954 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.7159 ms
+2026-05-15 16:34:43.965 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.1965 ms
+2026-05-15 16:34:43.965 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.9566 ms
+2026-05-15 16:34:50.679 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.6984 ms
+2026-05-15 16:34:50.694 -06:00 [INF] HTTP GET /api/rooms responded 200 in 4.0708 ms
+2026-05-15 16:34:50.696 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.4859 ms
+2026-05-15 16:34:59.611 -06:00 [INF] HTTP POST /api/rooms responded 201 in 3.7680 ms
+2026-05-15 16:34:59.625 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.4633 ms
+2026-05-15 16:34:59.626 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.8002 ms
+2026-05-15 16:35:10.888 -06:00 [INF] HTTP POST /api/rooms responded 201 in 79.3180 ms
+2026-05-15 16:35:10.899 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.4888 ms
+2026-05-15 16:35:10.903 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.8048 ms
+2026-05-15 16:35:44.062 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.6783 ms
+2026-05-15 16:35:44.073 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.4782 ms
+2026-05-15 16:35:44.073 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.7298 ms
+2026-05-15 16:35:56.567 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.3238 ms
+2026-05-15 16:35:56.578 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.4811 ms
+2026-05-15 16:35:56.578 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.5472 ms
+2026-05-15 16:36:07.995 -06:00 [INF] HTTP POST /api/rooms responded 201 in 3.8233 ms
+2026-05-15 16:36:08.006 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.4601 ms
+2026-05-15 16:36:08.006 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.5464 ms
+2026-05-15 16:36:28.502 -06:00 [INF] HTTP POST /api/rooms responded 201 in 41.2608 ms
+2026-05-15 16:36:28.513 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.6896 ms
+2026-05-15 16:36:28.515 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.0092 ms
+2026-05-15 16:36:47.352 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.6758 ms
+2026-05-15 16:36:47.365 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.6545 ms
+2026-05-15 16:36:47.367 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.0804 ms
+2026-05-15 16:37:01.953 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.5563 ms
+2026-05-15 16:37:01.965 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.4974 ms
+2026-05-15 16:37:01.967 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.4861 ms
+2026-05-15 16:37:05.126 -06:00 [INF] HTTP POST /api/rooms responded 201 in 3.6755 ms
+2026-05-15 16:37:05.138 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.0364 ms
+2026-05-15 16:37:05.138 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.5104 ms
+2026-05-15 16:37:11.677 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.2031 ms
+2026-05-15 16:37:11.687 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.0633 ms
+2026-05-15 16:37:11.687 -06:00 [INF] HTTP GET /api/rooms responded 200 in 1.8953 ms
+2026-05-15 16:37:19.141 -06:00 [INF] HTTP POST /api/rooms responded 201 in 40.6757 ms
+2026-05-15 16:37:19.152 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.3759 ms
+2026-05-15 16:37:19.152 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.3876 ms
+2026-05-15 16:37:40.244 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.2336 ms
+2026-05-15 16:37:40.244 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.9315 ms
+2026-05-15 16:37:40.260 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.1125 ms
+2026-05-15 16:37:40.262 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.9937 ms
+2026-05-15 16:38:09.018 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.4677 ms
+2026-05-15 16:38:09.032 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.2844 ms
+2026-05-15 16:38:09.032 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.6526 ms
+2026-05-15 16:38:49.651 -06:00 [INF] HTTP POST /api/rooms responded 201 in 80.1344 ms
+2026-05-15 16:38:49.664 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.7877 ms
+2026-05-15 16:38:49.719 -06:00 [INF] HTTP GET /api/room-types responded 200 in 56.8269 ms
+2026-05-15 16:39:28.678 -06:00 [INF] HTTP POST /api/rooms responded 201 in 5.7718 ms
+2026-05-15 16:39:28.688 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.4252 ms
+2026-05-15 16:39:28.688 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.2330 ms
+2026-05-15 16:39:54.923 -06:00 [INF] HTTP POST /api/rooms responded 201 in 38.4905 ms
+2026-05-15 16:39:54.935 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.4625 ms
+2026-05-15 16:39:54.936 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.1801 ms
+2026-05-15 16:40:04.386 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.3660 ms
+2026-05-15 16:40:04.398 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.3568 ms
+2026-05-15 16:40:04.399 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.3699 ms
+2026-05-15 16:40:36.084 -06:00 [INF] HTTP POST /api/rooms responded 201 in 3.6218 ms
+2026-05-15 16:40:36.096 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.9508 ms
+2026-05-15 16:40:36.098 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.2713 ms
+2026-05-15 16:40:53.053 -06:00 [INF] HTTP POST /api/rooms responded 201 in 3.5351 ms
+2026-05-15 16:40:53.066 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.2832 ms
+2026-05-15 16:40:53.067 -06:00 [INF] HTTP GET /api/rooms responded 200 in 4.0174 ms
+2026-05-15 16:41:37.544 -06:00 [INF] HTTP POST /api/rooms responded 201 in 59.7891 ms
+2026-05-15 16:41:37.557 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.2445 ms
+2026-05-15 16:41:37.557 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.5755 ms
+2026-05-15 16:43:52.143 -06:00 [INF] HTTP POST /api/rooms responded 201 in 91.6751 ms
+2026-05-15 16:43:52.159 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.6705 ms
+2026-05-15 16:43:52.219 -06:00 [INF] HTTP GET /api/room-types responded 200 in 62.8421 ms
+2026-05-15 16:44:03.958 -06:00 [INF] HTTP POST /api/rooms responded 201 in 38.6145 ms
+2026-05-15 16:44:03.969 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.5504 ms
+2026-05-15 16:44:03.969 -06:00 [INF] HTTP GET /api/rooms responded 200 in 2.5654 ms
+2026-05-15 16:44:18.903 -06:00 [INF] HTTP POST /api/rooms responded 201 in 5.9994 ms
+2026-05-15 16:44:18.915 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.7373 ms
+2026-05-15 16:44:18.916 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.8516 ms
+2026-05-15 16:44:32.621 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.6931 ms
+2026-05-15 16:44:32.633 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.7522 ms
+2026-05-15 16:44:32.633 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.3403 ms
+2026-05-15 16:44:40.642 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.0607 ms
+2026-05-15 16:44:40.654 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.5337 ms
+2026-05-15 16:44:40.654 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.0718 ms
+2026-05-15 16:44:51.164 -06:00 [INF] HTTP POST /api/rooms responded 201 in 3.6270 ms
+2026-05-15 16:44:51.177 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.2628 ms
+2026-05-15 16:44:51.178 -06:00 [INF] HTTP GET /api/rooms responded 200 in 4.2016 ms
+2026-05-15 16:45:04.751 -06:00 [INF] HTTP POST /api/rooms responded 201 in 36.2501 ms
+2026-05-15 16:45:04.765 -06:00 [INF] HTTP GET /api/rooms responded 200 in 4.2146 ms
+2026-05-15 16:45:04.768 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.6093 ms
+2026-05-15 16:46:48.041 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.7052 ms
+2026-05-15 16:46:48.051 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.4435 ms
+2026-05-15 16:47:48.834 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 4.2313 ms
+2026-05-15 16:47:48.850 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 6.4149 ms
+2026-05-15 16:51:18.750 -06:00 [INF] HTTP PUT /api/settings/business responded 200 in 682.8128 ms
+2026-05-15 16:51:22.155 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 61.5085 ms
+2026-05-15 16:51:22.289 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 63.7429 ms
+2026-05-15 16:51:23.750 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 47.3743 ms
+2026-05-15 16:51:23.891 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 70.3065 ms
+2026-05-15 16:53:36.603 -06:00 [INF] HTTP GET /api/guests responded 200 in 55.5919 ms
+2026-05-15 16:53:46.066 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 157.0799 ms
+2026-05-15 16:54:18.781 -06:00 [INF] HTTP POST /api/reservations responded 201 in 70.9777 ms
+2026-05-15 16:54:19.070 -06:00 [INF] HTTP POST /api/reservations/checkin responded 200 in 280.8408 ms
+2026-05-15 16:54:19.205 -06:00 [INF] HTTP GET /api/invoices/019e2dd9-0979-7df4-b8c4-5d46ed1b5d29/print responded 200 in 127.3062 ms
+2026-05-15 16:56:08.164 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.9961 ms
+2026-05-15 16:56:08.177 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.6007 ms
+2026-05-15 16:56:14.689 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.7273 ms
+2026-05-15 16:56:14.699 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 4.5898 ms
+2026-05-15 16:56:17.881 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df responded 200 in 19.1524 ms
+2026-05-15 16:56:17.935 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df/print responded 200 in 45.7620 ms
+2026-05-15 16:56:21.812 -06:00 [INF] HTTP GET /api/reservations responded 200 in 161.7432 ms
+2026-05-15 16:56:21.820 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.3580 ms
+2026-05-15 16:56:23.617 -06:00 [INF] HTTP GET /api/guests responded 200 in 1.7327 ms
+2026-05-15 16:56:23.624 -06:00 [INF] HTTP GET /api/guests responded 200 in 1.8385 ms
+2026-05-15 16:56:25.546 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.1183 ms
+2026-05-15 16:56:25.554 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.5311 ms
+2026-05-15 16:56:27.024 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 14.4327 ms
+2026-05-15 16:56:27.035 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 4.9344 ms
+2026-05-15 16:56:27.821 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df responded 200 in 3.7537 ms
+2026-05-15 16:56:27.879 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df/print responded 200 in 49.8664 ms
+2026-05-15 16:56:41.752 -06:00 [INF] HTTP GET /api/guests responded 200 in 2.7568 ms
+2026-05-15 16:56:41.763 -06:00 [INF] HTTP GET /api/guests responded 200 in 3.3571 ms
+2026-05-15 16:56:43.603 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.5952 ms
+2026-05-15 16:56:43.614 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.5636 ms
+2026-05-15 16:56:55.222 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 41.9906 ms
+2026-05-15 16:56:55.344 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 89.9992 ms
+2026-05-15 16:57:04.441 -06:00 [INF] HTTP PUT /api/settings/business responded 200 in 125.9814 ms
+2026-05-15 16:58:46.243 -06:00 [INF] HTTP PUT /api/settings/business responded 200 in 103.9676 ms
+2026-05-15 16:59:05.397 -06:00 [INF] HTTP GET /api/guests responded 200 in 3.3704 ms
+2026-05-15 16:59:16.302 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 45.8529 ms
+2026-05-15 16:59:32.404 -06:00 [INF] HTTP POST /api/reservations responded 201 in 9.5288 ms
+2026-05-15 16:59:32.439 -06:00 [INF] HTTP POST /api/reservations/checkin responded 200 in 25.8348 ms
+2026-05-15 16:59:32.496 -06:00 [INF] HTTP GET /api/invoices/019e2ddd-d1d1-76bf-ac3a-8a927aea9e46/print responded 200 in 49.0994 ms
+2026-05-15 17:31:01.677 -06:00 [INF] HTTP GET /api/reservations responded 401 in 1.6042 ms
+2026-05-15 17:31:01.721 -06:00 [INF] HTTP GET /api/reservations responded 401 in 0.4032 ms
+2026-05-15 17:31:01.723 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 31.8330 ms
+2026-05-15 17:31:01.736 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 0.6748 ms
+2026-05-15 17:31:05.599 -06:00 [INF] HTTP POST /api/auth/login responded 200 in 303.7784 ms
+2026-05-15 17:31:17.328 -06:00 [INF] HTTP GET /api/guests responded 200 in 60.4780 ms
+2026-05-15 17:31:32.902 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 48.0028 ms
+2026-05-15 17:31:48.331 -06:00 [INF] HTTP POST /api/reservations responded 201 in 78.7369 ms
+2026-05-15 17:31:48.370 -06:00 [INF] HTTP POST /api/reservations/checkin responded 200 in 32.3659 ms
+2026-05-15 17:31:48.439 -06:00 [INF] HTTP GET /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04/print responded 200 in 61.1152 ms
+2026-05-15 17:33:42.316 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.5378 ms
+2026-05-15 17:33:42.325 -06:00 [INF] HTTP GET /api/room-types responded 200 in 1.9628 ms
+2026-05-15 17:51:33.548 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 17:51:33.634 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 17:51:33.634 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 17:53:05.290 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 17:53:07.168 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 17:53:07.175 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 17:53:07.178 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 17:53:10.501 -06:00 [INF] Database seeded successfully
+2026-05-15 17:54:38.830 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 17:54:40.336 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 17:54:40.343 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 17:54:40.346 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 17:54:42.210 -06:00 [INF] Database seeded successfully
+2026-05-15 18:01:04.593 -06:00 [INF] HTTP GET /api/room-types responded 200 in 887.0604 ms
+2026-05-15 18:01:04.839 -06:00 [INF] HTTP GET /api/room-types responded 200 in 239.6270 ms
+2026-05-15 18:01:04.930 -06:00 [INF] HTTP GET /api/room-types responded 200 in 15.9353 ms
+2026-05-15 18:01:04.939 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.5694 ms
+2026-05-15 18:01:05.856 -06:00 [INF] HTTP GET /api/room-types responded 200 in 7.2942 ms
+2026-05-15 18:01:05.866 -06:00 [INF] HTTP GET /api/room-types responded 200 in 4.0577 ms
+2026-05-15 18:01:06.635 -06:00 [INF] HTTP GET /api/room-types responded 200 in 6.8998 ms
+2026-05-15 18:01:06.647 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.6784 ms
+2026-05-15 18:01:07.348 -06:00 [INF] HTTP GET /api/room-types responded 200 in 4.7297 ms
+2026-05-15 18:01:07.360 -06:00 [INF] HTTP GET /api/room-types responded 200 in 4.1456 ms
+2026-05-15 18:01:08.076 -06:00 [INF] HTTP GET /api/room-types responded 200 in 5.9785 ms
+2026-05-15 18:01:08.086 -06:00 [INF] HTTP GET /api/room-types responded 200 in 4.4280 ms
+2026-05-15 18:01:08.858 -06:00 [INF] HTTP GET /api/room-types responded 200 in 5.1950 ms
+2026-05-15 18:01:08.869 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.8698 ms
+2026-05-15 18:01:19.603 -06:00 [INF] HTTP PUT /api/room-types/019e2cb2-4988-7624-93f4-bc036c40e3c2 responded 204 in 348.3623 ms
+2026-05-15 18:01:19.615 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.0594 ms
+2026-05-15 18:02:42.456 -06:00 [INF] HTTP PUT /api/room-types/019e2cb2-49a8-77ef-ad06-bc410f7ed108 responded 204 in 34.0302 ms
+2026-05-15 18:02:42.467 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.2292 ms
+2026-05-15 18:02:56.747 -06:00 [INF] HTTP PUT /api/room-types/019e2cb2-49a8-7f41-9c09-a60e3105387e responded 204 in 5.7235 ms
+2026-05-15 18:02:56.761 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.6292 ms
+2026-05-15 18:03:10.979 -06:00 [INF] HTTP PUT /api/room-types/019e2cb2-49a8-7db6-87a1-b2b4b0377a0e responded 204 in 36.6780 ms
+2026-05-15 18:03:10.990 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.9888 ms
+2026-05-15 18:04:30.567 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.5681 ms
+2026-05-15 18:04:30.576 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.0522 ms
+2026-05-15 18:04:30.779 -06:00 [INF] HTTP GET /api/rooms responded 200 in 213.8845 ms
+2026-05-15 18:04:30.790 -06:00 [INF] HTTP GET /api/rooms responded 200 in 5.6007 ms
+2026-05-15 18:07:15.334 -06:00 [INF] HTTP GET /api/reservations responded 200 in 229.0227 ms
+2026-05-15 18:07:15.344 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.1049 ms
+2026-05-15 18:07:17.932 -06:00 [INF] HTTP GET /api/reservations responded 200 in 66.4058 ms
+2026-05-15 18:07:17.942 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.6213 ms
+2026-05-15 18:07:23.632 -06:00 [INF] HTTP POST /api/reservations/checkout/019e2dd9-0872-70bf-91a5-56ab6d303c9c responded 200 in 421.7981 ms
+2026-05-15 18:07:24.725 -06:00 [INF] HTTP GET /api/reservations responded 200 in 6.8357 ms
+2026-05-15 18:07:24.739 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.0203 ms
+2026-05-15 18:07:25.803 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.6686 ms
+2026-05-15 18:07:25.814 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.4483 ms
+2026-05-15 18:07:27.314 -06:00 [INF] HTTP POST /api/reservations/checkout/019e2ddd-d1ae-70a8-b85e-cd44742bf7aa responded 200 in 33.3841 ms
+2026-05-15 18:07:27.925 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.9593 ms
+2026-05-15 18:07:27.937 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.5774 ms
+2026-05-15 18:07:28.750 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.0593 ms
+2026-05-15 18:07:28.762 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.5230 ms
+2026-05-15 18:07:31.691 -06:00 [INF] HTTP POST /api/reservations/checkout/019e2dfb-5b9f-7934-9ed5-104c53e18d52 responded 200 in 46.4549 ms
+2026-05-15 18:07:33.098 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.0060 ms
+2026-05-15 18:07:33.107 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.1778 ms
+2026-05-15 18:07:38.514 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.8942 ms
+2026-05-15 18:07:38.525 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.9233 ms
+2026-05-15 18:07:45.116 -06:00 [INF] HTTP GET /api/guests responded 200 in 77.7378 ms
+2026-05-15 18:07:54.063 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 267.7015 ms
+2026-05-15 18:08:07.741 -06:00 [INF] HTTP POST /api/reservations responded 201 in 137.5595 ms
+2026-05-15 18:08:07.859 -06:00 [INF] HTTP POST /api/reservations/checkin responded 400 in 110.4963 ms
+2026-05-15 18:08:14.763 -06:00 [INF] HTTP POST /api/reservations responded 400 in 3.6794 ms
+2026-05-15 18:08:19.361 -06:00 [INF] HTTP POST /api/reservations responded 400 in 3.8409 ms
+2026-05-15 18:08:28.699 -06:00 [INF] HTTP POST /api/reservations responded 201 in 9.8509 ms
+2026-05-15 18:08:28.742 -06:00 [INF] HTTP POST /api/reservations/checkin responded 400 in 35.6881 ms
+2026-05-15 18:08:31.160 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.1354 ms
+2026-05-15 18:08:31.170 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.0902 ms
+2026-05-15 18:08:36.258 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.7120 ms
+2026-05-15 18:08:36.268 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.4544 ms
+2026-05-15 18:08:37.470 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.9954 ms
+2026-05-15 18:08:37.481 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.5538 ms
+2026-05-15 18:08:41.081 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.6441 ms
+2026-05-15 18:08:41.091 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.6477 ms
+2026-05-15 18:08:43.146 -06:00 [INF] HTTP POST /api/reservations/checkout/019e2e1c-9ce2-7e8a-a9cc-41976e600cef responded 200 in 7.5255 ms
+2026-05-15 18:08:43.986 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.4533 ms
+2026-05-15 18:08:43.997 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.7593 ms
+2026-05-15 18:08:44.758 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.5410 ms
+2026-05-15 18:08:44.768 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.4585 ms
+2026-05-15 18:08:45.805 -06:00 [INF] HTTP POST /api/reservations/checkout/019e2e1c-ef16-79bc-9842-f5fe49b2d4a6 responded 200 in 10.7675 ms
+2026-05-15 18:08:46.834 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.4058 ms
+2026-05-15 18:08:46.844 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.6766 ms
+2026-05-15 18:08:49.984 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.3291 ms
+2026-05-15 18:08:49.992 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.5941 ms
+2026-05-15 18:08:58.093 -06:00 [INF] HTTP GET /api/guests responded 200 in 1.6483 ms
+2026-05-15 18:09:02.283 -06:00 [INF] HTTP GET /api/guests responded 200 in 10.7705 ms
+2026-05-15 18:09:02.290 -06:00 [INF] HTTP GET /api/guests responded 200 in 2.0004 ms
+2026-05-15 18:09:04.446 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.7651 ms
+2026-05-15 18:09:04.454 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.6252 ms
+2026-05-15 18:09:07.832 -06:00 [INF] HTTP GET /api/guests responded 200 in 1.7781 ms
+2026-05-15 18:09:24.590 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 3.9020 ms
+2026-05-15 18:09:30.959 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 3.3028 ms
+2026-05-15 18:09:40.966 -06:00 [INF] HTTP POST /api/reservations responded 201 in 8.4816 ms
+2026-05-15 18:09:41.238 -06:00 [INF] HTTP POST /api/reservations/checkin responded 200 in 263.3979 ms
+2026-05-15 18:09:41.396 -06:00 [INF] HTTP GET /api/invoices/019e2e1e-09f0-706d-bb3b-2c1ee24ceb31/print responded 200 in 150.5298 ms
+2026-05-15 18:15:13.926 -06:00 [INF] HTTP GET /api/guests responded 200 in 60.8711 ms
+2026-05-15 18:15:13.933 -06:00 [INF] HTTP GET /api/guests responded 200 in 2.0814 ms
+2026-05-15 18:15:29.144 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 85.6039 ms
+2026-05-15 18:15:29.155 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 6.3970 ms
+2026-05-15 18:15:35.780 -06:00 [INF] HTTP GET /api/reservations responded 200 in 10.4433 ms
+2026-05-15 18:15:35.788 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.4032 ms
+2026-05-15 18:15:42.292 -06:00 [INF] HTTP POST /api/reservations/checkout/019e2e1e-0961-756c-9528-bb71eb05377d responded 200 in 45.6128 ms
+2026-05-15 18:15:43.709 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.4327 ms
+2026-05-15 18:15:43.718 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.5312 ms
+2026-05-15 18:15:46.618 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.6766 ms
+2026-05-15 18:15:46.626 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.3717 ms
+2026-05-15 18:15:48.249 -06:00 [INF] HTTP GET /api/guests responded 200 in 1.3777 ms
+2026-05-15 18:15:48.256 -06:00 [INF] HTTP GET /api/guests responded 200 in 1.2546 ms
+2026-05-15 18:15:55.599 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.3990 ms
+2026-05-15 18:15:55.608 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.4626 ms
+2026-05-15 18:15:57.317 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.9627 ms
+2026-05-15 18:15:57.325 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.9743 ms
+2026-05-15 18:16:01.876 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.1620 ms
+2026-05-15 18:16:01.889 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.9942 ms
+2026-05-15 18:16:06.627 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df responded 200 in 15.7636 ms
+2026-05-15 18:16:06.692 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df/print responded 200 in 56.7387 ms
+2026-05-15 18:16:09.869 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.9954 ms
+2026-05-15 18:16:09.881 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.7781 ms
+2026-05-15 18:16:15.222 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.5167 ms
+2026-05-15 18:16:15.232 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.1245 ms
+2026-05-15 18:16:18.075 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df responded 200 in 5.8703 ms
+2026-05-15 18:16:18.086 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df responded 200 in 6.1843 ms
+2026-05-15 18:16:21.759 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.5005 ms
+2026-05-15 18:16:21.772 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 6.6531 ms
+2026-05-15 18:16:23.446 -06:00 [INF] HTTP GET /api/invoices/019e2dd9-0979-7df4-b8c4-5d46ed1b5d29 responded 200 in 6.5667 ms
+2026-05-15 18:16:23.458 -06:00 [INF] HTTP GET /api/invoices/019e2dd9-0979-7df4-b8c4-5d46ed1b5d29 responded 200 in 5.8779 ms
+2026-05-15 18:16:24.464 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.6411 ms
+2026-05-15 18:16:24.475 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.7725 ms
+2026-05-15 18:16:26.134 -06:00 [INF] HTTP GET /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04 responded 200 in 8.0655 ms
+2026-05-15 18:16:26.150 -06:00 [INF] HTTP GET /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04 responded 200 in 9.2685 ms
+2026-05-15 18:16:28.593 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 6.6788 ms
+2026-05-15 18:16:28.606 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 6.9813 ms
+2026-05-15 18:16:30.387 -06:00 [INF] HTTP GET /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04 responded 200 in 3.6284 ms
+2026-05-15 18:16:30.470 -06:00 [INF] HTTP GET /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04/print responded 200 in 41.6451 ms
+2026-05-15 18:16:34.105 -06:00 [INF] HTTP GET /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04 responded 200 in 8.3306 ms
+2026-05-15 18:16:34.116 -06:00 [INF] HTTP GET /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04 responded 200 in 4.5846 ms
+2026-05-15 18:16:36.904 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 8.6035 ms
+2026-05-15 18:16:36.921 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 9.9149 ms
+2026-05-15 18:16:38.965 -06:00 [INF] HTTP GET /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04 responded 200 in 7.2922 ms
+2026-05-15 18:16:38.977 -06:00 [INF] HTTP GET /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04 responded 200 in 5.4420 ms
+2026-05-15 18:16:49.564 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.3366 ms
+2026-05-15 18:16:49.573 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 4.8915 ms
+2026-05-15 18:16:58.127 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df responded 200 in 3.8448 ms
+2026-05-15 18:16:58.182 -06:00 [INF] HTTP GET /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df/print responded 200 in 46.6728 ms
+2026-05-15 18:17:01.063 -06:00 [INF] HTTP GET /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04 responded 200 in 6.9320 ms
+2026-05-15 18:17:01.077 -06:00 [INF] HTTP GET /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04 responded 200 in 4.9622 ms
+2026-05-15 18:17:02.488 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 4.5215 ms
+2026-05-15 18:17:02.497 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 4.1405 ms
+2026-05-15 18:17:04.967 -06:00 [INF] HTTP POST /api/invoices/019e2dd9-0979-7df4-b8c4-5d46ed1b5d29/cancel responded 200 in 61.9971 ms
+2026-05-15 18:17:04.985 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 6.2629 ms
+2026-05-15 18:17:06.822 -06:00 [INF] HTTP POST /api/invoices/019e2d08-734a-7118-a4ee-f38d83c377df/cancel responded 200 in 46.0585 ms
+2026-05-15 18:17:06.837 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.1539 ms
+2026-05-15 18:17:08.540 -06:00 [INF] HTTP POST /api/invoices/019e2ddd-d1d1-76bf-ac3a-8a927aea9e46/cancel responded 200 in 44.4392 ms
+2026-05-15 18:17:08.558 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 5.1924 ms
+2026-05-15 18:17:10.059 -06:00 [INF] HTTP POST /api/invoices/019e2dfb-5c09-7baf-b0d3-ce66788fae04/cancel responded 200 in 6.0879 ms
+2026-05-15 18:17:10.080 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 6.3461 ms
+2026-05-15 18:17:11.465 -06:00 [INF] HTTP POST /api/invoices/019e2e1e-09f0-706d-bb3b-2c1ee24ceb31/cancel responded 200 in 30.0909 ms
+2026-05-15 18:17:11.480 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 4.4130 ms
+2026-05-15 18:17:26.536 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 68.1085 ms
+2026-05-15 18:17:26.684 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 57.4264 ms
+2026-05-15 18:17:57.383 -06:00 [INF] HTTP PUT /api/settings/business responded 200 in 157.0603 ms
+2026-05-15 18:18:02.896 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 58.0335 ms
+2026-05-15 18:18:03.022 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 90.6174 ms
+2026-05-15 18:19:20.436 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.0337 ms
+2026-05-15 18:19:20.448 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.8608 ms
+2026-05-15 18:19:22.782 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.2525 ms
+2026-05-15 18:19:22.790 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.1763 ms
+2026-05-15 18:24:15.255 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 18:24:15.318 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 18:24:15.318 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 18:24:52.566 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 18:25:39.908 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 18:25:41.406 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 18:25:41.414 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 18:25:41.417 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 18:25:42.915 -06:00 [INF] Migrations applied successfully
+2026-05-15 18:27:58.361 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 18:27:59.556 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 18:27:59.565 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 18:27:59.567 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 18:28:00.909 -06:00 [INF] Migrations applied successfully
+2026-05-15 18:30:04.931 -06:00 [INF] HTTP GET /api/reservations responded 200 in 1084.8526 ms
+2026-05-15 18:30:05.053 -06:00 [INF] HTTP GET /api/reservations responded 200 in 115.1154 ms
+2026-05-15 18:30:07.263 -06:00 [INF] HTTP GET /api/reservations responded 200 in 102.1408 ms
+2026-05-15 18:30:07.275 -06:00 [INF] HTTP GET /api/reservations responded 200 in 6.2937 ms
+2026-05-15 18:30:12.750 -06:00 [INF] HTTP GET /api/guests responded 200 in 100.7855 ms
+2026-05-15 18:30:31.541 -06:00 [INF] HTTP GET /api/room-types responded 200 in 56.5137 ms
+2026-05-15 18:30:31.552 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.7142 ms
+2026-05-15 18:30:35.735 -06:00 [INF] HTTP GET /api/guests responded 200 in 3.0512 ms
+2026-05-15 18:30:51.910 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 171.1194 ms
+2026-05-15 18:31:03.122 -06:00 [INF] HTTP POST /api/reservations responded 201 in 313.4650 ms
+2026-05-15 18:31:03.589 -06:00 [INF] HTTP POST /api/reservations/checkin responded 200 in 456.3801 ms
+2026-05-15 18:31:03.659 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 18:31:03.859 -06:00 [INF] HTTP GET /api/invoices/019e2e31-9b21-7af5-ad7a-904d146186a1/print responded 200 in 259.9517 ms
+2026-05-15 18:31:58.293 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 121.0195 ms
+2026-05-15 18:31:58.429 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 127.2707 ms
+2026-05-15 18:32:06.895 -06:00 [INF] HTTP PUT /api/settings/business responded 401 in 15.0884 ms
+2026-05-15 18:32:06.972 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 41.1998 ms
+2026-05-15 18:32:10.266 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 18:32:10.415 -06:00 [INF] HTTP POST /api/auth/login responded 200 in 810.2472 ms
+2026-05-15 18:32:11.680 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 54.0666 ms
+2026-05-15 18:32:11.839 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 123.8933 ms
+2026-05-15 18:32:22.036 -06:00 [INF] HTTP PUT /api/settings/business responded 200 in 125.9718 ms
+2026-05-15 18:32:25.513 -06:00 [INF] HTTP GET /api/discounts responded 200 in 43.4323 ms
+2026-05-15 18:32:25.523 -06:00 [INF] HTTP GET /api/discounts responded 200 in 3.5359 ms
+2026-05-15 18:32:27.484 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 78.3472 ms
+2026-05-15 18:32:27.622 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 92.8448 ms
+2026-05-15 18:32:29.313 -06:00 [INF] HTTP GET /api/discounts responded 200 in 6.5870 ms
+2026-05-15 18:32:29.323 -06:00 [INF] HTTP GET /api/discounts responded 200 in 3.1929 ms
+2026-05-15 18:33:26.555 -06:00 [INF] HTTP POST /api/discounts responded 201 in 159.1246 ms
+2026-05-15 18:33:26.571 -06:00 [INF] HTTP GET /api/discounts responded 200 in 6.7362 ms
+2026-05-15 18:33:56.393 -06:00 [INF] HTTP POST /api/discounts responded 201 in 4.4932 ms
+2026-05-15 18:33:56.405 -06:00 [INF] HTTP GET /api/discounts responded 200 in 2.4907 ms
+2026-05-15 18:34:04.205 -06:00 [INF] HTTP PUT /api/discounts/019e2e34-3ea7-7717-8fa1-37b099f7edb6 responded 204 in 68.0815 ms
+2026-05-15 18:34:04.217 -06:00 [INF] HTTP GET /api/discounts responded 200 in 2.2283 ms
+2026-05-15 18:34:54.080 -06:00 [INF] HTTP POST /api/discounts responded 201 in 35.8811 ms
+2026-05-15 18:34:54.090 -06:00 [INF] HTTP GET /api/discounts responded 200 in 2.0318 ms
+2026-05-15 18:35:26.850 -06:00 [INF] HTTP PUT /api/discounts/019e2e35-1fdd-7ec1-91a5-35d79da076f0 responded 204 in 37.9109 ms
+2026-05-15 18:35:26.862 -06:00 [INF] HTTP GET /api/discounts responded 200 in 2.9279 ms
+2026-05-15 18:36:00.379 -06:00 [INF] HTTP POST /api/discounts responded 201 in 9.4407 ms
+2026-05-15 18:36:00.392 -06:00 [INF] HTTP GET /api/discounts responded 200 in 2.3244 ms
+2026-05-15 18:36:06.477 -06:00 [INF] HTTP PUT /api/discounts/019e2e36-22f3-7f1d-be47-1be2b6004c02 responded 204 in 3.5600 ms
+2026-05-15 18:36:06.490 -06:00 [INF] HTTP GET /api/discounts responded 200 in 2.8120 ms
+2026-05-15 18:37:25.767 -06:00 [INF] HTTP POST /api/discounts responded 201 in 35.9578 ms
+2026-05-15 18:37:25.778 -06:00 [INF] HTTP GET /api/discounts responded 200 in 1.8956 ms
+2026-05-15 18:37:28.661 -06:00 [INF] HTTP GET /api/discounts responded 200 in 2.1039 ms
+2026-05-15 18:37:28.672 -06:00 [INF] HTTP GET /api/discounts responded 200 in 3.3535 ms
+2026-05-15 18:37:34.330 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 71.3202 ms
+2026-05-15 18:37:34.340 -06:00 [INF] HTTP GET /api/cash-registers responded 200 in 3.3795 ms
+2026-05-15 18:37:35.146 -06:00 [INF] HTTP GET /api/cai responded 200 in 38.3136 ms
+2026-05-15 18:37:35.156 -06:00 [INF] HTTP GET /api/cai responded 200 in 4.4647 ms
+2026-05-15 18:38:56.038 -06:00 [INF] HTTP POST /api/cai responded 400 in 65.4538 ms
+2026-05-15 18:39:09.331 -06:00 [INF] HTTP POST /api/cai responded 400 in 2.4228 ms
+2026-05-15 18:39:17.256 -06:00 [INF] HTTP DELETE /api/cai/019e2cb2-4ad6-7d8c-982c-458aa53504a9 responded 204 in 49.2392 ms
+2026-05-15 18:39:17.270 -06:00 [INF] HTTP GET /api/cai responded 200 in 1.8731 ms
+2026-05-15 18:39:18.265 -06:00 [INF] HTTP POST /api/cai responded 201 in 19.3531 ms
+2026-05-15 18:39:18.277 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.5071 ms
+2026-05-15 18:39:27.847 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.6238 ms
+2026-05-15 18:39:27.857 -06:00 [INF] HTTP GET /api/cai responded 200 in 1.8281 ms
+2026-05-15 18:39:41.486 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 143.2884 ms
+2026-05-15 18:39:41.501 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 8.6312 ms
+2026-05-15 18:39:45.853 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 3.9168 ms
+2026-05-15 18:39:46.421 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 3.7536 ms
+2026-05-15 18:39:46.596 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 3.8628 ms
+2026-05-15 18:39:46.764 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 4.1533 ms
+2026-05-15 18:39:47.639 -06:00 [INF] HTTP GET /api/reservations responded 200 in 12.8520 ms
+2026-05-15 18:39:47.649 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.5575 ms
+2026-05-15 18:39:50.167 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.6226 ms
+2026-05-15 18:39:50.178 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.9587 ms
+2026-05-15 18:39:52.054 -06:00 [INF] HTTP POST /api/reservations/checkout/019e2e31-98dd-798c-bcde-b9f6b81b7c27 responded 200 in 87.6673 ms
+2026-05-15 18:39:52.957 -06:00 [INF] HTTP GET /api/reservations responded 200 in 2.9045 ms
+2026-05-15 18:39:52.968 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.5590 ms
+2026-05-15 18:39:54.472 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.7520 ms
+2026-05-15 18:39:54.483 -06:00 [INF] HTTP GET /api/cai responded 200 in 4.4088 ms
+2026-05-15 18:39:56.219 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 20.2653 ms
+2026-05-15 18:39:56.238 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 4.5732 ms
+2026-05-15 18:39:58.227 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 6.5172 ms
+2026-05-15 18:39:58.236 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 4.8298 ms
+2026-05-15 18:39:59.231 -06:00 [INF] HTTP GET /api/guests responded 200 in 13.0373 ms
+2026-05-15 18:39:59.239 -06:00 [INF] HTTP GET /api/guests responded 200 in 2.1610 ms
+2026-05-15 18:40:01.668 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.1594 ms
+2026-05-15 18:40:01.679 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.9746 ms
+2026-05-15 18:40:56.854 -06:00 [INF] HTTP POST /api/guests responded 201 in 74.4242 ms
+2026-05-15 18:41:09.894 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 6.7556 ms
+2026-05-15 18:41:37.399 -06:00 [INF] HTTP POST /api/reservations responded 201 in 9.4371 ms
+2026-05-15 18:41:37.468 -06:00 [INF] HTTP POST /api/reservations/checkin responded 200 in 59.2746 ms
+2026-05-15 18:41:37.526 -06:00 [INF] HTTP GET /api/invoices/019e2e3b-47b7-7477-9368-45e150202706/print responded 200 in 48.7902 ms
+2026-05-15 18:44:39.006 -06:00 [INF] HTTP GET /api/reservations responded 200 in 62.1967 ms
+2026-05-15 18:44:39.015 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.2738 ms
+2026-05-15 18:44:45.156 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.5107 ms
+2026-05-15 18:44:45.169 -06:00 [INF] HTTP GET /api/reservations responded 200 in 4.3703 ms
+2026-05-15 19:16:20.265 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 19:16:21.350 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 19:16:21.391 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 19:16:21.393 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 19:16:22.459 -06:00 [INF] Migrations applied successfully
+2026-05-15 19:18:00.745 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 19:18:02.064 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 19:18:02.072 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 19:18:02.073 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 19:18:03.494 -06:00 [INF] Migrations applied successfully
+2026-05-15 19:19:08.884 -06:00 [INF] HTTP GET /api/discounts responded 200 in 214.7325 ms
+2026-05-15 19:19:08.938 -06:00 [INF] HTTP GET /api/discounts responded 200 in 61.4131 ms
+2026-05-15 19:19:08.948 -06:00 [INF] HTTP GET /api/discounts responded 200 in 1323.0091 ms
+2026-05-15 19:19:15.347 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 19:19:15.574 -06:00 [INF] HTTP POST /api/auth/login responded 200 in 1844.5037 ms
+2026-05-15 19:19:20.065 -06:00 [INF] HTTP GET /api/room-types responded 200 in 60.0531 ms
+2026-05-15 19:19:20.075 -06:00 [INF] HTTP GET /api/room-types responded 200 in 4.4217 ms
+2026-05-15 19:19:20.244 -06:00 [INF] HTTP GET /api/rooms responded 200 in 238.6069 ms
+2026-05-15 19:19:20.261 -06:00 [INF] HTTP GET /api/rooms responded 200 in 9.7552 ms
+2026-05-15 19:19:25.716 -06:00 [INF] HTTP PUT /api/rooms/019e2dd0-3620-7202-bb6a-898a439e888c responded 204 in 126.8069 ms
+2026-05-15 19:19:25.732 -06:00 [INF] HTTP GET /api/rooms responded 200 in 4.9113 ms
+2026-05-15 19:19:25.736 -06:00 [INF] HTTP GET /api/room-types responded 200 in 6.5463 ms
+2026-05-15 19:19:28.962 -06:00 [INF] HTTP PUT /api/rooms/019e2dc6-8c96-76a0-abfb-61ed61937de0 responded 204 in 39.0995 ms
+2026-05-15 19:19:28.979 -06:00 [INF] HTTP GET /api/rooms responded 200 in 4.9348 ms
+2026-05-15 19:19:28.981 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.4026 ms
+2026-05-15 19:19:31.083 -06:00 [INF] HTTP PUT /api/rooms/019e2dcf-e155-771c-b267-844ea87d4b68 responded 204 in 35.4409 ms
+2026-05-15 19:19:31.097 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.7641 ms
+2026-05-15 19:19:31.097 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.6425 ms
+2026-05-15 19:19:32.303 -06:00 [INF] HTTP PUT /api/rooms/019e2dd0-16cb-7bf1-b3b7-50a7d6c176cd responded 204 in 39.0224 ms
+2026-05-15 19:19:32.320 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.5832 ms
+2026-05-15 19:19:32.320 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.7760 ms
+2026-05-15 19:19:32.936 -06:00 [INF] HTTP PUT /api/rooms/019e2dd0-944d-79d9-8d3f-e978fdffcf0f responded 204 in 39.3010 ms
+2026-05-15 19:19:32.952 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.4976 ms
+2026-05-15 19:19:32.952 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.0070 ms
+2026-05-15 19:19:33.940 -06:00 [INF] HTTP PUT /api/rooms/019e2dca-db0f-7eac-a179-d117f141d62c responded 204 in 4.2029 ms
+2026-05-15 19:19:33.955 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.1098 ms
+2026-05-15 19:19:33.955 -06:00 [INF] HTTP GET /api/rooms responded 200 in 4.0145 ms
+2026-05-15 19:19:35.220 -06:00 [INF] HTTP PUT /api/rooms/019e2dd0-5f5b-7a20-9f4f-7e29cfa5791b responded 204 in 37.8117 ms
+2026-05-15 19:19:35.235 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.3665 ms
+2026-05-15 19:19:35.235 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.2005 ms
+2026-05-15 19:19:38.900 -06:00 [INF] HTTP PUT /api/rooms/019e2dc7-5899-7c99-8089-69e00f0b464f responded 204 in 38.0922 ms
+2026-05-15 19:19:38.914 -06:00 [INF] HTTP GET /api/rooms responded 200 in 3.2482 ms
+2026-05-15 19:19:38.915 -06:00 [INF] HTTP GET /api/room-types responded 200 in 2.1868 ms
+2026-05-15 19:19:41.039 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.4364 ms
+2026-05-15 19:19:41.051 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.8652 ms
+2026-05-15 19:19:43.180 -06:00 [INF] HTTP GET /api/reservations responded 200 in 220.0179 ms
+2026-05-15 19:19:43.199 -06:00 [INF] HTTP GET /api/reservations responded 200 in 12.9049 ms
+2026-05-15 19:19:44.879 -06:00 [INF] HTTP POST /api/reservations/checkout/019e2e3b-4771-7886-a06e-21017e4b12d8 responded 200 in 197.4174 ms
+2026-05-15 19:19:46.565 -06:00 [INF] HTTP GET /api/discounts responded 200 in 4.0915 ms
+2026-05-15 19:19:46.582 -06:00 [INF] HTTP GET /api/discounts responded 200 in 7.5868 ms
+2026-05-15 19:20:18.433 -06:00 [INF] HTTP GET /api/guests responded 200 in 93.8904 ms
+2026-05-15 19:20:20.309 -06:00 [INF] HTTP GET /api/guests/019e2d07-60e6-7fbc-b1d5-8be85059ff7a/stats responded 200 in 87.7835 ms
+2026-05-15 19:20:48.836 -06:00 [INF] HTTP GET /api/guests/019e2cb2-4a37-7a7a-8ece-d68ad7c65368/stats responded 200 in 5.1632 ms
+2026-05-15 19:23:55.992 -06:00 [INF] HTTP GET /api/guests/019e2cb2-4a37-7a7a-8ece-d68ad7c65368/stats responded 200 in 49.1046 ms
+2026-05-15 19:23:58.288 -06:00 [INF] HTTP PUT /api/guests/019e2cb2-4a37-7a7a-8ece-d68ad7c65368 responded 204 in 60.1400 ms
+2026-05-15 19:24:05.606 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 146.8467 ms
+2026-05-15 19:24:54.348 -06:00 [INF] HTTP GET /api/discounts responded 200 in 7.9328 ms
+2026-05-15 19:24:54.358 -06:00 [INF] HTTP GET /api/discounts responded 200 in 2.5440 ms
+2026-05-15 19:24:59.945 -06:00 [INF] HTTP GET /api/guests responded 200 in 3.0396 ms
+2026-05-15 19:25:00.908 -06:00 [INF] HTTP GET /api/guests/019e2d07-60e6-7fbc-b1d5-8be85059ff7a/stats responded 200 in 4.7477 ms
+2026-05-15 19:25:02.242 -06:00 [INF] HTTP PUT /api/guests/019e2d07-60e6-7fbc-b1d5-8be85059ff7a responded 204 in 3.9961 ms
+2026-05-15 19:25:05.847 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 5.9189 ms
+2026-05-15 19:30:06.611 -06:00 [INF] HTTP GET /api/discounts responded 200 in 74.9991 ms
+2026-05-15 19:31:30.212 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 19:31:32.145 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 19:31:32.189 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 19:31:32.191 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 19:31:33.948 -06:00 [INF] Migrations applied successfully
+2026-05-15 21:51:09.650 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 21:51:11.244 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 21:51:11.249 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 21:51:11.250 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 21:51:12.446 -06:00 [INF] Migrations applied successfully
+2026-05-15 21:51:17.859 -06:00 [INF] HTTP GET /api/discounts responded 401 in 251.3243 ms
+2026-05-15 21:51:17.905 -06:00 [INF] HTTP GET /api/discounts responded 401 in 15.6115 ms
+2026-05-15 21:51:18.175 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 254.5365 ms
+2026-05-15 21:51:18.175 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 284.2404 ms
+2026-05-15 21:51:24.704 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 21:51:24.910 -06:00 [INF] HTTP POST /api/auth/login responded 200 in 1874.2408 ms
+2026-05-15 21:51:36.561 -06:00 [INF] HTTP GET /api/discounts responded 200 in 385.9102 ms
+2026-05-15 21:51:36.574 -06:00 [INF] HTTP GET /api/discounts responded 200 in 7.4581 ms
+2026-05-15 21:51:48.981 -06:00 [INF] HTTP GET /api/guests responded 200 in 136.1646 ms
+2026-05-15 21:51:50.352 -06:00 [INF] HTTP GET /api/guests/019e2cb2-4a37-7a7a-8ece-d68ad7c65368/stats responded 200 in 148.0021 ms
+2026-05-15 21:52:06.094 -06:00 [INF] HTTP PUT /api/guests/019e2cb2-4a37-7a7a-8ece-d68ad7c65368 responded 204 in 81.1862 ms
+2026-05-15 21:52:16.374 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 180.6089 ms
+2026-05-15 21:53:00.313 -06:00 [INF] HTTP POST /api/reservations responded 201 in 230.9393 ms
+2026-05-15 21:53:00.841 -06:00 [INF] HTTP POST /api/reservations/checkin responded 200 in 518.5833 ms
+2026-05-15 21:53:00.909 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 21:53:01.080 -06:00 [INF] HTTP GET /api/invoices/019e2eea-7ff6-708c-9cde-30e0fe55b9a6/print responded 200 in 223.5894 ms
+2026-05-15 22:00:23.916 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:00:23.995 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:00:23.996 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:02:52.675 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 22:02:54.264 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:02:54.278 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:02:54.280 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:03:26.067 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:03:26.134 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:03:26.134 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:13:32.097 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 22:13:34.142 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:13:34.163 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:13:34.191 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:13:35.933 -06:00 [INF] Migrations applied successfully
+2026-05-15 22:13:54.823 -06:00 [INF] HTTP GET /api/discounts responded 200 in 810.3174 ms
+2026-05-15 22:13:54.924 -06:00 [INF] HTTP GET /api/discounts responded 200 in 93.7333 ms
+2026-05-15 22:13:55.936 -06:00 [INF] HTTP GET /api/discounts responded 200 in 22.8969 ms
+2026-05-15 22:13:55.945 -06:00 [INF] HTTP GET /api/discounts responded 200 in 4.5244 ms
+2026-05-15 22:14:01.227 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 22:14:01.449 -06:00 [INF] HTTP POST /api/auth/login responded 200 in 1296.6448 ms
+2026-05-15 22:15:14.675 -06:00 [INF] HTTP GET /api/reservations responded 200 in 205.3389 ms
+2026-05-15 22:15:14.688 -06:00 [INF] HTTP GET /api/reservations responded 200 in 7.7699 ms
+2026-05-15 22:15:15.347 -06:00 [INF] HTTP GET /api/discounts responded 200 in 7.4672 ms
+2026-05-15 22:15:15.356 -06:00 [INF] HTTP GET /api/discounts responded 200 in 3.4983 ms
+2026-05-15 22:15:23.571 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 217.1054 ms
+2026-05-15 22:15:23.583 -06:00 [INF] HTTP GET /api/invoices/search responded 200 in 6.1339 ms
+2026-05-15 22:15:33.098 -06:00 [INF] HTTP GET /api/discounts responded 200 in 7.5067 ms
+2026-05-15 22:15:33.110 -06:00 [INF] HTTP GET /api/discounts responded 200 in 5.1228 ms
+2026-05-15 22:15:37.399 -06:00 [INF] HTTP GET /api/guests responded 200 in 50.6854 ms
+2026-05-15 22:15:42.703 -06:00 [INF] HTTP GET /api/guests/019e2d07-60e6-7fbc-b1d5-8be85059ff7a/stats responded 200 in 46.2511 ms
+2026-05-15 22:16:10.800 -06:00 [INF] HTTP PUT /api/guests/019e2d07-60e6-7fbc-b1d5-8be85059ff7a responded 204 in 49.1508 ms
+2026-05-15 22:16:16.582 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 213.5078 ms
+2026-05-15 22:21:07.511 -06:00 [INF] HTTP POST /api/reservations responded 201 in 212.2477 ms
+2026-05-15 22:21:07.958 -06:00 [INF] HTTP POST /api/reservations/checkin responded 200 in 438.3614 ms
+2026-05-15 22:21:07.997 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 22:21:08.180 -06:00 [INF] HTTP GET /api/invoices/019e2f04-3eb2-770d-a35b-a60b56583c12/print responded 200 in 211.2200 ms
+2026-05-15 22:26:58.472 -06:00 [INF] HTTP GET /api/discounts responded 200 in 178.3427 ms
+2026-05-15 22:28:11.593 -06:00 [INF] Starting Hotel ERP API
+2026-05-15 22:28:12.740 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:28:12.746 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:28:12.748 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-15 22:28:14.188 -06:00 [INF] Migrations applied successfully
+2026-05-15 22:28:19.221 -06:00 [INF] HTTP GET /api/discounts responded 200 in 1339.1873 ms
+2026-05-15 22:28:19.384 -06:00 [INF] HTTP GET /api/discounts responded 200 in 159.5653 ms
+2026-05-15 22:28:24.541 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 22:28:24.706 -06:00 [INF] HTTP POST /api/auth/login responded 200 in 1188.4905 ms
+2026-05-15 22:28:26.949 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 151.4114 ms
+2026-05-15 22:28:27.118 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 79.4725 ms
+2026-05-15 22:28:49.966 -06:00 [INF] HTTP GET /api/room-types responded 200 in 77.9270 ms
+2026-05-15 22:28:49.980 -06:00 [INF] HTTP GET /api/room-types responded 200 in 4.8780 ms
+2026-05-15 22:28:50.089 -06:00 [INF] HTTP GET /api/rooms responded 200 in 203.9384 ms
+2026-05-15 22:28:50.104 -06:00 [INF] HTTP GET /api/rooms responded 200 in 9.1398 ms
+2026-05-15 22:28:52.167 -06:00 [INF] HTTP GET /api/room-types responded 200 in 12.0137 ms
+2026-05-15 22:28:52.178 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.6487 ms
+2026-05-15 22:28:52.868 -06:00 [INF] HTTP GET /api/discounts responded 200 in 7.5319 ms
+2026-05-15 22:28:52.878 -06:00 [INF] HTTP GET /api/discounts responded 200 in 2.2474 ms
+2026-05-15 22:29:05.538 -06:00 [INF] HTTP GET /api/guests responded 200 in 87.9229 ms
+2026-05-15 22:29:06.615 -06:00 [INF] HTTP GET /api/guests/019e2cb2-4a37-7a7a-8ece-d68ad7c65368/stats responded 200 in 94.2118 ms
+2026-05-15 22:29:10.604 -06:00 [INF] HTTP PUT /api/guests/019e2cb2-4a37-7a7a-8ece-d68ad7c65368 responded 204 in 83.9416 ms
+2026-05-15 22:29:15.898 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 153.7297 ms
+2026-05-15 22:30:25.975 -06:00 [INF] HTTP POST /api/reservations responded 201 in 154.8425 ms
+2026-05-15 22:30:26.436 -06:00 [INF] HTTP POST /api/reservations/checkin responded 200 in 452.2911 ms
+2026-05-15 22:30:26.486 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-15 22:30:26.671 -06:00 [INF] HTTP GET /api/invoices/019e2f0c-c404-74bb-8f8f-11fbaa181fb5/print responded 200 in 225.6682 ms

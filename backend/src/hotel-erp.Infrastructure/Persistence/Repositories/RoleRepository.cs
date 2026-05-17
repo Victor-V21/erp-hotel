@@ -1,0 +1,48 @@
+using Microsoft.EntityFrameworkCore;
+using hotel_erp.Application.Interfaces;
+using hotel_erp.Domain.Entities;
+
+namespace hotel_erp.Infrastructure.Persistence.Repositories
+{
+    public class RoleRepository : IRoleRepository
+    {
+        private readonly ApplicationDbContext _context;
+
+        public RoleRepository(ApplicationDbContext context) => _context = context;
+
+        public async Task<Role?> GetByIdAsync(Guid id)
+            => await _context.Roles.Include(r => r.RolePermissions).ThenInclude(rp => rp.Permission).FirstOrDefaultAsync(r => r.Id == id);
+
+        public async Task<Role?> GetByNameAsync(string name)
+            => await _context.Roles.Include(r => r.RolePermissions).ThenInclude(rp => rp.Permission).FirstOrDefaultAsync(r => r.Name == name);
+
+        public async Task<IEnumerable<Role>> GetAllAsync()
+            => await _context.Roles.Include(r => r.RolePermissions).ThenInclude(rp => rp.Permission).ToListAsync();
+
+        public async Task AddAsync(Role role) { await _context.Roles.AddAsync(role); await _context.SaveChangesAsync(); }
+
+        public async Task UpdateAsync(Role role) { _context.Roles.Update(role); await _context.SaveChangesAsync(); }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            var role = await _context.Roles.FindAsync(id);
+            if (role != null) { role.IsDeleted = true; await _context.SaveChangesAsync(); }
+        }
+
+        public async Task<IEnumerable<Permission>> GetRolePermissionsAsync(Guid roleId)
+            => await _context.RolePermissions.Where(rp => rp.RoleId == roleId).Select(rp => rp.Permission).ToListAsync();
+    }
+
+    public class PermissionRepository : IPermissionRepository
+    {
+        private readonly ApplicationDbContext _context;
+
+        public PermissionRepository(ApplicationDbContext context) => _context = context;
+
+        public async Task<Permission?> GetByIdAsync(Guid id) => await _context.Permissions.FindAsync(id);
+        public async Task<Permission?> GetByNameAsync(string name) => await _context.Permissions.FirstOrDefaultAsync(p => p.Name == name);
+        public async Task<IEnumerable<Permission>> GetAllAsync() => await _context.Permissions.ToListAsync();
+        public async Task AddAsync(Permission permission) { await _context.Permissions.AddAsync(permission); await _context.SaveChangesAsync(); }
+        public async Task DeleteAsync(Guid id) { var p = await _context.Permissions.FindAsync(id); if (p != null) { _context.Permissions.Remove(p); await _context.SaveChangesAsync(); } }
+    }
+}

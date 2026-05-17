@@ -1,0 +1,6 @@
+@hotel_erp.Api_HostAddress = http://localhost:5084
+
+GET {{hotel_erp.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
