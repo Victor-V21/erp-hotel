@@ -17,17 +17,23 @@ namespace hotel_erp.Api.Controllers
         private readonly IInvoiceRepository _repo;
         private readonly ICAIRepository _caiRepo;
         private readonly ICustomerRepository _customerRepo;
+        private readonly IAccountingService _accountingService;
+        private readonly IFiscalAuthorizationService _fiscalAuthorizationService;
         private readonly IMapper _mapper;
 
         public InvoicesController(
             IInvoiceRepository repo,
             ICAIRepository caiRepo,
             ICustomerRepository customerRepo,
+            IAccountingService accountingService,
+            IFiscalAuthorizationService fiscalAuthorizationService,
             IMapper mapper)
         {
             _repo = repo;
             _caiRepo = caiRepo;
             _customerRepo = customerRepo;
+            _accountingService = accountingService;
+            _fiscalAuthorizationService = fiscalAuthorizationService;
             _mapper = mapper;
         }
 
@@ -62,6 +68,8 @@ namespace hotel_erp.Api.Controllers
         {
             var invoice = await _repo.GetByIdAsync(id);
             if (invoice == null) return NotFound();
+            if (invoice.DocumentType == InvoiceDocumentType.Factura)
+                return BadRequest("Una factura fiscal emitida no puede modificarse; use nota de crédito o débito");
             if (invoice.Status == InvoiceStatus.Anulada)
                 return BadRequest("No se puede modificar una factura anulada");
 
@@ -122,8 +130,27 @@ namespace hotel_erp.Api.Controllers
             var finalSeq = int.Parse(cai.FinalRange.Split('-').Last());
             if (currentSeq > finalSeq) return BadRequest("El CAI ha agotado su rango de correlativos");
 
-            // Get next correlative
-            var correlative = await _repo.GetNextCorrelativeAsync(request.CAIId);
+            var documentType = Enum.Parse<InvoiceDocumentType>(request.DocumentType);
+            FiscalCorrelativeResult? authorizationResult = null;
+            var correlative = string.Empty;
+            if (request.DocumentAuthorizationId.HasValue)
+            {
+                authorizationResult = await _fiscalAuthorizationService.GetNextCorrelativeAsync(documentType, request.DocumentAuthorizationId);
+                correlative = authorizationResult.CorrelativeNumber;
+            }
+            else
+            {
+                correlative = await _repo.GetNextCorrelativeAsync(request.CAIId);
+            }
+
+            var taxpayerType = Enum.TryParse<TaxpayerType>(request.TaxpayerType, out var parsedType)
+                ? parsedType
+                : TaxpayerType.ConsumidorFinal;
+            var isIsvExempt = taxpayerType == TaxpayerType.Exonerado && request.IsIsvExempt;
+            var isTouristTaxExempt = taxpayerType == TaxpayerType.Exonerado && request.IsTouristTaxExempt;
+            if (taxpayerType == TaxpayerType.Exonerado
+                && (string.IsNullOrWhiteSpace(request.ExonerationOrderNumber) || string.IsNullOrWhiteSpace(request.SefinExonerationCertificateNumber)))
+                return BadRequest("Cliente exonerado requiere O.C. Exenta y Constancia SEFIN");
 
             // Calculate taxes
             decimal subtotal = 0;
@@ -137,8 +164,8 @@ namespace hotel_erp.Api.Controllers
                 var discount = lineTotal * (item.DiscountPercentage / 100m);
                 var lineAfterDiscount = lineTotal - discount;
                 subtotal += lineAfterDiscount;
-                if (!item.IsExempt) isvAmount += lineAfterDiscount * item.ISVRate;
-                if (item.IsTouristTaxable) touristTax += lineAfterDiscount * 0.04m;
+                if (!item.IsExempt && !isIsvExempt) isvAmount += lineAfterDiscount * item.ISVRate;
+                if (item.IsTouristTaxable && !isTouristTaxExempt) touristTax += lineAfterDiscount * 0.04m;
                 discounts += discount;
 
                 return new InvoiceItem
@@ -157,23 +184,44 @@ namespace hotel_erp.Api.Controllers
             var invoice = new Invoice
             {
                 CAIId = request.CAIId,
+                DocumentAuthorizationId = authorizationResult?.AuthorizationId,
+                CAINumberSnapshot = authorizationResult?.CAINumber ?? cai.CAINumber,
+                AuthorizationRangeSnapshot = authorizationResult != null
+                    ? $"{authorizationResult.InitialRange} - {authorizationResult.FinalRange}"
+                    : $"{cai.InitialRange} - {cai.FinalRange}",
+                AuthorizationDueDateSnapshot = authorizationResult?.DueDate ?? cai.DueDate.ToDateTime(TimeOnly.MaxValue),
                 CorrelativeNumber = correlative,
                 CustomerId = request.CustomerId,
                 GuestId = request.GuestId,
                 RTNCliente = request.RTNCliente,
                 CustomerName = request.CustomerName,
                 CustomerAddress = request.CustomerAddress,
-                SubTotal = Math.Round(subtotal, 2),
-                ISVAmount = Math.Round(isvAmount, 2),
-                TouristTaxAmount = Math.Round(touristTax, 2),
-                DiscountsAmount = Math.Round(discounts, 2),
-                TotalAmount = Math.Round(subtotal + isvAmount + touristTax, 2),
-                DocumentType = Enum.Parse<InvoiceDocumentType>(request.DocumentType),
+                SubTotal = TaxService.RoundCurrency(subtotal),
+                ISVAmount = TaxService.RoundCurrency(isvAmount),
+                ISV15Amount = TaxService.RoundCurrency(isvAmount),
+                ISV18Amount = 0,
+                TouristTaxAmount = TaxService.RoundCurrency(touristTax),
+                DiscountsAmount = TaxService.RoundCurrency(discounts),
+                TotalAmount = TaxService.RoundCurrency(subtotal + isvAmount + touristTax),
+                TaxableAmount = isIsvExempt ? 0 : TaxService.RoundCurrency(subtotal),
+                ExoneratedAmount = isIsvExempt ? TaxService.RoundCurrency(subtotal) : 0,
+                ExemptAmount = 0,
+                TaxpayerType = taxpayerType,
+                ExonerationOrderNumber = request.ExonerationOrderNumber,
+                SefinExonerationCertificateNumber = request.SefinExonerationCertificateNumber,
+                SagRegistryNumber = request.SagRegistryNumber,
+                IsIsvExempt = isIsvExempt,
+                IsTouristTaxExempt = isTouristTaxExempt,
+                OriginalInvoiceId = request.OriginalInvoiceId,
+                OriginalCorrelativeNumber = request.OriginalInvoiceId.HasValue ? (await _repo.GetByIdAsync(request.OriginalInvoiceId.Value))?.CorrelativeNumber : null,
+                Reason = request.Reason,
+                DocumentType = documentType,
                 Status = InvoiceStatus.Emitida,
                 InvoiceItems = items
             };
 
             await _repo.AddAsync(invoice);
+            await _accountingService.CreateInvoiceEntryAsync(invoice);
             return CreatedAtAction(nameof(GetById), new { id = invoice.Id }, _mapper.Map<InvoiceDto>(invoice));
         }
 
@@ -182,9 +230,7 @@ namespace hotel_erp.Api.Controllers
         {
             var invoice = await _repo.GetByIdAsync(id);
             if (invoice == null) return NotFound();
-            invoice.Status = InvoiceStatus.Anulada;
-            await _repo.UpdateAsync(invoice);
-            return Ok(new { message = "Factura anulada" });
+            return BadRequest("La anulación fiscal debe realizarse mediante nota de crédito vinculada");
         }
     }
 }

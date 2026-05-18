@@ -1,18 +1,15 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { useUIStore } from '@/store/uiStore'
+import { useAuthStore } from '@/store/authStore'
 import {
   LayoutDashboard,
   Hotel,
   CalendarCheck,
   Users,
-  UserCircle,
   FileText,
   Receipt,
   DollarSign,
-  Package,
-  BookOpen,
-  BarChart3,
   Settings,
   LogOut,
   ChevronLeft,
@@ -30,17 +27,14 @@ const navItems = [
   { to: '/invoices', icon: FileText, label: 'Facturación' },
   { to: '/cai', icon: Receipt, label: 'CAI' },
   { to: '/cash', icon: DollarSign, label: 'Caja' },
-  { to: '/customers', icon: UserCircle, label: 'Clientes' },
-  { to: '/pos', icon: DollarSign, label: 'POS' },
-  { to: '/inventory', icon: Package, label: 'Inventario' },
-  { to: '/accounting', icon: BookOpen, label: 'Contabilidad' },
-  { to: '/reports', icon: BarChart3, label: 'Reportes' },
   { to: '/discounts', icon: Settings, label: 'Descuentos' },
   { to: '/settings', icon: Settings, label: 'Configuración' },
 ]
 
 export default function Sidebar() {
   const { sidebarOpen, toggleSidebar } = useUIStore()
+  const logout = useAuthStore((s) => s.logout)
+  const navigate = useNavigate()
 
   return (
     <aside
@@ -85,8 +79,8 @@ export default function Sidebar() {
         <button
           className="flex items-center gap-3 px-3 py-2 w-full rounded-md text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
           onClick={() => {
-            localStorage.clear()
-            window.location.href = '/login'
+            logout()
+            navigate('/login', { replace: true })
           }}
         >
           <LogOut size={18} className="shrink-0" />

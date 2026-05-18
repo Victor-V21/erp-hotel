@@ -16,6 +16,7 @@ namespace hotel_erp.Infrastructure
                 options.UseNpgsql(
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+            services.Configure<BackupOptions>(configuration.GetSection("Backup"));
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
@@ -28,6 +29,7 @@ namespace hotel_erp.Infrastructure
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IFolioRepository, FolioRepository>();
             services.AddScoped<ICAIRepository, CAIRepository>();
+            services.AddScoped<IDocumentAuthorizationRepository, DocumentAuthorizationRepository>();
             services.AddScoped<IInvoiceRepository, InvoiceRepository>();
             services.AddScoped<ICashRegisterRepository, CashRegisterRepository>();
             services.AddScoped<ICashMovementRepository, CashMovementRepository>();
@@ -38,6 +40,10 @@ namespace hotel_erp.Infrastructure
             services.AddScoped<IBusinessSettingsRepository, BusinessSettingsRepository>();
             services.AddScoped<IDiscountRepository, DiscountRepository>();
             services.AddScoped<EscPosService>();
+            services.AddScoped<IAccountingService, AccountingService>();
+            services.AddScoped<IFiscalAuthorizationService, FiscalAuthorizationService>();
+            services.AddScoped<DatabaseBackupService>();
+            services.AddHostedService<BackupHostedService>();
 
             return services;
         }

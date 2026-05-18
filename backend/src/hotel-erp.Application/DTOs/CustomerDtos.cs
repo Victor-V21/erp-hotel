@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace hotel_erp.Application.DTOs
 {
     public record CustomerDto
@@ -8,10 +10,45 @@ namespace hotel_erp.Application.DTOs
         public string? Address { get; set; }
         public string? Phone { get; set; }
         public string? Email { get; set; }
+        public string TaxpayerType { get; set; } = "Gravado";
+        public string? ExonerationOrderNumber { get; set; }
+        public string? SefinExonerationCertificateNumber { get; set; }
+        public string? SagRegistryNumber { get; set; }
+        public bool IsIsvExempt { get; set; }
+        public bool IsTouristTaxExempt { get; set; }
+        public DateOnly? ExonerationValidFrom { get; set; }
+        public DateOnly? ExonerationValidTo { get; set; }
     }
 
-    public record CreateCustomerRequest(string? RTN, string Name, string? Address, string? Phone, string? Email);
-    public record UpdateCustomerRequest(string? RTN, string? Name, string? Address, string? Phone, string? Email);
+    public record CreateCustomerRequest(
+        [RegularExpression("^\\d{14}$")] string? RTN,
+        [Required, StringLength(100, MinimumLength = 2)] string Name,
+        [StringLength(250)] string? Address,
+        [StringLength(20)] string? Phone,
+        [EmailAddress, StringLength(100)] string? Email,
+        [RegularExpression("^(ConsumidorFinal|Gravado|Exonerado)$")] string? TaxpayerType = null,
+        string? ExonerationOrderNumber = null,
+        string? SefinExonerationCertificateNumber = null,
+        string? SagRegistryNumber = null,
+        bool IsIsvExempt = false,
+        bool IsTouristTaxExempt = false,
+        DateOnly? ExonerationValidFrom = null,
+        DateOnly? ExonerationValidTo = null);
+
+    public record UpdateCustomerRequest(
+        [RegularExpression("^\\d{14}$")] string? RTN,
+        [StringLength(100, MinimumLength = 2)] string? Name,
+        [StringLength(250)] string? Address,
+        [StringLength(20)] string? Phone,
+        [EmailAddress, StringLength(100)] string? Email,
+        [RegularExpression("^(ConsumidorFinal|Gravado|Exonerado)$")] string? TaxpayerType = null,
+        string? ExonerationOrderNumber = null,
+        string? SefinExonerationCertificateNumber = null,
+        string? SagRegistryNumber = null,
+        bool? IsIsvExempt = null,
+        bool? IsTouristTaxExempt = null,
+        DateOnly? ExonerationValidFrom = null,
+        DateOnly? ExonerationValidTo = null);
 
     public record GuestDto
     {
@@ -32,9 +69,65 @@ namespace hotel_erp.Application.DTOs
         public string? GuestRTN { get; set; }
         public string? Preferences { get; set; }
         public string? Classification { get; set; }
+        public string TaxpayerType { get; set; } = "ConsumidorFinal";
+        public string? ExonerationOrderNumber { get; set; }
+        public string? SefinExonerationCertificateNumber { get; set; }
+        public string? SagRegistryNumber { get; set; }
+        public bool IsIsvExempt { get; set; }
+        public bool IsTouristTaxExempt { get; set; }
+        public DateOnly? ExonerationValidFrom { get; set; }
+        public DateOnly? ExonerationValidTo { get; set; }
     }
 
-    public record CreateGuestRequest(string FirstName, string LastName, string? Email, string? Phone, DateOnly? DateOfBirth, string? Nationality, string? DocumentType, string? DocumentNumber, string? Origin, bool HasVehicle, string? VehiclePlate, string? Company, string? GuestRTN, string? Preferences, string? Classification);
-    public record UpdateGuestRequest(string? FirstName, string? LastName, string? Email, string? Phone, DateOnly? DateOfBirth, string? Nationality, string? DocumentType, string? DocumentNumber, string? Origin, bool? HasVehicle, string? VehiclePlate, string? Company, string? GuestRTN, string? Preferences, string? Classification);
-    public record UpdateClassificationRequest(string Classification);
+    public record CreateGuestRequest(
+        [Required, StringLength(50, MinimumLength = 2)] string FirstName,
+        [Required, StringLength(50, MinimumLength = 2)] string LastName,
+        [EmailAddress, StringLength(100)] string? Email,
+        [StringLength(20)] string? Phone,
+        DateOnly? DateOfBirth,
+        [StringLength(50)] string? Nationality,
+        [RegularExpression("^(DNI|Pasaporte|RTN|Otro)$")] string? DocumentType,
+        [StringLength(50)] string? DocumentNumber,
+        [StringLength(100)] string? Origin,
+        bool HasVehicle,
+        [StringLength(20)] string? VehiclePlate,
+        [StringLength(100)] string? Company,
+        [RegularExpression("^\\d{14}$")] string? GuestRTN,
+        [StringLength(1000)] string? Preferences,
+        [StringLength(50)] string? Classification,
+        [RegularExpression("^(ConsumidorFinal|Gravado|Exonerado)$")] string? TaxpayerType = null,
+        string? ExonerationOrderNumber = null,
+        string? SefinExonerationCertificateNumber = null,
+        string? SagRegistryNumber = null,
+        bool IsIsvExempt = false,
+        bool IsTouristTaxExempt = false,
+        DateOnly? ExonerationValidFrom = null,
+        DateOnly? ExonerationValidTo = null);
+
+    public record UpdateGuestRequest(
+        [StringLength(50, MinimumLength = 2)] string? FirstName,
+        [StringLength(50, MinimumLength = 2)] string? LastName,
+        [EmailAddress, StringLength(100)] string? Email,
+        [StringLength(20)] string? Phone,
+        DateOnly? DateOfBirth,
+        [StringLength(50)] string? Nationality,
+        [RegularExpression("^(DNI|Pasaporte|RTN|Otro)$")] string? DocumentType,
+        [StringLength(50)] string? DocumentNumber,
+        [StringLength(100)] string? Origin,
+        bool? HasVehicle,
+        [StringLength(20)] string? VehiclePlate,
+        [StringLength(100)] string? Company,
+        [RegularExpression("^\\d{14}$")] string? GuestRTN,
+        [StringLength(1000)] string? Preferences,
+        [StringLength(50)] string? Classification,
+        [RegularExpression("^(ConsumidorFinal|Gravado|Exonerado)$")] string? TaxpayerType = null,
+        string? ExonerationOrderNumber = null,
+        string? SefinExonerationCertificateNumber = null,
+        string? SagRegistryNumber = null,
+        bool? IsIsvExempt = null,
+        bool? IsTouristTaxExempt = null,
+        DateOnly? ExonerationValidFrom = null,
+        DateOnly? ExonerationValidTo = null);
+
+    public record UpdateClassificationRequest([Required, StringLength(50, MinimumLength = 2)] string Classification);
 }

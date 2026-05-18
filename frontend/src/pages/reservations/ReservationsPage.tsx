@@ -40,7 +40,7 @@ export default function ReservationsPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Reservaciones</h1>
-        <Button onClick={() => navigate('/checkin')}>Nueva Reservación</Button>
+        <Button onClick={() => navigate('/checkin')}>Nuevo Check-In</Button>
       </div>
 
       <div className="flex gap-2">

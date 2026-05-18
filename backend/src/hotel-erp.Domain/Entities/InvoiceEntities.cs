@@ -16,10 +16,29 @@ namespace hotel_erp.Domain.Entities
         public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
     }
 
+    public class DocumentAuthorization : BaseEntity
+    {
+        public InvoiceDocumentType DocumentType { get; set; } = InvoiceDocumentType.Factura;
+        public string CAINumber { get; set; } = string.Empty;
+        public DateOnly IssueDate { get; set; }
+        public DateTime DueDate { get; set; }
+        public string InitialRange { get; set; } = string.Empty;
+        public string FinalRange { get; set; } = string.Empty;
+        public string CurrentCorrelative { get; set; } = string.Empty;
+        public CAIStatus Status { get; set; } = CAIStatus.Activo;
+
+        public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+    }
+
     public class Invoice : BaseEntity
     {
         public Guid CAIId { get; set; }
         public CAI CAI { get; set; } = null!;
+        public Guid? DocumentAuthorizationId { get; set; }
+        public DocumentAuthorization? DocumentAuthorization { get; set; }
+        public string? CAINumberSnapshot { get; set; }
+        public string? AuthorizationRangeSnapshot { get; set; }
+        public DateTime? AuthorizationDueDateSnapshot { get; set; }
         public string CorrelativeNumber { get; set; } = string.Empty;
         public DateTime InvoiceDate { get; set; } = DateTime.UtcNow;
         public Guid? CustomerId { get; set; }
@@ -31,9 +50,26 @@ namespace hotel_erp.Domain.Entities
         public string? CustomerAddress { get; set; }
         public decimal SubTotal { get; set; }
         public decimal ISVAmount { get; set; }
+        public decimal ISV15Amount { get; set; }
+        public decimal ISV18Amount { get; set; }
         public decimal TouristTaxAmount { get; set; }
         public decimal DiscountsAmount { get; set; }
         public decimal TotalAmount { get; set; }
+        public decimal TaxableAmount { get; set; }
+        public decimal ExemptAmount { get; set; }
+        public decimal ExoneratedAmount { get; set; }
+        public TaxpayerType TaxpayerType { get; set; } = TaxpayerType.ConsumidorFinal;
+        public string? ExonerationOrderNumber { get; set; }
+        public string? SefinExonerationCertificateNumber { get; set; }
+        public string? SagRegistryNumber { get; set; }
+        public bool IsIsvExempt { get; set; }
+        public bool IsTouristTaxExempt { get; set; }
+        public Guid? OriginalInvoiceId { get; set; }
+        public Invoice? OriginalInvoice { get; set; }
+        public string? OriginalCorrelativeNumber { get; set; }
+        public string? Reason { get; set; }
+        public string? FiscalSnapshotJson { get; set; }
+        public string? FiscalHash { get; set; }
         public InvoiceDocumentType DocumentType { get; set; } = InvoiceDocumentType.Factura;
         public InvoiceStatus Status { get; set; } = InvoiceStatus.Emitida;
 

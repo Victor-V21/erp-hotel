@@ -31,6 +31,7 @@ namespace hotel_erp.Infrastructure.Persistence
 
         // Billing SAR
         public DbSet<CAI> CAIs => Set<CAI>();
+        public DbSet<DocumentAuthorization> DocumentAuthorizations => Set<DocumentAuthorization>();
         public DbSet<Invoice> Invoices => Set<Invoice>();
         public DbSet<InvoiceItem> InvoiceItems => Set<InvoiceItem>();
         public DbSet<TaxConfiguration> TaxConfigurations => Set<TaxConfiguration>();
@@ -51,6 +52,9 @@ namespace hotel_erp.Infrastructure.Persistence
 
         // Business Settings
         public DbSet<BusinessSettings> BusinessSettings => Set<BusinessSettings>();
+
+        // Backups
+        public DbSet<BackupLog> BackupLogs => Set<BackupLog>();
 
         // Discounts
         public DbSet<Discount> Discounts => Set<Discount>();
@@ -110,6 +114,9 @@ namespace hotel_erp.Infrastructure.Persistence
             modelBuilder.Entity<AuditLog>()
                 .Property(al => al.Changes)
                 .HasColumnType("jsonb");
+            modelBuilder.Entity<AuditLog>()
+                .HasIndex(al => al.Hash)
+                .IsUnique();
 
             // User unique indexes
             modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
@@ -121,10 +128,18 @@ namespace hotel_erp.Infrastructure.Persistence
 
             // Customer
             modelBuilder.Entity<Customer>().HasIndex(c => c.RTN).IsUnique();
+            modelBuilder.Entity<Customer>()
+                .Property(c => c.TaxpayerType)
+                .HasConversion<string>()
+                .HasMaxLength(20);
             modelBuilder.Entity<Customer>().HasQueryFilter(c => !c.IsDeleted);
 
             // Guest
             modelBuilder.Entity<Guest>().HasIndex(g => g.DocumentNumber).IsUnique();
+            modelBuilder.Entity<Guest>()
+                .Property(g => g.TaxpayerType)
+                .HasConversion<string>()
+                .HasMaxLength(20);
             modelBuilder.Entity<Guest>().HasQueryFilter(g => !g.IsDeleted);
 
             // Room
@@ -193,6 +208,22 @@ namespace hotel_erp.Infrastructure.Persistence
                 .HasConversion<string>()
                 .HasMaxLength(20);
 
+            // DocumentAuthorization
+            modelBuilder.Entity<DocumentAuthorization>()
+                .HasIndex(a => new { a.DocumentType, a.Status });
+            modelBuilder.Entity<DocumentAuthorization>()
+                .HasIndex(a => new { a.DocumentType, a.CAINumber })
+                .IsUnique();
+            modelBuilder.Entity<DocumentAuthorization>()
+                .Property(a => a.DocumentType)
+                .HasConversion<string>()
+                .HasMaxLength(20);
+            modelBuilder.Entity<DocumentAuthorization>()
+                .Property(a => a.Status)
+                .HasConversion<string>()
+                .HasMaxLength(20);
+            modelBuilder.Entity<DocumentAuthorization>().HasQueryFilter(a => !a.IsDeleted);
+
             // Invoice
             modelBuilder.Entity<Invoice>()
                 .HasIndex(i => i.CorrelativeNumber)
@@ -206,9 +237,18 @@ namespace hotel_erp.Infrastructure.Persistence
                 .HasConversion<string>()
                 .HasMaxLength(20);
             modelBuilder.Entity<Invoice>()
+                .Property(i => i.TaxpayerType)
+                .HasConversion<string>()
+                .HasMaxLength(20);
+            modelBuilder.Entity<Invoice>()
                 .HasOne(i => i.CAI)
                 .WithMany(c => c.Invoices)
                 .HasForeignKey(i => i.CAIId);
+            modelBuilder.Entity<Invoice>()
+                .HasOne(i => i.DocumentAuthorization)
+                .WithMany(a => a.Invoices)
+                .HasForeignKey(i => i.DocumentAuthorizationId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Invoice>()
                 .HasOne(i => i.Customer)
                 .WithMany(c => c.Invoices)
@@ -219,6 +259,11 @@ namespace hotel_erp.Infrastructure.Persistence
                 .WithMany(g => g.Invoices)
                 .HasForeignKey(i => i.GuestId)
                 .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<Invoice>()
+                .HasOne(i => i.OriginalInvoice)
+                .WithMany()
+                .HasForeignKey(i => i.OriginalInvoiceId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // InvoiceItem
             modelBuilder.Entity<InvoiceItem>()
@@ -303,6 +348,12 @@ namespace hotel_erp.Infrastructure.Persistence
             // Discount
             modelBuilder.Entity<Discount>()
                 .Property(d => d.DiscountType)
+                .HasConversion<string>()
+                .HasMaxLength(20);
+
+            // BackupLog
+            modelBuilder.Entity<BackupLog>()
+                .Property(b => b.Status)
                 .HasConversion<string>()
                 .HasMaxLength(20);
 

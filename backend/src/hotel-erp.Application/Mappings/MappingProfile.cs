@@ -38,18 +38,25 @@ namespace hotel_erp.Application.Mappings
             CreateMap<FolioItem, FolioItemDto>();
 
             // Customer
-            CreateMap<Customer, CustomerDto>();
+            CreateMap<Customer, CustomerDto>()
+                .ForMember(d => d.TaxpayerType, o => o.MapFrom(s => s.TaxpayerType.ToString()));
             CreateMap<Guest, GuestDto>()
-                .ForMember(d => d.GuestRTN, o => o.MapFrom(s => s.RTN));
+                .ForMember(d => d.GuestRTN, o => o.MapFrom(s => s.RTN))
+                .ForMember(d => d.TaxpayerType, o => o.MapFrom(s => s.TaxpayerType.ToString()));
 
             // Invoice
             CreateMap<CAI, CAIDto>()
                 .ForMember(d => d.Status, o => o.MapFrom(s => s.Status.ToString()))
                 .ForMember(d => d.IsExpiringSoon, o => o.MapFrom(s => s.DueDate <= DateOnly.FromDateTime(DateTime.UtcNow.AddDays(30))));
+            CreateMap<DocumentAuthorization, DocumentAuthorizationDto>()
+                .ForMember(d => d.DocumentType, o => o.MapFrom(s => s.DocumentType.ToString()))
+                .ForMember(d => d.Status, o => o.MapFrom(s => s.Status.ToString()))
+                .ForMember(d => d.IsExpiringSoon, o => o.MapFrom(s => s.DueDate <= DateTime.UtcNow.AddDays(30)));
             CreateMap<Invoice, InvoiceDto>()
                 .ForMember(d => d.CAINumber, o => o.MapFrom(s => s.CAI.CAINumber))
                 .ForMember(d => d.CustomerId, o => o.MapFrom(s => s.CustomerId))
                 .ForMember(d => d.DocumentType, o => o.MapFrom(s => s.DocumentType.ToString()))
+                .ForMember(d => d.TaxpayerType, o => o.MapFrom(s => s.TaxpayerType.ToString()))
                 .ForMember(d => d.Status, o => o.MapFrom(s => s.Status.ToString()));
 
             // Tax Configuration

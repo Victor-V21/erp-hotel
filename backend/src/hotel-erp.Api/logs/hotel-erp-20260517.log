@@ -79,3 +79,64 @@
 2026-05-17 09:25:46.165 -06:00 [INF] HTTP GET /api/guests responded 200 in 3.5571 ms
 2026-05-17 09:25:46.642 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.3010 ms
 2026-05-17 09:25:46.652 -06:00 [INF] HTTP GET /api/reservations responded 200 in 3.5480 ms
+2026-05-17 13:37:03.025 -06:00 [INF] Starting Hotel ERP API
+2026-05-17 13:37:05.534 -06:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'RefreshToken'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-17 13:37:05.541 -06:00 [WRN] Entity 'Permission' has a global query filter defined and is the required end of a relationship with the entity 'RolePermission'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-17 13:37:05.543 -06:00 [WRN] Entity 'Role' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2026-05-17 13:37:10.910 -06:00 [INF] Migrations applied successfully
+2026-05-17 13:37:19.007 -06:00 [INF] HTTP GET /api/room-types responded 401 in 197.5339 ms
+2026-05-17 13:37:19.074 -06:00 [INF] HTTP GET /api/room-types responded 401 in 19.4855 ms
+2026-05-17 13:37:19.492 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 434.7288 ms
+2026-05-17 13:37:19.492 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 400.5239 ms
+2026-05-17 13:37:25.745 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-17 13:37:26.004 -06:00 [INF] HTTP POST /api/auth/login responded 200 in 2820.7154 ms
+2026-05-17 13:37:28.672 -06:00 [INF] HTTP GET /api/room-types responded 200 in 271.4039 ms
+2026-05-17 13:37:28.687 -06:00 [INF] HTTP GET /api/room-types responded 200 in 7.3422 ms
+2026-05-17 13:37:29.067 -06:00 [INF] HTTP GET /api/room-types responded 200 in 4.8301 ms
+2026-05-17 13:37:29.083 -06:00 [INF] HTTP GET /api/room-types responded 200 in 4.5905 ms
+2026-05-17 13:37:29.329 -06:00 [INF] HTTP GET /api/rooms responded 200 in 931.9574 ms
+2026-05-17 13:37:29.348 -06:00 [INF] HTTP GET /api/rooms responded 200 in 10.9172 ms
+2026-05-17 13:37:29.935 -06:00 [INF] HTTP GET /api/discounts responded 200 in 142.4023 ms
+2026-05-17 13:37:29.954 -06:00 [INF] HTTP GET /api/discounts responded 200 in 8.1881 ms
+2026-05-17 13:37:30.596 -06:00 [INF] HTTP GET /api/room-types responded 200 in 3.6256 ms
+2026-05-17 13:37:30.611 -06:00 [INF] HTTP GET /api/room-types responded 200 in 5.0327 ms
+2026-05-17 13:41:08.060 -06:00 [INF] HTTP GET /api/print/printers responded 200 in 24.7875 ms
+2026-05-17 13:41:08.117 -06:00 [INF] HTTP GET /api/print/printers responded 200 in 7.1814 ms
+2026-05-17 13:41:08.389 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 356.1347 ms
+2026-05-17 13:41:08.701 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 100.2188 ms
+2026-05-17 13:41:08.802 -06:00 [INF] HTTP GET /api/print/test-preview responded 200 in 189.6178 ms
+2026-05-17 13:41:09.574 -06:00 [INF] HTTP GET /api/print/test-preview responded 200 in 64.4954 ms
+2026-05-17 15:03:35.513 -06:00 [INF] HTTP GET /api/settings/business responded 401 in 1.2163 ms
+2026-05-17 15:03:35.514 -06:00 [INF] HTTP GET /api/print/printers responded 401 in 0.7850 ms
+2026-05-17 15:03:35.528 -06:00 [INF] HTTP GET /api/settings/business responded 401 in 1.6937 ms
+2026-05-17 15:03:35.546 -06:00 [INF] HTTP GET /api/print/printers responded 401 in 0.6446 ms
+2026-05-17 15:03:35.590 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 4.9262 ms
+2026-05-17 15:03:35.613 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 1.4179 ms
+2026-05-17 15:03:35.625 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 1.1500 ms
+2026-05-17 15:03:35.650 -06:00 [INF] HTTP POST /api/auth/refresh responded 401 in 0.8262 ms
+2026-05-17 15:14:52.971 -06:00 [INF] HTTP POST /api/auth/login responded 200 in 1425.1705 ms
+2026-05-17 15:14:54.405 -06:00 [INF] HTTP GET /api/print/printers responded 200 in 5.7762 ms
+2026-05-17 15:14:54.422 -06:00 [INF] HTTP GET /api/print/printers responded 200 in 3.7845 ms
+2026-05-17 15:14:54.477 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 80.3712 ms
+2026-05-17 15:14:54.622 -06:00 [INF] HTTP GET /api/settings/business responded 200 in 61.7707 ms
+2026-05-17 15:14:55.581 -06:00 [INF] HTTP GET /api/print/test-preview responded 200 in 52.0439 ms
+2026-05-17 15:15:00.491 -06:00 [INF] HTTP GET /api/reservations responded 200 in 179.5891 ms
+2026-05-17 15:15:00.502 -06:00 [INF] HTTP GET /api/reservations responded 200 in 6.0202 ms
+2026-05-17 15:15:03.350 -06:00 [INF] HTTP GET /api/discounts responded 200 in 9.0076 ms
+2026-05-17 15:15:03.361 -06:00 [INF] HTTP GET /api/discounts responded 200 in 2.9321 ms
+2026-05-17 15:15:05.505 -06:00 [INF] HTTP GET /api/reservations responded 200 in 16.8846 ms
+2026-05-17 15:15:05.519 -06:00 [INF] HTTP GET /api/reservations responded 200 in 5.6694 ms
+2026-05-17 15:15:09.074 -06:00 [INF] HTTP GET /api/guests responded 200 in 100.7781 ms
+2026-05-17 15:15:09.085 -06:00 [INF] HTTP GET /api/guests responded 200 in 3.7354 ms
+2026-05-17 15:15:12.068 -06:00 [INF] HTTP GET /api/discounts responded 200 in 2.4567 ms
+2026-05-17 15:15:12.081 -06:00 [INF] HTTP GET /api/discounts responded 200 in 5.1405 ms
+2026-05-17 15:15:14.119 -06:00 [INF] HTTP GET /api/guests responded 200 in 45.2041 ms
+2026-05-17 15:15:14.693 -06:00 [INF] HTTP GET /api/guests/019e2d07-60e6-7fbc-b1d5-8be85059ff7a/stats responded 200 in 73.3450 ms
+2026-05-17 15:15:15.736 -06:00 [INF] HTTP PUT /api/guests/019e2d07-60e6-7fbc-b1d5-8be85059ff7a responded 204 in 80.3462 ms
+2026-05-17 15:15:20.102 -06:00 [INF] HTTP GET /api/rooms/available responded 200 in 158.2609 ms
+2026-05-17 15:15:28.052 -06:00 [INF] HTTP POST /api/reservations responded 201 in 297.4090 ms
+2026-05-17 15:15:28.747 -06:00 [INF] HTTP POST /api/reservations/checkin responded 200 in 685.7946 ms
+2026-05-17 15:15:28.805 -06:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-17 15:15:28.947 -06:00 [INF] HTTP GET /api/print/invoice/019e37cb-4389-782a-8097-eef0f401eeef/preview responded 200 in 187.0646 ms
+2026-05-17 15:15:35.977 -06:00 [INF] HTTP GET /api/cai responded 200 in 29.1383 ms
+2026-05-17 15:15:35.985 -06:00 [INF] HTTP GET /api/cai responded 200 in 2.3383 ms

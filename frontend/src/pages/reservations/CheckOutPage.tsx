@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import api from '@/lib/axios'
 import type { Reservation } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -19,7 +20,12 @@ export default function CheckOutPage() {
     try {
       await api.post(`/reservations/checkout/${selected.id}`)
       setDone(true)
-    } catch (e: any) { alert(e.response?.data?.message || 'Error') }
+    } catch (e: unknown) {
+      const message = axios.isAxiosError<{ message?: string }>(e)
+        ? e.response?.data?.message || e.message
+        : 'Error'
+      alert(message)
+    }
   }
 
   if (done) {

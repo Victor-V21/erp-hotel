@@ -122,10 +122,25 @@ namespace hotel_erp.Infrastructure.Migrations
                     b.Property<string>("Changes")
                         .HasColumnType("jsonb");
 
+                    b.Property<string>("CorrelativeNumber")
+                        .HasColumnType("text");
+
                     b.Property<Guid?>("EntityId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("EntityName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Hash")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("HondurasTimestamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PreviousHash")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Timestamp")
@@ -136,9 +151,73 @@ namespace hotel_erp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Hash")
+                        .IsUnique();
+
                     b.HasIndex("UserId");
 
                     b.ToTable("AuditLogs");
+                });
+
+            modelBuilder.Entity("hotel_erp.Domain.Entities.BackupLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("GoogleDriveFileId")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LocalPath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Sha256Hash")
+                        .HasColumnType("text");
+
+                    b.Property<long>("SizeBytes")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("UploadAttempts")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UploadedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BackupLogs");
                 });
 
             modelBuilder.Entity("hotel_erp.Domain.Entities.BusinessSettings", b =>
@@ -442,7 +521,22 @@ namespace hotel_erp.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
+                    b.Property<string>("ExonerationOrderNumber")
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly?>("ExonerationValidFrom")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("ExonerationValidTo")
+                        .HasColumnType("date");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsIsvExempt")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsTouristTaxExempt")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
@@ -454,6 +548,17 @@ namespace hotel_erp.Infrastructure.Migrations
 
                     b.Property<string>("RTN")
                         .HasColumnType("text");
+
+                    b.Property<string>("SagRegistryNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SefinExonerationCertificateNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TaxpayerType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -520,6 +625,67 @@ namespace hotel_erp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Discounts");
+                });
+
+            modelBuilder.Entity("hotel_erp.Domain.Entities.DocumentAuthorization", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CAINumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("CurrentCorrelative")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DocumentType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FinalRange")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("InitialRange")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateOnly>("IssueDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentType", "CAINumber")
+                        .IsUnique();
+
+                    b.HasIndex("DocumentType", "Status");
+
+                    b.ToTable("DocumentAuthorizations");
                 });
 
             modelBuilder.Entity("hotel_erp.Domain.Entities.EntryItem", b =>
@@ -702,6 +868,15 @@ namespace hotel_erp.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
+                    b.Property<string>("ExonerationOrderNumber")
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly?>("ExonerationValidFrom")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("ExonerationValidTo")
+                        .HasColumnType("date");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -710,6 +885,12 @@ namespace hotel_erp.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsIsvExempt")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsTouristTaxExempt")
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
@@ -730,6 +911,17 @@ namespace hotel_erp.Infrastructure.Migrations
 
                     b.Property<string>("RTN")
                         .HasColumnType("text");
+
+                    b.Property<string>("SagRegistryNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SefinExonerationCertificateNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TaxpayerType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -810,8 +1002,17 @@ namespace hotel_erp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime?>("AuthorizationDueDateSnapshot")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("AuthorizationRangeSnapshot")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("CAIId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("CAINumberSnapshot")
+                        .HasColumnType("text");
 
                     b.Property<decimal?>("CashChange")
                         .HasColumnType("numeric");
@@ -841,13 +1042,37 @@ namespace hotel_erp.Infrastructure.Migrations
                     b.Property<decimal>("DiscountsAmount")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("DocumentAuthorizationId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("DocumentType")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<decimal>("ExemptAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("ExoneratedAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("ExonerationOrderNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FiscalHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FiscalSnapshotJson")
+                        .HasColumnType("text");
+
                     b.Property<Guid?>("GuestId")
                         .HasColumnType("uuid");
+
+                    b.Property<decimal>("ISV15Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("ISV18Amount")
+                        .HasColumnType("numeric");
 
                     b.Property<decimal>("ISVAmount")
                         .HasColumnType("numeric");
@@ -858,10 +1083,31 @@ namespace hotel_erp.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsIsvExempt")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsTouristTaxExempt")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("OriginalCorrelativeNumber")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("OriginalInvoiceId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("text");
 
                     b.Property<string>("RTNCliente")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SagRegistryNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SefinExonerationCertificateNumber")
                         .HasColumnType("text");
 
                     b.Property<string>("Status")
@@ -871,6 +1117,14 @@ namespace hotel_erp.Infrastructure.Migrations
 
                     b.Property<decimal>("SubTotal")
                         .HasColumnType("numeric");
+
+                    b.Property<decimal>("TaxableAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("TaxpayerType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("numeric");
@@ -892,7 +1146,11 @@ namespace hotel_erp.Infrastructure.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("DocumentAuthorizationId");
+
                     b.HasIndex("GuestId");
+
+                    b.HasIndex("OriginalInvoiceId");
 
                     b.ToTable("Invoices");
                 });
@@ -1516,16 +1774,30 @@ namespace hotel_erp.Infrastructure.Migrations
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("hotel_erp.Domain.Entities.DocumentAuthorization", "DocumentAuthorization")
+                        .WithMany("Invoices")
+                        .HasForeignKey("DocumentAuthorizationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("hotel_erp.Domain.Entities.Guest", "Guest")
                         .WithMany("Invoices")
                         .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("hotel_erp.Domain.Entities.Invoice", "OriginalInvoice")
+                        .WithMany()
+                        .HasForeignKey("OriginalInvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("CAI");
 
                     b.Navigation("Customer");
 
+                    b.Navigation("DocumentAuthorization");
+
                     b.Navigation("Guest");
+
+                    b.Navigation("OriginalInvoice");
                 });
 
             modelBuilder.Entity("hotel_erp.Domain.Entities.InvoiceItem", b =>
@@ -1656,6 +1928,11 @@ namespace hotel_erp.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("hotel_erp.Domain.Entities.Customer", b =>
+                {
+                    b.Navigation("Invoices");
+                });
+
+            modelBuilder.Entity("hotel_erp.Domain.Entities.DocumentAuthorization", b =>
                 {
                     b.Navigation("Invoices");
                 });

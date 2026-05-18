@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace hotel_erp.Application.DTOs
 {
     public record BusinessSettingsDto
@@ -31,19 +33,32 @@ namespace hotel_erp.Application.DTOs
 
     public record UpdateBusinessSettingsRequest
     {
+        [StringLength(100, MinimumLength = 2)]
         public string? BusinessName { get; set; }
+        [RegularExpression("^\\d{14}$")]
         public string? RTN { get; set; }
+        [StringLength(250)]
         public string? Address { get; set; }
+        [StringLength(20)]
         public string? Phone { get; set; }
+        [EmailAddress, StringLength(100)]
         public string? Email { get; set; }
         public string? LogoBase64 { get; set; }
+        [StringLength(500)]
         public string? Footer { get; set; }
+        [Range(0, 1)]
         public decimal? IsvRate { get; set; }
+        [Range(0, 1)]
         public decimal? TouristTaxRate { get; set; }
+        [StringLength(100)]
         public string? PrintPrinterName { get; set; }
+        [Range(28, 100)]
         public int? PrintWidth { get; set; }
+        [Range(20, 200)]
         public int? PrintLogoHeight { get; set; }
+        [RegularExpression("^(condensed|normal)$")]
         public string? PrintFontSize { get; set; }
+        [Range(0, 2)]
         public int? PrintLineSpacing { get; set; }
         public bool? ShowLogo { get; set; }
         public bool? ShowHeader { get; set; }
@@ -53,8 +68,11 @@ namespace hotel_erp.Application.DTOs
         public bool? ShowTotals { get; set; }
         public bool? ShowPayment { get; set; }
         public bool? ShowFooter { get; set; }
+        [RegularExpression("^(center|left)$")]
         public string? HeaderAlign { get; set; }
+        [StringLength(1, MinimumLength = 1)]
         public string? SeparatorChar { get; set; }
+        [Range(0, 8)]
         public int? MarginLeft { get; set; }
     }
 }

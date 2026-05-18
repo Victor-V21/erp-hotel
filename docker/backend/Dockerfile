@@ -17,6 +17,9 @@ RUN dotnet publish "hotel-erp.Api.csproj" -c Release -o /app/publish /p:UseAppHo
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends postgresql-client rclone \
+    && rm -rf /var/lib/apt/lists/*
 COPY --from=publish /app/publish .
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080

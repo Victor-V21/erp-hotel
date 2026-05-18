@@ -22,6 +22,7 @@ namespace hotel_erp.Api.Controllers
         private readonly ICAIRepository _caiRepo;
         private readonly IBusinessSettingsRepository _settingsRepo;
         private readonly IDiscountRepository _discountRepo;
+        private readonly IAccountingService _accountingService;
         private readonly TaxService _taxService;
         private readonly IMapper _mapper;
 
@@ -34,6 +35,7 @@ namespace hotel_erp.Api.Controllers
             ICAIRepository caiRepo,
             IBusinessSettingsRepository settingsRepo,
             IDiscountRepository discountRepo,
+            IAccountingService accountingService,
             TaxService taxService,
             IMapper mapper)
         {
@@ -45,6 +47,7 @@ namespace hotel_erp.Api.Controllers
             _caiRepo = caiRepo;
             _settingsRepo = settingsRepo;
             _discountRepo = discountRepo;
+            _accountingService = accountingService;
             _taxService = taxService;
             _mapper = mapper;
         }
@@ -240,11 +243,23 @@ namespace hotel_erp.Api.Controllers
 
             var correlative = await _invoiceRepo.GetNextCorrelativeAsync(cai.Id);
             var guest = await _guestRepo.GetByIdAsync(reservation.GuestId);
+            var isIsvExempt = guest?.TaxpayerType == TaxpayerType.Exonerado && guest.IsIsvExempt;
+            var isTouristTaxExempt = guest?.TaxpayerType == TaxpayerType.Exonerado && guest.IsTouristTaxExempt;
+            if (isIsvExempt || isTouristTaxExempt)
+            {
+                if (string.IsNullOrWhiteSpace(guest?.ExonerationOrderNumber) || string.IsNullOrWhiteSpace(guest?.SefinExonerationCertificateNumber))
+                    return BadRequest("Cliente exonerado requiere O.C. Exenta y Constancia SEFIN");
+
+                taxResult = _taxService.CalculateFromNetAmount(taxResult.Subtotal, isIsvExempt, isTouristTaxExempt, totalDiscountPercent);
+            }
 
             // Create invoice with SAR breakdown
             var invoice = new Invoice
             {
                 CAIId = cai.Id,
+                CAINumberSnapshot = cai.CAINumber,
+                AuthorizationRangeSnapshot = $"{cai.InitialRange} - {cai.FinalRange}",
+                AuthorizationDueDateSnapshot = cai.DueDate.ToDateTime(TimeOnly.MaxValue),
                 CorrelativeNumber = correlative,
                 CustomerId = null,
                 GuestId = reservation.GuestId,
@@ -253,9 +268,20 @@ namespace hotel_erp.Api.Controllers
                 CustomerAddress = guest?.Origin ?? "",
                 SubTotal = taxResult.Subtotal,
                 ISVAmount = taxResult.ISV,
+                ISV15Amount = taxResult.ISV,
+                ISV18Amount = 0,
                 TouristTaxAmount = taxResult.TouristTax,
                 DiscountsAmount = taxResult.DiscountAmount,
                 TotalAmount = taxResult.Total,
+                TaxableAmount = taxResult.TaxableAmount,
+                ExemptAmount = taxResult.ExemptAmount,
+                ExoneratedAmount = taxResult.ExoneratedAmount,
+                TaxpayerType = guest?.TaxpayerType ?? TaxpayerType.ConsumidorFinal,
+                ExonerationOrderNumber = guest?.ExonerationOrderNumber,
+                SefinExonerationCertificateNumber = guest?.SefinExonerationCertificateNumber,
+                SagRegistryNumber = guest?.SagRegistryNumber,
+                IsIsvExempt = isIsvExempt,
+                IsTouristTaxExempt = isTouristTaxExempt,
                 InvoiceDate = HondurasTime.Now,
                 DocumentType = InvoiceDocumentType.Factura,
                 Status = InvoiceStatus.Pagada,
@@ -279,6 +305,7 @@ namespace hotel_erp.Api.Controllers
             };
 
             await _invoiceRepo.AddAsync(invoice);
+            await _accountingService.CreateInvoiceEntryAsync(invoice);
 
             folio.TotalAmount = taxResult.Total;
             await _folioRepo.UpdateAsync(folio);

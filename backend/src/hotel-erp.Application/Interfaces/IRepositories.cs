@@ -1,4 +1,5 @@
 using hotel_erp.Domain.Entities;
+using hotel_erp.Domain.Enums;
 
 namespace hotel_erp.Application.Interfaces
 {
@@ -112,6 +113,30 @@ namespace hotel_erp.Application.Interfaces
         Task DeleteAsync(Guid id);
     }
 
+    public interface IDocumentAuthorizationRepository
+    {
+        Task<DocumentAuthorization?> GetByIdAsync(Guid id);
+        Task<DocumentAuthorization?> GetActiveAsync(InvoiceDocumentType documentType);
+        Task<DocumentAuthorization?> GetByCAIAsync(InvoiceDocumentType documentType, string caiNumber);
+        Task<IEnumerable<DocumentAuthorization>> GetAllAsync();
+        Task AddAsync(DocumentAuthorization authorization);
+        Task UpdateAsync(DocumentAuthorization authorization);
+        Task DeleteAsync(Guid id);
+    }
+
+    public interface IFiscalAuthorizationService
+    {
+        Task<FiscalCorrelativeResult> GetNextCorrelativeAsync(InvoiceDocumentType documentType, Guid? authorizationId = null);
+    }
+
+    public record FiscalCorrelativeResult(
+        Guid AuthorizationId,
+        string CorrelativeNumber,
+        string CAINumber,
+        string InitialRange,
+        string FinalRange,
+        DateTime DueDate);
+
     public interface IInvoiceRepository
     {
         Task<Invoice?> GetByIdAsync(Guid id);
@@ -157,5 +182,10 @@ namespace hotel_erp.Application.Interfaces
         Task AddAsync(AuditLog auditLog);
         Task<IEnumerable<AuditLog>> GetByUserAsync(Guid userId);
         Task<IEnumerable<AuditLog>> GetByDateRangeAsync(DateTime start, DateTime end);
+    }
+
+    public interface IAccountingService
+    {
+        Task CreateInvoiceEntryAsync(Invoice invoice);
     }
 }

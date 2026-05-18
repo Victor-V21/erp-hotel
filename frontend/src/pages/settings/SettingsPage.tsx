@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import axios from 'axios'
 import api from '@/lib/axios'
 import type { BusinessSettings } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -11,7 +12,7 @@ const PAPER_PRESETS = [
 
 const defaults: BusinessSettings = {
   businessName: '', rtn: '', address: '', phone: '', email: '', footer: '',
-  isvRate: 15, touristTaxRate: 4, printPrinterName: '',
+  isvRate: 0.15, touristTaxRate: 0.04, printPrinterName: '',
   printWidth: 46, printLogoHeight: 40, printFontSize: 'condensed', printLineSpacing: 1,
   showLogo: true, showHeader: true, showFiscal: true, showGuest: true,
   showItems: true, showTotals: true, showPayment: true, showFooter: true,
@@ -30,6 +31,13 @@ const SECTIONS: { key: SectionKey; label: string }[] = [
   { key: 'showPayment', label: 'Pago' },
   { key: 'showFooter', label: 'Pie' },
 ]
+
+function getErrorMessage(error: unknown) {
+  if (axios.isAxiosError<{ message?: string }>(error)) {
+    return error.response?.data?.message || error.message
+  }
+  return error instanceof Error ? error.message : 'Error desconocido'
+}
 
 export default function SettingsPage() {
   const [s, setS] = useState<BusinessSettings>(defaults)
@@ -50,9 +58,11 @@ export default function SettingsPage() {
   const fetchSettings = useCallback(async () => {
     try {
       const { data } = await api.get<BusinessSettings>('/settings/business')
-      setS(prev => ({ ...prev, ...data, isvRate: (data as any).isvRate ?? 15, touristTaxRate: (data as any).touristTaxRate ?? 4, printWidth: (data as any).printWidth ?? 46, printLogoHeight: (data as any).printLogoHeight ?? 40, printFontSize: (data as any).printFontSize ?? 'condensed', printLineSpacing: (data as any).printLineSpacing ?? 1, marginLeft: (data as any).marginLeft ?? 0 }))
+      const isvRate = data.isvRate > 1 ? data.isvRate / 100 : data.isvRate
+      const touristTaxRate = data.touristTaxRate > 1 ? data.touristTaxRate / 100 : data.touristTaxRate
+      setS(prev => ({ ...prev, ...data, isvRate: isvRate ?? 0.15, touristTaxRate: touristTaxRate ?? 0.04, printWidth: data.printWidth ?? 46, printLogoHeight: data.printLogoHeight ?? 40, printFontSize: data.printFontSize ?? 'condensed', printLineSpacing: data.printLineSpacing ?? 1, marginLeft: data.marginLeft ?? 0 }))
       setLogoPreview(data.logoBase64 || '')
-      setCustomSlider(!PAPER_PRESETS.some(p => p.width === ((data as any).printWidth ?? 46)))
+      setCustomSlider(!PAPER_PRESETS.some(p => p.width === (data.printWidth ?? 46)))
     } catch { }
   }, [])
 
@@ -94,13 +104,13 @@ export default function SettingsPage() {
   const printRuler = async () => {
     setPrintResult(null)
     try { const { data } = await api.post('/print/test-ruler'); setPrintResult(data.message) }
-    catch (e: any) { setPrintResult('Error: ' + (e.response?.data?.message || e.message)) }
+    catch (e: unknown) { setPrintResult('Error: ' + getErrorMessage(e)) }
   }
 
   const printTest = async () => {
     setPrintResult(null)
     try { const { data } = await api.post(`/print/test-print?width=${s.printWidth}`); setPrintResult(data.message || 'OK') }
-    catch (e: any) { setPrintResult('Error: ' + (e.response?.data?.message || e.message)) }
+    catch (e: unknown) { setPrintResult('Error: ' + getErrorMessage(e)) }
   }
 
   const save = async () => {
@@ -147,11 +157,11 @@ export default function SettingsPage() {
             </div>
             <div>
               <label className="text-sm font-medium">ISV (%)</label>
-              <Input type="number" step="0.01" min={0} max={100} value={s.isvRate} onChange={e => setS({...s, isvRate: +e.target.value})} />
+              <Input type="number" step="0.01" min={0} max={100} value={s.isvRate * 100} onChange={e => setS({...s, isvRate: +e.target.value / 100})} />
             </div>
             <div>
               <label className="text-sm font-medium">Tasa Turistica (%)</label>
-              <Input type="number" step="0.01" min={0} max={100} value={s.touristTaxRate} onChange={e => setS({...s, touristTaxRate: +e.target.value})} />
+              <Input type="number" step="0.01" min={0} max={100} value={s.touristTaxRate * 100} onChange={e => setS({...s, touristTaxRate: +e.target.value / 100})} />
             </div>
           </div>
         </div>

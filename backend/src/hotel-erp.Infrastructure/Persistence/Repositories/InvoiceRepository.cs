@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using hotel_erp.Application.Interfaces;
 using hotel_erp.Domain.Entities;
+using hotel_erp.Domain.Enums;
 
 namespace hotel_erp.Infrastructure.Persistence.Repositories
 {
@@ -39,23 +40,73 @@ namespace hotel_erp.Infrastructure.Persistence.Repositories
 
         public async Task<string> GetNextCorrelativeAsync(Guid caiId)
         {
-            var cai = await _context.CAIs.FindAsync(caiId) ?? throw new InvalidOperationException("CAI no encontrado");
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            var cai = await _context.CAIs.FirstOrDefaultAsync(c => c.Id == caiId) ?? throw new InvalidOperationException("CAI no encontrado");
+            if (cai.Status != CAIStatus.Activo) throw new InvalidOperationException("El CAI no está activo");
+            if (cai.DueDate < DateOnly.FromDateTime(DateTime.UtcNow)) throw new InvalidOperationException("El CAI está vencido");
 
-            // Parse current correlative and increment
             var parts = cai.CurrentCorrelative.Split('-');
             if (parts.Length != 4) throw new InvalidOperationException("Formato de correlativo inválido");
 
             var sequential = int.Parse(parts[3]) + 1;
+            var finalSeq = int.Parse(cai.FinalRange.Split('-').Last());
+            if (sequential > finalSeq)
+            {
+                cai.Status = CAIStatus.Agotado;
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                throw new InvalidOperationException("El CAI ha agotado su rango de correlativos");
+            }
+
             var newCorrelative = $"{parts[0]}-{parts[1]}-{parts[2]}-{sequential:D8}";
 
-            // Validate range
-            var initialSeq = int.Parse(parts[3]); // This should be based on InitialRange
-            // For now, just increment
             cai.CurrentCorrelative = newCorrelative;
             _context.CAIs.Update(cai);
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
 
             return newCorrelative;
+        }
+    }
+
+    public class DocumentAuthorizationRepository : IDocumentAuthorizationRepository
+    {
+        private readonly ApplicationDbContext _context;
+        public DocumentAuthorizationRepository(ApplicationDbContext context) => _context = context;
+
+        public async Task<DocumentAuthorization?> GetByIdAsync(Guid id)
+            => await _context.DocumentAuthorizations.FindAsync(id);
+
+        public async Task<DocumentAuthorization?> GetActiveAsync(InvoiceDocumentType documentType)
+            => await _context.DocumentAuthorizations
+                .Where(a => a.DocumentType == documentType && a.Status == CAIStatus.Activo)
+                .OrderBy(a => a.DueDate)
+                .FirstOrDefaultAsync();
+
+        public async Task<DocumentAuthorization?> GetByCAIAsync(InvoiceDocumentType documentType, string caiNumber)
+            => await _context.DocumentAuthorizations.FirstOrDefaultAsync(a => a.DocumentType == documentType && a.CAINumber == caiNumber);
+
+        public async Task<IEnumerable<DocumentAuthorization>> GetAllAsync()
+            => await _context.DocumentAuthorizations.OrderBy(a => a.DocumentType).ThenBy(a => a.DueDate).ToListAsync();
+
+        public async Task AddAsync(DocumentAuthorization authorization)
+        {
+            await _context.DocumentAuthorizations.AddAsync(authorization);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(DocumentAuthorization authorization)
+        {
+            _context.DocumentAuthorizations.Update(authorization);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            var authorization = await _context.DocumentAuthorizations.FindAsync(id);
+            if (authorization == null) return;
+            authorization.IsDeleted = true;
+            await _context.SaveChangesAsync();
         }
     }
 }

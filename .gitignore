@@ -1,0 +1,8 @@
+data/backups/
+data/secrets/
+**/bin/
+**/obj/
+**/logs/
+frontend/dist/
+*.user
+*.suo

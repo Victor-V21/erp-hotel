@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace hotel_erp.Application.DTOs
 {
     public record CashRegisterDto
@@ -8,9 +10,19 @@ namespace hotel_erp.Application.DTOs
         public bool IsActive { get; set; }
     }
 
-    public record CreateCashRegisterRequest(string Name, string? Description);
-    public record OpenCashRegisterRequest(Guid CashRegisterId, decimal InitialAmount);
-    public record CloseCashRegisterRequest(Guid CashRegisterId, decimal ExpectedAmount, decimal CountedAmount, string? Notes);
+    public record CreateCashRegisterRequest(
+        [Required, StringLength(50, MinimumLength = 2)] string Name,
+        [StringLength(250)] string? Description);
+
+    public record OpenCashRegisterRequest(
+        [NotEmptyGuid] Guid CashRegisterId,
+        [Range(0, 999999.99)] decimal InitialAmount);
+
+    public record CloseCashRegisterRequest(
+        [NotEmptyGuid] Guid CashRegisterId,
+        [Range(0, 999999.99)] decimal ExpectedAmount,
+        [Range(0, 999999.99)] decimal CountedAmount,
+        [StringLength(500)] string? Notes);
     public record CashMovementDto
     {
         public Guid Id { get; set; }
@@ -25,5 +37,10 @@ namespace hotel_erp.Application.DTOs
         public decimal BalanceAfter { get; set; }
     }
 
-    public record CreateCashMovementRequest(Guid CashRegisterId, string MovementType, decimal Amount, string? Description, Guid? ReferenceId);
+    public record CreateCashMovementRequest(
+        [NotEmptyGuid] Guid CashRegisterId,
+        [Required, RegularExpression("^(Apertura|Cierre|Ingreso|Egreso|Arqueo)$")] string MovementType,
+        [Range(0.01, 999999.99)] decimal Amount,
+        [StringLength(250)] string? Description,
+        Guid? ReferenceId);
 }

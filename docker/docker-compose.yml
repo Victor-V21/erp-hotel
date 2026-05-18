@@ -29,6 +29,16 @@ services:
       Jwt__SecretKey: "SuperSecretKey2024HotelERPHonduras!@#$%^&*()MinimumLength32Chars"
       Jwt__Issuer: "HotelERP"
       Jwt__Audience: "HotelERP"
+      Backup__Enabled: "true"
+      Backup__LocalPath: "/hotel-erp/backups"
+      Backup__PgDumpPath: "pg_dump"
+      Backup__RunAt: "02:00"
+      Backup__PendingUploadIntervalHours: "2"
+      Backup__RetentionYears: "5"
+      Backup__GoogleDriveUploadCommand: "rclone copy {file} gdrive:HotelERPBackups"
+    volumes:
+      - ../data/backups:/hotel-erp/backups
+      - ../data/secrets/rclone:/root/.config/rclone
     ports:
       - "8080:8080"
     depends_on:

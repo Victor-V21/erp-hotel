@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace hotel_erp.Application.DTOs
 {
     public record RoomTypeDto
@@ -9,8 +11,17 @@ namespace hotel_erp.Application.DTOs
         public int Capacity { get; set; }
     }
 
-    public record CreateRoomTypeRequest(string Name, string? Description, decimal PricePerNight, int Capacity);
-    public record UpdateRoomTypeRequest(string? Name, string? Description, decimal? PricePerNight, int? Capacity);
+    public record CreateRoomTypeRequest(
+        [Required, StringLength(50, MinimumLength = 2)] string Name,
+        [StringLength(250)] string? Description,
+        [Range(0.01, 999999.99)] decimal PricePerNight,
+        [Range(1, 50)] int Capacity);
+
+    public record UpdateRoomTypeRequest(
+        [StringLength(50, MinimumLength = 2)] string? Name,
+        [StringLength(250)] string? Description,
+        [Range(0.01, 999999.99)] decimal? PricePerNight,
+        [Range(1, 50)] int? Capacity);
 
     public record RoomDto
     {
@@ -25,8 +36,18 @@ namespace hotel_erp.Application.DTOs
         public int Capacity { get; set; }
     }
 
-    public record CreateRoomRequest(string RoomNumber, int Floor, Guid RoomTypeId, string? Observations);
-    public record UpdateRoomRequest(string? RoomNumber, int? Floor, Guid? RoomTypeId, string? Status, string? Observations);
+    public record CreateRoomRequest(
+        [Required, StringLength(10, MinimumLength = 1)] string RoomNumber,
+        [Range(0, 200)] int Floor,
+        [NotEmptyGuid] Guid RoomTypeId,
+        [StringLength(500)] string? Observations);
+
+    public record UpdateRoomRequest(
+        [StringLength(10, MinimumLength = 1)] string? RoomNumber,
+        [Range(0, 200)] int? Floor,
+        Guid? RoomTypeId,
+        [RegularExpression("^(Libre|Ocupada|Limpieza|Mantenimiento|Reservada|Bloqueada)$")] string? Status,
+        [StringLength(500)] string? Observations);
 
     public record ReservationDto
     {
@@ -45,11 +66,53 @@ namespace hotel_erp.Application.DTOs
         public string? Notes { get; set; }
     }
 
-    public record CreateReservationRequest(Guid GuestId, Guid RoomId, DateOnly CheckInDate, DateOnly CheckOutDate, int Adults, int Children, string? PaymentMethod, decimal AdvancePayment, string? Notes);
-    public record UpdateReservationRequest(Guid? RoomId, DateOnly? CheckInDate, DateOnly? CheckOutDate, int? Adults, int? Children, string? PaymentMethod, decimal? AdvancePayment, string? Notes);
+    public record CreateReservationRequest(
+        [NotEmptyGuid] Guid GuestId,
+        [NotEmptyGuid] Guid RoomId,
+        [Required] DateOnly CheckInDate,
+        [Required] DateOnly CheckOutDate,
+        [Range(1, 20)] int Adults,
+        [Range(0, 20)] int Children,
+        [RegularExpression("^(Efectivo|Tarjeta|Transferencia)$")] string? PaymentMethod,
+        [Range(0, 999999.99)] decimal AdvancePayment,
+        [StringLength(1000)] string? Notes) : IValidatableObject
+    {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (CheckOutDate <= CheckInDate)
+                yield return new ValidationResult("La fecha de salida debe ser posterior a la fecha de entrada", new[] { nameof(CheckOutDate) });
+        }
+    }
 
-    public record CheckInRequest(Guid ReservationId, Guid RoomId, List<Guid>? DiscountIds = null, string? PaymentMethod = null, decimal? CashReceived = null, decimal? CashChange = null);
-    public record CheckOutRequest(Guid ReservationId, decimal? DiscountPercentage, string? DiscountReason);
+    public record UpdateReservationRequest(
+        Guid? RoomId,
+        DateOnly? CheckInDate,
+        DateOnly? CheckOutDate,
+        [Range(1, 20)] int? Adults,
+        [Range(0, 20)] int? Children,
+        [RegularExpression("^(Efectivo|Tarjeta|Transferencia)$")] string? PaymentMethod,
+        [Range(0, 999999.99)] decimal? AdvancePayment,
+        [StringLength(1000)] string? Notes) : IValidatableObject
+    {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (CheckInDate.HasValue && CheckOutDate.HasValue && CheckOutDate <= CheckInDate)
+                yield return new ValidationResult("La fecha de salida debe ser posterior a la fecha de entrada", new[] { nameof(CheckOutDate) });
+        }
+    }
+
+    public record CheckInRequest(
+        [NotEmptyGuid] Guid ReservationId,
+        [NotEmptyGuid] Guid RoomId,
+        List<Guid>? DiscountIds = null,
+        [RegularExpression("^(Efectivo|Tarjeta|Transferencia)$")] string? PaymentMethod = null,
+        [Range(0, 999999.99)] decimal? CashReceived = null,
+        [Range(0, 999999.99)] decimal? CashChange = null);
+
+    public record CheckOutRequest(
+        [NotEmptyGuid] Guid ReservationId,
+        [Range(0, 100)] decimal? DiscountPercentage,
+        [StringLength(250)] string? DiscountReason);
 
     public record FolioDto
     {
@@ -79,5 +142,13 @@ namespace hotel_erp.Application.DTOs
         public decimal DiscountPercentage { get; set; }
     }
 
-    public record AddFolioItemRequest(Guid FolioId, string Description, int Quantity, decimal UnitPrice, bool IsExempt, decimal ISVRate, bool IsTouristTaxable, decimal DiscountPercentage);
+    public record AddFolioItemRequest(
+        [NotEmptyGuid] Guid FolioId,
+        [Required, StringLength(250, MinimumLength = 2)] string Description,
+        [Range(1, 1000)] int Quantity,
+        [Range(0, 999999.99)] decimal UnitPrice,
+        bool IsExempt,
+        [Range(0, 1)] decimal ISVRate,
+        bool IsTouristTaxable,
+        [Range(0, 100)] decimal DiscountPercentage);
 }

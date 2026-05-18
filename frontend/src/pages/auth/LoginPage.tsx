@@ -4,6 +4,7 @@ import { useAuthStore } from '@/store/authStore'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Hotel, Eye, EyeOff } from 'lucide-react'
+import axios from 'axios'
 import api from '@/lib/axios'
 import type { LoginRequest, AuthResponse } from '@/types'
 
@@ -28,8 +29,12 @@ export default function LoginPage() {
       } else {
         setError(data.message || 'Error al iniciar sesión')
       }
-    } catch {
-      setError('Credenciales inválidas')
+    } catch (err) {
+      if (axios.isAxiosError<AuthResponse>(err)) {
+        setError(err.response?.data?.message || 'Credenciales inválidas')
+      } else {
+        setError('Credenciales inválidas')
+      }
     } finally {
       setLoading(false)
     }

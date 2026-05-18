@@ -13,3 +13,4 @@ C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Application\obj\Debug\net10.0
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Application\obj\Debug\net10.0\refint\hotel-erp.Application.dll
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Application\obj\Debug\net10.0\hotel-erp.Application.pdb
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Application\obj\Debug\net10.0\ref\hotel-erp.Application.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Application\obj\Debug\net10.0\hotel-erp.Application.sourcelink.json

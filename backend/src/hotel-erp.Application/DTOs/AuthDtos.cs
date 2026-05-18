@@ -1,11 +1,30 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace hotel_erp.Application.DTOs
 {
-    public record LoginRequest(string Username, string Password);
-    public record RegisterRequest(string Username, string Password, string Email, string FirstName, string LastName);
-    public record RefreshTokenRequest(string RefreshToken);
-    public record ChangePasswordRequest(string CurrentPassword, string NewPassword);
-    public record ForgotPasswordRequest(string Email);
-    public record ResetPasswordRequest(string Email, string Token, string NewPassword);
+    public record LoginRequest(
+        [Required, StringLength(50, MinimumLength = 3)] string Username,
+        [Required, StringLength(100, MinimumLength = 6)] string Password);
+
+    public record RegisterRequest(
+        [Required, StringLength(50, MinimumLength = 3)] string Username,
+        [Required, StringLength(100, MinimumLength = 8)] string Password,
+        [Required, EmailAddress, StringLength(100)] string Email,
+        [Required, StringLength(50, MinimumLength = 2)] string FirstName,
+        [Required, StringLength(50, MinimumLength = 2)] string LastName);
+
+    public record RefreshTokenRequest([Required] string RefreshToken);
+
+    public record ChangePasswordRequest(
+        [Required] string CurrentPassword,
+        [Required, StringLength(100, MinimumLength = 8)] string NewPassword);
+
+    public record ForgotPasswordRequest([Required, EmailAddress, StringLength(100)] string Email);
+
+    public record ResetPasswordRequest(
+        [Required, EmailAddress, StringLength(100)] string Email,
+        [Required] string Token,
+        [Required, StringLength(100, MinimumLength = 8)] string NewPassword);
 
     public record AuthResponse
     {
@@ -44,8 +63,21 @@ namespace hotel_erp.Application.DTOs
         public string? Description { get; set; }
     }
 
-    public record CreateRoleRequest(string Name, string? Description, List<string>? Permissions);
-    public record UpdateRoleRequest(string? Name, string? Description, List<string>? Permissions);
-    public record AssignRoleRequest(Guid UserId, Guid RoleId);
-    public record AssignPermissionsRequest(Guid RoleId, List<string> PermissionNames);
+    public record CreateRoleRequest(
+        [Required, StringLength(50, MinimumLength = 3)] string Name,
+        [StringLength(250)] string? Description,
+        List<string>? Permissions);
+
+    public record UpdateRoleRequest(
+        [StringLength(50, MinimumLength = 3)] string? Name,
+        [StringLength(250)] string? Description,
+        List<string>? Permissions);
+
+    public record AssignRoleRequest(
+        [NotEmptyGuid] Guid UserId,
+        [NotEmptyGuid] Guid RoleId);
+
+    public record AssignPermissionsRequest(
+        [NotEmptyGuid] Guid RoleId,
+        [Required, MinLength(1)] List<string> PermissionNames);
 }

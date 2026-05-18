@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace hotel_erp.Application.DTOs
 {
     public record CAIDto
@@ -13,13 +15,64 @@ namespace hotel_erp.Application.DTOs
         public bool IsExpiringSoon { get; set; }
     }
 
-    public record CreateCAIRequest(string CAINumber, DateOnly IssueDate, DateOnly DueDate, string InitialRange, string FinalRange);
+    public record DocumentAuthorizationDto
+    {
+        public Guid Id { get; set; }
+        public string DocumentType { get; set; } = string.Empty;
+        public string CAINumber { get; set; } = string.Empty;
+        public DateOnly IssueDate { get; set; }
+        public DateTime DueDate { get; set; }
+        public string InitialRange { get; set; } = string.Empty;
+        public string FinalRange { get; set; } = string.Empty;
+        public string CurrentCorrelative { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public bool IsExpiringSoon { get; set; }
+    }
+
+    public record CreateDocumentAuthorizationRequest(
+        [Required, RegularExpression("^(Factura|NotaCredito|NotaDebito)$")] string DocumentType,
+        [Required, StringLength(50, MinimumLength = 10)] string CAINumber,
+        [Required] DateOnly IssueDate,
+        [Required] DateTime DueDate,
+        [Required, RegularExpression("^\\d{3}-\\d{3}-\\d{2}-\\d{8}$")] string InitialRange,
+        [Required, RegularExpression("^\\d{3}-\\d{3}-\\d{2}-\\d{8}$")] string FinalRange) : IValidatableObject
+    {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (DueDate <= IssueDate.ToDateTime(TimeOnly.MinValue))
+                yield return new ValidationResult("La fecha de vencimiento debe ser posterior a la fecha de emisión", new[] { nameof(DueDate) });
+
+            if (string.CompareOrdinal(FinalRange, InitialRange) < 0)
+                yield return new ValidationResult("El rango final debe ser mayor o igual al rango inicial", new[] { nameof(FinalRange) });
+        }
+    }
+
+    public record CreateCAIRequest(
+        [Required, StringLength(50, MinimumLength = 10)] string CAINumber,
+        [Required] DateOnly IssueDate,
+        [Required] DateOnly DueDate,
+        [Required, RegularExpression("^\\d{3}-\\d{3}-\\d{2}-\\d{8}$")] string InitialRange,
+        [Required, RegularExpression("^\\d{3}-\\d{3}-\\d{2}-\\d{8}$")] string FinalRange) : IValidatableObject
+    {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (DueDate <= IssueDate)
+                yield return new ValidationResult("La fecha de vencimiento debe ser posterior a la fecha de emisión", new[] { nameof(DueDate) });
+
+            if (string.CompareOrdinal(FinalRange, InitialRange) < 0)
+                yield return new ValidationResult("El rango final debe ser mayor o igual al rango inicial", new[] { nameof(FinalRange) });
+        }
+    }
 
     public record InvoiceDto
     {
         public Guid Id { get; set; }
         public Guid CAIId { get; set; }
+        public Guid? DocumentAuthorizationId { get; set; }
         public string CAINumber { get; set; } = string.Empty;
+        public string? CAINumberSnapshot { get; set; }
+        public string? AuthorizationRangeSnapshot { get; set; }
+        public DateTime? AuthorizationDueDateSnapshot { get; set; }
         public string CorrelativeNumber { get; set; } = string.Empty;
         public DateTime InvoiceDate { get; set; }
         public Guid? CustomerId { get; set; }
@@ -28,9 +81,23 @@ namespace hotel_erp.Application.DTOs
         public string? CustomerAddress { get; set; }
         public decimal SubTotal { get; set; }
         public decimal ISVAmount { get; set; }
+        public decimal ISV15Amount { get; set; }
+        public decimal ISV18Amount { get; set; }
         public decimal TouristTaxAmount { get; set; }
         public decimal DiscountsAmount { get; set; }
         public decimal TotalAmount { get; set; }
+        public decimal TaxableAmount { get; set; }
+        public decimal ExemptAmount { get; set; }
+        public decimal ExoneratedAmount { get; set; }
+        public string TaxpayerType { get; set; } = string.Empty;
+        public string? ExonerationOrderNumber { get; set; }
+        public string? SefinExonerationCertificateNumber { get; set; }
+        public string? SagRegistryNumber { get; set; }
+        public bool IsIsvExempt { get; set; }
+        public bool IsTouristTaxExempt { get; set; }
+        public Guid? OriginalInvoiceId { get; set; }
+        public string? OriginalCorrelativeNumber { get; set; }
+        public string? Reason { get; set; }
         public string DocumentType { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public List<InvoiceItemDto> Items { get; set; } = new();
@@ -51,12 +118,23 @@ namespace hotel_erp.Application.DTOs
     public record CreateInvoiceRequest
     {
         public Guid CAIId { get; set; }
+        public Guid? DocumentAuthorizationId { get; set; }
         public Guid? CustomerId { get; set; }
         public Guid? GuestId { get; set; }
         public string? RTNCliente { get; set; }
         public string CustomerName { get; set; } = string.Empty;
         public string? CustomerAddress { get; set; }
         public string DocumentType { get; set; } = "Factura";
+        [RegularExpression("^(ConsumidorFinal|Gravado|Exonerado)$")]
+        public string? TaxpayerType { get; set; }
+        public string? ExonerationOrderNumber { get; set; }
+        public string? SefinExonerationCertificateNumber { get; set; }
+        public string? SagRegistryNumber { get; set; }
+        public bool IsIsvExempt { get; set; }
+        public bool IsTouristTaxExempt { get; set; }
+        public Guid? OriginalInvoiceId { get; set; }
+        [StringLength(250)]
+        public string? Reason { get; set; }
         public List<InvoiceItemDto> Items { get; set; } = new();
     }
 
@@ -69,5 +147,9 @@ namespace hotel_erp.Application.DTOs
         public string? ApplicableTo { get; set; }
     }
 
-    public record CreateTaxConfigurationRequest(string Name, decimal Rate, bool IsActive, string? ApplicableTo);
+    public record CreateTaxConfigurationRequest(
+        [Required, StringLength(50, MinimumLength = 2)] string Name,
+        [Range(0, 1)] decimal Rate,
+        bool IsActive,
+        [StringLength(100)] string? ApplicableTo);
 }

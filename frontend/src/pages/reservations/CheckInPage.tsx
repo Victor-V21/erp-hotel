@@ -39,6 +39,7 @@ export default function CheckInPage() {
   const [invoicePreview, setInvoicePreview] = useState<string | null>(null)
   const [invoiceLogo, setInvoiceLogo] = useState<string | null>(null)
   const [previewLogoHeight, setPreviewLogoHeight] = useState(40)
+  const [previewWidth, setPreviewWidth] = useState(46)
 
   useEffect(() => {
     if (checkIn.checkInDate && checkIn.checkOutDate && checkIn.checkInDate < checkIn.checkOutDate) {
@@ -140,7 +141,7 @@ export default function CheckInPage() {
       setInvoicePreview(preview.text)
       setInvoiceLogo(preview.logoBase64 || null)
       setPreviewLogoHeight(preview.printLogoHeight ?? 40)
-      const previewWidth = preview.printWidth || 46
+      setPreviewWidth(preview.printWidth || 46)
       setStep(6)
     } catch (e: any) { alert(e.response?.data?.message || 'Error al hacer check-in') }
   }

@@ -6,15 +6,67 @@ namespace hotel_erp.Application.Services
         public decimal TouristTaxRate { get; set; } = 0.04m;
         public decimal TaxFactor => 1m + IsvRate + TouristTaxRate;
 
+        public static decimal RoundCurrency(decimal amount) => Math.Round(amount, 2, MidpointRounding.AwayFromZero);
+
+        public TaxResult CalculateFromNetAmount(decimal netAmount, bool isIsvExempt = false, bool isTouristTaxExempt = false, decimal discountPercentage = 0)
+        {
+            var subtotal = RoundCurrency(netAmount);
+            var discountAmount = discountPercentage > 0
+                ? RoundCurrency(subtotal * discountPercentage / 100m)
+                : 0m;
+            var taxableBase = RoundCurrency(subtotal - discountAmount);
+            var isv = isIsvExempt ? 0m : RoundCurrency(taxableBase * IsvRate);
+            var touristTax = isTouristTaxExempt ? 0m : RoundCurrency(taxableBase * TouristTaxRate);
+
+            return new TaxResult
+            {
+                Subtotal = taxableBase,
+                ISV = isv,
+                TouristTax = touristTax,
+                Total = RoundCurrency(taxableBase + isv + touristTax),
+                DiscountPercentage = discountPercentage,
+                DiscountAmount = discountAmount,
+                TaxableAmount = isIsvExempt ? 0m : taxableBase,
+                ExoneratedAmount = isIsvExempt ? taxableBase : 0m
+            };
+        }
+
+        public TaxResult CalculateFromFinalPrice(decimal finalPrice, bool isIsvExempt = false, bool isTouristTaxExempt = false, decimal discountPercentage = 0)
+        {
+            var totalBeforeDiscount = RoundCurrency(finalPrice);
+            var divisor = 1m + (isIsvExempt ? 0m : IsvRate) + (isTouristTaxExempt ? 0m : TouristTaxRate);
+            var subtotalBeforeDiscount = RoundCurrency(totalBeforeDiscount / divisor);
+            var discountAmount = discountPercentage > 0
+                ? RoundCurrency(subtotalBeforeDiscount * discountPercentage / 100m)
+                : 0m;
+            var subtotal = RoundCurrency(subtotalBeforeDiscount - discountAmount);
+            var isv = isIsvExempt ? 0m : RoundCurrency(subtotal * IsvRate);
+            var touristTax = isTouristTaxExempt ? 0m : RoundCurrency(subtotal * TouristTaxRate);
+            var total = RoundCurrency(subtotal + isv + touristTax);
+
+            return new TaxResult
+            {
+                SellingPricePerNight = finalPrice,
+                Subtotal = subtotal,
+                ISV = isv,
+                TouristTax = touristTax,
+                Total = total,
+                DiscountPercentage = discountPercentage,
+                DiscountAmount = discountAmount,
+                TaxableAmount = isIsvExempt ? 0m : subtotal,
+                ExoneratedAmount = isIsvExempt ? subtotal : 0m
+            };
+        }
+
         public TaxResult CalculateFromSellingPrice(decimal sellingPricePerNight, int nights)
         {
-            var total = Math.Round(sellingPricePerNight * nights, 2);
-            var subtotal = Math.Round(total / TaxFactor, 2);
-            var isv = Math.Round(subtotal * IsvRate, 2);
-            var touristTax = Math.Round(subtotal * TouristTaxRate, 2);
+            var total = RoundCurrency(sellingPricePerNight * nights);
+            var subtotal = RoundCurrency(total / TaxFactor);
+            var isv = RoundCurrency(subtotal * IsvRate);
+            var touristTax = RoundCurrency(subtotal * TouristTaxRate);
             var sum = subtotal + isv + touristTax;
-            var diff = Math.Round(total - sum, 2);
-            isv = Math.Round(isv + diff, 2);
+            var diff = RoundCurrency(total - sum);
+            isv = RoundCurrency(isv + diff);
 
             return new TaxResult
             {
@@ -23,7 +75,8 @@ namespace hotel_erp.Application.Services
                 Subtotal = subtotal,
                 ISV = isv,
                 TouristTax = touristTax,
-                Total = total
+                Total = total,
+                TaxableAmount = subtotal
             };
         }
 
@@ -31,11 +84,11 @@ namespace hotel_erp.Application.Services
         {
             if (discountPercentage <= 0) return result;
 
-            var discountAmount = Math.Round(result.Subtotal * discountPercentage / 100m, 2);
-            var newSubtotal = Math.Round(result.Subtotal - discountAmount, 2);
-            var newIsv = Math.Round(newSubtotal * IsvRate, 2);
-            var newTourist = Math.Round(newSubtotal * TouristTaxRate, 2);
-            var newTotal = Math.Round(newSubtotal + newIsv + newTourist, 2);
+            var discountAmount = RoundCurrency(result.Subtotal * discountPercentage / 100m);
+            var newSubtotal = RoundCurrency(result.Subtotal - discountAmount);
+            var newIsv = RoundCurrency(newSubtotal * IsvRate);
+            var newTourist = RoundCurrency(newSubtotal * TouristTaxRate);
+            var newTotal = RoundCurrency(newSubtotal + newIsv + newTourist);
 
             return new TaxResult
             {
@@ -46,7 +99,8 @@ namespace hotel_erp.Application.Services
                 TouristTax = newTourist,
                 Total = newTotal,
                 DiscountPercentage = discountPercentage,
-                DiscountAmount = discountAmount
+                DiscountAmount = discountAmount,
+                TaxableAmount = newSubtotal
             };
         }
     }
@@ -61,5 +115,8 @@ namespace hotel_erp.Application.Services
         public decimal Total { get; set; }
         public decimal DiscountPercentage { get; set; }
         public decimal DiscountAmount { get; set; }
+        public decimal TaxableAmount { get; set; }
+        public decimal ExemptAmount { get; set; }
+        public decimal ExoneratedAmount { get; set; }
     }
 }

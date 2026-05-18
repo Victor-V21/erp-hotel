@@ -1,6 +1,7 @@
 using AutoMapper;
 using hotel_erp.Application.DTOs;
 using hotel_erp.Application.Interfaces;
+using hotel_erp.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,13 +46,25 @@ namespace hotel_erp.Api.Controllers
                 if (existing != null) return BadRequest("El RTN ya existe");
             }
 
+            var taxpayerType = Enum.TryParse<TaxpayerType>(request.TaxpayerType, out var parsedType) ? parsedType : TaxpayerType.Gravado;
+            if (taxpayerType == TaxpayerType.Exonerado && (string.IsNullOrWhiteSpace(request.ExonerationOrderNumber) || string.IsNullOrWhiteSpace(request.SefinExonerationCertificateNumber)))
+                return BadRequest("Cliente exonerado requiere O.C. Exenta y Constancia SEFIN");
+
             var entity = new Domain.Entities.Customer
             {
                 RTN = request.RTN,
                 Name = request.Name,
                 Address = request.Address,
                 Phone = request.Phone,
-                Email = request.Email
+                Email = request.Email,
+                TaxpayerType = taxpayerType,
+                ExonerationOrderNumber = request.ExonerationOrderNumber,
+                SefinExonerationCertificateNumber = request.SefinExonerationCertificateNumber,
+                SagRegistryNumber = request.SagRegistryNumber,
+                IsIsvExempt = request.IsIsvExempt,
+                IsTouristTaxExempt = request.IsTouristTaxExempt,
+                ExonerationValidFrom = request.ExonerationValidFrom,
+                ExonerationValidTo = request.ExonerationValidTo
             };
             await _repo.AddAsync(entity);
             return CreatedAtAction(nameof(GetById), new { id = entity.Id }, _mapper.Map<CustomerDto>(entity));
@@ -68,6 +81,16 @@ namespace hotel_erp.Api.Controllers
             if (request.Address != null) entity.Address = request.Address;
             if (request.Phone != null) entity.Phone = request.Phone;
             if (request.Email != null) entity.Email = request.Email;
+            if (request.TaxpayerType != null && Enum.TryParse<TaxpayerType>(request.TaxpayerType, out var taxpayerType)) entity.TaxpayerType = taxpayerType;
+            if (request.ExonerationOrderNumber != null) entity.ExonerationOrderNumber = request.ExonerationOrderNumber;
+            if (request.SefinExonerationCertificateNumber != null) entity.SefinExonerationCertificateNumber = request.SefinExonerationCertificateNumber;
+            if (request.SagRegistryNumber != null) entity.SagRegistryNumber = request.SagRegistryNumber;
+            if (request.IsIsvExempt.HasValue) entity.IsIsvExempt = request.IsIsvExempt.Value;
+            if (request.IsTouristTaxExempt.HasValue) entity.IsTouristTaxExempt = request.IsTouristTaxExempt.Value;
+            if (request.ExonerationValidFrom.HasValue) entity.ExonerationValidFrom = request.ExonerationValidFrom;
+            if (request.ExonerationValidTo.HasValue) entity.ExonerationValidTo = request.ExonerationValidTo;
+            if (entity.TaxpayerType == TaxpayerType.Exonerado && (string.IsNullOrWhiteSpace(entity.ExonerationOrderNumber) || string.IsNullOrWhiteSpace(entity.SefinExonerationCertificateNumber)))
+                return BadRequest("Cliente exonerado requiere O.C. Exenta y Constancia SEFIN");
             await _repo.UpdateAsync(entity);
             return NoContent();
         }

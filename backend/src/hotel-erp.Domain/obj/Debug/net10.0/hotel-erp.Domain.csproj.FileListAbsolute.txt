@@ -9,3 +9,4 @@ C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\hote
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\refint\hotel-erp.Domain.dll
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\hotel-erp.Domain.pdb
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\ref\hotel-erp.Domain.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Domain\obj\Debug\net10.0\hotel-erp.Domain.sourcelink.json

@@ -33,7 +33,7 @@ namespace hotel_erp.Application.Services
         public async Task<AuthResponse> LoginAsync(LoginRequest request)
         {
             var user = await _userRepository.GetByUsernameAsync(request.Username);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            if (user == null || !IsValidPassword(request.Password, user.PasswordHash))
             {
                 if (user != null)
                 {
@@ -62,6 +62,21 @@ namespace hotel_erp.Application.Services
             await _userRepository.UpdateAsync(user);
 
             return await _jwtService.GenerateTokensAsync(user.Id);
+        }
+
+        private static bool IsValidPassword(string password, string passwordHash)
+        {
+            if (string.IsNullOrWhiteSpace(passwordHash))
+                return false;
+
+            try
+            {
+                return BCrypt.Net.BCrypt.Verify(password, passwordHash);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)

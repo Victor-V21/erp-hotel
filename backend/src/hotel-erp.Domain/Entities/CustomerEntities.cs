@@ -1,4 +1,5 @@
 using hotel_erp.Domain.Common;
+using hotel_erp.Domain.Enums;
 
 namespace hotel_erp.Domain.Entities
 {
@@ -9,6 +10,14 @@ namespace hotel_erp.Domain.Entities
         public string? Address { get; set; }
         public string? Phone { get; set; }
         public string? Email { get; set; }
+        public TaxpayerType TaxpayerType { get; set; } = TaxpayerType.Gravado;
+        public string? ExonerationOrderNumber { get; set; }
+        public string? SefinExonerationCertificateNumber { get; set; }
+        public string? SagRegistryNumber { get; set; }
+        public bool IsIsvExempt { get; set; }
+        public bool IsTouristTaxExempt { get; set; }
+        public DateOnly? ExonerationValidFrom { get; set; }
+        public DateOnly? ExonerationValidTo { get; set; }
 
         public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
     }
@@ -30,6 +39,14 @@ namespace hotel_erp.Domain.Entities
         public string? RTN { get; set; }
         public string? Preferences { get; set; }
         public string? Classification { get; set; }
+        public TaxpayerType TaxpayerType { get; set; } = TaxpayerType.ConsumidorFinal;
+        public string? ExonerationOrderNumber { get; set; }
+        public string? SefinExonerationCertificateNumber { get; set; }
+        public string? SagRegistryNumber { get; set; }
+        public bool IsIsvExempt { get; set; }
+        public bool IsTouristTaxExempt { get; set; }
+        public DateOnly? ExonerationValidFrom { get; set; }
+        public DateOnly? ExonerationValidTo { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
         public ICollection<Folio> Folios { get; set; } = new List<Folio>();

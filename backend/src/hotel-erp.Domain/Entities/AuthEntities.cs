@@ -75,7 +75,12 @@ namespace hotel_erp.Domain.Entities
         public string Action { get; set; } = string.Empty;
         public string? EntityName { get; set; }
         public Guid? EntityId { get; set; }
+        public string? CorrelativeNumber { get; set; }
+        public string? PaymentMethod { get; set; }
+        public string? PreviousHash { get; set; }
+        public string? Hash { get; set; }
         public string? Changes { get; set; }
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+        public DateTime HondurasTimestamp { get; set; } = DateTime.UtcNow.AddHours(-6);
     }
 }

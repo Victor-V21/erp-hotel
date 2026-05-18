@@ -1,5 +1,10 @@
 import axios from 'axios'
 
+const authPaths = ['/auth/login', '/auth/register', '/auth/refresh']
+
+const isAuthRequest = (url?: string) =>
+  !!url && authPaths.some((path) => url.includes(path))
+
 const api = axios.create({
   baseURL: '/api',
   headers: {
@@ -20,7 +25,12 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry &&
+      !isAuthRequest(originalRequest.url)
+    ) {
       originalRequest._retry = true
 
       try {
