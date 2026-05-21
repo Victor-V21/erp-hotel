@@ -23,11 +23,13 @@ const navItems = [
   { to: '/checkin', icon: CalendarCheck, label: 'Check-In' },
   { to: '/checkout', icon: CalendarCheck, label: 'Check-Out' },
   { to: '/reservations', icon: CalendarCheck, label: 'Reservaciones' },
+  { to: '/folios', icon: FileText, label: 'Folios' },
   { to: '/guests', icon: Users, label: 'Huéspedes' },
   { to: '/invoices', icon: FileText, label: 'Facturación' },
-  { to: '/cai', icon: Receipt, label: 'CAI' },
+  { to: '/authorizations', icon: Receipt, label: 'Autorizaciones' },
   { to: '/cash', icon: DollarSign, label: 'Caja' },
   { to: '/discounts', icon: Settings, label: 'Descuentos' },
+  { to: '/backups', icon: Settings, label: 'Respaldos' },
   { to: '/settings', icon: Settings, label: 'Configuración' },
 ]
 

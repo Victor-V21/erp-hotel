@@ -1,6 +1,7 @@
+using hotel_erp.Api.Dtos.Auth;
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,7 +53,7 @@ namespace hotel_erp.Api.Controllers
                 return BadRequest("El usuario ya tiene este rol");
 
             // Add the role assignment
-            var userRole = new Domain.Entities.UserRole { UserId = userId, RoleId = roleId };
+            var userRole = new hotel_erp.Api.Database.Entities.UserRole { UserId = userId, RoleId = roleId };
             // We need access to DbContext directly for this; for now let's use ApplicationDbContext
             // TODO: Implement through a proper service
 
@@ -60,3 +61,6 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+
+
+

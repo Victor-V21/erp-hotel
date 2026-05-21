@@ -1,26 +1,58 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import api from '@/lib/axios'
-import type { Invoice } from '@/types'
+import type { Invoice, CAI, DocumentAuthorization } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 export default function InvoicesPage() {
+  const [searchParams] = useSearchParams()
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [dni, setDni] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const [authList, setAuthList] = useState<{ id: string; source: 'cai' | 'docauth'; label: string }[]>([])
+  const [selectedAuth, setSelectedAuth] = useState('')
   const [invoicePreview, setInvoicePreview] = useState<string | null>(null)
   const [invoiceLogo, setInvoiceLogo] = useState<string | null>(null)
   const [previewLogoHeight, setPreviewLogoHeight] = useState(40)
   const [selectedInvoiceId, setSelectedInvoiceId] = useState<string | null>(null)
 
-  useEffect(() => { load() }, [])
+  useEffect(() => {
+    const init = async () => {
+      await loadAuthList()
+      const filter = searchParams.get('filter')
+      if (filter) setSelectedAuth(filter)
+      load(filter ?? undefined)
+    }
+    init()
+  }, [])
 
-  const load = async () => {
+  useEffect(() => { if (selectedAuth) load(selectedAuth) }, [selectedAuth])
+
+  const loadAuthList = async () => {
+    const [caiRes, docAuthRes] = await Promise.all([
+      api.get<CAI[]>('/cai'),
+      api.get<DocumentAuthorization[]>('/document-authorizations')
+    ])
+    const list = [
+      ...caiRes.data.map(c => ({ id: c.id, source: 'cai' as const, label: `${c.caiNumber} (Factura general)` })),
+      ...docAuthRes.data.map(d => ({ id: d.id, source: 'docauth' as const, label: `${d.caiNumber} (${d.documentType})` })),
+    ]
+    setAuthList(list)
+  }
+
+  const load = async (auth?: string) => {
     const params: any = {}
+    const filter = auth ?? selectedAuth
+    if (filter) {
+      const [source, id] = filter.split(':')
+      if (source === 'cai') params.caiId = id
+      else if (source === 'docauth') params.documentAuthorizationId = id
+    }
     if (dni) params.dni = dni
     if (startDate && endDate) { params.start = startDate; params.end = endDate }
-    if (!dni && !startDate && !endDate) { /* load all */ }
+    if (!dni && !startDate && !endDate && !filter) { /* load all */ }
     const { data } = await api.get<Invoice[]>('/invoices/search', { params })
     setInvoices(data)
   }
@@ -54,13 +86,27 @@ export default function InvoicesPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Facturación SAR</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Facturación SAR</h1>
+        <Button variant="outline" onClick={async () => {
+          const params: any = {}
+          if (startDate && endDate) { params.from = startDate; params.to = endDate }
+          const { data } = await api.get('/data/export/invoices', { params, responseType: 'blob' })
+          const url = window.URL.createObjectURL(new Blob([data]))
+          const link = document.createElement('a'); link.href = url; link.setAttribute('download', startDate && endDate ? `facturas_${startDate}_${endDate}.xlsx` : 'facturas_todas.xlsx')
+          document.body.appendChild(link); link.click(); document.body.removeChild(link); window.URL.revokeObjectURL(url)
+        }}>Exportar XLSX</Button>
+      </div>
 
       <div className="flex gap-2 flex-wrap">
+        <select value={selectedAuth} onChange={e => setSelectedAuth(e.target.value)} className="border border-input rounded-md px-3 py-2 text-sm bg-background max-w-xs">
+          <option value="">Todas las autorizaciones</option>
+          {authList.map(a => <option key={`${a.source}:${a.id}`} value={`${a.source}:${a.id}`}>{a.label}</option>)}
+        </select>
         <Input placeholder="Buscar por DNI del huésped..." value={dni} onChange={e => setDni(e.target.value)} className="max-w-xs" />
         <Input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="max-w-[150px]" />
         <Input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="max-w-[150px]" />
-        <Button variant="outline" onClick={load}>Buscar</Button>
+        <Button variant="outline" onClick={() => load()}>Buscar</Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

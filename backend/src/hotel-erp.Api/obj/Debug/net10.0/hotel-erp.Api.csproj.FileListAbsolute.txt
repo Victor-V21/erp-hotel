@@ -142,12 +142,6 @@ C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\ru\Micr
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\hotel-erp.Application.dll
-C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\hotel-erp.Domain.dll
-C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\hotel-erp.Infrastructure.dll
-C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\hotel-erp.Application.pdb
-C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\hotel-erp.Infrastructure.pdb
-C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\hotel-erp.Domain.pdb
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\obj\Debug\net10.0\hotel-erp.Api.csproj.AssemblyReference.cache
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\obj\Debug\net10.0\rpswa.dswa.cache.json
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\obj\Debug\net10.0\hotel-erp.Api.GeneratedMSBuildEditorConfig.editorconfig
@@ -177,3 +171,11 @@ C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\System.
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\System.Private.Windows.GdiPlus.dll
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\runtimes\win\lib\net10.0\Microsoft.Win32.SystemEvents.dll
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\obj\Debug\net10.0\hotel-erp.Api.sourcelink.json
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\ClosedXML.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\ClosedXML.Parser.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\DocumentFormat.OpenXml.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\DocumentFormat.OpenXml.Framework.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\ExcelNumberFormat.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\RBush.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\SixLabors.Fonts.dll
+C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\System.IO.Packaging.dll

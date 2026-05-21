@@ -1,9 +1,11 @@
+using System.Security.Claims;
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
-using hotel_erp.Application.Services;
-using hotel_erp.Domain.Entities;
-using hotel_erp.Domain.Enums;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
+using hotel_erp.Api.Services;
+using hotel_erp.Api.Database.Entities;
+using hotel_erp.Api.Database.Entities;
+using hotel_erp.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +21,7 @@ namespace hotel_erp.Api.Controllers
         private readonly ICustomerRepository _customerRepo;
         private readonly IAccountingService _accountingService;
         private readonly IFiscalAuthorizationService _fiscalAuthorizationService;
+        private readonly AuditService _auditService;
         private readonly IMapper _mapper;
 
         public InvoicesController(
@@ -27,6 +30,7 @@ namespace hotel_erp.Api.Controllers
             ICustomerRepository customerRepo,
             IAccountingService accountingService,
             IFiscalAuthorizationService fiscalAuthorizationService,
+            AuditService auditService,
             IMapper mapper)
         {
             _repo = repo;
@@ -34,6 +38,7 @@ namespace hotel_erp.Api.Controllers
             _customerRepo = customerRepo;
             _accountingService = accountingService;
             _fiscalAuthorizationService = fiscalAuthorizationService;
+            _auditService = auditService;
             _mapper = mapper;
         }
 
@@ -50,8 +55,10 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<InvoiceDto>>> Search([FromQuery] string? dni, [FromQuery] DateTime? start, [FromQuery] DateTime? end)
+        public async Task<ActionResult<IEnumerable<InvoiceDto>>> Search([FromQuery] string? dni, [FromQuery] DateTime? start, [FromQuery] DateTime? end, [FromQuery] Guid? caiId, [FromQuery] Guid? documentAuthorizationId)
         {
+            if (caiId.HasValue || documentAuthorizationId.HasValue)
+                return Ok(_mapper.Map<IEnumerable<InvoiceDto>>(await _repo.GetByAuthorizationAsync(caiId, documentAuthorizationId)));
             if (!string.IsNullOrEmpty(dni))
                 return Ok(_mapper.Map<IEnumerable<InvoiceDto>>(await _repo.GetByGuestDocumentAsync(dni)));
             if (start.HasValue && end.HasValue)
@@ -114,6 +121,8 @@ namespace hotel_erp.Api.Controllers
                 invoice.InvoiceItems.Add(item);
 
             await _repo.UpdateAsync(invoice);
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _auditService.LogAsync(userId, "UpdateInvoice", nameof(Invoice), invoice.Id, new { invoice.CorrelativeNumber, invoice.SubTotal, invoice.TotalAmount }, invoice.CorrelativeNumber);
             return Ok(_mapper.Map<InvoiceDto>(invoice));
         }
 
@@ -189,7 +198,7 @@ namespace hotel_erp.Api.Controllers
                 AuthorizationRangeSnapshot = authorizationResult != null
                     ? $"{authorizationResult.InitialRange} - {authorizationResult.FinalRange}"
                     : $"{cai.InitialRange} - {cai.FinalRange}",
-                AuthorizationDueDateSnapshot = authorizationResult?.DueDate ?? cai.DueDate.ToDateTime(TimeOnly.MaxValue),
+                AuthorizationDueDateSnapshot = authorizationResult?.DueDate ?? DateTime.SpecifyKind(cai.DueDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc),
                 CorrelativeNumber = correlative,
                 CustomerId = request.CustomerId,
                 GuestId = request.GuestId,
@@ -222,6 +231,8 @@ namespace hotel_erp.Api.Controllers
 
             await _repo.AddAsync(invoice);
             await _accountingService.CreateInvoiceEntryAsync(invoice);
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _auditService.LogAsync(userId, "CreateInvoice", nameof(Invoice), invoice.Id, new { invoice.CorrelativeNumber, invoice.TotalAmount, invoice.TaxpayerType }, invoice.CorrelativeNumber, invoice.PaymentMethod);
             return CreatedAtAction(nameof(GetById), new { id = invoice.Id }, _mapper.Map<InvoiceDto>(invoice));
         }
 
@@ -232,5 +243,183 @@ namespace hotel_erp.Api.Controllers
             if (invoice == null) return NotFound();
             return BadRequest("La anulación fiscal debe realizarse mediante nota de crédito vinculada");
         }
+
+        [HttpPost("{id}/credit-note")]
+        public async Task<ActionResult<InvoiceDto>> CreateCreditNote(Guid id, [FromBody] CreateCreditNoteRequest request)
+        {
+            var original = await _repo.GetByIdAsync(id);
+            if (original == null) return NotFound("Factura original no encontrada");
+            if (original.DocumentType != InvoiceDocumentType.Factura && original.DocumentType != InvoiceDocumentType.NotaDebito)
+                return BadRequest("Solo se puede emitir nota de crédito sobre una factura o nota de débito");
+            if (original.Status == InvoiceStatus.Anulada)
+                return BadRequest("La factura original está anulada");
+            if (string.IsNullOrWhiteSpace(request.Reason))
+                return BadRequest("La nota de crédito requiere una razón detallada");
+
+            var cai = await _caiRepo.GetByIdAsync(request.CAIId);
+            if (cai == null) return BadRequest("CAI no encontrado");
+            if (cai.Status != CAIStatus.Activo) return BadRequest("El CAI no está activo");
+
+            var documentType = InvoiceDocumentType.NotaCredito;
+            FiscalCorrelativeResult? authResult = null;
+            var correlative = string.Empty;
+            if (request.DocumentAuthorizationId.HasValue)
+            {
+                authResult = await _fiscalAuthorizationService.GetNextCorrelativeAsync(documentType, request.DocumentAuthorizationId);
+                correlative = authResult.CorrelativeNumber;
+            }
+            else
+            {
+                correlative = await _repo.GetNextCorrelativeAsync(request.CAIId);
+            }
+
+            original.Status = InvoiceStatus.Anulada;
+            await _repo.UpdateAsync(original);
+
+            decimal subtotal = 0;
+            var items = request.Items.Select(item =>
+            {
+                var lineTotal = item.Quantity * item.UnitPrice;
+                subtotal += lineTotal;
+                return new InvoiceItem
+                {
+                    Description = item.Description,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice,
+                    LineTotal = lineTotal,
+                    IsExempt = item.IsExempt,
+                    ISVRate = item.ISVRate,
+                    IsTouristTaxable = item.IsTouristTaxable,
+                    DiscountPercentage = item.DiscountPercentage
+                };
+            }).ToList();
+
+            var isvAmount = request.Items.Sum(i => i.IsExempt ? 0 : i.LineTotal * i.ISVRate);
+            var touristTax = request.Items.Sum(i => i.IsTouristTaxable ? i.LineTotal * 0.04m : 0);
+
+            var creditNote = new Invoice
+            {
+                CAIId = request.CAIId,
+                DocumentAuthorizationId = authResult?.AuthorizationId,
+                CAINumberSnapshot = authResult?.CAINumber ?? cai.CAINumber,
+                AuthorizationRangeSnapshot = authResult != null
+                    ? $"{authResult.InitialRange} - {authResult.FinalRange}"
+                    : $"{cai.InitialRange} - {cai.FinalRange}",
+                AuthorizationDueDateSnapshot = authResult?.DueDate ?? DateTime.SpecifyKind(cai.DueDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc),
+                CorrelativeNumber = correlative,
+                OriginalInvoiceId = original.Id,
+                OriginalCorrelativeNumber = original.CorrelativeNumber,
+                Reason = request.Reason,
+                CustomerId = original.CustomerId,
+                GuestId = original.GuestId ?? request.GuestId,
+                RTNCliente = original.RTNCliente,
+                CustomerName = original.CustomerName,
+                CustomerAddress = original.CustomerAddress,
+                SubTotal = TaxService.RoundCurrency(subtotal),
+                ISVAmount = TaxService.RoundCurrency(isvAmount),
+                ISV15Amount = TaxService.RoundCurrency(isvAmount),
+                ISV18Amount = 0,
+                TouristTaxAmount = TaxService.RoundCurrency(touristTax),
+                TotalAmount = TaxService.RoundCurrency(subtotal + isvAmount + touristTax),
+                TaxpayerType = original.TaxpayerType,
+                DocumentType = documentType,
+                Status = InvoiceStatus.Emitida,
+                InvoiceDate = HondurasTime.Now,
+                InvoiceItems = items
+            };
+
+            await _repo.AddAsync(creditNote);
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _auditService.LogAsync(userId, "CreateCreditNote", nameof(Invoice), creditNote.Id, new { creditNote.CorrelativeNumber, Original = original.CorrelativeNumber, Reason = request.Reason }, creditNote.CorrelativeNumber);
+            return CreatedAtAction(nameof(GetById), new { id = creditNote.Id }, _mapper.Map<InvoiceDto>(creditNote));
+        }
+
+        [HttpPost("{id}/debit-note")]
+        public async Task<ActionResult<InvoiceDto>> CreateDebitNote(Guid id, [FromBody] CreateDebitNoteRequest request)
+        {
+            var original = await _repo.GetByIdAsync(id);
+            if (original == null) return NotFound("Factura original no encontrada");
+            if (original.DocumentType != InvoiceDocumentType.Factura)
+                return BadRequest("Solo se puede emitir nota de débito sobre una factura");
+            if (original.Status == InvoiceStatus.Anulada)
+                return BadRequest("La factura original está anulada");
+            if (string.IsNullOrWhiteSpace(request.Reason))
+                return BadRequest("La nota de débito requiere una razón detallada");
+
+            var cai = await _caiRepo.GetByIdAsync(request.CAIId);
+            if (cai == null) return BadRequest("CAI no encontrado");
+            if (cai.Status != CAIStatus.Activo) return BadRequest("El CAI no está activo");
+
+            var documentType = InvoiceDocumentType.NotaDebito;
+            FiscalCorrelativeResult? authResult = null;
+            var correlative = string.Empty;
+            if (request.DocumentAuthorizationId.HasValue)
+            {
+                authResult = await _fiscalAuthorizationService.GetNextCorrelativeAsync(documentType, request.DocumentAuthorizationId);
+                correlative = authResult.CorrelativeNumber;
+            }
+            else
+            {
+                correlative = await _repo.GetNextCorrelativeAsync(request.CAIId);
+            }
+
+            decimal subtotal = 0;
+            var items = request.Items.Select(item =>
+            {
+                var lineTotal = item.Quantity * item.UnitPrice;
+                subtotal += lineTotal;
+                return new InvoiceItem
+                {
+                    Description = item.Description,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice,
+                    LineTotal = lineTotal,
+                    IsExempt = item.IsExempt,
+                    ISVRate = item.ISVRate,
+                    IsTouristTaxable = item.IsTouristTaxable,
+                    DiscountPercentage = item.DiscountPercentage
+                };
+            }).ToList();
+
+            var isvAmount = request.Items.Sum(i => i.IsExempt ? 0 : i.LineTotal * i.ISVRate);
+            var touristTax = request.Items.Sum(i => i.IsTouristTaxable ? i.LineTotal * 0.04m : 0);
+
+            var debitNote = new Invoice
+            {
+                CAIId = request.CAIId,
+                DocumentAuthorizationId = authResult?.AuthorizationId,
+                CAINumberSnapshot = authResult?.CAINumber ?? cai.CAINumber,
+                AuthorizationRangeSnapshot = authResult != null
+                    ? $"{authResult.InitialRange} - {authResult.FinalRange}"
+                    : $"{cai.InitialRange} - {cai.FinalRange}",
+                AuthorizationDueDateSnapshot = authResult?.DueDate ?? DateTime.SpecifyKind(cai.DueDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc),
+                CorrelativeNumber = correlative,
+                OriginalInvoiceId = original.Id,
+                OriginalCorrelativeNumber = original.CorrelativeNumber,
+                Reason = request.Reason,
+                CustomerId = original.CustomerId,
+                GuestId = original.GuestId ?? request.GuestId,
+                RTNCliente = original.RTNCliente,
+                CustomerName = original.CustomerName,
+                CustomerAddress = original.CustomerAddress,
+                SubTotal = TaxService.RoundCurrency(subtotal),
+                ISVAmount = TaxService.RoundCurrency(isvAmount),
+                ISV15Amount = TaxService.RoundCurrency(isvAmount),
+                ISV18Amount = 0,
+                TouristTaxAmount = TaxService.RoundCurrency(touristTax),
+                TotalAmount = TaxService.RoundCurrency(subtotal + isvAmount + touristTax),
+                TaxpayerType = original.TaxpayerType,
+                DocumentType = documentType,
+                Status = InvoiceStatus.Emitida,
+                InvoiceDate = HondurasTime.Now,
+                InvoiceItems = items
+            };
+
+            await _repo.AddAsync(debitNote);
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _auditService.LogAsync(userId, "CreateDebitNote", nameof(Invoice), debitNote.Id, new { debitNote.CorrelativeNumber, Original = original.CorrelativeNumber, Reason = request.Reason }, debitNote.CorrelativeNumber);
+            return CreatedAtAction(nameof(GetById), new { id = debitNote.Id }, _mapper.Map<InvoiceDto>(debitNote));
+        }
     }
 }
+

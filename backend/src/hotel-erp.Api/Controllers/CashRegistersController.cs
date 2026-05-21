@@ -1,8 +1,8 @@
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
-using hotel_erp.Domain.Entities;
-using hotel_erp.Domain.Enums;
+using hotel_erp.Api.Dtos.Cash;
+using hotel_erp.Api.Services.Interfaces;
+using hotel_erp.Api.Database.Entities;
+using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -92,3 +92,4 @@ namespace hotel_erp.Api.Controllers
             => Ok(_mapper.Map<IEnumerable<CashMovementDto>>(await _movementRepo.GetByRegisterAsync(id)));
     }
 }
+

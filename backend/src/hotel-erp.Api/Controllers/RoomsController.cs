@@ -1,6 +1,6 @@
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,7 +46,7 @@ namespace hotel_erp.Api.Controllers
             var existing = await _repo.GetByRoomNumberAsync(request.RoomNumber);
             if (existing != null) return BadRequest("El número de habitación ya existe");
 
-            var room = new Domain.Entities.Room
+            var room = new hotel_erp.Api.Database.Entities.Room
             {
                 RoomNumber = request.RoomNumber,
                 Floor = request.Floor,
@@ -66,7 +66,7 @@ namespace hotel_erp.Api.Controllers
             if (request.RoomNumber != null) room.RoomNumber = request.RoomNumber;
             if (request.Floor.HasValue) room.Floor = request.Floor.Value;
             if (request.RoomTypeId.HasValue) room.RoomTypeId = request.RoomTypeId.Value;
-            if (request.Status != null && Enum.TryParse<Domain.Enums.RoomStatus>(request.Status, out var parsedStatus))
+            if (request.Status != null && Enum.TryParse<hotel_erp.Api.Database.Entities.RoomStatus>(request.Status, out var parsedStatus))
                 room.Status = parsedStatus;
             if (request.Observations != null) room.Observations = request.Observations;
             await _repo.UpdateAsync(room);
@@ -81,3 +81,5 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+
+

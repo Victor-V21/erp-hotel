@@ -1,6 +1,10 @@
 using System.Text;
-using hotel_erp.Application;
-using hotel_erp.Infrastructure;
+using System.Reflection;
+using hotel_erp.Api.Database;
+using hotel_erp.Api.Database.Repositories;
+using hotel_erp.Api.Services;
+using hotel_erp.Api.Services.Interfaces;
+using hotel_erp.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -15,8 +19,47 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 builder.Host.UseSerilog();
 
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
+// AutoMapper
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+// DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+builder.Services.Configure<BackupOptions>(builder.Configuration.GetSection("Backup"));
+
+// Repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IGuestRepository, GuestRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IFolioRepository, FolioRepository>();
+builder.Services.AddScoped<ICAIRepository, CAIRepository>();
+builder.Services.AddScoped<IDocumentAuthorizationRepository, DocumentAuthorizationRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<ICashRegisterRepository, CashRegisterRepository>();
+builder.Services.AddScoped<ICashMovementRepository, CashMovementRepository>();
+builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+
+// Application services
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<TaxService>();
+builder.Services.AddScoped<AuditService>();
+builder.Services.AddScoped<IBusinessSettingsRepository, BusinessSettingsRepository>();
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+builder.Services.AddScoped<IPurchaseInvoiceRepository, PurchaseInvoiceRepository>();
+builder.Services.AddScoped<EscPosService>();
+builder.Services.AddScoped<IAccountingService, AccountingService>();
+builder.Services.AddScoped<IFiscalAuthorizationService, FiscalAuthorizationService>();
+builder.Services.AddScoped<DatabaseBackupService>();
+builder.Services.AddHostedService<BackupHostedService>();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -108,10 +151,13 @@ try
 {
     Log.Information("Starting Hotel ERP API");
 
+    // Ensure upload directories exist
+    Directory.CreateDirectory(Path.Combine(app.Environment.ContentRootPath, "Uploads", "authorizations"));
+
     // Apply pending migrations on startup
     using (var scope = app.Services.CreateScope())
     {
-        var context = scope.ServiceProvider.GetRequiredService<hotel_erp.Infrastructure.Persistence.ApplicationDbContext>();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         context.Database.Migrate();
         Log.Information("Migrations applied successfully");
     }

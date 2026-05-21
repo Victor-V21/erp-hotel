@@ -1,9 +1,9 @@
 using System.Text;
-using hotel_erp.Application.Interfaces;
-using hotel_erp.Application.Services;
-using hotel_erp.Domain.Entities;
-using hotel_erp.Domain.Enums;
-using hotel_erp.Infrastructure.Services;
+using hotel_erp.Api.Services.Interfaces;
+using hotel_erp.Api.Services;
+using hotel_erp.Api.Database.Entities;
+using hotel_erp.Api.Database.Entities;
+using hotel_erp.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -198,3 +198,4 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+

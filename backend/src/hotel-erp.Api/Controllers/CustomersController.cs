@@ -1,7 +1,8 @@
+using hotel_erp.Api.Dtos.Customer;
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
-using hotel_erp.Domain.Enums;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
+using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,7 +51,7 @@ namespace hotel_erp.Api.Controllers
             if (taxpayerType == TaxpayerType.Exonerado && (string.IsNullOrWhiteSpace(request.ExonerationOrderNumber) || string.IsNullOrWhiteSpace(request.SefinExonerationCertificateNumber)))
                 return BadRequest("Cliente exonerado requiere O.C. Exenta y Constancia SEFIN");
 
-            var entity = new Domain.Entities.Customer
+            var entity = new hotel_erp.Api.Database.Entities.Customer
             {
                 RTN = request.RTN,
                 Name = request.Name,
@@ -103,3 +104,6 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+
+
+

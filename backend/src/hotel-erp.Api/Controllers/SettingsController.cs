@@ -1,7 +1,7 @@
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
-using hotel_erp.Domain.Entities;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
+using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,3 +64,4 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+

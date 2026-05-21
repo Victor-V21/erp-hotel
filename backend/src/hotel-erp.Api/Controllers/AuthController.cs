@@ -1,5 +1,7 @@
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
+using hotel_erp.Api.Dtos.Auth;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
+using hotel_erp.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -11,10 +13,12 @@ namespace hotel_erp.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly AuditService _auditService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, AuditService auditService)
         {
             _authService = authService;
+            _auditService = auditService;
         }
 
         [HttpPost("login")]
@@ -23,6 +27,7 @@ namespace hotel_erp.Api.Controllers
             var result = await _authService.LoginAsync(request);
             if (!result.Success)
                 return Unauthorized(result);
+            await _auditService.LogAsync(result.User?.Id, "Login", null, null, request.Username);
             return Ok(result);
         }
 
@@ -32,6 +37,7 @@ namespace hotel_erp.Api.Controllers
             var result = await _authService.RegisterAsync(request);
             if (!result.Success)
                 return BadRequest(result);
+            await _auditService.LogAsync(result.User?.Id, "Register", nameof(User), result.User?.Id, request.Username);
             return Ok(result);
         }
 
@@ -50,6 +56,7 @@ namespace hotel_erp.Api.Controllers
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             await _authService.LogoutAsync(userId);
+            await _auditService.LogAsync(userId, "Logout", null, userId);
             return Ok(new { message = "Sesión cerrada exitosamente" });
         }
 
@@ -59,6 +66,7 @@ namespace hotel_erp.Api.Controllers
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             await _authService.ChangePasswordAsync(userId, request);
+            await _auditService.LogAsync(userId, "ChangePassword", nameof(User), userId);
             return Ok(new { message = "Contraseña cambiada exitosamente" });
         }
 
@@ -85,3 +93,5 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+
+

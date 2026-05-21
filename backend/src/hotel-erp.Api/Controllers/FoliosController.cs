@@ -1,7 +1,7 @@
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
-using hotel_erp.Domain.Entities;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
+using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,7 +46,7 @@ namespace hotel_erp.Api.Controllers
         {
             var folio = await _repo.GetByIdAsync(folioId);
             if (folio == null) return NotFound();
-            if (folio.Status == Domain.Enums.FolioStatus.Cerrado)
+            if (folio.Status == hotel_erp.Api.Database.Entities.FolioStatus.Cerrado)
                 return BadRequest("El folio está cerrado");
 
             var item = new FolioItem
@@ -76,3 +76,5 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+
+

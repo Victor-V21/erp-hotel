@@ -1,6 +1,7 @@
+using hotel_erp.Api.Dtos.Auth;
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,7 +44,7 @@ namespace hotel_erp.Api.Controllers
             var existing = await _roleRepository.GetByNameAsync(request.Name);
             if (existing != null) return BadRequest("El rol ya existe");
 
-            var role = new Domain.Entities.Role
+            var role = new hotel_erp.Api.Database.Entities.Role
             {
                 Name = request.Name,
                 Description = request.Description
@@ -91,3 +92,6 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+
+
+

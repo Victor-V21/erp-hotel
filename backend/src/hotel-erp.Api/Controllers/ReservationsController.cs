@@ -1,9 +1,9 @@
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
-using hotel_erp.Application.Services;
-using hotel_erp.Domain.Entities;
-using hotel_erp.Domain.Enums;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
+using hotel_erp.Api.Services;
+using hotel_erp.Api.Database.Entities;
+using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -204,7 +204,7 @@ namespace hotel_erp.Api.Controllers
                 var selectedDiscounts = discounts.Where(d => request.DiscountIds.Contains(d.Id)).OrderBy(d => d.Priority).ToList();
                 foreach (var d in selectedDiscounts)
                 {
-                    if (d.DiscountType == Domain.Enums.DiscountType.Porcentaje)
+                    if (d.DiscountType == hotel_erp.Api.Database.Entities.DiscountType.Porcentaje)
                         totalDiscountPercent += d.Value;
                 }
                 taxResult = _taxService.ApplyDiscount(taxResult, totalDiscountPercent);
@@ -259,7 +259,7 @@ namespace hotel_erp.Api.Controllers
                 CAIId = cai.Id,
                 CAINumberSnapshot = cai.CAINumber,
                 AuthorizationRangeSnapshot = $"{cai.InitialRange} - {cai.FinalRange}",
-                AuthorizationDueDateSnapshot = cai.DueDate.ToDateTime(TimeOnly.MaxValue),
+                AuthorizationDueDateSnapshot = DateTime.SpecifyKind(cai.DueDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc),
                 CorrelativeNumber = correlative,
                 CustomerId = null,
                 GuestId = reservation.GuestId,
@@ -370,3 +370,5 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+
+

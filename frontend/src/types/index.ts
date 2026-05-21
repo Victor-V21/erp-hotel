@@ -111,7 +111,11 @@ export interface CAI {
 export interface Invoice {
   id: string
   caiId: string
+  documentAuthorizationId?: string
   caiNumber: string
+  caiNumberSnapshot?: string
+  authorizationRangeSnapshot?: string
+  authorizationDueDateSnapshot?: string
   correlativeNumber: string
   invoiceDate: string
   customerId: string
@@ -120,9 +124,23 @@ export interface Invoice {
   customerAddress?: string
   subTotal: number
   isvAmount: number
+  isv15Amount: number
+  isv18Amount: number
   touristTaxAmount: number
   discountsAmount: number
   totalAmount: number
+  taxableAmount: number
+  exemptAmount: number
+  exoneratedAmount: number
+  taxpayerType: string
+  exonerationOrderNumber?: string
+  sefinExonerationCertificateNumber?: string
+  sagRegistryNumber?: string
+  isIsvExempt: boolean
+  isTouristTaxExempt: boolean
+  originalInvoiceId?: string
+  originalCorrelativeNumber?: string
+  reason?: string
   documentType: string
   status: string
   items: InvoiceItem[]
@@ -157,6 +175,20 @@ export interface CashMovement {
   description?: string
   movementDate: string
   balanceAfter: number
+}
+
+export interface DocumentAuthorization {
+  id: string
+  documentType: string
+  caiNumber: string
+  issueDate: string
+  dueDate: string
+  initialRange: string
+  finalRange: string
+  currentCorrelative: string
+  status: string
+  isExpiringSoon: boolean
+  attachmentPath?: string
 }
 
 export interface BusinessSettings {

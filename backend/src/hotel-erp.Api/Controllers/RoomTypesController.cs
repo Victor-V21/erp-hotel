@@ -1,6 +1,6 @@
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,7 +38,7 @@ namespace hotel_erp.Api.Controllers
             var existing = await _repo.GetByNameAsync(request.Name);
             if (existing != null) return BadRequest("El tipo de habitación ya existe");
 
-            var entity = new Domain.Entities.RoomType
+            var entity = new hotel_erp.Api.Database.Entities.RoomType
             {
                 Name = request.Name,
                 Description = request.Description,
@@ -71,3 +71,5 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+
+

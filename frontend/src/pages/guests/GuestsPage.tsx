@@ -11,6 +11,10 @@ function sanitize(g: typeof defaultForm) {
     documentNumber: g.documentNumber || null, nationality: g.nationality || null,
     origin: g.origin || null, vehiclePlate: g.vehiclePlate || null, company: g.company || null,
     guestRTN: g.guestRTN || null, preferences: g.preferences || null,
+    taxpayerType: g.taxpayerType || null,
+    exonerationOrderNumber: g.exonerationOrderNumber || null,
+    sefinExonerationCertificateNumber: g.sefinExonerationCertificateNumber || null,
+    sagRegistryNumber: g.sagRegistryNumber || null,
   }
 }
 
@@ -18,7 +22,9 @@ const defaultForm = {
   firstName: '', lastName: '', email: '', phone: '', dateOfBirth: '',
   nationality: '', documentType: 'DNI', documentNumber: '', origin: '',
   hasVehicle: false, vehiclePlate: '', company: '', guestRTN: '',
-  preferences: '', classification: 'Normal'
+  preferences: '', classification: 'Normal',
+  taxpayerType: 'ConsumidorFinal',
+  exonerationOrderNumber: '', sefinExonerationCertificateNumber: '', sagRegistryNumber: ''
 }
 
 export default function GuestsPage() {
@@ -51,7 +57,11 @@ export default function GuestsPage() {
       dateOfBirth: g.dateOfBirth || '', nationality: g.nationality || '', documentType: g.documentType || 'DNI',
       documentNumber: g.documentNumber || '', origin: g.origin || '', hasVehicle: g.hasVehicle,
       vehiclePlate: g.vehiclePlate || '', company: g.company || '', guestRTN: g.guestRTN || '',
-      preferences: g.preferences || '', classification: g.classification || 'Normal'
+      preferences: g.preferences || '', classification: g.classification || 'Normal',
+      taxpayerType: (g as any).taxpayerType || 'ConsumidorFinal',
+      exonerationOrderNumber: (g as any).exonerationOrderNumber || '',
+      sefinExonerationCertificateNumber: (g as any).sefinExonerationCertificateNumber || '',
+      sagRegistryNumber: (g as any).sagRegistryNumber || ''
     })
     setShowForm(true)
   }
@@ -67,7 +77,15 @@ export default function GuestsPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Huéspedes</h1>
-        <Button onClick={() => { setShowForm(!showForm); setEditingId(null); setForm(defaultForm) }}>Nuevo Huésped</Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={async () => {
+            const { data } = await api.get('/data/export/guests', { responseType: 'blob' })
+            const url = window.URL.createObjectURL(new Blob([data]))
+            const link = document.createElement('a'); link.href = url; link.setAttribute('download', 'huespedes.xlsx')
+            document.body.appendChild(link); link.click(); document.body.removeChild(link); window.URL.revokeObjectURL(url)
+          }}>Exportar XLSX</Button>
+          <Button onClick={() => { setShowForm(!showForm); setEditingId(null); setForm(defaultForm) }}>Nuevo Huésped</Button>
+        </div>
       </div>
 
       <div className="flex gap-2">
@@ -98,6 +116,20 @@ export default function GuestsPage() {
                 <option>Normal</option><option>VIP</option><option>Frecuente</option>
               </select>
             </div>
+            <div><label className="text-sm">Tipo Contribuyente</label>
+              <select value={form.taxpayerType} onChange={e => setForm({...form, taxpayerType: e.target.value})} className="border border-input rounded-md px-3 py-2 text-sm w-full bg-background">
+                <option value="ConsumidorFinal">Consumidor Final</option>
+                <option value="Gravado">Gravado</option>
+                <option value="Exonerado">Exonerado</option>
+              </select>
+            </div>
+            {form.taxpayerType === 'Exonerado' && (
+              <>
+                <div><label className="text-sm">O.C. Exenta</label><Input value={form.exonerationOrderNumber} onChange={e => setForm({...form, exonerationOrderNumber: e.target.value})} /></div>
+                <div><label className="text-sm">Constancia SEFIN</label><Input value={form.sefinExonerationCertificateNumber} onChange={e => setForm({...form, sefinExonerationCertificateNumber: e.target.value})} /></div>
+                <div><label className="text-sm">Registro SAG</label><Input value={form.sagRegistryNumber} onChange={e => setForm({...form, sagRegistryNumber: e.target.value})} /></div>
+              </>
+            )}
           </div>
           <div className="flex gap-2">
             <Button onClick={save}>{editingId ? 'Actualizar' : 'Guardar'}</Button>

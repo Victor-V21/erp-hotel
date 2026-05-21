@@ -40,7 +40,15 @@ export default function ReservationsPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Reservaciones</h1>
-        <Button onClick={() => navigate('/checkin')}>Nuevo Check-In</Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={async () => {
+            const { data } = await api.get('/data/export/reservations', { responseType: 'blob' })
+            const url = window.URL.createObjectURL(new Blob([data]))
+            const link = document.createElement('a'); link.href = url; link.setAttribute('download', 'reservaciones.xlsx')
+            document.body.appendChild(link); link.click(); document.body.removeChild(link); window.URL.revokeObjectURL(url)
+          }}>Exportar XLSX</Button>
+          <Button onClick={() => navigate('/checkin')}>Nuevo Check-In</Button>
+        </div>
       </div>
 
       <div className="flex gap-2">

@@ -9,13 +9,15 @@ import RoomTypesPage from '@/pages/rooms/RoomTypesPage'
 import ReservationsPage from '@/pages/reservations/ReservationsPage'
 import CheckInPage from '@/pages/reservations/CheckInPage'
 import CheckOutPage from '@/pages/reservations/CheckOutPage'
+import FoliosPage from '@/pages/folios/FoliosPage'
 import GuestsPage from '@/pages/guests/GuestsPage'
 import InvoicesPage from '@/pages/invoices/InvoicesPage'
 import InvoiceEditPage from '@/pages/invoices/InvoiceEditPage'
-import CAIPage from '@/pages/invoices/CAIPage'
+import AuthorizationsPage from '@/pages/invoices/AuthorizationsPage'
 import CashRegistersPage from '@/pages/cash/CashRegistersPage'
 import SettingsPage from '@/pages/settings/SettingsPage'
 import DiscountsPage from '@/pages/discounts/DiscountsPage'
+import BackupsPage from '@/pages/backups/BackupsPage'
 
 const queryClient = new QueryClient()
 
@@ -36,15 +38,19 @@ function App() {
             <Route path="/rooms" element={<RoomsPage />} />
             <Route path="/rooms/types" element={<RoomTypesPage />} />
             <Route path="/reservations" element={<ReservationsPage />} />
+            <Route path="/folios" element={<FoliosPage />} />
             <Route path="/checkin" element={<CheckInPage />} />
             <Route path="/checkout" element={<CheckOutPage />} />
             <Route path="/guests" element={<GuestsPage />} />
             <Route path="/invoices" element={<InvoicesPage />} />
             <Route path="/invoices/:id/edit" element={<InvoiceEditPage />} />
-            <Route path="/cai" element={<CAIPage />} />
+            <Route path="/authorizations" element={<AuthorizationsPage />} />
+            <Route path="/cai" element={<Navigate to="/authorizations" replace />} />
+            <Route path="/document-authorizations" element={<Navigate to="/authorizations" replace />} />
             <Route path="/cash" element={<CashRegistersPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/discounts" element={<DiscountsPage />} />
+            <Route path="/backups" element={<BackupsPage />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>

@@ -1,7 +1,8 @@
+using hotel_erp.Api.Dtos.Customer;
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
-using hotel_erp.Domain.Enums;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
+using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,7 +53,7 @@ namespace hotel_erp.Api.Controllers
             if (taxpayerType == TaxpayerType.Exonerado && (string.IsNullOrWhiteSpace(request.ExonerationOrderNumber) || string.IsNullOrWhiteSpace(request.SefinExonerationCertificateNumber)))
                 return BadRequest("Huésped exonerado requiere O.C. Exenta y Constancia SEFIN");
 
-            var entity = new Domain.Entities.Guest
+            var entity = new hotel_erp.Api.Database.Entities.Guest
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
@@ -124,7 +125,7 @@ namespace hotel_erp.Api.Controllers
             if (guest == null) return NotFound();
 
             var reservations = await _reservationRepo.GetByGuestAsync(id);
-            var completedVisits = reservations.Where(r => r.Status == Domain.Enums.ReservationStatus.CheckOut).ToList();
+            var completedVisits = reservations.Where(r => r.Status == hotel_erp.Api.Database.Entities.ReservationStatus.CheckOut).ToList();
             var lastVisit = completedVisits.OrderByDescending(r => r.CheckOutDate).FirstOrDefault();
             var totalVisits = completedVisits.Count;
             var isFrequent = totalVisits >= 2;
@@ -156,3 +157,6 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+
+
+

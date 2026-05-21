@@ -1,8 +1,8 @@
 using AutoMapper;
-using hotel_erp.Application.DTOs;
-using hotel_erp.Application.Interfaces;
-using hotel_erp.Domain.Entities;
-using hotel_erp.Domain.Enums;
+using hotel_erp.Api.Dtos.Common;
+using hotel_erp.Api.Services.Interfaces;
+using hotel_erp.Api.Database.Entities;
+using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,6 +48,9 @@ namespace hotel_erp.Api.Controllers
             var existing = await _repo.GetByCAINumberAsync(request.CAINumber);
             if (existing != null) return BadRequest("El número de CAI ya existe");
 
+            var activeCai = await _repo.GetActiveCAIAsync();
+            if (activeCai != null) return BadRequest("Ya existe un CAI activo. Desactívelo antes de crear uno nuevo.");
+
             var cai = new CAI
             {
                 CAINumber = request.CAINumber,
@@ -71,3 +74,4 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
+
