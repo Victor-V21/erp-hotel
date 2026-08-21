@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
+using hotel_erp.Api.Services;
 
 namespace hotel_erp.Api.Database.Repositories
 {
@@ -29,6 +29,7 @@ namespace hotel_erp.Api.Database.Repositories
         public async Task<IEnumerable<Invoice>> GetAllAsync() => await _context.Invoices.Include(i => i.InvoiceItems).Include(i => i.CAI).Include(i => i.Customer).Include(i => i.Guest).ToListAsync();
         public async Task<IEnumerable<Invoice>> GetByDateRangeAsync(DateTime start, DateTime end) => await _context.Invoices.Where(i => i.InvoiceDate >= start && i.InvoiceDate <= end).Include(i => i.InvoiceItems).Include(i => i.CAI).Include(i => i.Guest).ToListAsync();
         public async Task<IEnumerable<Invoice>> GetByCustomerAsync(Guid customerId) => await _context.Invoices.Where(i => i.CustomerId == customerId).Include(i => i.InvoiceItems).ToListAsync();
+        public async Task<IEnumerable<Invoice>> GetByGuestAsync(Guid guestId) => await _context.Invoices.Where(i => i.GuestId == guestId).Include(i => i.InvoiceItems).ToListAsync();
         public async Task<IEnumerable<Invoice>> GetByGuestDocumentAsync(string documentNumber) => await _context.Invoices.Include(i => i.InvoiceItems).Include(i => i.CAI).Where(i => i.Guest != null && i.Guest.DocumentNumber == documentNumber).ToListAsync();
         public async Task<IEnumerable<Invoice>> GetByAuthorizationAsync(Guid? caiId, Guid? documentAuthorizationId)
         {
@@ -39,40 +40,43 @@ namespace hotel_erp.Api.Database.Repositories
         }
         public async Task AddAsync(Invoice i) { await _context.Invoices.AddAsync(i); await _context.SaveChangesAsync(); }
         public async Task UpdateAsync(Invoice i) { _context.Invoices.Update(i); await _context.SaveChangesAsync(); }
-        public void DeleteInvoiceItems(Guid invoiceId)
+        public async Task DeleteInvoiceItemsAsync(Guid invoiceId)
         {
-            var items = _context.InvoiceItems.Where(ii => ii.InvoiceId == invoiceId);
-            _context.InvoiceItems.RemoveRange(items);
+            var items = _context.InvoiceItems.Where(ii => ii.InvoiceId == invoiceId).ToList();
+            foreach (var item in items)
+            {
+                item.IsDeleted = true;
+            }
+            await _context.SaveChangesAsync();
         }
 
         public async Task<string> GetNextCorrelativeAsync(Guid caiId)
         {
-            await using var transaction = await _context.Database.BeginTransactionAsync();
-            var cai = await _context.CAIs.FirstOrDefaultAsync(c => c.Id == caiId) ?? throw new InvalidOperationException("CAI no encontrado");
-            if (cai.Status != CAIStatus.Activo) throw new InvalidOperationException("El CAI no está activo");
-            if (cai.DueDate < DateOnly.FromDateTime(DateTime.UtcNow)) throw new InvalidOperationException("El CAI está vencido");
-
-            var parts = cai.CurrentCorrelative.Split('-');
-            if (parts.Length != 4) throw new InvalidOperationException("Formato de correlativo inválido");
-
-            var sequential = int.Parse(parts[3]) + 1;
-            var finalSeq = int.Parse(cai.FinalRange.Split('-').Last());
-            if (sequential > finalSeq)
+            return await PostgresCorrelativeLock.ExecuteAsync(_context, $"cai:{caiId}", async () =>
             {
-                cai.Status = CAIStatus.Agotado;
+                var cai = await _context.CAIs.FirstOrDefaultAsync(c => c.Id == caiId) ?? throw new InvalidOperationException("CAI no encontrado");
+                if (cai.Status != CAIStatus.Activo) throw new InvalidOperationException("El CAI no está activo");
+                if (cai.DueDate < DateOnly.FromDateTime(DateTime.UtcNow)) throw new InvalidOperationException("El CAI está vencido");
+
+                var parts = cai.CurrentCorrelative.Split('-');
+                if (parts.Length != 4) throw new InvalidOperationException("Formato de correlativo inválido");
+
+                var sequential = int.Parse(parts[3]) + 1;
+                var finalSeq = int.Parse(cai.FinalRange.Split('-').Last());
+                if (sequential > finalSeq)
+                {
+                    cai.Status = CAIStatus.Agotado;
+                    await _context.SaveChangesAsync();
+                    throw new CorrelativeStateException("El CAI ha agotado su rango de correlativos");
+                }
+
+                var newCorrelative = $"{parts[0]}-{parts[1]}-{parts[2]}-{sequential:D8}";
+
+                cai.CurrentCorrelative = newCorrelative;
+                _context.CAIs.Update(cai);
                 await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-                throw new InvalidOperationException("El CAI ha agotado su rango de correlativos");
-            }
-
-            var newCorrelative = $"{parts[0]}-{parts[1]}-{parts[2]}-{sequential:D8}";
-
-            cai.CurrentCorrelative = newCorrelative;
-            _context.CAIs.Update(cai);
-            await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
-
-            return newCorrelative;
+                return newCorrelative;
+            });
         }
     }
 

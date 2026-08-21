@@ -2,9 +2,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["backend/src/hotel-erp.Api/hotel-erp.Api.csproj", "backend/src/hotel-erp.Api/"]
-COPY ["backend/src/hotel-erp.Application/hotel-erp.Application.csproj", "backend/src/hotel-erp.Application/"]
-COPY ["backend/src/hotel-erp.Domain/hotel-erp.Domain.csproj", "backend/src/hotel-erp.Domain/"]
-COPY ["backend/src/hotel-erp.Infrastructure/hotel-erp.Infrastructure.csproj", "backend/src/hotel-erp.Infrastructure/"]
 
 RUN dotnet restore "backend/src/hotel-erp.Api/hotel-erp.Api.csproj"
 

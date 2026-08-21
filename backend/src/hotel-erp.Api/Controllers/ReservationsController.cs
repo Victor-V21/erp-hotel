@@ -3,7 +3,6 @@ using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Services;
 using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -126,6 +125,14 @@ namespace hotel_erp.Api.Controllers
             if (request.RoomId.HasValue) reservation.RoomId = request.RoomId.Value;
             if (request.CheckInDate.HasValue) reservation.CheckInDate = request.CheckInDate.Value;
             if (request.CheckOutDate.HasValue) reservation.CheckOutDate = request.CheckOutDate.Value;
+
+            if (request.RoomId.HasValue || request.CheckInDate.HasValue || request.CheckOutDate.HasValue)
+            {
+                var hasConflict = await _repo.HasOverlapAsync(reservation.RoomId, reservation.CheckInDate, reservation.CheckOutDate, id);
+                if (hasConflict)
+                    return BadRequest("La habitación no está disponible para las fechas seleccionadas");
+            }
+
             if (request.Adults.HasValue) reservation.Adults = request.Adults.Value;
             if (request.Children.HasValue) reservation.Children = request.Children.Value;
             if (request.PaymentMethod != null) reservation.PaymentMethod = request.PaymentMethod;

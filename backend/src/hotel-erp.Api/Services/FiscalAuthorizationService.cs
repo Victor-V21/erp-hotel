@@ -17,52 +17,50 @@ namespace hotel_erp.Api.Services
 
         public async Task<FiscalCorrelativeResult> GetNextCorrelativeAsync(InvoiceDocumentType documentType, Guid? authorizationId = null)
         {
-            await using var transaction = await _context.Database.BeginTransactionAsync();
-
-            var query = _context.DocumentAuthorizations.Where(a => a.DocumentType == documentType && a.Status == CAIStatus.Activo);
-            var authorization = authorizationId.HasValue
-                ? await query.FirstOrDefaultAsync(a => a.Id == authorizationId.Value)
-                : await query.OrderBy(a => a.DueDate).FirstOrDefaultAsync();
-
-            if (authorization == null)
-                throw new InvalidOperationException($"No hay autorización fiscal activa para {documentType}");
-
-            var now = HondurasTime.Now;
-            if (authorization.DueDate <= now)
+            return await PostgresCorrelativeLock.ExecuteAsync(_context, $"auth:{documentType}", async () =>
             {
-                authorization.Status = CAIStatus.Vencido;
+                var query = _context.DocumentAuthorizations.Where(a => a.DocumentType == documentType && a.Status == CAIStatus.Activo);
+                var authorization = authorizationId.HasValue
+                    ? await query.FirstOrDefaultAsync(a => a.Id == authorizationId.Value)
+                    : await query.OrderBy(a => a.DueDate).FirstOrDefaultAsync();
+
+                if (authorization == null)
+                    throw new InvalidOperationException($"No hay autorización fiscal activa para {documentType}");
+
+                var now = DateOnly.FromDateTime(HondurasTime.Now);
+                if (authorization.DueDate <= now)
+                {
+                    authorization.Status = CAIStatus.Vencido;
+                    await _context.SaveChangesAsync();
+                    throw new CorrelativeStateException($"La autorización fiscal para {documentType} está vencida");
+                }
+
+                var parts = authorization.CurrentCorrelative.Split('-');
+                if (parts.Length != 4)
+                    throw new InvalidOperationException("Formato de correlativo inválido");
+
+                var sequential = int.Parse(parts[3]) + 1;
+                var finalSeq = int.Parse(authorization.FinalRange.Split('-').Last());
+                if (sequential > finalSeq)
+                {
+                    authorization.Status = CAIStatus.Agotado;
+                    await _context.SaveChangesAsync();
+                    throw new CorrelativeStateException($"La autorización fiscal para {documentType} agotó su rango");
+                }
+
+                var correlative = $"{parts[0]}-{parts[1]}-{parts[2]}-{sequential:D8}";
+                authorization.CurrentCorrelative = correlative;
+                _context.DocumentAuthorizations.Update(authorization);
                 await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-                throw new InvalidOperationException($"La autorización fiscal para {documentType} está vencida");
-            }
 
-            var parts = authorization.CurrentCorrelative.Split('-');
-            if (parts.Length != 4)
-                throw new InvalidOperationException("Formato de correlativo inválido");
-
-            var sequential = int.Parse(parts[3]) + 1;
-            var finalSeq = int.Parse(authorization.FinalRange.Split('-').Last());
-            if (sequential > finalSeq)
-            {
-                authorization.Status = CAIStatus.Agotado;
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-                throw new InvalidOperationException($"La autorización fiscal para {documentType} agotó su rango");
-            }
-
-            var correlative = $"{parts[0]}-{parts[1]}-{parts[2]}-{sequential:D8}";
-            authorization.CurrentCorrelative = correlative;
-            _context.DocumentAuthorizations.Update(authorization);
-            await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
-
-            return new FiscalCorrelativeResult(
-                authorization.Id,
-                correlative,
-                authorization.CAINumber,
-                authorization.InitialRange,
-                authorization.FinalRange,
-                authorization.DueDate);
+                return new FiscalCorrelativeResult(
+                    authorization.Id,
+                    correlative,
+                    authorization.CAINumber,
+                    authorization.InitialRange,
+                    authorization.FinalRange,
+                    authorization.DueDate);
+            });
         }
     }
 }

@@ -19,6 +19,7 @@ namespace hotel_erp.Api.Services.Interfaces
         Task<AuthResponse> GenerateTokensAsync(Guid userId);
         Task<Guid?> ValidateRefreshTokenAsync(string refreshToken);
         Task RevokeRefreshTokenAsync(string refreshToken);
+        Task RevokeAllRefreshTokensAsync(Guid userId);
     }
 }
 

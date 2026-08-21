@@ -4,7 +4,6 @@ namespace hotel_erp.Api.Services
     {
         public bool Enabled { get; set; }
         public string LocalPath { get; set; } = "C:\\HotelERP\\backups";
-        public string PgDumpPath { get; set; } = "pg_dump";
         public string RunAt { get; set; } = "02:00";
         public int PendingUploadIntervalHours { get; set; } = 2;
         public int RetentionYears { get; set; } = 5;

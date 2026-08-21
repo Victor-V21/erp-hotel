@@ -141,7 +141,10 @@ namespace hotel_erp.Api.Controllers
         [HttpGet("reservations")]
         public async Task<IActionResult> ExportReservationsXlsx([FromQuery] DateTime? from, [FromQuery] DateTime? to)
         {
-            var reservations = await _reservationRepo.GetAllAsync();
+            var allReservations = await _reservationRepo.GetAllAsync();
+            var reservations = from.HasValue && to.HasValue
+                ? allReservations.Where(r => r.CheckInDate >= DateOnly.FromDateTime(from.Value) && r.CheckInDate <= DateOnly.FromDateTime(to.Value))
+                : allReservations;
 
             using var workbook = new XLWorkbook();
             var ws = workbook.Worksheets.Add("Reservaciones");

@@ -1,11 +1,12 @@
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 using AutoMapper;
 using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Services;
 using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -116,7 +117,7 @@ namespace hotel_erp.Api.Controllers
             invoice.TotalAmount = Math.Round(subtotal + isvAmount + touristTax, 2);
 
             // Remove old items and add new ones
-            _repo.DeleteInvoiceItems(id);
+            await _repo.DeleteInvoiceItemsAsync(id);
             foreach (var item in items)
                 invoice.InvoiceItems.Add(item);
 
@@ -134,22 +135,24 @@ namespace hotel_erp.Api.Controllers
             if (cai.Status != CAIStatus.Activo) return BadRequest("El CAI no está activo");
             if (cai.DueDate < HondurasTime.Today) return BadRequest("El CAI está vencido");
 
-            // Check correlative range
-            var currentSeq = int.Parse(cai.CurrentCorrelative.Split('-').Last());
-            var finalSeq = int.Parse(cai.FinalRange.Split('-').Last());
-            if (currentSeq > finalSeq) return BadRequest("El CAI ha agotado su rango de correlativos");
-
             var documentType = Enum.Parse<InvoiceDocumentType>(request.DocumentType);
             FiscalCorrelativeResult? authorizationResult = null;
             var correlative = string.Empty;
-            if (request.DocumentAuthorizationId.HasValue)
+            try
             {
-                authorizationResult = await _fiscalAuthorizationService.GetNextCorrelativeAsync(documentType, request.DocumentAuthorizationId);
-                correlative = authorizationResult.CorrelativeNumber;
+                if (request.DocumentAuthorizationId.HasValue)
+                {
+                    authorizationResult = await _fiscalAuthorizationService.GetNextCorrelativeAsync(documentType, request.DocumentAuthorizationId);
+                    correlative = authorizationResult.CorrelativeNumber;
+                }
+                else
+                {
+                    correlative = await _repo.GetNextCorrelativeAsync(request.CAIId);
+                }
             }
-            else
+            catch (InvalidOperationException ex)
             {
-                correlative = await _repo.GetNextCorrelativeAsync(request.CAIId);
+                return BadRequest(ex.Message);
             }
 
             var taxpayerType = Enum.TryParse<TaxpayerType>(request.TaxpayerType, out var parsedType)
@@ -198,7 +201,7 @@ namespace hotel_erp.Api.Controllers
                 AuthorizationRangeSnapshot = authorizationResult != null
                     ? $"{authorizationResult.InitialRange} - {authorizationResult.FinalRange}"
                     : $"{cai.InitialRange} - {cai.FinalRange}",
-                AuthorizationDueDateSnapshot = authorizationResult?.DueDate ?? DateTime.SpecifyKind(cai.DueDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc),
+                AuthorizationDueDateSnapshot = authorizationResult?.DueDate.ToDateTime(TimeOnly.MinValue) ?? DateTime.SpecifyKind(cai.DueDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc),
                 CorrelativeNumber = correlative,
                 CustomerId = request.CustomerId,
                 GuestId = request.GuestId,
@@ -228,6 +231,8 @@ namespace hotel_erp.Api.Controllers
                 Status = InvoiceStatus.Emitida,
                 InvoiceItems = items
             };
+
+            ApplyFiscalSnapshot(invoice);
 
             await _repo.AddAsync(invoice);
             await _accountingService.CreateInvoiceEntryAsync(invoice);
@@ -263,14 +268,21 @@ namespace hotel_erp.Api.Controllers
             var documentType = InvoiceDocumentType.NotaCredito;
             FiscalCorrelativeResult? authResult = null;
             var correlative = string.Empty;
-            if (request.DocumentAuthorizationId.HasValue)
+            try
             {
-                authResult = await _fiscalAuthorizationService.GetNextCorrelativeAsync(documentType, request.DocumentAuthorizationId);
-                correlative = authResult.CorrelativeNumber;
+                if (request.DocumentAuthorizationId.HasValue)
+                {
+                    authResult = await _fiscalAuthorizationService.GetNextCorrelativeAsync(documentType, request.DocumentAuthorizationId);
+                    correlative = authResult.CorrelativeNumber;
+                }
+                else
+                {
+                    correlative = await _repo.GetNextCorrelativeAsync(request.CAIId);
+                }
             }
-            else
+            catch (InvalidOperationException ex)
             {
-                correlative = await _repo.GetNextCorrelativeAsync(request.CAIId);
+                return BadRequest(ex.Message);
             }
 
             original.Status = InvoiceStatus.Anulada;
@@ -280,7 +292,8 @@ namespace hotel_erp.Api.Controllers
             var items = request.Items.Select(item =>
             {
                 var lineTotal = item.Quantity * item.UnitPrice;
-                subtotal += lineTotal;
+                var discount = lineTotal * (item.DiscountPercentage / 100m);
+                subtotal += lineTotal - discount;
                 return new InvoiceItem
                 {
                     Description = item.Description,
@@ -294,8 +307,8 @@ namespace hotel_erp.Api.Controllers
                 };
             }).ToList();
 
-            var isvAmount = request.Items.Sum(i => i.IsExempt ? 0 : i.LineTotal * i.ISVRate);
-            var touristTax = request.Items.Sum(i => i.IsTouristTaxable ? i.LineTotal * 0.04m : 0);
+            var isvAmount = request.Items.Sum(i => i.IsExempt ? 0 : (i.LineTotal - i.LineTotal * (i.DiscountPercentage / 100m)) * i.ISVRate);
+            var touristTax = request.Items.Sum(i => i.IsTouristTaxable ? (i.LineTotal - i.LineTotal * (i.DiscountPercentage / 100m)) * 0.04m : 0);
 
             var creditNote = new Invoice
             {
@@ -305,7 +318,7 @@ namespace hotel_erp.Api.Controllers
                 AuthorizationRangeSnapshot = authResult != null
                     ? $"{authResult.InitialRange} - {authResult.FinalRange}"
                     : $"{cai.InitialRange} - {cai.FinalRange}",
-                AuthorizationDueDateSnapshot = authResult?.DueDate ?? DateTime.SpecifyKind(cai.DueDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc),
+                AuthorizationDueDateSnapshot = authResult?.DueDate.ToDateTime(TimeOnly.MinValue) ?? DateTime.SpecifyKind(cai.DueDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc),
                 CorrelativeNumber = correlative,
                 OriginalInvoiceId = original.Id,
                 OriginalCorrelativeNumber = original.CorrelativeNumber,
@@ -328,7 +341,10 @@ namespace hotel_erp.Api.Controllers
                 InvoiceItems = items
             };
 
+            ApplyFiscalSnapshot(creditNote);
+
             await _repo.AddAsync(creditNote);
+            await _accountingService.CreateInvoiceEntryAsync(creditNote);
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             await _auditService.LogAsync(userId, "CreateCreditNote", nameof(Invoice), creditNote.Id, new { creditNote.CorrelativeNumber, Original = original.CorrelativeNumber, Reason = request.Reason }, creditNote.CorrelativeNumber);
             return CreatedAtAction(nameof(GetById), new { id = creditNote.Id }, _mapper.Map<InvoiceDto>(creditNote));
@@ -353,21 +369,29 @@ namespace hotel_erp.Api.Controllers
             var documentType = InvoiceDocumentType.NotaDebito;
             FiscalCorrelativeResult? authResult = null;
             var correlative = string.Empty;
-            if (request.DocumentAuthorizationId.HasValue)
+            try
             {
-                authResult = await _fiscalAuthorizationService.GetNextCorrelativeAsync(documentType, request.DocumentAuthorizationId);
-                correlative = authResult.CorrelativeNumber;
+                if (request.DocumentAuthorizationId.HasValue)
+                {
+                    authResult = await _fiscalAuthorizationService.GetNextCorrelativeAsync(documentType, request.DocumentAuthorizationId);
+                    correlative = authResult.CorrelativeNumber;
+                }
+                else
+                {
+                    correlative = await _repo.GetNextCorrelativeAsync(request.CAIId);
+                }
             }
-            else
+            catch (InvalidOperationException ex)
             {
-                correlative = await _repo.GetNextCorrelativeAsync(request.CAIId);
+                return BadRequest(ex.Message);
             }
 
             decimal subtotal = 0;
             var items = request.Items.Select(item =>
             {
                 var lineTotal = item.Quantity * item.UnitPrice;
-                subtotal += lineTotal;
+                var discount = lineTotal * (item.DiscountPercentage / 100m);
+                subtotal += lineTotal - discount;
                 return new InvoiceItem
                 {
                     Description = item.Description,
@@ -381,8 +405,8 @@ namespace hotel_erp.Api.Controllers
                 };
             }).ToList();
 
-            var isvAmount = request.Items.Sum(i => i.IsExempt ? 0 : i.LineTotal * i.ISVRate);
-            var touristTax = request.Items.Sum(i => i.IsTouristTaxable ? i.LineTotal * 0.04m : 0);
+            var isvAmount = request.Items.Sum(i => i.IsExempt ? 0 : (i.LineTotal - i.LineTotal * (i.DiscountPercentage / 100m)) * i.ISVRate);
+            var touristTax = request.Items.Sum(i => i.IsTouristTaxable ? (i.LineTotal - i.LineTotal * (i.DiscountPercentage / 100m)) * 0.04m : 0);
 
             var debitNote = new Invoice
             {
@@ -392,7 +416,7 @@ namespace hotel_erp.Api.Controllers
                 AuthorizationRangeSnapshot = authResult != null
                     ? $"{authResult.InitialRange} - {authResult.FinalRange}"
                     : $"{cai.InitialRange} - {cai.FinalRange}",
-                AuthorizationDueDateSnapshot = authResult?.DueDate ?? DateTime.SpecifyKind(cai.DueDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc),
+                AuthorizationDueDateSnapshot = authResult?.DueDate.ToDateTime(TimeOnly.MinValue) ?? DateTime.SpecifyKind(cai.DueDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc),
                 CorrelativeNumber = correlative,
                 OriginalInvoiceId = original.Id,
                 OriginalCorrelativeNumber = original.CorrelativeNumber,
@@ -415,10 +439,63 @@ namespace hotel_erp.Api.Controllers
                 InvoiceItems = items
             };
 
+            ApplyFiscalSnapshot(debitNote);
+
             await _repo.AddAsync(debitNote);
+            await _accountingService.CreateInvoiceEntryAsync(debitNote);
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             await _auditService.LogAsync(userId, "CreateDebitNote", nameof(Invoice), debitNote.Id, new { debitNote.CorrelativeNumber, Original = original.CorrelativeNumber, Reason = request.Reason }, debitNote.CorrelativeNumber);
             return CreatedAtAction(nameof(GetById), new { id = debitNote.Id }, _mapper.Map<InvoiceDto>(debitNote));
+        }
+
+        private static void ApplyFiscalSnapshot(Invoice invoice)
+        {
+            var snapshot = new
+            {
+                invoice.CAIId,
+                invoice.DocumentAuthorizationId,
+                invoice.CAINumberSnapshot,
+                invoice.AuthorizationRangeSnapshot,
+                invoice.AuthorizationDueDateSnapshot,
+                invoice.CorrelativeNumber,
+                invoice.InvoiceDate,
+                invoice.CustomerName,
+                invoice.RTNCliente,
+                invoice.CustomerAddress,
+                invoice.DocumentType,
+                invoice.Status,
+                invoice.TaxpayerType,
+                invoice.SubTotal,
+                invoice.ISVAmount,
+                invoice.TouristTaxAmount,
+                invoice.DiscountsAmount,
+                invoice.TotalAmount,
+                invoice.TaxableAmount,
+                invoice.ExemptAmount,
+                invoice.ExoneratedAmount,
+                invoice.IsIsvExempt,
+                invoice.IsTouristTaxExempt,
+                invoice.ExonerationOrderNumber,
+                invoice.SefinExonerationCertificateNumber,
+                invoice.SagRegistryNumber,
+                invoice.OriginalInvoiceId,
+                invoice.OriginalCorrelativeNumber,
+                invoice.Reason,
+                Items = invoice.InvoiceItems.Select(item => new
+                {
+                    item.Description,
+                    item.Quantity,
+                    item.UnitPrice,
+                    item.LineTotal,
+                    item.IsExempt,
+                    item.ISVRate,
+                    item.IsTouristTaxable,
+                    item.DiscountPercentage
+                }).ToList()
+            };
+
+            invoice.FiscalSnapshotJson = JsonSerializer.Serialize(snapshot, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            invoice.FiscalHash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(invoice.FiscalSnapshotJson)));
         }
     }
 }

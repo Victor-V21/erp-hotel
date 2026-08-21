@@ -14,11 +14,13 @@ namespace hotel_erp.Api.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerRepository _repo;
+        private readonly IInvoiceRepository _invoiceRepo;
         private readonly IMapper _mapper;
 
-        public CustomersController(ICustomerRepository repo, IMapper mapper)
+        public CustomersController(ICustomerRepository repo, IInvoiceRepository invoiceRepo, IMapper mapper)
         {
             _repo = repo;
+            _invoiceRepo = invoiceRepo;
             _mapper = mapper;
         }
 
@@ -99,6 +101,10 @@ namespace hotel_erp.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
+            var invoices = await _invoiceRepo.GetByCustomerAsync(id);
+            if (invoices.Any())
+                return BadRequest("No se puede eliminar el cliente porque tiene facturas emitidas (trazabilidad fiscal).");
+
             await _repo.DeleteAsync(id);
             return NoContent();
         }

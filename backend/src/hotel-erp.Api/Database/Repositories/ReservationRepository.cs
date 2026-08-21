@@ -18,6 +18,12 @@ namespace hotel_erp.Api.Database.Repositories
         public async Task AddAsync(Reservation r) { await _context.Reservations.AddAsync(r); await _context.SaveChangesAsync(); }
         public async Task UpdateAsync(Reservation r) { _context.Reservations.Update(r); await _context.SaveChangesAsync(); }
         public async Task DeleteAsync(Guid id) { var r = await _context.Reservations.FindAsync(id); if (r != null) { r.IsDeleted = true; await _context.SaveChangesAsync(); } }
+        public async Task<bool> HasOverlapAsync(Guid roomId, DateOnly checkIn, DateOnly checkOut, Guid excludeReservationId)
+            => await _context.Reservations.AnyAsync(r => r.Id != excludeReservationId
+                && r.RoomId == roomId
+                && r.Status != ReservationStatus.Cancelada
+                && r.Status != ReservationStatus.CheckOut
+                && r.CheckInDate < checkOut && r.CheckOutDate > checkIn);
     }
 
     public class FolioRepository : IFolioRepository

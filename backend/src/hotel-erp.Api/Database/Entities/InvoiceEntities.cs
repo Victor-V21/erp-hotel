@@ -1,6 +1,3 @@
-using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
-
 namespace hotel_erp.Api.Database.Entities
 {
     public class CAI : BaseEntity
@@ -21,7 +18,7 @@ namespace hotel_erp.Api.Database.Entities
         public InvoiceDocumentType DocumentType { get; set; } = InvoiceDocumentType.Factura;
         public string CAINumber { get; set; } = string.Empty;
         public DateOnly IssueDate { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateOnly DueDate { get; set; }
         public string InitialRange { get; set; } = string.Empty;
         public string FinalRange { get; set; } = string.Empty;
         public string CurrentCorrelative { get; set; } = string.Empty;

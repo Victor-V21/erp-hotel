@@ -3,22 +3,21 @@ import api from '@/lib/axios'
 import type { RoomType } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useTaxRates } from '@/hooks/useTaxRates'
 
-const ISV_RATE = 0.15
-const TOURIST_RATE = 0.04
-const TAX_FACTOR = 1 + ISV_RATE + TOURIST_RATE
-
-function breakdown(price: number) {
-  const subtotal = price / TAX_FACTOR
+function breakdown(price: number, isvRate: number, touristTaxRate: number) {
+  const taxFactor = 1 + isvRate + touristTaxRate
+  const subtotal = price / taxFactor
   return {
     subtotal: Math.round(subtotal * 100) / 100,
-    isv: Math.round(subtotal * ISV_RATE * 100) / 100,
-    tourist: Math.round(subtotal * TOURIST_RATE * 100) / 100,
+    isv: Math.round(subtotal * isvRate * 100) / 100,
+    tourist: Math.round(subtotal * touristTaxRate * 100) / 100,
     total: price
   }
 }
 
 export default function RoomTypesPage() {
+  const { isvRate, touristTaxRate } = useTaxRates()
   const [types, setTypes] = useState<RoomType[]>([])
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -27,19 +26,27 @@ export default function RoomTypesPage() {
   useEffect(() => { load() }, [])
 
   const load = async () => {
-    const { data } = await api.get<RoomType[]>('/room-types')
-    setTypes(data)
+    try {
+      const { data } = await api.get<RoomType[]>('/room-types')
+      setTypes(data)
+    } catch (err) {
+      alert('Error al cargar tipos de habitación')
+    }
   }
 
   const save = async () => {
-    if (editingId) {
-      await api.put(`/room-types/${editingId}`, { name: form.name, description: form.description || null, pricePerNight: form.pricePerNight, capacity: form.capacity })
-    } else {
-      await api.post('/room-types', { name: form.name, description: form.description || null, pricePerNight: form.pricePerNight, capacity: form.capacity })
+    try {
+      if (editingId) {
+        await api.put(`/room-types/${editingId}`, { name: form.name, description: form.description || null, pricePerNight: form.pricePerNight, capacity: form.capacity })
+      } else {
+        await api.post('/room-types', { name: form.name, description: form.description || null, pricePerNight: form.pricePerNight, capacity: form.capacity })
+      }
+      setShowForm(false); setEditingId(null)
+      setForm({ name: '', description: '', pricePerNight: 0, capacity: 1 })
+      load()
+    } catch (err) {
+      alert('Error al guardar tipo de habitación')
     }
-    setShowForm(false); setEditingId(null)
-    setForm({ name: '', description: '', pricePerNight: 0, capacity: 1 })
-    load()
   }
 
   const startEdit = (t: RoomType) => {
@@ -50,12 +57,16 @@ export default function RoomTypesPage() {
 
   const deleteType = async (id: string) => {
     if (confirm('¿Eliminar este tipo de habitación?')) {
-      await api.delete(`/room-types/${id}`)
-      load()
+      try {
+        await api.delete(`/room-types/${id}`)
+        load()
+      } catch (err) {
+        alert('Error al eliminar tipo de habitación')
+      }
     }
   }
 
-  const bd = breakdown(form.pricePerNight)
+  const bd = breakdown(form.pricePerNight, isvRate, touristTaxRate)
 
   return (
     <div className="space-y-4">
@@ -84,8 +95,8 @@ export default function RoomTypesPage() {
               <p className="font-semibold">Desglose de Precio por Noche:</p>
               <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                 <span>Subtotal base:</span><span className="text-right font-mono">L {bd.subtotal.toFixed(2)}</span>
-                <span>ISV 15%:</span><span className="text-right font-mono">L {bd.isv.toFixed(2)}</span>
-                <span>Tasa Turística 4%:</span><span className="text-right font-mono">L {bd.tourist.toFixed(2)}</span>
+                <span>ISV {(isvRate * 100).toFixed(0)}%:</span><span className="text-right font-mono">L {bd.isv.toFixed(2)}</span>
+                <span>Tasa Turística {(touristTaxRate * 100).toFixed(0)}%:</span><span className="text-right font-mono">L {bd.tourist.toFixed(2)}</span>
                 <span className="font-bold border-t pt-1">TOTAL AL HUÉSPED:</span><span className="text-right font-mono font-bold border-t pt-1">L {bd.total.toFixed(2)}</span>
               </div>
             </div>
@@ -100,7 +111,7 @@ export default function RoomTypesPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {types.map(t => {
-          const b = breakdown(t.pricePerNight)
+          const b = breakdown(t.pricePerNight, isvRate, touristTaxRate)
           return (
             <div key={t.id} className="border border-border rounded-lg p-4 bg-card">
               <div className="font-bold">{t.name}</div>

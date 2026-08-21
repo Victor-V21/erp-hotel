@@ -54,11 +54,11 @@ namespace hotel_erp.Api.Controllers
             if (request.Permissions?.Any() == true)
             {
                 var permissions = await _permissionRepository.GetAllAsync();
-                var selectedPermissions = permissions.Where(p => request.Permissions.Contains(p.Name)).ToList();
-                foreach (var perm in selectedPermissions)
-                {
-                    // Add role permission - need DbContext for this
-                }
+                var selectedPermissionIds = permissions
+                    .Where(p => request.Permissions.Contains(p.Name))
+                    .Select(p => p.Id)
+                    .ToList();
+                await _roleRepository.AssignPermissionsAsync(role.Id, selectedPermissionIds);
             }
 
             return CreatedAtAction(nameof(GetById), new { id = role.Id }, _mapper.Map<RoleDto>(role));

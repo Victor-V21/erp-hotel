@@ -174,8 +174,8 @@ export default function AuthorizationsPage() {
               <input ref={fileRef} type="file" accept=".pdf" onChange={e => setFile(e.target.files?.[0] || null)} className="border border-input rounded-md px-3 py-2 text-sm w-full bg-background file:mr-2 file:py-1 file:px-3 file:border-0 file:text-sm file:bg-primary file:text-primary-foreground file:rounded-md" />
             </div>
           </div>
-          {error && <div className="text-sm text-red-600 p-2 bg-red-50 rounded">{error}</div>}
-          {serverError && <div className="text-sm text-red-600 p-2 bg-red-50 rounded">{serverError}</div>}
+          {error && <div className="text-sm text-red-600 dark:text-red-400 p-2 bg-red-50 dark:bg-red-900/20 rounded">{error}</div>}
+          {serverError && <div className="text-sm text-red-600 dark:text-red-400 p-2 bg-red-50 dark:bg-red-900/20 rounded">{serverError}</div>}
           <div className="flex gap-2">
             <Button onClick={handleSubmit(onSubmit)}>Guardar</Button>
             <Button variant="outline" onClick={() => { setShowForm(false); reset(); setFile(null); if (fileRef.current) fileRef.current.value = '' }}>Cancelar</Button>
@@ -198,7 +198,7 @@ export default function AuthorizationsPage() {
           </tr></thead>
           <tbody>
             {items.map(item => (
-              <tr key={`${item.source}-${item.id}`} className={`border-t border-border ${item.isExpiringSoon ? 'bg-red-50' : ''}`}>
+              <tr key={`${item.source}-${item.id}`} className={`border-t border-border ${item.isExpiringSoon ? 'bg-red-50 dark:bg-red-900/20' : ''}`}>
                 <td className="p-3">
                   <span className="text-xs font-medium bg-primary/10 px-2 py-0.5 rounded">{item.documentType}</span>
                 </td>
@@ -211,7 +211,7 @@ export default function AuthorizationsPage() {
                   {item.isExpiringSoon && <span className="ml-1 text-red-600 font-bold text-xs">(PRÓXIMO A VENCER)</span>}
                 </td>
                 <td className="p-3">
-                  <span className={`px-2 py-0.5 rounded text-xs font-medium ${item.status === 'Activo' ? 'bg-green-100 text-green-800' : item.status === 'Desactivado' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800'}`}>{item.status}</span>
+                  <span className={`px-2 py-0.5 rounded text-xs font-medium ${item.status === 'Activo' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' : item.status === 'Desactivado' ? 'bg-gray-100 dark:bg-gray-800/50 text-gray-800 dark:text-gray-300' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'}`}>{item.status}</span>
                 </td>
                 <td className="p-3">
                   <div className="flex gap-1">
@@ -226,7 +226,7 @@ export default function AuthorizationsPage() {
                 </td>
               </tr>
             ))}
-            {items.length === 0 && <tr><td colSpan={10} className="p-6 text-center text-muted-foreground">No hay autorizaciones fiscales registradas</td></tr>}
+            {items.length === 0 && <tr><td colSpan={9} className="p-6 text-center text-muted-foreground">No hay autorizaciones fiscales registradas</td></tr>}
           </tbody>
         </table>
       </div>

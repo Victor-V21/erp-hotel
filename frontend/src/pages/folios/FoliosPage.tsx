@@ -1,33 +1,8 @@
 import { useState, useEffect } from 'react'
 import api from '@/lib/axios'
+import type { Folio, FolioItem } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-
-interface FolioItem {
-  id: string
-  description: string
-  quantity: number
-  unitPrice: number
-  lineTotal: number
-  isExempt: boolean
-  isvRate: number
-  isTouristTaxable: boolean
-  discountPercentage: number
-}
-
-interface Folio {
-  id: string
-  reservationId: string
-  guestId: string
-  guestName: string
-  roomId: string
-  roomNumber: string
-  openingDate: string
-  closingDate: string | null
-  totalAmount: number
-  status: string
-  items: FolioItem[]
-}
 
 export default function FoliosPage() {
   const [folios, setFolios] = useState<Folio[]>([])
@@ -38,24 +13,36 @@ export default function FoliosPage() {
   useEffect(() => { load() }, [])
 
   const load = async () => {
-    const { data } = await api.get<Folio[]>('/folios')
-    setFolios(data)
+    try {
+      const { data } = await api.get<Folio[]>('/folios')
+      setFolios(data)
+    } catch (err) {
+      alert('Error al cargar folios')
+    }
   }
 
   const viewFolio = async (id: string) => {
-    const { data } = await api.get<Folio>(`/folios/${id}`)
-    setSelectedFolio(data)
-    setShowAddItem(false)
+    try {
+      const { data } = await api.get<Folio>(`/folios/${id}`)
+      setSelectedFolio(data)
+      setShowAddItem(false)
+    } catch (err) {
+      alert('Error al cargar folio')
+    }
   }
 
   const closeDetail = () => { setSelectedFolio(null); setShowAddItem(false) }
 
   const addItem = async () => {
     if (!selectedFolio || !newItem.description || newItem.unitPrice <= 0) return
-    await api.post(`/folios/${selectedFolio.id}/items`, newItem)
-    setShowAddItem(false)
-    setNewItem({ description: '', quantity: 1, unitPrice: 0, isExempt: false, isvRate: 0.15, isTouristTaxable: false, discountPercentage: 0 })
-    viewFolio(selectedFolio.id)
+    try {
+      await api.post(`/folios/${selectedFolio.id}/items`, newItem)
+      setShowAddItem(false)
+      setNewItem({ description: '', quantity: 1, unitPrice: 0, isExempt: false, isvRate: 0.15, isTouristTaxable: false, discountPercentage: 0 })
+      viewFolio(selectedFolio.id)
+    } catch (err) {
+      alert('Error al agregar item al folio')
+    }
   }
 
   if (selectedFolio) {
@@ -78,7 +65,7 @@ export default function FoliosPage() {
             <div><strong>Huésped:</strong> {selectedFolio.guestName}</div>
             <div><strong>Habitación:</strong> #{selectedFolio.roomNumber}</div>
             <div><strong>Apertura:</strong> {new Date(selectedFolio.openingDate).toLocaleString()}</div>
-            <div><strong>Estado:</strong> <span className={`px-2 py-0.5 rounded text-xs font-medium ${selectedFolio.status === 'Abierto' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>{selectedFolio.status}</span></div>
+            <div><strong>Estado:</strong> <span className={`px-2 py-0.5 rounded text-xs font-medium ${selectedFolio.status === 'Abierto' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' : 'bg-gray-100 dark:bg-gray-800/50 text-gray-800 dark:text-gray-300'}`}>{selectedFolio.status}</span></div>
             {selectedFolio.closingDate && <div><strong>Cierre:</strong> {new Date(selectedFolio.closingDate).toLocaleString()}</div>}
           </div>
         </div>
@@ -166,7 +153,7 @@ export default function FoliosPage() {
                 <td className="p-3">{new Date(f.openingDate).toLocaleDateString()}</td>
                 <td className="p-3 text-right font-semibold">L {f.totalAmount.toFixed(2)}</td>
                 <td className="p-3">{f.items?.length || 0}</td>
-                <td className="p-3"><span className={`px-2 py-0.5 rounded text-xs font-medium ${f.status === 'Abierto' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>{f.status}</span></td>
+                <td className="p-3"><span className={`px-2 py-0.5 rounded text-xs font-medium ${f.status === 'Abierto' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' : 'bg-gray-100 dark:bg-gray-800/50 text-gray-800 dark:text-gray-300'}`}>{f.status}</span></td>
                 <td className="p-3"><Button size="sm" variant="outline" onClick={() => viewFolio(f.id)}>Ver</Button></td>
               </tr>
             ))}

@@ -5,6 +5,7 @@ import type { Guest, Room, InvoicePrintData } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { BarChart3, Star } from 'lucide-react'
+import { useTaxRates } from '@/hooks/useTaxRates'
 
 interface Discount { id: string; name: string; description?: string; discountType: string; value: number; isActive: boolean; requiresDocument?: boolean }
 interface GuestStats { totalVisits: number; classification: string; lastVisit?: string; isFrequent: boolean }
@@ -21,6 +22,8 @@ const defaultForm = {
 
 export default function CheckInPage() {
   const navigate = useNavigate()
+  const { isvRate, touristTaxRate } = useTaxRates()
+  const taxFactor = 1 + isvRate + touristTaxRate
   const [step, setStep] = useState(1)
   const [availableRooms, setAvailableRooms] = useState<Room[]>([])
   const [guestForm, setGuestForm] = useState(defaultForm)
@@ -119,11 +122,11 @@ export default function CheckInPage() {
         ? Math.max(0, (new Date(checkIn.checkOutDate).getTime() - new Date(checkIn.checkInDate).getTime()) / 86400000) : 0
       const sellingTotal = nights * (selectedRoom?.pricePerNight || 0)
       const discountPct = selectedDiscountId ? (discounts.find(d => d.id === selectedDiscountId)?.value || 0) : 0
-      const subtotalBase = sellingTotal / 1.19
+      const subtotalBase = sellingTotal / taxFactor
       const discountAmount = subtotalBase * discountPct / 100
       const afterDiscount = subtotalBase - discountAmount
-      const isv = afterDiscount * 0.15
-      const tourist = afterDiscount * 0.04
+      const isv = afterDiscount * isvRate
+      const tourist = afterDiscount * touristTaxRate
       const totalCalc = afterDiscount + isv + tourist
 
       const cashAmount = checkIn.paymentMethod === 'Efectivo' ? (parseFloat(cashReceived) || 0) : 0
@@ -143,7 +146,11 @@ export default function CheckInPage() {
       setPreviewLogoHeight(preview.printLogoHeight ?? 40)
       setPreviewWidth(preview.printWidth || 46)
       setStep(6)
-    } catch (e: any) { alert(e.response?.data?.message || 'Error al hacer check-in') }
+    } catch (e: any) {
+      const body = e.response?.data
+      const msg = typeof body === 'string' ? body : body?.title || body?.message || 'Error al hacer check-in'
+      alert(msg)
+    }
   }
 
   const printInvoice = async () => {
@@ -182,11 +189,11 @@ export default function CheckInPage() {
       ? Math.max(0, (new Date(checkIn.checkOutDate).getTime() - new Date(checkIn.checkInDate).getTime()) / 86400000) : 0
     const sellingTotal = nights * (selectedRoom?.pricePerNight || 0)
     const discountPct = selectedDiscountId ? (discounts.find(d => d.id === selectedDiscountId)?.value || 0) : 0
-    const subtotalBase = sellingTotal / 1.19
+    const subtotalBase = sellingTotal / taxFactor
     const discountAmount = subtotalBase * discountPct / 100
     const afterDiscount = subtotalBase - discountAmount
-    const isv = afterDiscount * 0.15
-    const tourist = afterDiscount * 0.04
+    const isv = afterDiscount * isvRate
+    const tourist = afterDiscount * touristTaxRate
     const totalCalc = afterDiscount + isv + tourist
     const recibido = parseFloat(cashReceived) || 0
     const cambio = Math.max(0, recibido - totalCalc)
@@ -200,11 +207,11 @@ export default function CheckInPage() {
           <div className="border-t border-dashed pt-3 space-y-1 text-sm">
             <p className="font-medium mb-1">Desglose</p>
             <div className="flex justify-between"><span>{nights} noche(s) x L {selectedRoom.pricePerNight.toFixed(2)}</span><span>L {sellingTotal.toFixed(2)}</span></div>
-            <div className="flex justify-between text-xs text-muted-foreground">Subjetivo a impuestos</div>
+            <div className="flex justify-between text-xs text-muted-foreground">Sujeto a impuestos</div>
             <div className="flex justify-between"><span>Subtotal base:</span><span>L {subtotalBase.toFixed(2)}</span></div>
             {discountPct > 0 && <div className="flex justify-between text-green-600"><span>Descuento ({discountPct}%):</span><span>-L {discountAmount.toFixed(2)}</span></div>}
-            <div className="flex justify-between"><span>ISV 15%:</span><span>L {isv.toFixed(2)}</span></div>
-            <div className="flex justify-between"><span>Tasa Turistica 4%:</span><span>L {tourist.toFixed(2)}</span></div>
+            <div className="flex justify-between"><span>ISV {(isvRate * 100).toFixed(0)}%:</span><span>L {isv.toFixed(2)}</span></div>
+            <div className="flex justify-between"><span>Tasa Turística {(touristTaxRate * 100).toFixed(0)}%:</span><span>L {tourist.toFixed(2)}</span></div>
             <div className="flex justify-between font-bold text-base border-t pt-1 mt-1"><span>TOTAL A PAGAR:</span><span>L {totalCalc.toFixed(2)}</span></div>
           </div>
           <div className="border-t border-dashed pt-3 space-y-2">
@@ -251,7 +258,7 @@ export default function CheckInPage() {
       {step === 1 && (
         <div className="space-y-4">
           <div className="flex gap-2">
-            <Input placeholder="Buscar huesped por nombre o DNI..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+            <Input placeholder="Buscar huésped por nombre o DNI..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
             <Button variant="outline" onClick={searchGuests}>Buscar</Button>
           </div>
           {foundGuests.length > 0 && (
@@ -265,7 +272,7 @@ export default function CheckInPage() {
             </div>
           )}
           <div className="border-t border-border pt-4">
-            <h3 className="font-medium mb-3">O crear nuevo huesped:</h3>
+            <h3 className="font-medium mb-3">O crear nuevo huésped:</h3>
             <div className="grid grid-cols-2 gap-3">
               <div><label className="text-sm">Nombres *</label><Input value={guestForm.firstName} onChange={e => setGuestForm({...guestForm, firstName: e.target.value})} /></div>
               <div><label className="text-sm">Apellidos *</label><Input value={guestForm.lastName} onChange={e => setGuestForm({...guestForm, lastName: e.target.value})} /></div>
@@ -277,7 +284,7 @@ export default function CheckInPage() {
               <div><label className="text-sm">RTN</label><Input value={guestForm.guestRTN} onChange={e => setGuestForm({...guestForm, guestRTN: e.target.value.replace(/\D/g, '').slice(0, 14)})} maxLength={14} /></div>
               <div className="flex items-center gap-2">
                 <input type="checkbox" checked={guestForm.hasVehicle} onChange={e => setGuestForm({...guestForm, hasVehicle: e.target.checked})} className="w-4 h-4" />
-                <label className="text-sm">Tiene vehiculo</label>
+                <label className="text-sm">Tiene vehículo</label>
               </div>
               {guestForm.hasVehicle && <div><label className="text-sm">Placa</label><Input value={guestForm.vehiclePlate} onChange={e => setGuestForm({...guestForm, vehiclePlate: e.target.value})} /></div>}
             </div>
@@ -303,7 +310,7 @@ export default function CheckInPage() {
               <div><label className="text-sm">RTN</label><Input value={guestForm.guestRTN} onChange={e => setGuestForm({...guestForm, guestRTN: e.target.value.replace(/\D/g, '').slice(0, 14)})} maxLength={14} /></div>
               <div className="flex items-center gap-2 pt-6">
                 <input type="checkbox" checked={guestForm.hasVehicle} onChange={e => setGuestForm({...guestForm, hasVehicle: e.target.checked})} className="w-4 h-4" />
-                <label className="text-sm">Tiene vehiculo</label>
+                <label className="text-sm">Tiene vehículo</label>
               </div>
               {guestForm.hasVehicle && <div><label className="text-sm">Placa</label><Input value={guestForm.vehiclePlate} onChange={e => setGuestForm({...guestForm, vehiclePlate: e.target.value})} /></div>}
             </div>
@@ -312,7 +319,7 @@ export default function CheckInPage() {
           {guestStats && (
             <div className="border border-border rounded-lg p-4 bg-muted/30">
               <h4 className="font-medium text-sm mb-2 flex items-center gap-1.5">
-                <BarChart3 size={16} /> Estadisticas
+                <BarChart3 size={16} /> Estadísticas
               </h4>
               <div className="text-sm space-y-1">
                 <p>Visitas anteriores: <strong>{guestStats.totalVisits}</strong></p>
@@ -350,7 +357,7 @@ export default function CheckInPage() {
             <div><label className="text-sm">Check-In</label><Input type="date" value={checkIn.checkInDate} onChange={e => setCheckIn({...checkIn, checkInDate: e.target.value})} /></div>
             <div><label className="text-sm">Check-Out</label><Input type="date" min={checkIn.checkInDate} value={checkIn.checkOutDate} onChange={e => setCheckIn({...checkIn, checkOutDate: e.target.value})} /></div>
           </div>
-          <h3 className="font-medium">Habitaciónes disponibles:</h3>
+          <h3 className="font-medium">Habitaciones disponibles:</h3>
           <div className="max-h-64 overflow-y-auto border border-border rounded-lg p-2">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {availableRooms.map(r => (
@@ -393,7 +400,7 @@ export default function CheckInPage() {
               </div>
             ))}
             {guestForm.classification === 'Cliente Frecuente' && !selectedDiscountId && (
-              <div className="p-2 bg-green-50 border border-green-200 rounded text-sm text-green-800 flex items-center gap-1">
+              <div className="p-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded text-sm text-green-800 dark:text-green-300 flex items-center gap-1">
                 <Star size={14} className="fill-green-500 text-green-500" /> Cliente Frecuente detectado. Seleccione el descuento si aplica.
               </div>
             )}

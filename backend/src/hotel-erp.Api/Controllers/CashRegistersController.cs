@@ -2,7 +2,6 @@ using AutoMapper;
 using hotel_erp.Api.Dtos.Cash;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -46,6 +45,10 @@ namespace hotel_erp.Api.Controllers
             var register = await _repo.GetByIdAsync(id);
             if (register == null) return NotFound();
 
+            var lastMovement = (await _movementRepo.GetByRegisterAsync(id)).OrderByDescending(m => m.MovementDate).FirstOrDefault();
+            if (lastMovement != null && lastMovement.MovementType != CashMovementType.Cierre)
+                return BadRequest("La caja ya se encuentra abierta.");
+
             var movement = new CashMovement
             {
                 CashRegisterId = id,
@@ -64,6 +67,10 @@ namespace hotel_erp.Api.Controllers
         {
             var register = await _repo.GetByIdAsync(id);
             if (register == null) return NotFound();
+
+            var lastMovement = (await _movementRepo.GetByRegisterAsync(id)).OrderByDescending(m => m.MovementDate).FirstOrDefault();
+            if (lastMovement == null || lastMovement.MovementType == CashMovementType.Cierre)
+                return BadRequest("La caja ya se encuentra cerrada.");
 
             var difference = request.CountedAmount - request.ExpectedAmount;
 

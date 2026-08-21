@@ -1,17 +1,37 @@
 import { create } from 'zustand'
 
+const initialDarkMode = localStorage.getItem('darkMode') === 'true'
+if (initialDarkMode) {
+  document.documentElement.classList.add('dark')
+} else {
+  document.documentElement.classList.remove('dark')
+}
+
+const initialSidebarOpen = localStorage.getItem('sidebarOpen') !== 'false'
+
 interface UIState {
   sidebarOpen: boolean
   darkMode: boolean
   toggleSidebar: () => void
+  setSidebarOpen: (open: boolean) => void
   toggleDarkMode: () => void
 }
 
 export const useUIStore = create<UIState>((set, get) => ({
-  sidebarOpen: true,
-  darkMode: localStorage.getItem('darkMode') === 'true',
+  sidebarOpen: initialSidebarOpen,
+  darkMode: initialDarkMode,
 
-  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+  toggleSidebar: () =>
+    set((state) => {
+      const next = !state.sidebarOpen
+      localStorage.setItem('sidebarOpen', String(next))
+      return { sidebarOpen: next }
+    }),
+
+  setSidebarOpen: (open: boolean) => {
+    localStorage.setItem('sidebarOpen', String(open))
+    set({ sidebarOpen: open })
+  },
 
   toggleDarkMode: () => {
     const newMode = !get().darkMode
@@ -24,3 +44,4 @@ export const useUIStore = create<UIState>((set, get) => ({
     set({ darkMode: newMode })
   },
 }))
+

@@ -59,18 +59,6 @@
               "target": "Package",
               "version": "[0.105.0, )"
             },
-            "FluentValidation.AspNetCore": {
-              "target": "Package",
-              "version": "[11.3.0, )"
-            },
-            "Hangfire": {
-              "target": "Package",
-              "version": "[1.8.18, )"
-            },
-            "Hangfire.PostgreSql": {
-              "target": "Package",
-              "version": "[1.20.10, )"
-            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[10.0.8, )"
@@ -97,15 +85,11 @@
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
-              "version": "[10.0.1, )"
+              "version": "[10.0.3, )"
             },
             "Serilog.AspNetCore": {
               "target": "Package",
               "version": "[10.0.0, )"
-            },
-            "Serilog.Sinks.PostgreSQL": {
-              "target": "Package",
-              "version": "[2.3.0, )"
             },
             "System.Drawing.Common": {
               "target": "Package",

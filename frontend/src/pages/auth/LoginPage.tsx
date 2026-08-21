@@ -49,9 +49,9 @@ export default function LoginPage() {
               <Hotel className="w-8 h-8 text-primary" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-foreground">Hotel ERP</h1>
+          <h1 className="text-2xl font-bold text-foreground">Hotel Maya Central</h1>
           <p className="text-sm text-muted-foreground">
-            Sistema de Gestión Hotelera y Contable
+            Sistema de Gestión Hotelera y Facturación SAR
           </p>
         </div>
 
@@ -99,7 +99,7 @@ export default function LoginPage() {
         </form>
 
         <p className="text-xs text-center text-muted-foreground">
-          © {new Date().getFullYear()} Hotel ERP Honduras
+          © {new Date().getFullYear()} Hotel Maya Central · Honduras
         </p>
       </div>
     </div>

@@ -24,6 +24,24 @@ namespace hotel_erp.Api.Database.Repositories
                 existing.Email = settings.Email;
                 existing.LogoBase64 = settings.LogoBase64;
                 existing.Footer = settings.Footer;
+                existing.IsvRate = settings.IsvRate;
+                existing.TouristTaxRate = settings.TouristTaxRate;
+                existing.PrintPrinterName = settings.PrintPrinterName;
+                existing.PrintWidth = settings.PrintWidth;
+                existing.PrintLogoHeight = settings.PrintLogoHeight;
+                existing.PrintFontSize = settings.PrintFontSize;
+                existing.PrintLineSpacing = settings.PrintLineSpacing;
+                existing.ShowLogo = settings.ShowLogo;
+                existing.ShowHeader = settings.ShowHeader;
+                existing.ShowFiscal = settings.ShowFiscal;
+                existing.ShowGuest = settings.ShowGuest;
+                existing.ShowItems = settings.ShowItems;
+                existing.ShowTotals = settings.ShowTotals;
+                existing.ShowPayment = settings.ShowPayment;
+                existing.ShowFooter = settings.ShowFooter;
+                existing.HeaderAlign = settings.HeaderAlign;
+                existing.SeparatorChar = settings.SeparatorChar;
+                existing.MarginLeft = settings.MarginLeft;
             }
             else
             {

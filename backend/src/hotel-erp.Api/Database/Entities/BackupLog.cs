@@ -1,6 +1,3 @@
-using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
-
 namespace hotel_erp.Api.Database.Entities
 {
     public class BackupLog : BaseEntity

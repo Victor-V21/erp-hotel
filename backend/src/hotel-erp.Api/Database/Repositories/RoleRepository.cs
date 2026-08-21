@@ -31,6 +31,18 @@ namespace hotel_erp.Api.Database.Repositories
 
         public async Task<IEnumerable<Permission>> GetRolePermissionsAsync(Guid roleId)
             => await _context.RolePermissions.Where(rp => rp.RoleId == roleId).Select(rp => rp.Permission).ToListAsync();
+
+        public async Task AssignPermissionsAsync(Guid roleId, IEnumerable<Guid> permissionIds)
+        {
+            var existing = await _context.RolePermissions.Where(rp => rp.RoleId == roleId).ToListAsync();
+            _context.RolePermissions.RemoveRange(existing);
+
+            foreach (var permId in permissionIds)
+            {
+                await _context.RolePermissions.AddAsync(new RolePermission { RoleId = roleId, PermissionId = permId });
+            }
+            await _context.SaveChangesAsync();
+        }
     }
 
     public class PermissionRepository : IPermissionRepository
@@ -43,7 +55,7 @@ namespace hotel_erp.Api.Database.Repositories
         public async Task<Permission?> GetByNameAsync(string name) => await _context.Permissions.FirstOrDefaultAsync(p => p.Name == name);
         public async Task<IEnumerable<Permission>> GetAllAsync() => await _context.Permissions.ToListAsync();
         public async Task AddAsync(Permission permission) { await _context.Permissions.AddAsync(permission); await _context.SaveChangesAsync(); }
-        public async Task DeleteAsync(Guid id) { var p = await _context.Permissions.FindAsync(id); if (p != null) { _context.Permissions.Remove(p); await _context.SaveChangesAsync(); } }
+        public async Task DeleteAsync(Guid id) { var p = await _context.Permissions.FindAsync(id); if (p != null) { p.IsDeleted = true; await _context.SaveChangesAsync(); } }
     }
 }
 

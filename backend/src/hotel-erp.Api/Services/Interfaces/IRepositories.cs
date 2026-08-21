@@ -1,5 +1,4 @@
 using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
 
 namespace hotel_erp.Api.Services.Interfaces
 {
@@ -25,6 +24,7 @@ namespace hotel_erp.Api.Services.Interfaces
         Task UpdateAsync(Role role);
         Task DeleteAsync(Guid id);
         Task<IEnumerable<Permission>> GetRolePermissionsAsync(Guid roleId);
+        Task AssignPermissionsAsync(Guid roleId, IEnumerable<Guid> permissionIds);
     }
 
     public interface IPermissionRepository
@@ -91,6 +91,7 @@ namespace hotel_erp.Api.Services.Interfaces
         Task AddAsync(Reservation reservation);
         Task UpdateAsync(Reservation reservation);
         Task DeleteAsync(Guid id);
+        Task<bool> HasOverlapAsync(Guid roomId, DateOnly checkIn, DateOnly checkOut, Guid excludeReservationId);
     }
 
     public interface IFolioRepository
@@ -135,7 +136,7 @@ namespace hotel_erp.Api.Services.Interfaces
         string CAINumber,
         string InitialRange,
         string FinalRange,
-        DateTime DueDate);
+        DateOnly DueDate);
 
     public interface IInvoiceRepository
     {
@@ -145,9 +146,10 @@ namespace hotel_erp.Api.Services.Interfaces
         Task<IEnumerable<Invoice>> GetByDateRangeAsync(DateTime start, DateTime end);
         Task<IEnumerable<Invoice>> GetByCustomerAsync(Guid customerId);
         Task<IEnumerable<Invoice>> GetByGuestDocumentAsync(string documentNumber);
+        Task<IEnumerable<Invoice>> GetByGuestAsync(Guid guestId);
         Task<IEnumerable<Invoice>> GetByAuthorizationAsync(Guid? caiId, Guid? documentAuthorizationId);
         Task AddAsync(Invoice invoice);
-        void DeleteInvoiceItems(Guid invoiceId);
+        Task DeleteInvoiceItemsAsync(Guid invoiceId);
         Task UpdateAsync(Invoice invoice);
         Task<string> GetNextCorrelativeAsync(Guid caiId);
     }
@@ -207,9 +209,28 @@ namespace hotel_erp.Api.Services.Interfaces
         Task DeleteAsync(Guid id);
     }
 
+    public interface IAccountingRepository
+    {
+        Task<List<AccountingAccount>> GetAllAccountsAsync();
+        Task<AccountingAccount?> GetAccountByIdAsync(Guid id);
+        Task<List<AccountingEntry>> GetAllEntriesAsync();
+        Task<AccountingEntry?> GetEntryByIdAsync(Guid id);
+        Task AddAccountAsync(AccountingAccount account);
+        Task AddEntryAsync(AccountingEntry entry);
+        Task UpdateAccountAsync(AccountingAccount account);
+        Task DeleteAccountAsync(AccountingAccount account);
+        Task<decimal> GetAccountBalanceAsync(Guid accountId);
+        Task<Dictionary<Guid, decimal>> GetAllAccountBalancesAsync();
+        Task<List<EntryItem>> GetAccountMovementsAsync(Guid accountId);
+        Task<Dictionary<Guid, (decimal Debit, decimal Credit)>> GetAccountTotalsAsync();
+        Task<bool> AccountNumberExistsAsync(string number);
+        Task DeleteAsync(Guid entryId);
+    }
+
     public interface IAccountingService
     {
         Task CreateInvoiceEntryAsync(Invoice invoice);
+        Task CreatePurchaseEntryAsync(PurchaseInvoice purchaseInvoice);
+        Task DeleteEntryByReferenceIdAsync(Guid referenceId);
     }
 }
-

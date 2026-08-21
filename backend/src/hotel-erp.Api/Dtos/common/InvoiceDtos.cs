@@ -34,13 +34,13 @@ namespace hotel_erp.Api.Dtos.Common
         [Required, RegularExpression("^(Factura|NotaCredito|NotaDebito)$")] string DocumentType,
         [Required, StringLength(50, MinimumLength = 10)] string CAINumber,
         [Required] DateOnly IssueDate,
-        [Required] DateTime DueDate,
+        [Required] DateOnly DueDate,
         [Required, RegularExpression("^\\d{3}-\\d{3}-\\d{2}-\\d{8}$")] string InitialRange,
         [Required, RegularExpression("^\\d{3}-\\d{3}-\\d{2}-\\d{8}$")] string FinalRange) : IValidatableObject
     {
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (DueDate <= IssueDate.ToDateTime(TimeOnly.MinValue))
+            if (DueDate <= IssueDate)
                 yield return new ValidationResult("La fecha de vencimiento debe ser posterior a la fecha de emisión", new[] { nameof(DueDate) });
 
             if (string.CompareOrdinal(FinalRange, InitialRange) < 0)

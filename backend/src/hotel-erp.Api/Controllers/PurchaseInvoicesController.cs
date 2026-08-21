@@ -3,7 +3,6 @@ using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Services;
 using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,12 +15,14 @@ namespace hotel_erp.Api.Controllers
     {
         private readonly IPurchaseInvoiceRepository _repo;
         private readonly ISupplierRepository _supplierRepo;
+        private readonly IAccountingService _accountingService;
         private readonly IMapper _mapper;
 
-        public PurchaseInvoicesController(IPurchaseInvoiceRepository repo, ISupplierRepository supplierRepo, IMapper mapper)
+        public PurchaseInvoicesController(IPurchaseInvoiceRepository repo, ISupplierRepository supplierRepo, IAccountingService accountingService, IMapper mapper)
         {
             _repo = repo;
             _supplierRepo = supplierRepo;
+            _accountingService = accountingService;
             _mapper = mapper;
         }
 
@@ -86,6 +87,7 @@ namespace hotel_erp.Api.Controllers
             };
 
             await _repo.AddAsync(purchaseInvoice);
+            await _accountingService.CreatePurchaseEntryAsync(purchaseInvoice);
             return CreatedAtAction(nameof(GetById), new { id = purchaseInvoice.Id }, _mapper.Map<PurchaseInvoiceDto>(purchaseInvoice));
         }
 
@@ -102,6 +104,7 @@ namespace hotel_erp.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
+            await _accountingService.DeleteEntryByReferenceIdAsync(id);
             await _repo.DeleteAsync(id);
             return NoContent();
         }

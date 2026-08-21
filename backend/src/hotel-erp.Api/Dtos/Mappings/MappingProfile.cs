@@ -3,6 +3,7 @@ using hotel_erp.Api.Database.Entities;
 using hotel_erp.Api.Dtos.Auth;
 using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Dtos.Cash;
+using hotel_erp.Api.Dtos.Accounting;
 using AutoMapper;
 using CustomerDto = hotel_erp.Api.Dtos.Customer.CustomerDto;
 using CreateCustomerRequest = hotel_erp.Api.Dtos.Customer.CreateCustomerRequest;
@@ -63,7 +64,7 @@ namespace hotel_erp.Api.Dtos.Mappings
             CreateMap<DocumentAuthorization, DocumentAuthorizationDto>()
                 .ForMember(d => d.DocumentType, o => o.MapFrom(s => s.DocumentType.ToString()))
                 .ForMember(d => d.Status, o => o.MapFrom(s => s.Status.ToString()))
-                .ForMember(d => d.IsExpiringSoon, o => o.MapFrom(s => s.DueDate <= DateTime.UtcNow.AddDays(30)))
+                .ForMember(d => d.IsExpiringSoon, o => o.MapFrom(s => s.DueDate <= DateOnly.FromDateTime(DateTime.UtcNow.AddDays(30))))
                 .ForMember(d => d.AttachmentPath, o => o.MapFrom(s => s.AttachmentPath));
             CreateMap<Invoice, InvoiceDto>()
                 .ForMember(d => d.CAINumber, o => o.MapFrom(s => s.CAI.CAINumber))
@@ -97,6 +98,18 @@ namespace hotel_erp.Api.Dtos.Mappings
                 .ForMember(d => d.CashRegisterName, o => o.MapFrom(s => s.CashRegister.Name))
                 .ForMember(d => d.UserName, o => o.MapFrom(s => s.User.FirstName + " " + s.User.LastName))
                 .ForMember(d => d.MovementType, o => o.MapFrom(s => s.MovementType.ToString()));
+
+            // Accounting
+            CreateMap<AccountingAccount, AccountingAccountDto>()
+                .ForMember(d => d.AccountType, o => o.MapFrom(s => s.AccountType.ToString()));
+            CreateMap<AccountingEntry, AccountingEntryDto>()
+                .ForMember(d => d.EntryType, o => o.MapFrom(s => s.EntryType.ToString()))
+                .ForMember(d => d.TotalDebit, o => o.MapFrom(s => s.EntryItems.Sum(i => i.Debit)))
+                .ForMember(d => d.TotalCredit, o => o.MapFrom(s => s.EntryItems.Sum(i => i.Credit)))
+                .ForMember(d => d.Items, o => o.MapFrom(s => s.EntryItems));
+            CreateMap<EntryItem, EntryItemDto>()
+                .ForMember(d => d.AccountNumber, o => o.MapFrom(s => s.Account.AccountNumber))
+                .ForMember(d => d.AccountName, o => o.MapFrom(s => s.Account.AccountName));
         }
     }
 }

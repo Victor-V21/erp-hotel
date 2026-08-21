@@ -2,8 +2,6 @@ using System.Text;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Services;
 using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,7 +50,8 @@ namespace hotel_erp.Api.Controllers
             if (width.HasValue) settings.PrintWidth = width.Value;
             var fake = BuildFakeInvoice(settings);
             var text = _escPosService.GeneratePreviewText(fake, settings, "Juan Perez", "15/05/2026", "18/05/2026");
-            return Ok(new { text, logoBase64 = settings.LogoBase64 ?? "", printLogoHeight = settings.PrintLogoHeight, printWidth = settings.PrintWidth });
+            var logo = settings.ShowLogo ? settings.LogoBase64 ?? "" : "";
+            return Ok(new { text, logoBase64 = logo, printLogoHeight = settings.PrintLogoHeight, printWidth = settings.PrintWidth });
         }
 
         [HttpPost("test-print")]
@@ -152,7 +151,8 @@ namespace hotel_erp.Api.Controllers
             }
 
             var text = _escPosService.GeneratePreviewText(invoice, settings, guestName, checkIn, checkOut);
-            return Ok(new { text, logoBase64 = settings.LogoBase64 ?? "", printLogoHeight = settings.PrintLogoHeight, printWidth = settings.PrintWidth });
+            var logo = settings.ShowLogo ? settings.LogoBase64 ?? "" : "";
+            return Ok(new { text, logoBase64 = logo, printLogoHeight = settings.PrintLogoHeight, printWidth = settings.PrintWidth });
         }
 
         [HttpPost("invoice/{id}")]

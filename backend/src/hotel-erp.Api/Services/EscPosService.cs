@@ -1,6 +1,5 @@
 using System.Text;
 using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
 
 namespace hotel_erp.Api.Services
 {
@@ -212,13 +211,11 @@ namespace hotel_erp.Api.Services
         {
             var lines = BuildLines(invoice, settings, guestName, checkIn, checkOut, "ORIGINAL: CLIENTE", true);
             var w = settings?.PrintWidth > 0 ? settings.PrintWidth : 46;
-            var ml = settings?.MarginLeft ?? 0;
-            var margin = ml > 0 ? new string(' ', ml) : "";
             var processed = lines.Select(line =>
                 line.StartsWith(CenterPrefix)
-                    ? margin + Ctr(line.Replace(CenterPrefix, ""), w)
+                    ? Ctr(line.Replace(CenterPrefix, ""), w)
                     : line
-            );
+            ).Select(SanitizeText);
             return string.Join("\n", processed);
         }
 
@@ -245,7 +242,7 @@ namespace hotel_erp.Api.Services
                 else W(LineSpacing1);
 
                 // Logo (solo en original)
-                if (includeLogo && !string.IsNullOrEmpty(settings?.LogoBase64))
+                if (includeLogo && settings?.ShowLogo != false && !string.IsNullOrEmpty(settings?.LogoBase64))
                 {
                     try
                     {

@@ -1,19 +1,18 @@
 services:
-  postgres:
-    image: postgres:15-alpine
+  db:
+    image: postgres:16-alpine
     restart: always
     environment:
-      POSTGRES_DB: hotel_erp_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: hotel_erp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ../database/migrations:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d hotel_erp_db"]
-      interval: 10s
+      test: ["CMD-SHELL", "pg_isready -U postgres -d hotel_erp"]
+      interval: 5s
       timeout: 5s
       retries: 5
 
@@ -25,13 +24,12 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://+:8080
-      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Username=user;Password=password;Database=hotel_erp_db"
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=hotel_erp;Username=postgres;Password=postgrespassword;Include Error Detail=true"
       Jwt__SecretKey: "SuperSecretKey2024HotelERPHonduras!@#$%^&*()MinimumLength32Chars"
       Jwt__Issuer: "HotelERP"
       Jwt__Audience: "HotelERP"
       Backup__Enabled: "true"
       Backup__LocalPath: "/hotel-erp/backups"
-      Backup__PgDumpPath: "pg_dump"
       Backup__RunAt: "02:00"
       Backup__PendingUploadIntervalHours: "2"
       Backup__RetentionYears: "5"
@@ -42,13 +40,13 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      postgres:
+      db:
         condition: service_healthy
 
   frontend:
     build:
-      context: ../frontend
-      dockerfile: ../docker/frontend/Dockerfile
+      context: ..
+      dockerfile: docker/frontend/Dockerfile
     restart: always
     ports:
       - "3000:80"

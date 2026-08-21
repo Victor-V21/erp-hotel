@@ -15,12 +15,14 @@ namespace hotel_erp.Api.Controllers
     {
         private readonly IGuestRepository _repo;
         private readonly IReservationRepository _reservationRepo;
+        private readonly IInvoiceRepository _invoiceRepo;
         private readonly IMapper _mapper;
 
-        public GuestsController(IGuestRepository repo, IReservationRepository reservationRepo, IMapper mapper)
+        public GuestsController(IGuestRepository repo, IReservationRepository reservationRepo, IInvoiceRepository invoiceRepo, IMapper mapper)
         {
             _repo = repo;
             _reservationRepo = reservationRepo;
+            _invoiceRepo = invoiceRepo;
             _mapper = mapper;
         }
 
@@ -152,6 +154,14 @@ namespace hotel_erp.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
+            var reservations = await _reservationRepo.GetByGuestAsync(id);
+            if (reservations.Any())
+                return BadRequest("No se puede eliminar el huésped porque tiene reservaciones asociadas.");
+
+            var invoices = await _invoiceRepo.GetByGuestAsync(id);
+            if (invoices.Any())
+                return BadRequest("No se puede eliminar el huésped porque tiene facturas emitidas (trazabilidad fiscal).");
+
             await _repo.DeleteAsync(id);
             return NoContent();
         }

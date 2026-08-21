@@ -4,11 +4,11 @@ namespace hotel_erp.Api.Dtos.Common
 {
     public record BusinessSettingsDto
     {
-        public string BusinessName { get; set; } = "Hotel ERP Honduras";
+        public string BusinessName { get; set; } = "Hotel Maya Central";
         public string RTN { get; set; } = "08019012345678";
         public string Address { get; set; } = "Santa Rosa de Copán, Honduras";
         public string Phone { get; set; } = "9999-0000";
-        public string Email { get; set; } = "info@hotelerp.com";
+        public string Email { get; set; } = "info@hotelmayacentral.com";
         public string? LogoBase64 { get; set; }
         public string Footer { get; set; } = "¡Gracias por su preferencia!";
         public decimal IsvRate { get; set; } = 0.15m;

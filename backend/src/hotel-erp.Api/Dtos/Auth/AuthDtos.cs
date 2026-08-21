@@ -81,6 +81,25 @@ namespace hotel_erp.Api.Dtos.Auth
     public record AssignPermissionsRequest(
         [NotEmptyGuid] Guid RoleId,
         [Required, MinLength(1)] List<string> PermissionNames);
+
+    public record CreateUserRequest(
+        [Required, StringLength(50, MinimumLength = 3)] string Username,
+        [Required, StringLength(100, MinimumLength = 8)] string Password,
+        [Required, EmailAddress, StringLength(100)] string Email,
+        [Required, StringLength(50, MinimumLength = 2)] string FirstName,
+        [Required, StringLength(50, MinimumLength = 2)] string LastName,
+        List<string>? Roles);
+
+    public record UpdateUserRequest(
+        [StringLength(50, MinimumLength = 2)] string? FirstName,
+        [StringLength(50, MinimumLength = 2)] string? LastName,
+        [EmailAddress, StringLength(100)] string? Email,
+        bool? IsActive,
+        List<string>? Roles);
+
+    public record AdminResetPasswordRequest(
+        [Required, StringLength(100, MinimumLength = 8)] string NewPassword);
 }
+
 
 

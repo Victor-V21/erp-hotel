@@ -4,6 +4,7 @@ import api from '@/lib/axios'
 import type { BusinessSettings } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { InlineAlert } from '@/components/ui/InlineAlert'
 
 const PAPER_PRESETS = [
   { label: '58mm', width: 34 }, { label: '76mm', width: 40 },
@@ -25,7 +26,7 @@ const SECTIONS: { key: SectionKey; label: string }[] = [
   { key: 'showLogo', label: 'Logo' },
   { key: 'showHeader', label: 'Encabezado' },
   { key: 'showFiscal', label: 'Info. Fiscal' },
-  { key: 'showGuest', label: 'Huesped' },
+  { key: 'showGuest', label: 'Huésped' },
   { key: 'showItems', label: 'Items' },
   { key: 'showTotals', label: 'Totales' },
   { key: 'showPayment', label: 'Pago' },
@@ -50,6 +51,7 @@ export default function SettingsPage() {
   const [loadingPreview, setLoadingPreview] = useState(false)
   const [printResult, setPrintResult] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
+  const [saveSuccess, setSaveSuccess] = useState(false)
   const [customSlider, setCustomSlider] = useState(false)
   const [observedWidth, setObservedWidth] = useState(46)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -97,7 +99,7 @@ export default function SettingsPage() {
     if (!s.printPrinterName) return
     setTesting(true); setPrinterTest(null)
     try { const { data } = await api.get('/print/test', { params: { name: s.printPrinterName } }); setPrinterTest(data) }
-    catch { setPrinterTest({ success: false, message: 'Error de conexion' }) }
+    catch { setPrinterTest({ success: false, message: 'Error de conexión' }) }
     finally { setTesting(false) }
   }
 
@@ -115,7 +117,12 @@ export default function SettingsPage() {
 
   const save = async () => {
     setSaving(true)
-    try { await api.put('/settings/business', { ...s, logoBase64: logoPreview || null }); alert('Guardado') }
+    setSaveSuccess(false)
+    try { 
+      await api.put('/settings/business', { ...s, logoBase64: logoPreview || null })
+      setSaveSuccess(true)
+      setTimeout(() => setSaveSuccess(false), 3000)
+    }
     finally { setSaving(false) }
   }
 
@@ -124,7 +131,7 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold">Configuracion de Impresion</h1>
+      <h1 className="text-2xl font-bold">Configuración de Impresión</h1>
 
       <div className="space-y-4">
         {/* Datos del negocio */}
@@ -140,7 +147,7 @@ export default function SettingsPage() {
               <Input value={s.rtn} onChange={e => setS({...s, rtn: e.target.value})} maxLength={14} />
             </div>
             <div>
-              <label className="text-sm font-medium">Telefono</label>
+              <label className="text-sm font-medium">Teléfono</label>
               <Input value={s.phone} onChange={e => setS({...s, phone: e.target.value})} />
             </div>
             <div>
@@ -148,11 +155,11 @@ export default function SettingsPage() {
               <Input value={s.email} onChange={e => setS({...s, email: e.target.value})} />
             </div>
             <div className="col-span-2">
-              <label className="text-sm font-medium">Direccion</label>
+              <label className="text-sm font-medium">Dirección</label>
               <Input value={s.address} onChange={e => setS({...s, address: e.target.value})} />
             </div>
             <div className="col-span-2">
-              <label className="text-sm font-medium">Pie de Pagina</label>
+              <label className="text-sm font-medium">Pie de Página</label>
               <Input value={s.footer} onChange={e => setS({...s, footer: e.target.value})} />
             </div>
             <div>
@@ -160,7 +167,7 @@ export default function SettingsPage() {
               <Input type="number" step="0.01" min={0} max={100} value={s.isvRate * 100} onChange={e => setS({...s, isvRate: +e.target.value / 100})} />
             </div>
             <div>
-              <label className="text-sm font-medium">Tasa Turistica (%)</label>
+              <label className="text-sm font-medium">Tasa Turística (%)</label>
               <Input type="number" step="0.01" min={0} max={100} value={s.touristTaxRate * 100} onChange={e => setS({...s, touristTaxRate: +e.target.value / 100})} />
             </div>
           </div>
@@ -214,7 +221,7 @@ export default function SettingsPage() {
               }}>Aplicar</Button>
             </div>
             {printerTest && (
-              <div className={`mt-1 p-2 rounded text-sm ${printerTest.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+              <div className={`mt-1 p-2 rounded text-sm ${printerTest.success ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300' : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300'}`}>
                 {printerTest.success ? 'OK: ' : 'Error: '}{printerTest.message}
               </div>
             )}
@@ -242,7 +249,7 @@ export default function SettingsPage() {
               </div>
             )}
             <p className="text-xs text-muted-foreground mt-1">
-              Imprima la regla, observe el ultimo numero visible en el papel e ingrese ese valor en "Ancho observado".
+              Imprima la regla, observe el último número visible en el papel e ingrese ese valor en "Ancho observado".
             </p>
           </div>
 
@@ -314,11 +321,18 @@ export default function SettingsPage() {
             </div>
           )}
           {printResult && (
-            <div className={`p-2 rounded text-sm ${printResult.includes('Error') ? 'bg-red-50 text-red-800' : 'bg-green-50 text-green-800'}`}>{printResult}</div>
+            <div className={`p-2 rounded text-sm ${printResult.includes('Error') ? 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300' : 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300'}`}>{printResult}</div>
           )}
         </div>
 
-        <Button onClick={save} disabled={saving} className="w-full">{saving ? 'Guardando...' : 'Guardar Configuracion'}</Button>
+        <Button onClick={save} disabled={saving} className="w-full">{saving ? 'Guardando...' : 'Guardar Configuración'}</Button>
+        {saveSuccess && (
+          <InlineAlert
+            variant="success"
+            message="Configuración guardada exitosamente"
+            onClose={() => setSaveSuccess(false)}
+          />
+        )}
       </div>
     </div>
   )

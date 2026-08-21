@@ -4,10 +4,12 @@ import api from '@/lib/axios'
 import type { Invoice, InvoiceItem } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useTaxRates } from '@/hooks/useTaxRates'
 
 export default function InvoiceEditPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { isvRate, touristTaxRate } = useTaxRates()
   const [invoice, setInvoice] = useState<Invoice | null>(null)
   const [customerName, setCustomerName] = useState('')
   const [rtnCliente, setRtnCliente] = useState('')
@@ -16,18 +18,24 @@ export default function InvoiceEditPage() {
 
   useEffect(() => {
     if (!id) return
-    api.get<Invoice>(`/invoices/${id}`).then(({ data }) => {
-      setInvoice(data)
-      setCustomerName(data.customerName)
-      setRtnCliente(data.rtnCliente || '')
-      setItems(data.items)
-    })
+    const fetchInvoice = async () => {
+      try {
+        const { data } = await api.get<Invoice>(`/invoices/${id}`)
+        setInvoice(data)
+        setCustomerName(data.customerName)
+        setRtnCliente(data.rtnCliente || '')
+        setItems(data.items)
+      } catch (err) {
+        alert('Error al cargar factura')
+      }
+    }
+    fetchInvoice()
   }, [id])
 
   const total = items.reduce((sum, i) => {
     const line = i.quantity * i.unitPrice
-    const isv = i.isExempt ? 0 : line * 0.15
-    const tourist = i.isTouristTaxable ? line * 0.04 : 0
+    const isv = i.isExempt ? 0 : line * isvRate
+    const tourist = i.isTouristTaxable ? line * touristTaxRate : 0
     return sum + line + isv + tourist
   }, 0)
 
@@ -48,6 +56,8 @@ export default function InvoiceEditPage() {
       await api.put(`/invoices/${id}`, payload)
       alert('Factura actualizada')
       navigate(`/invoices`)
+    } catch (err) {
+      alert('Error al guardar factura')
     } finally { setSaving(false) }
   }
 
@@ -75,7 +85,7 @@ export default function InvoiceEditPage() {
               <Button size="sm" variant="destructive" onClick={() => setItems(items.filter((_, i) => i !== idx))} className="mb-0.5">X</Button>
             </div>
           ))}
-          <Button size="sm" variant="outline" onClick={() => setItems([...items, { description: '', quantity: 1, unitPrice: 0, lineTotal: 0, isExempt: false, isvRate: 0.15, isTouristTaxable: true, discountPercentage: 0 }])}>
+          <Button size="sm" variant="outline" onClick={() => setItems([...items, { description: '', quantity: 1, unitPrice: 0, lineTotal: 0, isExempt: false, isvRate: isvRate, isTouristTaxable: true, discountPercentage: 0 }])}>
             + Agregar Item
           </Button>
         </div>

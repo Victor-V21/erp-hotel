@@ -1,6 +1,5 @@
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
 using hotel_erp.Api.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -98,6 +97,65 @@ namespace hotel_erp.Api.Services
             await _context.AccountingAccounts.AddAsync(account);
             await _context.SaveChangesAsync();
             return account;
+        }
+
+        public async Task CreatePurchaseEntryAsync(PurchaseInvoice purchaseInvoice)
+        {
+            if (await _context.AccountingEntries.AnyAsync(e => e.ReferenceId == purchaseInvoice.Id))
+                return;
+
+            var expenseAccount = await GetOrCreateAccountAsync("5109", "Gastos varios", AccountType.Gasto);
+            var isvAccount = await GetOrCreateAccountAsync("2101", "ISV por pagar", AccountType.Pasivo);
+            var supplierAccount = await GetOrCreateAccountAsync("2103", "Proveedores", AccountType.Pasivo);
+
+            var entry = new AccountingEntry
+            {
+                TransactionDate = DateOnly.FromDateTime(purchaseInvoice.InvoiceDate),
+                Description = $"Compra {purchaseInvoice.InvoiceNumber}",
+                EntryType = EntryType.Diario,
+                ReferenceId = purchaseInvoice.Id
+            };
+
+            entry.EntryItems.Add(new EntryItem
+            {
+                AccountId = expenseAccount.Id,
+                Debit = purchaseInvoice.SubTotal,
+                Credit = 0,
+                Description = $"Compra {purchaseInvoice.InvoiceNumber}"
+            });
+
+            if (purchaseInvoice.ISVAmount > 0)
+            {
+                entry.EntryItems.Add(new EntryItem
+                {
+                    AccountId = isvAccount.Id,
+                    Debit = purchaseInvoice.ISVAmount,
+                    Credit = 0,
+                    Description = "ISV crédito fiscal"
+                });
+            }
+
+            entry.EntryItems.Add(new EntryItem
+            {
+                AccountId = supplierAccount.Id,
+                Debit = 0,
+                Credit = purchaseInvoice.TotalAmount,
+                Description = $"Proveedor factura {purchaseInvoice.InvoiceNumber}"
+            });
+
+            await _context.AccountingEntries.AddAsync(entry);
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task DeleteEntryByReferenceIdAsync(Guid referenceId)
+        {
+            var entry = await _context.AccountingEntries.FirstOrDefaultAsync(e => e.ReferenceId == referenceId);
+            if (entry != null)
+            {
+                entry.IsDeleted = true;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

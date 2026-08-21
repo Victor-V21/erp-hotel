@@ -1,10 +1,7 @@
-using System.Diagnostics;
 using System.Security.Cryptography;
-using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
 using hotel_erp.Api.Database;
+using hotel_erp.Api.Database.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Npgsql;
 
@@ -26,7 +23,7 @@ namespace hotel_erp.Api.Services
         public async Task RunLocalBackupAsync(CancellationToken cancellationToken = default)
         {
             Directory.CreateDirectory(_options.LocalPath);
-            var fileName = $"hotel_erp_{DateTime.UtcNow:yyyyMMdd_HHmmss}.dump";
+            var fileName = $"hotel_erp_{DateTime.UtcNow:yyyyMMdd_HHmmss}.sql";
             var fullPath = Path.Combine(_options.LocalPath, fileName);
             var log = new BackupLog
             {
@@ -38,7 +35,7 @@ namespace hotel_erp.Api.Services
 
             try
             {
-                await ExecutePgDumpAsync(fullPath, cancellationToken);
+                await DumpPostgresDatabaseAsync(fullPath, cancellationToken);
                 var info = new FileInfo(fullPath);
                 log.SizeBytes = info.Length;
                 log.Sha256Hash = await ComputeSha256Async(fullPath, cancellationToken);
@@ -93,13 +90,43 @@ namespace hotel_erp.Api.Services
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        private async Task ExecutePgDumpAsync(string outputPath, CancellationToken cancellationToken)
+        private async Task DumpPostgresDatabaseAsync(string outputPath, CancellationToken cancellationToken)
         {
             var connectionString = _configuration.GetConnectionString("DefaultConnection")
-                ?? throw new InvalidOperationException("No hay cadena de conexión DefaultConnection");
+                ?? throw new InvalidOperationException("No hay cadena de conexión DefaultConnection configurada");
+
             var builder = new NpgsqlConnectionStringBuilder(connectionString);
-            var args = $"--format=custom --file=\"{outputPath}\" --host={builder.Host} --port={builder.Port} --username={builder.Username} --dbname={builder.Database}";
-            await ExecuteProcessAsync(_options.PgDumpPath, args, builder.Password, cancellationToken);
+            var host = string.IsNullOrWhiteSpace(builder.Host) ? "localhost" : builder.Host;
+            var port = builder.Port > 0 ? builder.Port : 5432;
+            var database = builder.Database ?? "hotel_erp";
+            var username = builder.Username ?? "postgres";
+            var password = builder.Password ?? string.Empty;
+
+            var startInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "pg_dump",
+                Arguments = $"-h {host} -p {port} -U {username} -d {database} -F p -f \"{outputPath}\"",
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            if (!string.IsNullOrEmpty(password))
+            {
+                startInfo.EnvironmentVariables["PGPASSWORD"] = password;
+            }
+
+            using var process = System.Diagnostics.Process.Start(startInfo)
+                ?? throw new InvalidOperationException("No se pudo iniciar el comando pg_dump. Verifique que pg_dump esté instalado y disponible en el PATH del sistema o contenedor.");
+
+            var error = await process.StandardError.ReadToEndAsync(cancellationToken);
+            await process.WaitForExitAsync(cancellationToken);
+
+            if (process.ExitCode != 0)
+            {
+                throw new InvalidOperationException($"pg_dump falló con código {process.ExitCode}: {error}");
+            }
         }
 
         private async Task ExecuteUploadCommandAsync(string filePath, CancellationToken cancellationToken)
@@ -108,20 +135,18 @@ namespace hotel_erp.Api.Services
             var parts = command.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
             var fileName = parts[0];
             var args = parts.Length > 1 ? parts[1] : string.Empty;
-            await ExecuteProcessAsync(fileName, args, null, cancellationToken);
+            await ExecuteProcessAsync(fileName, args, cancellationToken);
         }
 
-        private static async Task ExecuteProcessAsync(string fileName, string arguments, string? pgPassword, CancellationToken cancellationToken)
+        private static async Task ExecuteProcessAsync(string fileName, string arguments, CancellationToken cancellationToken)
         {
-            var startInfo = new ProcessStartInfo(fileName, arguments)
+            using var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(fileName, arguments)
             {
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
                 UseShellExecute = false
-            };
-            if (!string.IsNullOrEmpty(pgPassword)) startInfo.Environment["PGPASSWORD"] = pgPassword;
+            }) ?? throw new InvalidOperationException($"No se pudo iniciar {fileName}");
 
-            using var process = Process.Start(startInfo) ?? throw new InvalidOperationException($"No se pudo iniciar {fileName}");
             var error = await process.StandardError.ReadToEndAsync(cancellationToken);
             await process.WaitForExitAsync(cancellationToken);
             if (process.ExitCode != 0) throw new InvalidOperationException(error);
@@ -135,4 +160,3 @@ namespace hotel_erp.Api.Services
         }
     }
 }
-

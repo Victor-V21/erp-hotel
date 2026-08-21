@@ -85,6 +85,10 @@ export interface Guest {
   guestRTN?: string
   preferences?: string
   classification?: string
+  taxpayerType?: string
+  exonerationOrderNumber?: string
+  sefinExonerationCertificateNumber?: string
+  sagRegistryNumber?: string
 }
 
 export interface Customer {
@@ -94,6 +98,47 @@ export interface Customer {
   address?: string
   phone?: string
   email?: string
+  taxpayerType: string
+  exonerationOrderNumber?: string
+  sefinExonerationCertificateNumber?: string
+  sagRegistryNumber?: string
+  isIsvExempt: boolean
+  isTouristTaxExempt: boolean
+  exonerationValidFrom?: string
+  exonerationValidTo?: string
+}
+
+export interface Category {
+  id: string
+  name: string
+  description?: string
+}
+
+export interface Product {
+  id: string
+  name: string
+  description?: string
+  sku?: string
+  categoryId?: string
+  categoryName?: string
+  unitPrice: number
+  currentStock: number
+  minStockLevel: number
+  isActive: boolean
+}
+
+export interface InventoryMovement {
+  id: string
+  productId: string
+  productName: string
+  movementType: string
+  quantity: number
+  movementDate: string
+  unitPrice?: number
+  totalValue?: number
+  newStock: number
+  referenceId?: string
+  userName?: string
 }
 
 export interface CAI {
@@ -229,3 +274,184 @@ export interface InvoicePrintData {
   pago: { metodo: string; efectivoRecibido?: number; cambio?: number; letras: string }
   footer: string
 }
+
+export interface AccountingAccount {
+  id: string
+  accountNumber: string
+  accountName: string
+  accountType: string
+  parentAccountId?: string
+  isActive: boolean
+  balance: number
+  children: AccountingAccount[]
+}
+
+export interface AccountingEntry {
+  id: string
+  transactionDate: string
+  description: string
+  entryType: string
+  referenceId?: string
+  totalDebit: number
+  totalCredit: number
+  items: EntryItem[]
+}
+
+export interface EntryItem {
+  id: string
+  accountId: string
+  accountNumber: string
+  accountName: string
+  debit: number
+  credit: number
+  description?: string
+}
+
+export interface DashboardStat {
+  title: string
+  value: string
+  trend?: string
+}
+
+export interface DashboardAlert {
+  title: string
+  description: string
+  severity: string
+}
+
+export interface DashboardInvoice {
+  correlativeNumber: string
+  customerName: string
+  totalAmount: number
+  status: string
+  invoiceDate: string
+}
+
+export interface DashboardReservation {
+  guestName: string
+  roomNumber: string
+  status: string
+  checkInDate: string
+  checkOutDate: string
+}
+
+export interface DashboardCash {
+  registerName: string
+  balance: number
+}
+
+export interface DashboardSummary {
+  stats: DashboardStat[]
+  alerts: DashboardAlert[]
+  recentInvoices: DashboardInvoice[]
+  upcomingReservations: DashboardReservation[]
+  cash?: DashboardCash | null
+  occupiedRooms: number
+  freeRooms: number
+  pendingCheckIns: number
+  pendingCheckOuts: number
+}
+
+export interface TrialBalanceItem {
+  accountId: string
+  accountNumber: string
+  accountName: string
+  accountType: string
+  previousBalance: number
+  debit: number
+  credit: number
+  balance: number
+}
+
+export interface AccountMovement {
+  date: string
+  description: string
+  debit: number
+  credit: number
+  balance: number
+  referenceType: string
+}
+
+export interface CreateAccountRequest {
+  accountNumber: string
+  accountName: string
+  accountType: string
+  parentAccountId?: string
+}
+
+export interface Discount {
+  id: string
+  name: string
+  description?: string
+  discountType: string
+  value: number
+  isActive: boolean
+  applicableTo?: string
+  requiresDocument: boolean
+  minAge?: number
+  priority: number
+}
+
+export interface FolioItem {
+  id: string
+  description: string
+  quantity: number
+  unitPrice: number
+  lineTotal: number
+  isExempt: boolean
+  isvRate: number
+  isTouristTaxable: boolean
+  discountPercentage: number
+}
+
+export interface Folio {
+  id: string
+  reservationId: string
+  guestId: string
+  guestName: string
+  roomId: string
+  roomNumber: string
+  openingDate: string
+  closingDate: string | null
+  totalAmount: number
+  status: string
+  items: FolioItem[]
+}
+
+export interface BackupLog {
+  id: string
+  startedAt: string
+  completedAt: string | null
+  fileName: string
+  sizeBytes: number
+  sha256Hash: string | null
+  status: string
+  uploadedAt: string | null
+  uploadAttempts: number
+  errorMessage: string | null
+}
+
+export interface Role {
+  id: string
+  name: string
+  description?: string
+  permissions?: string[]
+}
+
+export interface CreateUserRequest {
+  username: string
+  password: string
+  email: string
+  firstName: string
+  lastName: string
+  roles?: string[]
+}
+
+export interface UpdateUserRequest {
+  firstName?: string
+  lastName?: string
+  email?: string
+  isActive?: boolean
+  roles?: string[]
+}
+

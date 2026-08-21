@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
 
 namespace hotel_erp.Api.Database
 {
@@ -34,6 +32,7 @@ namespace hotel_erp.Api.Database
         public DbSet<DocumentAuthorization> DocumentAuthorizations => Set<DocumentAuthorization>();
         public DbSet<Invoice> Invoices => Set<Invoice>();
         public DbSet<InvoiceItem> InvoiceItems => Set<InvoiceItem>();
+        public DbSet<CorrelativeLock> CorrelativeLocks => Set<CorrelativeLock>();
         public DbSet<TaxConfiguration> TaxConfigurations => Set<TaxConfiguration>();
 
         // Cash
@@ -118,7 +117,7 @@ namespace hotel_erp.Api.Database
 
             modelBuilder.Entity<AuditLog>()
                 .Property(al => al.Changes)
-                .HasColumnType("jsonb");
+                .HasColumnType("TEXT");
             modelBuilder.Entity<AuditLog>()
                 .HasIndex(al => al.Hash)
                 .IsUnique();
@@ -212,6 +211,12 @@ namespace hotel_erp.Api.Database
                 .Property(c => c.Status)
                 .HasConversion<string>()
                 .HasMaxLength(20);
+            modelBuilder.Entity<CAI>().HasQueryFilter(c => !c.IsDeleted);
+
+            modelBuilder.Entity<CorrelativeLock>().HasKey(l => l.LockName);
+            modelBuilder.Entity<CorrelativeLock>()
+                .Property(l => l.LockName)
+                .HasMaxLength(100);
 
             // DocumentAuthorization
             modelBuilder.Entity<DocumentAuthorization>()
@@ -231,7 +236,10 @@ namespace hotel_erp.Api.Database
 
             // Invoice
             modelBuilder.Entity<Invoice>()
-                .HasIndex(i => i.CorrelativeNumber)
+                .HasIndex(i => new { i.CAIId, i.CorrelativeNumber })
+                .IsUnique();
+            modelBuilder.Entity<Invoice>()
+                .HasIndex(i => new { i.DocumentAuthorizationId, i.CorrelativeNumber })
                 .IsUnique();
             modelBuilder.Entity<Invoice>()
                 .Property(i => i.DocumentType)
@@ -270,6 +278,7 @@ namespace hotel_erp.Api.Database
                 .WithMany()
                 .HasForeignKey(i => i.OriginalInvoiceId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Invoice>().HasQueryFilter(i => !i.IsDeleted);
 
             // InvoiceItem
             modelBuilder.Entity<InvoiceItem>()
@@ -277,6 +286,7 @@ namespace hotel_erp.Api.Database
                 .WithMany(i => i.InvoiceItems)
                 .HasForeignKey(ii => ii.InvoiceId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<InvoiceItem>().HasQueryFilter(ii => !ii.IsDeleted);
 
             // CashMovement
             modelBuilder.Entity<CashMovement>()
@@ -291,6 +301,10 @@ namespace hotel_erp.Api.Database
                 .HasOne(cm => cm.User)
                 .WithMany(u => u.CashMovements)
                 .HasForeignKey(cm => cm.UserId);
+            modelBuilder.Entity<CashMovement>().HasQueryFilter(cm => !cm.IsDeleted);
+
+            // CashRegister
+            modelBuilder.Entity<CashRegister>().HasQueryFilter(cr => !cr.IsDeleted);
 
             // Product
             modelBuilder.Entity<Product>().HasIndex(p => p.SKU).IsUnique();
@@ -303,6 +317,7 @@ namespace hotel_erp.Api.Database
 
             // Category
             modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
+            modelBuilder.Entity<Category>().HasQueryFilter(c => !c.IsDeleted);
 
             // InventoryMovement
             modelBuilder.Entity<InventoryMovement>()
@@ -318,6 +333,7 @@ namespace hotel_erp.Api.Database
                 .WithMany()
                 .HasForeignKey(im => im.UserId)
                 .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<InventoryMovement>().HasQueryFilter(im => !im.IsDeleted);
 
             // AccountingAccount
             modelBuilder.Entity<AccountingAccount>().HasIndex(a => a.AccountNumber).IsUnique();
@@ -330,12 +346,14 @@ namespace hotel_erp.Api.Database
                 .WithMany(a => a.ChildAccounts)
                 .HasForeignKey(a => a.ParentAccountId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<AccountingAccount>().HasQueryFilter(a => !a.IsDeleted);
 
             // AccountingEntry
             modelBuilder.Entity<AccountingEntry>()
                 .Property(ae => ae.EntryType)
                 .HasConversion<string>()
                 .HasMaxLength(20);
+            modelBuilder.Entity<AccountingEntry>().HasQueryFilter(ae => !ae.IsDeleted);
 
             // EntryItem
             modelBuilder.Entity<EntryItem>()
@@ -347,15 +365,18 @@ namespace hotel_erp.Api.Database
                 .HasOne(ei => ei.Account)
                 .WithMany(a => a.EntryItems)
                 .HasForeignKey(ei => ei.AccountId);
+            modelBuilder.Entity<EntryItem>().HasQueryFilter(ei => !ei.IsDeleted);
 
             // TaxConfiguration
             modelBuilder.Entity<TaxConfiguration>().HasIndex(tc => tc.Name).IsUnique();
+            modelBuilder.Entity<TaxConfiguration>().HasQueryFilter(tc => !tc.IsDeleted);
 
             // Discount
             modelBuilder.Entity<Discount>()
                 .Property(d => d.DiscountType)
                 .HasConversion<string>()
                 .HasMaxLength(20);
+            modelBuilder.Entity<Discount>().HasQueryFilter(d => !d.IsDeleted);
 
             // Supplier
             modelBuilder.Entity<Supplier>().HasIndex(s => s.RTN).IsUnique();
@@ -380,6 +401,7 @@ namespace hotel_erp.Api.Database
                 .WithMany(pi => pi.PurchaseInvoiceItems)
                 .HasForeignKey(pii => pii.PurchaseInvoiceId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<PurchaseInvoiceItem>().HasQueryFilter(pii => !pii.IsDeleted);
 
             // BackupLog
             modelBuilder.Entity<BackupLog>()
@@ -387,34 +409,19 @@ namespace hotel_erp.Api.Database
                 .HasConversion<string>()
                 .HasMaxLength(20);
 
-            // Default values for timestamps
+            // Default values for timestamps (PostgreSQL compatible)
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 if (entityType.FindProperty("CreatedAt") != null)
                 {
-                    modelBuilder.Entity(entityType.Name).Property("CreatedAt").HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    modelBuilder.Entity(entityType.Name).Property("CreatedAt").HasDefaultValueSql("NOW()");
                 }
                 if (entityType.FindProperty("UpdatedAt") != null)
                 {
-                    modelBuilder.Entity(entityType.Name).Property("UpdatedAt").HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    modelBuilder.Entity(entityType.Name).Property("UpdatedAt").HasDefaultValueSql("NOW()");
                 }
             }
 
-            // Soft delete filters for entities with IsDeleted
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            {
-                if (entityType.FindProperty("IsDeleted") != null
-                    && entityType.ClrType.IsAssignableTo(typeof(BaseEntity)))
-                {
-                    var parameter = System.Linq.Expressions.Expression.Parameter(entityType.ClrType, "e");
-                    var filter = System.Linq.Expressions.Expression.Lambda(
-                        System.Linq.Expressions.Expression.Equal(
-                            System.Linq.Expressions.Expression.Property(parameter, "IsDeleted"),
-                            System.Linq.Expressions.Expression.Constant(false)),
-                        parameter);
-                    modelBuilder.Entity(entityType.ClrType).HasQueryFilter(filter);
-                }
-            }
         }
 
         public override int SaveChanges()
@@ -443,6 +450,76 @@ namespace hotel_erp.Api.Database
                 {
                     ((BaseEntity)entityEntry.Entity).CreatedAt = DateTime.UtcNow;
                 }
+
+                if (entityEntry.State == EntityState.Modified)
+                {
+                    var entity = (BaseEntity)entityEntry.Entity;
+                    if (entity.IsDeleted && entity.DeletedAt == null)
+                    {
+                        entity.DeletedAt = DateTime.UtcNow;
+                        CascadeSoftDelete(entity);
+                    }
+                }
+            }
+        }
+
+        private void CascadeSoftDelete(BaseEntity entity)
+        {
+            var now = DateTime.UtcNow;
+
+            void SoftDelete(BaseEntity child)
+            {
+                child.IsDeleted = true;
+                child.DeletedAt = now;
+                child.UpdatedAt = now;
+            }
+
+            switch (entity)
+            {
+                case Customer customer:
+                    foreach (var invoice in Invoices.Where(i => i.CustomerId == customer.Id).ToList())
+                        SoftDelete(invoice);
+                    break;
+
+                case Guest guest:
+                    foreach (var reservation in Reservations.Where(r => r.GuestId == guest.Id).ToList())
+                        SoftDelete(reservation);
+                    foreach (var folio in Folios.Where(f => f.GuestId == guest.Id).ToList())
+                        SoftDelete(folio);
+                    foreach (var invoice in Invoices.Where(i => i.GuestId == guest.Id).ToList())
+                        SoftDelete(invoice);
+                    break;
+
+                case Room room:
+                    foreach (var reservation in Reservations.Where(r => r.RoomId == room.Id).ToList())
+                        SoftDelete(reservation);
+                    foreach (var folio in Folios.Where(f => f.RoomId == room.Id).ToList())
+                        SoftDelete(folio);
+                    break;
+
+                case Supplier supplier:
+                    foreach (var purchaseInvoice in PurchaseInvoices.Where(pi => pi.SupplierId == supplier.Id).ToList())
+                        SoftDelete(purchaseInvoice);
+                    break;
+
+                case CAI cai:
+                    foreach (var invoice in Invoices.Where(i => i.CAIId == cai.Id).ToList())
+                        SoftDelete(invoice);
+                    break;
+
+                case Reservation reservation:
+                    var folios = Folios.Where(f => f.ReservationId == reservation.Id).ToList();
+                    foreach (var folio in folios)
+                        SoftDelete(folio);
+                    var folioIds = folios.Select(f => f.Id).ToList();
+                    foreach (var folioItem in FolioItems.Where(fi => folioIds.Contains(fi.FolioId)).ToList())
+                        SoftDelete(folioItem);
+                    break;
+
+                case Folio folio:
+                    foreach (var folioItem in FolioItems.Where(fi => fi.FolioId == folio.Id).ToList())
+                        SoftDelete(folioItem);
+                    break;
             }
         }
     }

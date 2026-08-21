@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Database.Entities;
-using hotel_erp.Api.Database.Entities;
 
 namespace hotel_erp.Api.Database.Repositories
 {
