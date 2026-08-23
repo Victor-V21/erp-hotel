@@ -3,6 +3,8 @@ import api from '@/lib/axios'
 import type { RoomType } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { InlineAlert } from '@/components/ui/InlineAlert'
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { useTaxRates } from '@/hooks/useTaxRates'
 
 function breakdown(price: number, isvRate: number, touristTaxRate: number) {
@@ -22,6 +24,8 @@ export default function RoomTypesPage() {
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [form, setForm] = useState({ name: '', description: '', pricePerNight: 0, capacity: 1 })
+  const [alertInfo, setAlertInfo] = useState<{ variant: 'error' | 'success' | 'info'; message: string } | null>(null)
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
 
   useEffect(() => { load() }, [])
 
@@ -30,7 +34,7 @@ export default function RoomTypesPage() {
       const { data } = await api.get<RoomType[]>('/room-types')
       setTypes(data)
     } catch (err) {
-      alert('Error al cargar tipos de habitación')
+      setAlertInfo({ variant: 'error', message: 'Error al cargar tipos de habitación' })
     }
   }
 
@@ -44,8 +48,9 @@ export default function RoomTypesPage() {
       setShowForm(false); setEditingId(null)
       setForm({ name: '', description: '', pricePerNight: 0, capacity: 1 })
       load()
+      setAlertInfo({ variant: 'success', message: 'Tipo de habitación guardado correctamente' })
     } catch (err) {
-      alert('Error al guardar tipo de habitación')
+      setAlertInfo({ variant: 'error', message: 'Error al guardar tipo de habitación' })
     }
   }
 
@@ -55,14 +60,16 @@ export default function RoomTypesPage() {
     setShowForm(true)
   }
 
-  const deleteType = async (id: string) => {
-    if (confirm('¿Eliminar este tipo de habitación?')) {
-      try {
-        await api.delete(`/room-types/${id}`)
-        load()
-      } catch (err) {
-        alert('Error al eliminar tipo de habitación')
-      }
+  const confirmDelete = async () => {
+    if (!confirmDeleteId) return
+    try {
+      await api.delete(`/room-types/${confirmDeleteId}`)
+      load()
+      setAlertInfo({ variant: 'success', message: 'Tipo de habitación eliminado correctamente' })
+    } catch (err) {
+      setAlertInfo({ variant: 'error', message: 'Error al eliminar tipo de habitación' })
+    } finally {
+      setConfirmDeleteId(null)
     }
   }
 
@@ -76,6 +83,10 @@ export default function RoomTypesPage() {
           {showForm ? 'Cancelar' : 'Nuevo Tipo'}
         </Button>
       </div>
+
+      {alertInfo && (
+        <InlineAlert variant={alertInfo.variant} message={alertInfo.message} onClose={() => setAlertInfo(null)} />
+      )}
 
       {showForm && (
         <div className="border border-border rounded-lg p-4 bg-card space-y-3">
@@ -123,12 +134,23 @@ export default function RoomTypesPage() {
               <div className="text-sm">Capacidad: {t.capacity} personas</div>
               <div className="flex gap-2 mt-2">
                 <Button size="sm" variant="outline" onClick={() => startEdit(t)}>Editar</Button>
-                <Button size="sm" variant="destructive" onClick={() => deleteType(t.id)}>Eliminar</Button>
+                <Button size="sm" variant="destructive" onClick={() => setConfirmDeleteId(t.id)}>Eliminar</Button>
               </div>
             </div>
           )
         })}
       </div>
+
+      <ConfirmDialog
+        isOpen={!!confirmDeleteId}
+        title="Eliminar Tipo de Habitación"
+        description="¿Está seguro de que desea eliminar este tipo de habitación? Esta acción no se puede deshacer."
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        variant="destructive"
+        onConfirm={confirmDelete}
+        onCancel={() => setConfirmDeleteId(null)}
+      />
     </div>
   )
 }

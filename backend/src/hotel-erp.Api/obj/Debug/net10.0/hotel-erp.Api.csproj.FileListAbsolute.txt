@@ -157,9 +157,6 @@ C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\obj\Debug\net10.0\ref\hot
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\Npgsql.dll
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\bin\Debug\net10.0\Microsoft.VisualStudio.SolutionPersistence.dll
-C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\obj\Debug\net10.0\compressed\kld6sv12av-{0}-ufwyexklnc-ufwyexklnc.gz
-C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\obj\Debug\net10.0\compressed\kyna6pfdjd-{0}-1dzji4whzo-1dzji4whzo.gz
-C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\obj\Debug\net10.0\compressed\5k48hauf0z-{0}-enm4v3pakv-enm4v3pakv.gz
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\obj\Debug\net10.0\compressed\gyh9x68hmj-{0}-fu6d08gvha-fu6d08gvha.gz
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\obj\Debug\net10.0\compressed\rhyracba2f-{0}-8zjvuw59dv-8zjvuw59dv.gz
 C:\projects\erp-ia\hotel-erp\backend\src\hotel-erp.Api\obj\Debug\net10.0\compressed\8tu918n8uo-{0}-p632cuil73-p632cuil73.gz

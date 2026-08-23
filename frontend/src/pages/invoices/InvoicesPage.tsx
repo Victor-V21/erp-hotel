@@ -47,6 +47,7 @@ export default function InvoicesPage() {
   const [creditReason, setCreditReason] = useState('')
   const [creditCaiId, setCreditCaiId] = useState('')
   const [creditActionLoading, setCreditActionLoading] = useState(false)
+  const [creditItems, setCreditItems] = useState<{ idx: number, description: string, quantity: number, maxQuantity: number, unitPrice: number, isExempt: boolean, isvRate: number, isTouristTaxable: boolean, discountPercentage: number, included: boolean }[]>([])
 
   // Debit Note Modal State
   const [showDebitModal, setShowDebitModal] = useState(false)
@@ -179,7 +180,7 @@ export default function InvoicesPage() {
         originalInvoiceId: selectedInvoice.id,
         caiId: creditCaiId || selectedInvoice.caiId,
         reason: creditReason.trim(),
-        items: selectedInvoice.items.map((it) => ({
+        items: creditItems.filter(it => it.included && it.quantity > 0).map((it) => ({
           description: it.description,
           quantity: it.quantity,
           unitPrice: it.unitPrice,
@@ -488,7 +489,23 @@ export default function InvoicesPage() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => setShowCreditModal(true)}
+                        onClick={() => {
+                          setCreditItems(
+                            selectedInvoice.items.map((it, idx) => ({
+                              idx,
+                              description: it.description,
+                              quantity: it.quantity,
+                              maxQuantity: it.quantity,
+                              unitPrice: it.unitPrice,
+                              isExempt: it.isExempt,
+                              isvRate: it.isvRate,
+                              isTouristTaxable: it.isTouristTaxable,
+                              discountPercentage: it.discountPercentage,
+                              included: true
+                            }))
+                          )
+                          setShowCreditModal(true)
+                        }}
                         className="text-xs h-7 text-amber-600 dark:text-amber-400 gap-1 border-amber-500/30"
                         title="Emitir Nota de Crédito por devolución o anulación"
                       >
@@ -584,6 +601,46 @@ export default function InvoicesPage() {
                   onChange={(e) => setCreditReason(e.target.value)}
                   className="text-xs mt-1"
                 />
+              </div>
+
+              <div>
+                <label className="font-semibold text-muted-foreground">Líneas a Reversar *</label>
+                <div className="mt-1 border border-border rounded-md divide-y divide-border/60 max-h-48 overflow-y-auto">
+                  {creditItems.map((it, idx) => (
+                    <div key={idx} className="p-2 flex items-center gap-2 hover:bg-accent/40">
+                      <input
+                        type="checkbox"
+                        checked={it.included}
+                        onChange={(e) => {
+                          const newItems = [...creditItems]
+                          newItems[idx].included = e.target.checked
+                          setCreditItems(newItems)
+                        }}
+                        className="rounded border-input text-primary focus:ring-primary h-4 w-4"
+                      />
+                      <div className="flex-1 truncate">
+                        <span className="font-medium">{it.description}</span>
+                        <div className="text-muted-foreground">L {it.unitPrice.toFixed(2)} c/u</div>
+                      </div>
+                      <div className="flex items-center gap-1 w-20">
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          max={it.maxQuantity}
+                          value={it.quantity}
+                          onChange={(e) => {
+                            const newItems = [...creditItems]
+                            newItems[idx].quantity = Number(e.target.value) || 0
+                            setCreditItems(newItems)
+                          }}
+                          disabled={!it.included}
+                          className="text-xs h-7 px-1 text-right"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div>

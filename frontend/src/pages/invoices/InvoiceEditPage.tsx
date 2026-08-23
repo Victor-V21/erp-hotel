@@ -4,6 +4,7 @@ import api from '@/lib/axios'
 import type { Invoice, InvoiceItem } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { InlineAlert } from '@/components/ui/InlineAlert'
 import { useTaxRates } from '@/hooks/useTaxRates'
 
 export default function InvoiceEditPage() {
@@ -15,6 +16,7 @@ export default function InvoiceEditPage() {
   const [rtnCliente, setRtnCliente] = useState('')
   const [items, setItems] = useState<InvoiceItem[]>([])
   const [saving, setSaving] = useState(false)
+  const [alertInfo, setAlertInfo] = useState<{ variant: 'error' | 'success' | 'info'; message: string } | null>(null)
 
   useEffect(() => {
     if (!id) return
@@ -26,7 +28,7 @@ export default function InvoiceEditPage() {
         setRtnCliente(data.rtnCliente || '')
         setItems(data.items)
       } catch (err) {
-        alert('Error al cargar factura')
+        setAlertInfo({ variant: 'error', message: 'Error al cargar factura' })
       }
     }
     fetchInvoice()
@@ -54,10 +56,10 @@ export default function InvoiceEditPage() {
         items
       }
       await api.put(`/invoices/${id}`, payload)
-      alert('Factura actualizada')
-      navigate(`/invoices`)
+      setAlertInfo({ variant: 'success', message: 'Factura actualizada' })
+      setTimeout(() => navigate(`/invoices`), 1500)
     } catch (err) {
-      alert('Error al guardar factura')
+      setAlertInfo({ variant: 'error', message: 'Error al guardar factura' })
     } finally { setSaving(false) }
   }
 
@@ -67,6 +69,10 @@ export default function InvoiceEditPage() {
     <div className="max-w-2xl mx-auto space-y-4">
       <h1 className="text-2xl font-bold">Editar Factura</h1>
       <p className="text-sm text-muted-foreground">Factura: {invoice.correlativeNumber}</p>
+
+      {alertInfo && (
+        <InlineAlert variant={alertInfo.variant} message={alertInfo.message} onClose={() => setAlertInfo(null)} />
+      )}
 
       <div className="border border-border rounded-lg p-4 bg-card space-y-3">
         <div className="grid grid-cols-2 gap-3">

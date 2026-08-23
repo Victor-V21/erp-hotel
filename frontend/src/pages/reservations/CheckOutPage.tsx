@@ -449,8 +449,18 @@ export default function CheckOutPage() {
                   <Button
                     size="sm"
                     variant="destructive"
-                    onClick={() => setConfirmReleaseOnly(true)}
+                    onClick={() => {
+                      if (finalTotal > 0) {
+                        setAlertInfo({ 
+                          variant: 'error', 
+                          message: `Acción denegada: El folio tiene un saldo pendiente de L ${finalTotal.toFixed(2)}. Debe facturar y cobrar para poder liberar la habitación.`
+                        })
+                        return
+                      }
+                      setConfirmReleaseOnly(true)
+                    }}
                     className="text-xs"
+                    title={finalTotal > 0 ? "No se puede liberar con saldo pendiente" : "Liberar habitación (Sin saldo)"}
                   >
                     Liberar sin Facturar
                   </Button>

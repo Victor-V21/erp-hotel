@@ -82,7 +82,7 @@ function fmt(n: number) {
 
 export default function ReportsPage() {
   const initial = useMemo(() => currentMonthRange(), [])
-  const [activeTab, setActiveTab] = useState<'sar' | 'income' | 'balance' | 'exports'>('sar')
+  const [activeTab, setActiveTab] = useState<'sar' | 'dmr1' | 'income' | 'balance' | 'exports'>('sar')
   const [from, setFrom] = useState(initial.from)
   const [to, setTo] = useState(initial.to)
   const [asOfDate, setAsOfDate] = useState(initial.to)
@@ -149,7 +149,7 @@ export default function ReportsPage() {
   }
 
   useEffect(() => {
-    if (activeTab === 'sar') fetchTaxSummary()
+    if (activeTab === 'sar' || activeTab === 'dmr1') fetchTaxSummary()
     else if (activeTab === 'income') fetchIncomeStatement()
     else if (activeTab === 'balance') fetchBalanceSheet()
   }, [activeTab])
@@ -198,6 +198,17 @@ export default function ReportsPage() {
           }`}
         >
           <Receipt size={15} /> Declaración SAR & Libros
+        </button>
+
+        <button
+          onClick={() => setActiveTab('dmr1')}
+          className={`pb-2.5 px-3.5 border-b-2 transition-colors cursor-pointer flex items-center gap-2 ${
+            activeTab === 'dmr1'
+              ? 'border-[#C69C4B] text-[#C69C4B] font-bold'
+              : 'border-transparent text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <Building size={15} /> Declaración DMR-1
         </button>
 
         <button
@@ -332,82 +343,161 @@ export default function ReportsPage() {
         </div>
       )}
 
-      {/* TAB 2: INCOME STATEMENT (P&L) */}
-      {activeTab === 'income' && (
-        <div className="space-y-6 animate-in fade-in">
-          <div className="p-4 rounded-xl border border-border bg-card shadow-xs flex items-center gap-3">
-            <span className="text-xs font-semibold text-muted-foreground">Período:</span>
-            <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="text-xs w-36 h-8" />
-            <span className="text-xs text-muted-foreground">al</span>
-            <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="text-xs w-36 h-8" />
-            <Button size="sm" onClick={fetchIncomeStatement} disabled={loading} className="h-8 gap-1 text-xs">
-              {loading ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
-              Generar Estado
+      {/* TAB 1.5: DMR-1 DECLARATION */}
+      {activeTab === 'dmr1' && (
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="p-4 rounded-xl border border-border bg-card shadow-sm flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Período Fiscal DMR-1:</span>
+              <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="text-sm w-40 font-medium" />
+              <span className="text-sm text-muted-foreground">al</span>
+              <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="text-sm w-40 font-medium" />
+              <Button onClick={fetchTaxSummary} disabled={loading} className="gap-2 bg-[#C69C4B] hover:bg-[#b0883b] text-white">
+                {loading ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
+                Calcular DMR-1
+              </Button>
+            </div>
+            <Button
+              variant="outline"
+              className="gap-2 border-dashed border-[#C69C4B] text-[#C69C4B]"
+            >
+              <Download size={16} /> Descargar Formato Guía PDF
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Revenues */}
-            <div className="border border-border rounded-xl bg-card overflow-hidden shadow-xs">
-              <div className="p-3.5 border-b border-border bg-emerald-500/10 text-emerald-900 dark:text-emerald-300 flex justify-between items-center">
-                <h3 className="font-bold text-xs uppercase tracking-wider">Ingresos Operativos</h3>
-                <span className="font-mono font-bold text-sm">{fmt(incomeStatement?.totalRevenues || 0)}</span>
+          <div className="bg-card rounded-xl border border-border shadow-xs overflow-hidden">
+            <div className="bg-muted/40 p-5 border-b border-border">
+              <h3 className="text-lg font-bold text-foreground">Borrador de Declaración Mensual (DMR-1)</h3>
+              <p className="text-sm text-muted-foreground mt-1">Valores precalculados para digitación en la plataforma en línea del SAR (Sistema de Administración de Rentas).</p>
+            </div>
+            
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div className="bg-blue-50/50 dark:bg-blue-950/20 rounded-xl p-5 border border-blue-100 dark:border-blue-900/50">
+                  <span className="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase tracking-widest block mb-2">Crédito Fiscal (Casilla 30)</span>
+                  <div className="text-3xl font-mono font-bold text-blue-900 dark:text-blue-100">{fmt(taxSummary?.isvOnPurchases || 0)}</div>
+                  <span className="text-xs text-blue-600/70 dark:text-blue-400/70 mt-1 block">Impuesto pagado en compras</span>
+                </div>
+                
+                <div className="bg-emerald-50/50 dark:bg-emerald-950/20 rounded-xl p-5 border border-emerald-100 dark:border-emerald-900/50">
+                  <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-widest block mb-2">Débito Fiscal (Casilla 40)</span>
+                  <div className="text-3xl font-mono font-bold text-emerald-900 dark:text-emerald-100">{fmt(taxSummary?.isvCollected15 || 0)}</div>
+                  <span className="text-xs text-emerald-600/70 dark:text-emerald-400/70 mt-1 block">Impuesto cobrado en ventas</span>
+                </div>
+
+                <div className="bg-[#C69C4B]/5 rounded-xl p-5 border border-[#C69C4B]/30 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-3 opacity-10"><Building size={64} /></div>
+                  <span className="text-xs font-bold text-[#C69C4B] uppercase tracking-widest block mb-2">Impuesto a Pagar (Casilla 55)</span>
+                  <div className="text-4xl font-mono font-extrabold text-[#C69C4B] tracking-tight">{fmt(taxSummary?.netIsvToPay || 0)}</div>
+                  <span className="text-xs text-[#C69C4B]/70 mt-1 block">Valor neto a enterar al Estado</span>
+                </div>
               </div>
-              <div className="divide-y divide-border/60 text-xs">
+
+              <div className="space-y-4 text-sm">
+                <h4 className="font-semibold text-muted-foreground uppercase tracking-wider text-xs border-b border-border pb-2">Otras Retenciones</h4>
+                <div className="flex justify-between items-center py-2 px-4 bg-muted/20 rounded-md">
+                  <span className="font-medium">Retención 4% Tasa Turística (Casilla 70)</span>
+                  <span className="font-mono font-bold">{fmt(taxSummary?.touristTaxCollected || 0)}</span>
+                </div>
+                <div className="flex justify-between items-center py-2 px-4 bg-muted/20 rounded-md">
+                  <span className="font-medium">Retención ISR 12.5% (Servicios Profesionales)</span>
+                  <span className="font-mono font-bold text-muted-foreground">L 0.00</span>
+                </div>
+                <div className="flex justify-between items-center py-2 px-4 bg-muted/20 rounded-md">
+                  <span className="font-medium">Retención 1% (Anticipo ISR)</span>
+                  <span className="font-mono font-bold text-muted-foreground">L 0.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 2: INCOME STATEMENT (P&L) */}
+      {activeTab === 'income' && (
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="p-4 rounded-xl border border-border bg-card shadow-sm flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Período Fiscal:</span>
+              <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="text-sm w-40 font-medium" />
+              <span className="text-sm text-muted-foreground">al</span>
+              <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="text-sm w-40 font-medium" />
+              <Button onClick={fetchIncomeStatement} disabled={loading} className="gap-2 bg-[#C69C4B] hover:bg-[#b0883b] text-white">
+                {loading ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
+                Generar Estado
+              </Button>
+            </div>
+          </div>
+
+          {/* Executive Summary P&L */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="border border-emerald-200 dark:border-emerald-900/50 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 p-6 flex flex-col justify-center">
+              <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-widest mb-1">Ingresos Operativos Totales</span>
+              <span className="text-3xl font-mono font-bold text-emerald-900 dark:text-emerald-100">{fmt(incomeStatement?.totalRevenues || 0)}</span>
+            </div>
+            <div className="border border-red-200 dark:border-red-900/50 rounded-xl bg-red-50 dark:bg-red-950/20 p-6 flex flex-col justify-center">
+              <span className="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-widest mb-1">Costos y Gastos Totales</span>
+              <span className="text-3xl font-mono font-bold text-red-900 dark:text-red-100">{fmt(incomeStatement?.totalExpenses || 0)}</span>
+            </div>
+            <div className={`border rounded-xl p-6 flex flex-col justify-center ${
+                  (incomeStatement?.netIncome || 0) >= 0 ? 'bg-[#C69C4B]/10 border-[#C69C4B]/30' : 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900/50'
+                }`}>
+              <span className="text-xs font-bold text-foreground uppercase tracking-widest mb-1">Utilidad Operativa Neta</span>
+              <span className={`text-4xl font-mono font-extrabold tracking-tight ${
+                  (incomeStatement?.netIncome || 0) >= 0 ? 'text-[#C69C4B]' : 'text-red-600 dark:text-red-400'
+                }`}>
+                {fmt(incomeStatement?.netIncome || 0)}
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Revenues */}
+            <div className="border border-border rounded-xl bg-card overflow-hidden shadow-sm">
+              <div className="p-4 border-b border-border bg-muted/40">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-foreground flex items-center gap-2">
+                  <TrendingUp size={16} className="text-emerald-600 dark:text-emerald-400" />
+                  Desglose de Ingresos
+                </h3>
+              </div>
+              <div className="divide-y divide-border/60 text-sm">
                 {incomeStatement?.revenues.map((r, idx) => (
-                  <div key={idx} className="p-3 flex justify-between items-center hover:bg-accent/20">
+                  <div key={idx} className="p-4 flex justify-between items-center hover:bg-accent/40 transition-colors">
                     <div>
-                      <span className="font-mono text-muted-foreground mr-2">{r.accountNumber}</span>
+                      <span className="font-mono text-muted-foreground mr-3">{r.accountNumber}</span>
                       <span className="font-medium text-foreground">{r.accountName}</span>
                     </div>
-                    <span className="font-mono font-semibold text-foreground">{fmt(r.amount)}</span>
+                    <span className="font-mono font-bold text-foreground">{fmt(r.amount)}</span>
                   </div>
                 ))}
                 {(!incomeStatement?.revenues || incomeStatement.revenues.length === 0) && (
-                  <div className="p-6 text-center text-muted-foreground">Sin ingresos registrados en el período.</div>
+                  <div className="p-8 text-center text-muted-foreground">Sin ingresos registrados en el período.</div>
                 )}
               </div>
             </div>
 
             {/* Expenses */}
-            <div className="border border-border rounded-xl bg-card overflow-hidden shadow-xs">
-              <div className="p-3.5 border-b border-border bg-red-500/10 text-red-900 dark:text-red-300 flex justify-between items-center">
-                <h3 className="font-bold text-xs uppercase tracking-wider">Costos & Gastos Operativos</h3>
-                <span className="font-mono font-bold text-sm">{fmt(incomeStatement?.totalExpenses || 0)}</span>
+            <div className="border border-border rounded-xl bg-card overflow-hidden shadow-sm">
+              <div className="p-4 border-b border-border bg-muted/40">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-foreground flex items-center gap-2">
+                  <TrendingUp size={16} className="text-red-600 dark:text-red-400 rotate-180" />
+                  Desglose de Gastos
+                </h3>
               </div>
-              <div className="divide-y divide-border/60 text-xs">
+              <div className="divide-y divide-border/60 text-sm">
                 {incomeStatement?.expenses.map((e, idx) => (
-                  <div key={idx} className="p-3 flex justify-between items-center hover:bg-accent/20">
+                  <div key={idx} className="p-4 flex justify-between items-center hover:bg-accent/40 transition-colors">
                     <div>
-                      <span className="font-mono text-muted-foreground mr-2">{e.accountNumber}</span>
+                      <span className="font-mono text-muted-foreground mr-3">{e.accountNumber}</span>
                       <span className="font-medium text-foreground">{e.accountName}</span>
                     </div>
-                    <span className="font-mono font-semibold text-foreground">{fmt(e.amount)}</span>
+                    <span className="font-mono font-bold text-foreground">{fmt(e.amount)}</span>
                   </div>
                 ))}
                 {(!incomeStatement?.expenses || incomeStatement.expenses.length === 0) && (
-                  <div className="p-6 text-center text-muted-foreground">Sin gastos registrados en el período.</div>
+                  <div className="p-8 text-center text-muted-foreground">Sin gastos registrados en el período.</div>
                 )}
               </div>
-            </div>
-          </div>
-
-          {/* Net Income Banner */}
-          <div className="border border-border rounded-xl p-5 bg-card shadow-xs flex items-center justify-between">
-            <div>
-              <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
-                Utilidad Operativa Neta del Ejercicio
-              </p>
-              <p className="text-xs text-muted-foreground mt-0.5">Ingresos Totales menos Gastos Totales</p>
-            </div>
-            <div className="text-right">
-              <p
-                className={`text-2xl font-bold font-mono ${
-                  (incomeStatement?.netIncome || 0) >= 0 ? 'text-[#C69C4B]' : 'text-red-600'
-                }`}
-              >
-                {fmt(incomeStatement?.netIncome || 0)}
-              </p>
             </div>
           </div>
         </div>
@@ -415,25 +505,25 @@ export default function ReportsPage() {
 
       {/* TAB 3: BALANCE SHEET */}
       {activeTab === 'balance' && (
-        <div className="space-y-6 animate-in fade-in">
-          <div className="p-4 rounded-xl border border-border bg-card shadow-xs flex items-center justify-between">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="p-4 rounded-xl border border-border bg-card shadow-sm flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="text-xs font-semibold text-muted-foreground">A la fecha:</span>
+              <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Posición Financiera Al:</span>
               <Input
                 type="date"
                 value={asOfDate}
                 onChange={(e) => setAsOfDate(e.target.value)}
-                className="text-xs w-36 h-8"
+                className="text-sm w-40 font-medium"
               />
-              <Button size="sm" onClick={fetchBalanceSheet} disabled={loading} className="h-8 gap-1 text-xs">
-                {loading ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
+              <Button onClick={fetchBalanceSheet} disabled={loading} className="gap-2 bg-[#C69C4B] hover:bg-[#b0883b] text-white">
+                {loading ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
                 Calcular Balance
               </Button>
             </div>
 
             <div className="flex items-center gap-2">
               <span
-                className={`text-xs font-semibold px-2.5 py-1 rounded-full border flex items-center gap-1.5 ${
+                className={`text-sm font-bold px-4 py-2 rounded-lg border flex items-center gap-2 ${
                   balanceSheet?.isBalanced
                     ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300'
                     : 'border-red-500/30 bg-red-500/10 text-red-800 dark:text-red-300'
@@ -441,72 +531,72 @@ export default function ReportsPage() {
               >
                 {balanceSheet?.isBalanced ? (
                   <>
-                    <CheckCircle2 size={14} /> Ecuación Contable Cuadrada (Activo = Pasivo + Pat.)
+                    <CheckCircle2 size={18} /> Balance Cuadrado
                   </>
                 ) : (
-                  'Ecuación Descuadrada'
+                  'Balance Descuadrado'
                 )}
               </span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Activos */}
-            <div className="border border-border rounded-xl bg-card overflow-hidden shadow-xs flex flex-col">
-              <div className="p-3.5 border-b border-border bg-muted/20 flex justify-between items-center">
-                <h3 className="font-bold text-xs uppercase tracking-wider text-foreground">Activos</h3>
-                <span className="font-mono font-bold text-xs text-[#C69C4B]">{fmt(balanceSheet?.totalAssets || 0)}</span>
+            <div className="border border-border rounded-xl bg-card overflow-hidden shadow-sm flex flex-col">
+              <div className="p-6 border-b border-border bg-muted/40 flex flex-col gap-1">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-muted-foreground">Total Activos</h3>
+                <span className="font-mono font-extrabold text-3xl text-foreground">{fmt(balanceSheet?.totalAssets || 0)}</span>
               </div>
-              <div className="divide-y divide-border/60 text-xs flex-1">
+              <div className="divide-y divide-border/60 text-sm flex-1">
                 {balanceSheet?.assets.map((a, idx) => (
-                  <div key={idx} className="p-2.5 flex justify-between items-center hover:bg-accent/20">
+                  <div key={idx} className="p-4 flex justify-between items-center hover:bg-accent/40 transition-colors">
                     <div>
-                      <span className="font-mono text-muted-foreground mr-1.5">{a.accountNumber}</span>
+                      <span className="font-mono text-muted-foreground mr-3">{a.accountNumber}</span>
                       <span className="font-medium text-foreground">{a.accountName}</span>
                     </div>
-                    <span className="font-mono font-semibold">{fmt(a.amount)}</span>
+                    <span className="font-mono font-bold">{fmt(a.amount)}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Pasivos */}
-            <div className="border border-border rounded-xl bg-card overflow-hidden shadow-xs flex flex-col">
-              <div className="p-3.5 border-b border-border bg-muted/20 flex justify-between items-center">
-                <h3 className="font-bold text-xs uppercase tracking-wider text-foreground">Pasivos</h3>
-                <span className="font-mono font-bold text-xs text-red-600 dark:text-red-400">
+            <div className="border border-border rounded-xl bg-card overflow-hidden shadow-sm flex flex-col">
+              <div className="p-6 border-b border-border bg-muted/40 flex flex-col gap-1">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-muted-foreground">Total Pasivos</h3>
+                <span className="font-mono font-extrabold text-3xl text-foreground">
                   {fmt(balanceSheet?.totalLiabilities || 0)}
                 </span>
               </div>
-              <div className="divide-y divide-border/60 text-xs flex-1">
+              <div className="divide-y divide-border/60 text-sm flex-1">
                 {balanceSheet?.liabilities.map((l, idx) => (
-                  <div key={idx} className="p-2.5 flex justify-between items-center hover:bg-accent/20">
+                  <div key={idx} className="p-4 flex justify-between items-center hover:bg-accent/40 transition-colors">
                     <div>
-                      <span className="font-mono text-muted-foreground mr-1.5">{l.accountNumber}</span>
+                      <span className="font-mono text-muted-foreground mr-3">{l.accountNumber}</span>
                       <span className="font-medium text-foreground">{l.accountName}</span>
                     </div>
-                    <span className="font-mono font-semibold">{fmt(l.amount)}</span>
+                    <span className="font-mono font-bold">{fmt(l.amount)}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Patrimonio */}
-            <div className="border border-border rounded-xl bg-card overflow-hidden shadow-xs flex flex-col">
-              <div className="p-3.5 border-b border-border bg-muted/20 flex justify-between items-center">
-                <h3 className="font-bold text-xs uppercase tracking-wider text-foreground">Patrimonio</h3>
-                <span className="font-mono font-bold text-xs text-blue-600 dark:text-blue-400">
+            <div className="border border-border rounded-xl bg-card overflow-hidden shadow-sm flex flex-col">
+              <div className="p-6 border-b border-border bg-muted/40 flex flex-col gap-1">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-muted-foreground">Total Patrimonio</h3>
+                <span className="font-mono font-extrabold text-3xl text-foreground">
                   {fmt(balanceSheet?.totalEquity || 0)}
                 </span>
               </div>
-              <div className="divide-y divide-border/60 text-xs flex-1">
+              <div className="divide-y divide-border/60 text-sm flex-1">
                 {balanceSheet?.equity.map((eq, idx) => (
-                  <div key={idx} className="p-2.5 flex justify-between items-center hover:bg-accent/20">
+                  <div key={idx} className="p-4 flex justify-between items-center hover:bg-accent/40 transition-colors">
                     <div>
-                      <span className="font-mono text-muted-foreground mr-1.5">{eq.accountNumber}</span>
+                      <span className="font-mono text-muted-foreground mr-3">{eq.accountNumber}</span>
                       <span className="font-medium text-foreground">{eq.accountName}</span>
                     </div>
-                    <span className="font-mono font-semibold">{fmt(eq.amount)}</span>
+                    <span className="font-mono font-bold">{fmt(eq.amount)}</span>
                   </div>
                 ))}
               </div>

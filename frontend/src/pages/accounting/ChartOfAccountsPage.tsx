@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { InlineAlert } from '@/components/ui/InlineAlert'
-import { ChevronDown, ChevronRight, Plus, Edit2, Trash2, Loader2, BookOpen } from 'lucide-react'
+import { ChevronDown, ChevronRight, Plus, Edit2, Trash2, Loader2, BookOpen, Search } from 'lucide-react'
 
 const accountTypeColors: Record<string, string> = {
   Activo: 'text-blue-600 dark:text-blue-400',
@@ -32,62 +32,84 @@ function AccountRow({
   depth,
   onEdit,
   onDelete,
+  isLast = false
 }: {
   account: AccountingAccount
   depth: number
   onEdit: (account: AccountingAccount) => void
   onDelete: (account: AccountingAccount) => void
+  isLast?: boolean
 }) {
   const [expanded, setExpanded] = useState(depth < 2)
   const hasChildren = account.children && account.children.length > 0
 
   return (
     <>
-      <tr className="border-t border-border hover:bg-accent/30 transition-colors">
-        <td className="p-3" style={{ paddingLeft: `${14 + depth * 24}px` }}>
-          <div className="flex items-center gap-1.5">
-            {hasChildren ? (
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="p-1 rounded hover:bg-accent cursor-pointer text-muted-foreground hover:text-foreground"
+      <tr className="hover:bg-accent/40 transition-colors group">
+        <td className="p-0 border-b border-border/40">
+          <div className="flex items-center h-full">
+            {/* Tree connecting lines */}
+            {Array.from({ length: depth }).map((_, i) => (
+              <div
+                key={i}
+                className="w-[24px] h-[52px] border-r border-border/60 relative"
+                style={{ marginLeft: i === 0 ? '16px' : '0' }}
               >
-                {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-              </button>
-            ) : (
-              <span className="w-6" />
-            )}
-            <span className="font-mono text-xs font-semibold text-foreground">
-              {account.accountNumber}
-            </span>
+                {/* Horizontal branch for the current item if it's the right depth level */}
+                {i === depth - 1 && (
+                  <div className={`absolute top-1/2 left-full w-[16px] border-t border-border/60 ${isLast ? 'h-[26px] bg-card -bottom-0 border-r-0 border-b-0 border-l-0 z-10' : ''}`} />
+                )}
+              </div>
+            ))}
+            
+            <div
+              className="flex items-center gap-2 py-3 pr-3"
+              style={{ paddingLeft: depth === 0 ? '16px' : '24px' }}
+            >
+              {hasChildren ? (
+                <button
+                  onClick={() => setExpanded(!expanded)}
+                  className="p-1 rounded-md bg-muted/50 hover:bg-accent text-muted-foreground hover:text-foreground border border-border/50 shadow-sm z-20"
+                >
+                  {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                </button>
+              ) : (
+                <span className="w-[22px] z-20" /> /* Placeholder to align leaves */
+              )}
+              <span className="font-mono text-[13px] font-bold text-foreground">
+                {account.accountNumber}
+              </span>
+            </div>
           </div>
         </td>
-        <td className="p-3 text-sm text-foreground font-medium">{account.accountName}</td>
-        <td className="p-3">
-          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${accountTypeBadge[account.accountType] || ''}`}>
+        <td className="p-3 text-sm text-foreground font-medium border-b border-border/40">{account.accountName}</td>
+        <td className="p-3 border-b border-border/40">
+          <span className={`text-[11px] px-2 py-0.5 rounded-md font-semibold uppercase tracking-wider ${accountTypeBadge[account.accountType] || ''}`}>
             {account.accountType}
           </span>
         </td>
-        <td className={`p-3 text-sm text-right font-mono font-semibold ${accountTypeColors[account.accountType] || ''}`}>
+        <td className={`p-3 text-sm text-right font-mono font-bold border-b border-border/40 ${accountTypeColors[account.accountType] || ''}`}>
           {formatCurrency(account.balance)}
         </td>
-        <td className="p-3 text-right space-x-1.5">
-          <Button size="sm" variant="outline" onClick={() => onEdit(account)} className="h-7 w-7 p-0" title="Editar">
-            <Edit2 size={12} />
+        <td className="p-3 text-right space-x-1.5 border-b border-border/40 opacity-0 group-hover:opacity-100 transition-opacity">
+          <Button size="sm" variant="outline" onClick={() => onEdit(account)} className="h-7 w-7 p-0 bg-background" title="Editar">
+            <Edit2 size={13} />
           </Button>
           <Button size="sm" variant="destructive" onClick={() => onDelete(account)} className="h-7 w-7 p-0" title="Eliminar">
-            <Trash2 size={12} />
+            <Trash2 size={13} />
           </Button>
         </td>
       </tr>
       {expanded &&
         hasChildren &&
-        account.children.map((child) => (
+        account.children.map((child, idx) => (
           <AccountRow
             key={child.id}
             account={child}
             depth={depth + 1}
             onEdit={onEdit}
             onDelete={onDelete}
+            isLast={idx === account.children.length - 1}
           />
         ))}
     </>
@@ -103,6 +125,7 @@ export default function ChartOfAccountsPage() {
   const [editName, setEditName] = useState('')
   const [deleteTarget, setDeleteTarget] = useState<AccountingAccount | null>(null)
   const [alertInfo, setAlertInfo] = useState<{ variant: 'error' | 'success'; message: string } | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -163,7 +186,23 @@ export default function ChartOfAccountsPage() {
     } catch {
       setAlertInfo({ variant: 'error', message: 'Error al eliminar la cuenta (verifique si posee subcuentas o asientos).' })
     }
+  const filterAccounts = (accs: AccountingAccount[], term: string): AccountingAccount[] => {
+    if (!term) return accs
+    const lowerTerm = term.toLowerCase()
+    
+    return accs.map(acc => {
+      const filteredChildren = acc.children ? filterAccounts(acc.children, term) : []
+      const matches = acc.accountNumber.toLowerCase().includes(lowerTerm) || 
+                      acc.accountName.toLowerCase().includes(lowerTerm)
+      
+      if (matches || filteredChildren.length > 0) {
+        return { ...acc, children: filteredChildren }
+      }
+      return null
+    }).filter(Boolean) as AccountingAccount[]
   }
+
+  const displayedAccounts = filterAccounts(accounts, searchTerm)
 
   return (
     <div className="space-y-6">
@@ -189,6 +228,17 @@ export default function ChartOfAccountsPage() {
           onClose={() => setAlertInfo(null)}
         />
       )}
+
+      {/* Search Bar */}
+      <div className="relative mb-4">
+        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          placeholder="Buscar por número o nombre de cuenta..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-9 h-10 shadow-sm"
+        />
+      </div>
 
       {showForm && (
         <div className="border border-border rounded-xl p-5 bg-card space-y-4 shadow-sm animate-in fade-in">
@@ -295,7 +345,7 @@ export default function ChartOfAccountsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">
-                {accounts.map((a) => (
+                {displayedAccounts.map((a) => (
                   <AccountRow
                     key={a.id}
                     account={a}
@@ -304,7 +354,7 @@ export default function ChartOfAccountsPage() {
                     onDelete={(acc) => setDeleteTarget(acc)}
                   />
                 ))}
-                {accounts.length === 0 && (
+                {displayedAccounts.length === 0 && (
                   <tr>
                     <td colSpan={5} className="p-8 text-center text-muted-foreground">
                       No hay cuentas contables registradas en el catálogo.

@@ -3,12 +3,14 @@ import api from '@/lib/axios'
 import type { Folio, FolioItem } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { InlineAlert } from '@/components/ui/InlineAlert'
 
 export default function FoliosPage() {
   const [folios, setFolios] = useState<Folio[]>([])
   const [selectedFolio, setSelectedFolio] = useState<Folio | null>(null)
   const [showAddItem, setShowAddItem] = useState(false)
   const [newItem, setNewItem] = useState({ description: '', quantity: 1, unitPrice: 0, isExempt: false, isvRate: 0.15, isTouristTaxable: false, discountPercentage: 0 })
+  const [alertInfo, setAlertInfo] = useState<{ variant: 'error' | 'success' | 'info'; message: string } | null>(null)
 
   useEffect(() => { load() }, [])
 
@@ -17,7 +19,7 @@ export default function FoliosPage() {
       const { data } = await api.get<Folio[]>('/folios')
       setFolios(data)
     } catch (err) {
-      alert('Error al cargar folios')
+      setAlertInfo({ variant: 'error', message: 'Error al cargar folios' })
     }
   }
 
@@ -27,7 +29,7 @@ export default function FoliosPage() {
       setSelectedFolio(data)
       setShowAddItem(false)
     } catch (err) {
-      alert('Error al cargar folio')
+      setAlertInfo({ variant: 'error', message: 'Error al cargar folio' })
     }
   }
 
@@ -41,7 +43,7 @@ export default function FoliosPage() {
       setNewItem({ description: '', quantity: 1, unitPrice: 0, isExempt: false, isvRate: 0.15, isTouristTaxable: false, discountPercentage: 0 })
       viewFolio(selectedFolio.id)
     } catch (err) {
-      alert('Error al agregar item al folio')
+      setAlertInfo({ variant: 'error', message: 'Error al agregar item al folio' })
     }
   }
 
@@ -59,6 +61,10 @@ export default function FoliosPage() {
           <h1 className="text-2xl font-bold">Folio #{selectedFolio.roomNumber}</h1>
           <Button variant="outline" onClick={closeDetail}>Volver</Button>
         </div>
+
+        {alertInfo && (
+          <InlineAlert variant={alertInfo.variant} message={alertInfo.message} onClose={() => setAlertInfo(null)} />
+        )}
 
         <div className="border border-border rounded-lg p-4 bg-card space-y-2">
           <div className="grid grid-cols-2 gap-2 text-sm">
@@ -137,6 +143,10 @@ export default function FoliosPage() {
         <h1 className="text-2xl font-bold">Folios / Consumos</h1>
         <Button variant="outline" onClick={load}>Actualizar</Button>
       </div>
+
+      {alertInfo && !selectedFolio && (
+        <InlineAlert variant={alertInfo.variant} message={alertInfo.message} onClose={() => setAlertInfo(null)} />
+      )}
 
       <div className="border border-border rounded-lg overflow-hidden">
         <table className="w-full text-sm">
