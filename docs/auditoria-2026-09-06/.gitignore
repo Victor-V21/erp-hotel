@@ -1,0 +1,8 @@
+# Archivos de ejecución sintéticos/reconstruibles; conservar scripts y evidencia.
+pruebas/pgdata/
+pruebas/backend-build/
+pruebas/npm-cache/
+pruebas/vite-cache/
+pruebas/frontend-build/
+pruebas/runtime/
+pruebas/__pycache__/

@@ -1,5 +1,6 @@
 using hotel_erp.Api.Dtos.Customer;
 using AutoMapper;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Database.Entities;
@@ -43,6 +44,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult<GuestDto>> Create([FromBody] CreateGuestRequest request)
         {
             if (!string.IsNullOrEmpty(request.DocumentNumber))
@@ -86,6 +88,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult> Update(Guid id, [FromBody] UpdateGuestRequest request)
         {
             var entity = await _repo.GetByIdAsync(id);
@@ -142,6 +145,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPatch("{id}/classification")]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult> UpdateClassification(Guid id, [FromBody] UpdateClassificationRequest request)
         {
             var guest = await _repo.GetByIdAsync(id);
@@ -152,6 +156,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult> Delete(Guid id)
         {
             var reservations = await _reservationRepo.GetByGuestAsync(id);
@@ -167,6 +172,5 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
-
 
 

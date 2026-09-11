@@ -1,5 +1,6 @@
 using hotel_erp.Api.Dtos.Discount;
 using AutoMapper;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Database.Entities;
@@ -35,6 +36,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PermissionNames.ManageSettings)]
         public async Task<ActionResult<DiscountDto>> Create([FromBody] CreateDiscountRequest request)
         {
             var entity = new Discount
@@ -54,6 +56,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = PermissionNames.ManageSettings)]
         public async Task<ActionResult> Update(Guid id, [FromBody] UpdateDiscountRequest request)
         {
             var entity = await _repo.GetByIdAsync(id);
@@ -74,6 +77,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionNames.ManageSettings)]
         public async Task<ActionResult> Delete(Guid id)
         {
             await _repo.DeleteAsync(id);
@@ -81,5 +85,4 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
-
 

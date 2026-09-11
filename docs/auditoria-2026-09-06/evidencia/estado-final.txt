@@ -1,0 +1,11 @@
+ M backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.AssemblyInfo.cs
+ M backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.AssemblyInfoInputs.cache
+ M backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.GeneratedMSBuildEditorConfig.editorconfig
+ M backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.assets.cache
+ M backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.csproj.AssemblyReference.cache
+ M backend/src/hotel-erp.Api/obj/hotel-erp.Api.csproj.nuget.dgspec.json
+ M backend/src/hotel-erp.Api/obj/hotel-erp.Api.csproj.nuget.g.props
+ M backend/src/hotel-erp.Api/obj/hotel-erp.Api.csproj.nuget.g.targets
+ M backend/src/hotel-erp.Api/obj/project.assets.json
+ M backend/src/hotel-erp.Api/obj/project.nuget.cache
+?? docs/auditoria-2026-09-06/

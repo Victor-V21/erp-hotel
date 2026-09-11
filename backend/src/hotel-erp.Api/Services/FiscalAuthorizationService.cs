@@ -28,7 +28,7 @@ namespace hotel_erp.Api.Services
                     throw new InvalidOperationException($"No hay autorización fiscal activa para {documentType}");
 
                 var now = DateOnly.FromDateTime(HondurasTime.Now);
-                if (authorization.DueDate <= now)
+                if (authorization.DueDate < now)
                 {
                     authorization.Status = CAIStatus.Vencido;
                     await _context.SaveChangesAsync();
@@ -39,7 +39,12 @@ namespace hotel_erp.Api.Services
                 if (parts.Length != 4)
                     throw new InvalidOperationException("Formato de correlativo inválido");
 
-                var sequential = int.Parse(parts[3]) + 1;
+                var hasIssuedDocuments = await _context.Invoices
+                    .IgnoreQueryFilters()
+                    .AnyAsync(invoice => invoice.DocumentAuthorizationId == authorization.Id);
+                var sequential = !hasIssuedDocuments && authorization.CurrentCorrelative == authorization.InitialRange
+                    ? int.Parse(parts[3])
+                    : int.Parse(parts[3]) + 1;
                 var finalSeq = int.Parse(authorization.FinalRange.Split('-').Last());
                 if (sequential > finalSeq)
                 {
@@ -64,4 +69,3 @@ namespace hotel_erp.Api.Services
         }
     }
 }
-

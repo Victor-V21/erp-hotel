@@ -31,11 +31,18 @@ namespace hotel_erp.Api.Database.Repositories
         private readonly ApplicationDbContext _context;
         public FolioRepository(ApplicationDbContext context) => _context = context;
 
-        public async Task<Folio?> GetByIdAsync(Guid id) => await _context.Folios.Include(f => f.FolioItems).Include(f => f.Guest).Include(f => f.Room).FirstOrDefaultAsync(f => f.Id == id);
-        public async Task<Folio?> GetByReservationAsync(Guid reservationId) => await _context.Folios.Include(f => f.FolioItems).FirstOrDefaultAsync(f => f.ReservationId == reservationId);
-        public async Task<IEnumerable<Folio>> GetAllAsync() => await _context.Folios.Include(f => f.FolioItems).Include(f => f.Guest).ToListAsync();
+        public async Task<Folio?> GetByIdAsync(Guid id) => await HistoricalFolios().FirstOrDefaultAsync(f => f.Id == id);
+        public async Task<Folio?> GetByReservationAsync(Guid reservationId) => await HistoricalFolios().FirstOrDefaultAsync(f => f.ReservationId == reservationId);
+        public async Task<IEnumerable<Folio>> GetAllAsync() => await HistoricalFolios().ToListAsync();
         public async Task AddAsync(Folio f) { await _context.Folios.AddAsync(f); await _context.SaveChangesAsync(); }
         public async Task UpdateAsync(Folio f) { _context.Folios.Update(f); await _context.SaveChangesAsync(); }
+
+        private IQueryable<Folio> HistoricalFolios() => _context.Folios
+            .IgnoreQueryFilters()
+            .Where(folio => !folio.IsDeleted)
+            .Include(folio => folio.FolioItems.Where(item => !item.IsDeleted))
+            .Include(folio => folio.Guest)
+            .Include(folio => folio.Room)
+            .AsSplitQuery();
     }
 }
-

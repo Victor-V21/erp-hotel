@@ -1,4 +1,5 @@
 using System.Text;
+using System.Runtime.Versioning;
 using hotel_erp.Api.Database.Entities;
 
 namespace hotel_erp.Api.Services
@@ -89,10 +90,26 @@ namespace hotel_erp.Api.Services
             void Sep() => L(new string(sepChar[0], w));
             void Empty() => L("");
 
-            var correlativeParts = invoice.CorrelativeNumber.Split('-');
-            var initialRange = correlativeParts.Length >= 3
-                ? $"{correlativeParts[0]}-{correlativeParts[1]}-{correlativeParts[2]}-00000001"
+            var authorizedRange = invoice.AuthorizationRangeSnapshot?.Split(
+                " - ",
+                2,
+                StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            var initialRange = authorizedRange is { Length: 2 }
+                ? authorizedRange[0]
                 : invoice.CAI.InitialRange;
+            var finalRange = authorizedRange is { Length: 2 }
+                ? authorizedRange[1]
+                : invoice.CAI.FinalRange;
+            var caiNumber = invoice.CAINumberSnapshot ?? invoice.CAI.CAINumber;
+            var dueDate = invoice.AuthorizationDueDateSnapshot.HasValue
+                ? DateOnly.FromDateTime(invoice.AuthorizationDueDateSnapshot.Value)
+                : invoice.CAI.DueDate;
+            var documentLabel = invoice.DocumentType switch
+            {
+                InvoiceDocumentType.NotaCredito => "NOTA DE CRÉDITO",
+                InvoiceDocumentType.NotaDebito => "NOTA DE DÉBITO",
+                _ => "FACTURA"
+            };
 
             // Logo
             if (settings?.ShowLogo != false && !string.IsNullOrEmpty(settings?.LogoBase64))
@@ -112,21 +129,21 @@ namespace hotel_erp.Api.Services
 
             // Tipo de documento
             LC(tipoLabel);
-            LC("FACTURA");
+            LC(documentLabel);
             Sep();
 
             // Información fiscal
             if (settings?.ShowFiscal != false)
             {
-                L($"CAI: {invoice.CAI.CAINumber}");
-                L($"Factura: {invoice.CorrelativeNumber}");
-                var finalParts = invoice.CAI.FinalRange.Split('-');
-                var finalRange = finalParts.Length == 4
-                    ? $"{finalParts[0]}-{finalParts[1]}-{finalParts[2]}-{finalParts[3].PadLeft(8, '0')[..8]}"
-                    : invoice.CAI.FinalRange;
+                L($"CAI: {caiNumber}");
+                L($"Comprobante: {invoice.CorrelativeNumber}");
                 L($"Rango Autorizado: {initialRange} al {finalRange}");
-                L($"Fecha Límite de Emisión: {invoice.CAI.DueDate:dd/MM/yyyy}");
+                L($"Fecha Límite de Emisión: {dueDate:dd/MM/yyyy}");
                 L($"Fecha de Emisión: {invoice.InvoiceDate:dd/MM/yyyy HH:mm}");
+                if (invoice.OriginalInvoiceId.HasValue)
+                    L($"Documento afectado: {invoice.OriginalCorrelativeNumber}");
+                if (!string.IsNullOrWhiteSpace(invoice.Reason))
+                    L($"Motivo: {invoice.Reason}");
                 Sep();
             }
 
@@ -137,10 +154,12 @@ namespace hotel_erp.Api.Services
                 if (checkIn != null) L($"Ingreso: {checkIn}  Salida: {checkOut}");
                 L($"RTN: {invoice.RTNCliente ?? "C/F"}");
 
-                // Dos columnas para ahorrar espacio
-                var half = w / 2;
-                L($"{"O.C. Exenta:".PadRight(half)}{"R. Exonerado:".PadRight(half)}");
-                L($"{"Reg. SAG:".PadRight(half)}{"".PadRight(half)}");
+                if (!string.IsNullOrWhiteSpace(invoice.ExonerationOrderNumber))
+                    L($"O.C. Exenta: {invoice.ExonerationOrderNumber}");
+                if (!string.IsNullOrWhiteSpace(invoice.SefinExonerationCertificateNumber))
+                    L($"Constancia SEFIN: {invoice.SefinExonerationCertificateNumber}");
+                if (!string.IsNullOrWhiteSpace(invoice.SagRegistryNumber))
+                    L($"Reg. SAG: {invoice.SagRegistryNumber}");
                 Sep();
             }
 
@@ -175,22 +194,32 @@ namespace hotel_erp.Api.Services
                     var pct = invoice.InvoiceItems?.Max(i => i.DiscountPercentage) ?? 0;
                     L(MLine($"Descuento ({pct}%):", invoice.DiscountsAmount.ToString("F2"), labelCol, valCol, "-L "));
                 }
-                L(MLine("ISV 15%:", invoice.ISVAmount.ToString("F2"), labelCol, valCol));
+                if (invoice.ISV15Amount > 0)
+                    L(MLine("ISV 15%:", invoice.ISV15Amount.ToString("F2"), labelCol, valCol));
+                if (invoice.ISV18Amount > 0)
+                    L(MLine("ISV 18%:", invoice.ISV18Amount.ToString("F2"), labelCol, valCol));
                 L(MLine("Tasa Turística 4%:", invoice.TouristTaxAmount.ToString("F2"), labelCol, valCol));
                 Empty();
-                LC("TOTAL A PAGAR:");
+                LC(invoice.DocumentType == InvoiceDocumentType.NotaCredito ? "TOTAL ACREDITADO:" : "TOTAL A PAGAR:");
                 LC("L " + invoice.TotalAmount.ToString("F2"));
                 Sep();
             }
 
             // Pago
-            if (includePago && settings?.ShowPayment != false)
+            if (includePago && invoice.DocumentType == InvoiceDocumentType.Factura && settings?.ShowPayment != false)
             {
-                L($"Pago: {invoice.PaymentMethod ?? "Efectivo"}");
-                if (invoice.CashReceived.HasValue)
-                    L($"Recibido: L {invoice.CashReceived:F2}");
-                if (invoice.CashChange.HasValue && invoice.CashChange > 0)
-                    L($"Cambio: L {invoice.CashChange:F2}");
+                if (string.IsNullOrWhiteSpace(invoice.PaymentMethod))
+                {
+                    L("Condición de pago: Pendiente de cobro");
+                }
+                else
+                {
+                    L($"Pago: {invoice.PaymentMethod}");
+                    if (invoice.CashReceived.HasValue)
+                        L($"Recibido: L {invoice.CashReceived:F2}");
+                    if (invoice.CashChange.HasValue && invoice.CashChange > 0)
+                        L($"Cambio: L {invoice.CashChange:F2}");
+                }
                 Sep();
             }
 
@@ -249,7 +278,8 @@ namespace hotel_erp.Api.Services
                         var logoBytes = Convert.FromBase64String(settings.LogoBase64.Split(',').LastOrDefault() ?? settings.LogoBase64);
                         var maxH = settings.PrintLogoHeight > 0 ? settings.PrintLogoHeight : 40;
                         W(Center);
-                        W(RasterImage(logoBytes, Math.Min(200, (settings?.PrintWidth ?? 46) * 4), maxH));
+                        if (OperatingSystem.IsWindows())
+                            W(RasterImage(logoBytes, Math.Min(200, (settings?.PrintWidth ?? 46) * 4), maxH));
                         W(Left);
                     }
                     catch { }
@@ -290,6 +320,7 @@ namespace hotel_erp.Api.Services
             return Combine(original, Feed(1), CutPartial, copia, Feed(8), CutFull);
         }
 
+        [SupportedOSPlatform("windows")]
         private static byte[] RasterImage(byte[] imageBytes, int maxWidth, int maxHeight)
         {
             try
@@ -428,4 +459,3 @@ namespace hotel_erp.Api.Services
         }
     }
 }
-

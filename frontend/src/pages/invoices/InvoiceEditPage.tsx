@@ -27,7 +27,7 @@ export default function InvoiceEditPage() {
         setCustomerName(data.customerName)
         setRtnCliente(data.rtnCliente || '')
         setItems(data.items)
-      } catch (err) {
+      } catch {
         setAlertInfo({ variant: 'error', message: 'Error al cargar factura' })
       }
     }
@@ -58,7 +58,7 @@ export default function InvoiceEditPage() {
       await api.put(`/invoices/${id}`, payload)
       setAlertInfo({ variant: 'success', message: 'Factura actualizada' })
       setTimeout(() => navigate(`/invoices`), 1500)
-    } catch (err) {
+    } catch {
       setAlertInfo({ variant: 'error', message: 'Error al guardar factura' })
     } finally { setSaving(false) }
   }

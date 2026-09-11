@@ -23,7 +23,11 @@ namespace hotel_erp.Api.Services
         private void LoadRates()
         {
             if (_loaded || _context == null) return;
-            var settings = _context.BusinessSettings.AsNoTracking().FirstOrDefault();
+            var settings = _context.BusinessSettings
+                .AsNoTracking()
+                .OrderBy(setting => setting.CreatedAt)
+                .ThenBy(setting => setting.Id)
+                .FirstOrDefault();
             if (settings != null)
             {
                 IsvRate = settings.IsvRate;
@@ -36,6 +40,9 @@ namespace hotel_erp.Api.Services
 
         public TaxResult CalculateFromNetAmount(decimal netAmount, bool isIsvExempt = false, bool isTouristTaxExempt = false, decimal discountPercentage = 0)
         {
+            ValidateAmount(netAmount, nameof(netAmount));
+            ValidateDiscount(discountPercentage);
+            ValidateRates();
             var subtotal = RoundCurrency(netAmount);
             var discountAmount = discountPercentage > 0
                 ? RoundCurrency(subtotal * discountPercentage / 100m)
@@ -59,6 +66,9 @@ namespace hotel_erp.Api.Services
 
         public TaxResult CalculateFromFinalPrice(decimal finalPrice, bool isIsvExempt = false, bool isTouristTaxExempt = false, decimal discountPercentage = 0)
         {
+            ValidateAmount(finalPrice, nameof(finalPrice));
+            ValidateDiscount(discountPercentage);
+            ValidateRates();
             var totalBeforeDiscount = RoundCurrency(finalPrice);
             var divisor = 1m + (isIsvExempt ? 0m : IsvRate) + (isTouristTaxExempt ? 0m : TouristTaxRate);
             var subtotalBeforeDiscount = RoundCurrency(totalBeforeDiscount / divisor);
@@ -86,6 +96,10 @@ namespace hotel_erp.Api.Services
 
         public TaxResult CalculateFromSellingPrice(decimal sellingPricePerNight, int nights)
         {
+            ValidateAmount(sellingPricePerNight, nameof(sellingPricePerNight));
+            if (nights <= 0)
+                throw new ArgumentOutOfRangeException(nameof(nights), "La cantidad de noches debe ser mayor que cero.");
+            ValidateRates();
             var total = RoundCurrency(sellingPricePerNight * nights);
             var subtotal = RoundCurrency(total / TaxFactor);
             var isv = RoundCurrency(subtotal * IsvRate);
@@ -108,6 +122,9 @@ namespace hotel_erp.Api.Services
 
         public TaxResult ApplyDiscount(TaxResult result, decimal discountPercentage)
         {
+            ArgumentNullException.ThrowIfNull(result);
+            ValidateDiscount(discountPercentage);
+            ValidateRates();
             if (discountPercentage <= 0) return result;
 
             var discountAmount = RoundCurrency(result.Subtotal * discountPercentage / 100m);
@@ -129,6 +146,26 @@ namespace hotel_erp.Api.Services
                 TaxableAmount = newSubtotal
             };
         }
+
+        private void ValidateRates()
+        {
+            if (IsvRate is < 0m or > 1m)
+                throw new InvalidOperationException("La tasa ISV debe estar entre 0 y 1.");
+            if (TouristTaxRate is < 0m or > 1m)
+                throw new InvalidOperationException("La tasa turística debe estar entre 0 y 1.");
+        }
+
+        private static void ValidateAmount(decimal amount, string parameterName)
+        {
+            if (amount < 0m)
+                throw new ArgumentOutOfRangeException(parameterName, "El monto no puede ser negativo.");
+        }
+
+        private static void ValidateDiscount(decimal discountPercentage)
+        {
+            if (discountPercentage is < 0m or > 100m)
+                throw new ArgumentOutOfRangeException(nameof(discountPercentage), "El descuento debe estar entre 0 y 100.");
+        }
     }
 
     public class TaxResult
@@ -146,4 +183,3 @@ namespace hotel_erp.Api.Services
         public decimal ExoneratedAmount { get; set; }
     }
 }
-

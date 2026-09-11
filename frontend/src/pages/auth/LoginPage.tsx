@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -7,9 +7,11 @@ import { Hotel, Eye, EyeOff } from 'lucide-react'
 import axios from 'axios'
 import api from '@/lib/axios'
 import type { LoginRequest, AuthResponse } from '@/types'
+import { getApiErrorMessage } from '@/lib/errors'
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const setAuth = useAuthStore((s) => s.setAuth)
   const [form, setForm] = useState<LoginRequest>({ username: '', password: '' })
   const [showPassword, setShowPassword] = useState(false)
@@ -23,15 +25,15 @@ export default function LoginPage() {
 
     try {
       const { data } = await api.post<AuthResponse>('/auth/login', form)
-      if (data.success && data.user && data.accessToken && data.refreshToken) {
-        setAuth(data.user, data.accessToken, data.refreshToken)
-        navigate('/dashboard')
+      if (data.success && data.user && data.accessToken) {
+        setAuth(data.user, data.accessToken)
+        navigate(data.user.mustChangePassword ? '/change-password' : '/dashboard', { replace: true })
       } else {
         setError(data.message || 'Error al iniciar sesión')
       }
     } catch (err) {
-      if (axios.isAxiosError<AuthResponse>(err)) {
-        setError(err.response?.data?.message || 'Credenciales inválidas')
+      if (axios.isAxiosError(err)) {
+        setError(getApiErrorMessage(err, 'Credenciales inválidas'))
       } else {
         setError('Credenciales inválidas')
       }
@@ -56,6 +58,11 @@ export default function LoginPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {location.state?.passwordChanged && (
+            <div role="status" className="rounded-md border border-emerald-600/25 bg-emerald-600/10 p-3 text-sm text-emerald-800 dark:text-emerald-300">
+              Contraseña actualizada. Inicie sesión nuevamente para continuar.
+            </div>
+          )}
           <div className="space-y-2">
             <label className="text-sm font-medium">Usuario</label>
             <Input

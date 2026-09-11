@@ -1,4 +1,5 @@
 using AutoMapper;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Database.Entities;
@@ -42,6 +43,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PermissionNames.ManageTaxes)]
         public async Task<ActionResult<CAIDto>> Create([FromBody] CreateCAIRequest request)
         {
             var existing = await _repo.GetByCAINumberAsync(request.CAINumber);
@@ -66,6 +68,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionNames.ManageTaxes)]
         public async Task<ActionResult> Delete(Guid id)
         {
             await _repo.DeleteAsync(id);
@@ -73,4 +76,3 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
-

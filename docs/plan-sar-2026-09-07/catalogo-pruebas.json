@@ -1,0 +1,1490 @@
+[
+  {
+    "id": "Q01",
+    "grupo": "Construcción y calidad",
+    "preparacion": "Checkout identificado, dependencias fijadas",
+    "accion": "Instalar y compilar backend/frontend desde fuente",
+    "esperado": "Cero errores; artefactos corresponden al SHA y no a bundles anteriores",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "Q02",
+    "grupo": "Construcción y calidad",
+    "preparacion": "Frontend completo",
+    "accion": "Ejecutar tipos y lint",
+    "esperado": "Cero errores; advertencias revisadas con disposición explícita",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "Q03",
+    "grupo": "Construcción y calidad",
+    "preparacion": "Proyectos de prueba registrados",
+    "accion": "Ejecutar suite con un fallo deliberado de control en laboratorio y luego retirarlo",
+    "esperado": "La puerta falla al detectar el defecto; no ignora tests ni devuelve éxito vacío",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "Q04",
+    "grupo": "Construcción y calidad",
+    "preparacion": "Lockfiles y paquetes finales",
+    "accion": "Analizar dependencias y revisar advertencias backend",
+    "esperado": "Sin riesgo crítico/alto aplicable pendiente; justificaciones de no aplicabilidad respaldadas y fechadas",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "Q05",
+    "grupo": "Construcción y calidad",
+    "preparacion": "Casos de uso migrados",
+    "accion": "Revisar cálculo, controladores y repositorios",
+    "esperado": "Un motor fiscal; ningún SaveChanges independiente rompe una operación compuesta",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "Q06",
+    "grupo": "Construcción y calidad",
+    "preparacion": "Release listo",
+    "accion": "Reproducir instalación con manual y revisar archivos distribuidos",
+    "esperado": "Versiones rastreables; sin SQLite/logs/credenciales reales ni código antiguo accidental",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "N01",
+    "grupo": "Perfil y obligaciones",
+    "preparacion": "Ficha del hotel",
+    "accion": "Contrastar RTN, registro, establecimiento y punto",
+    "esperado": "Coinciden con evidencia vigente; modo real bloqueado si falta aprobación",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "N02",
+    "grupo": "Perfil y obligaciones",
+    "preparacion": "Autorizaciones del hotel",
+    "accion": "Revisar modalidad, tipos, rangos y registro del sistema",
+    "esperado": "Expediente completo o pendiente explícito; nunca aprobación SAR inferida",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "N03",
+    "grupo": "Perfil y obligaciones",
+    "preparacion": "Listado de obligaciones activas",
+    "accion": "Mapear cada obligación a módulo o procedimiento externo",
+    "esperado": "Todas tienen responsable, fuente, prueba y tratamiento; no aplica lleva sustento",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "N04",
+    "grupo": "Perfil y obligaciones",
+    "preparacion": "Formulario y catálogo oficial vigentes",
+    "accion": "Comparar exportación con especificación y caso firmado",
+    "esperado": "Campos, signos y totales coinciden; auxiliar no se anuncia como envío oficial",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "N05",
+    "grupo": "Perfil y obligaciones",
+    "preparacion": "Impresora/papel elegidos",
+    "accion": "Revisar formato físico y expediente térmico si aplica",
+    "esperado": "Requisitos y custodia comprobados; si falta trámite no se aprueba emisión por ese medio",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "N06",
+    "grupo": "Perfil y obligaciones",
+    "preparacion": "Reglas y decisiones del contador",
+    "accion": "Revisar escenarios de tasas, descuentos, anticipos y moneda",
+    "esperado": "DEC-01 a DEC-15 resueltas o no aplicables con evidencia; sin suposiciones silenciosas",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "SEC01",
+    "grupo": "Autorización y sesión",
+    "preparacion": "Usuario recepción y roles iniciales",
+    "accion": "Repetir renombrado de Admin y elevación T42",
+    "esperado": "403; rol/permisos intactos; evento de intento registrado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "SEC02",
+    "grupo": "Autorización y sesión",
+    "preparacion": "Matriz de todos los endpoints",
+    "accion": "Invocar cada método sin autenticación",
+    "esperado": "401 salvo endpoints públicos expresamente justificados; sin efectos secundarios",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "SEC03",
+    "grupo": "Autorización y sesión",
+    "preparacion": "Recepción/caja/contador/admin",
+    "accion": "Invocar métodos permitidos y prohibidos por rol",
+    "esperado": "Permitidos funcionan; prohibidos 403; sin depender del menú",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "SEC04",
+    "grupo": "Autorización y sesión",
+    "preparacion": "Permisos de administración",
+    "accion": "Intentar autoasignarse permisos, alterar rol protegido y reabrir sin autorización",
+    "esperado": "Operaciones rechazadas y auditadas; no elevación por nombre editable",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "SEC05",
+    "grupo": "Autorización y sesión",
+    "preparacion": "Dump y documentos privados existentes",
+    "accion": "Descargar como recepción, otro usuario y administrador autorizado",
+    "esperado": "Sin acceso indebido; cada archivo corresponde al ID y permiso comprobados",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "SEC06",
+    "grupo": "Autorización y sesión",
+    "preparacion": "Acceso y refresh vigentes",
+    "accion": "Desactivar usuario/cambiar contraseña y reutilizar ambos tokens",
+    "esperado": "Acceso rechazado según política de revocación inmediata definida; no emisión posterior",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "SEC07",
+    "grupo": "Autorización y sesión",
+    "preparacion": "Dos pestañas y sesión activa",
+    "accion": "Cerrar sesión y reutilizar refresh anterior",
+    "esperado": "Logout servidor efectivo; cabecera/caché limpiadas y refresh revocado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "SEC08",
+    "grupo": "Autorización y sesión",
+    "preparacion": "Refresh rotado",
+    "accion": "Reutilizar token previo simultáneamente y enviar origen no permitido",
+    "esperado": "Reutilización detectada; protección CSRF/CORS acorde con estrategia de sesión",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "SEC09",
+    "grupo": "Autorización y sesión",
+    "preparacion": "Carga de archivo y ruta de descarga",
+    "accion": "Enviar sobredimensionado, contenido falso y ruta manipulada",
+    "esperado": "Error controlado; sin escritura/lectura fuera del almacén autorizado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "SEC10",
+    "grupo": "Autorización y sesión",
+    "preparacion": "Login/errores de servicios",
+    "accion": "Forzar intentos repetidos, DB caída y excepción",
+    "esperado": "Límite de intentos y ProblemDetails seguros; sin tokens, SQL sensible ni stacktrace",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "SEC11",
+    "grupo": "Autorización y sesión",
+    "preparacion": "Credenciales de aplicación y migración",
+    "accion": "Intentar DDL, lectura privilegiada y modificación directa de bitácora con rol normal",
+    "esperado": "Privilegios insuficientes; operaciones ordinarias necesarias siguen funcionando",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "API01",
+    "grupo": "Contratos",
+    "preparacion": "Factura, folio y compra con dos líneas",
+    "accion": "Consultar lista y detalle de cada uno",
+    "esperado": "Detalle devuelve todas las líneas correctas; lista usa proyección documentada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "API02",
+    "grupo": "Contratos",
+    "preparacion": "Autorización con fechas civiles",
+    "accion": "Crear y leer autorización",
+    "esperado": "No 500 posterior al insert; fechas YYYY-MM-DD conservadas",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "API03",
+    "grupo": "Contratos",
+    "preparacion": "Enums inválidos y comprador empresarial válido",
+    "accion": "Enviar valores fuera de catálogo y opción UI válida",
+    "esperado": "Inválidos rechazados antes de persistir; contrato UI/API compatible",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "API04",
+    "grupo": "Contratos",
+    "preparacion": "PDF protegido y sesión válida",
+    "accion": "Descargar por mecanismo autenticado y luego sin sesión",
+    "esperado": "Archivo correcto con sesión; sin acceso anónimo; URL temporal liberada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "API05",
+    "grupo": "Contratos",
+    "preparacion": "Contratos publicados",
+    "accion": "Comparar tipos/rutas/métodos con cliente",
+    "esperado": "Tests detectan cambios incompatibles; ningún botón llama ruta 405 o cuerpo incompleto",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "DAT01",
+    "grupo": "Fechas y esquema",
+    "preparacion": "Instante UTC y fecha civil conocidos",
+    "accion": "Guardar/leer en Linux de laboratorio y Windows",
+    "esperado": "Mismo instante y fecha fiscal hondureña; sin restar UTC dos veces",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "DAT02",
+    "grupo": "Fechas y esquema",
+    "preparacion": "Movimientos 23:59:59 y 00:00 siguiente día/mes",
+    "accion": "Consultar días/meses contiguos",
+    "esperado": "Cada movimiento aparece una sola vez en su período",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "DAT03",
+    "grupo": "Fechas y esquema",
+    "preparacion": "Habitación y estadía con fechas sin hora",
+    "accion": "Serializar desde navegadores con zona distinta",
+    "esperado": "Entrada/salida civiles no cambian por zona del cliente",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "DAT04",
+    "grupo": "Fechas y esquema",
+    "preparacion": "Nueva base en versión PostgreSQL objetivo",
+    "accion": "Aplicar todas las migraciones",
+    "esperado": "Esquema íntegro; precisión, índices y claves presentes",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "DAT05",
+    "grupo": "Fechas y esquema",
+    "preparacion": "Datos inválidos de copia auditada",
+    "accion": "Ejecutar prevalidación y migración",
+    "esperado": "Reporte de rechazos; sin eliminación/truncamiento silencioso",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "DAT06",
+    "grupo": "Fechas y esquema",
+    "preparacion": "Proveedor/cuenta/habitación con historia",
+    "accion": "Desactivar y consultar documentos, mayor y auxiliares",
+    "esperado": "No permite nuevo uso indebido; historia permanece visible y conciliada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "DAT07",
+    "grupo": "Fechas y esquema",
+    "preparacion": "Importes máximos y fraccionarios",
+    "accion": "Guardar cantidades/costos y operar restricciones",
+    "esperado": "No desbordamientos ni truncamientos; errores controlados antes del commit",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS01",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "Autorización nueva con rango 100–102",
+    "accion": "Emitir primera factura",
+    "esperado": "Usa 100, no 101; LastIssued y documento coinciden",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS02",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "Mismo rango y tres facturas emitidas",
+    "accion": "Intentar cuarta emisión",
+    "esperado": "Bloqueo por agotamiento sin operación parcial ni número fuera de rango",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS03",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "Autorización futura, vigente y vencida",
+    "accion": "Emitir en fechas de frontera con reloj controlado",
+    "esperado": "Solo fecha permitida; regla inclusiva de límite aprobada respetada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS04",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "Prefijos distintos y tipo incompatible",
+    "accion": "Crear rango/emisión que mezcla punto/tipo",
+    "esperado": "Rechazo antes de persistir; no basta comparación lexicográfica",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS05",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "Perfiles/autorizaciones incompletos",
+    "accion": "Emitir con CAI ajeno, tipo de nota o perfil no aprobado",
+    "esperado": "Operación rechazada; no asigna autorización de otro tipo",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS06",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "CAI próximo a agotarse/vencer",
+    "accion": "Consultar alertas y suspender autorización",
+    "esperado": "Avisos correctos y emisión bloqueada al suspender; historia conservada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS07",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "Rango con documentos no utilizados",
+    "accion": "Registrar motivo/trámite y revisar secuencia",
+    "esperado": "Números identificados, evidencia preservada; no se reutilizan como si nunca existieron",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS08",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "Factura emitida",
+    "accion": "Intentar PUT/PATCH/DELETE monetario y cambio de líneas",
+    "esperado": "Rechazo; snapshot, hash, asiento y número intactos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS09",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "Nota emitida",
+    "accion": "Intentar editar total/motivo fiscal u origen",
+    "esperado": "Rechazo; corrección solo mediante flujo permitido y trazable",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS10",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "Documento emitido con cliente/CAI actuales",
+    "accion": "Cambiar catálogos y volver a consultar/reimprimir",
+    "esperado": "Mismos datos fiscales históricos y mismos totales",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS11",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "Proforma/recibo interno",
+    "accion": "Crear, imprimir y consultar libros",
+    "esperado": "Identificación inequívoca; no consumo de rango de factura ni ingreso fiscal duplicado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "FIS12",
+    "grupo": "Documentos y autorizaciones",
+    "preparacion": "Nota por endpoint genérico y datos originales incompletos",
+    "accion": "Intentar emisión",
+    "esperado": "Rechazo y orientación al comando específico; sin nota huérfana",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CON01",
+    "grupo": "Concurrencia",
+    "preparacion": "Autorización con capacidad para 50 ventas",
+    "accion": "Emitir 50 solicitudes simultáneas con claves distintas",
+    "esperado": "50 documentos únicos con asientos; sin contador EF obsoleto ni 500 evitable",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CON02",
+    "grupo": "Concurrencia",
+    "preparacion": "Queda un correlativo",
+    "accion": "Enviar dos emisiones simultáneas",
+    "esperado": "Solo una confirma; otra informa agotamiento sin guardar datos parciales",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CON03",
+    "grupo": "Concurrencia",
+    "preparacion": "Mismo cuarto e intervalo",
+    "accion": "Confirmar dos reservas y luego probar cambio de habitación concurrente",
+    "esperado": "Una ocupación válida; conflicto para la otra; no sobreventa",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CON04",
+    "grupo": "Concurrencia",
+    "preparacion": "Factura pendiente 115 y caja abierta",
+    "accion": "Aplicar simultáneamente dos pagos de 115",
+    "esperado": "Solo aplicación permitida; segunda no sobrecobra sin operación explícita de saldo a favor",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CON05",
+    "grupo": "Concurrencia",
+    "preparacion": "Stock 10",
+    "accion": "Solicitar dos salidas simultáneas de 7",
+    "esperado": "Una salida 7; otra rechazada; stock 3 y kardex total salida 7",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON01",
+    "grupo": "Motor monetario",
+    "preparacion": "E01 base 100 ISV 15 sin turismo",
+    "accion": "Calcular y emitir",
+    "esperado": "Base 100, ISV al 15%: 15, ISV al 18%: 0, total 115 en todas las representaciones",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON02",
+    "grupo": "Motor monetario",
+    "preparacion": "Base 100 ISV 18 sin turismo",
+    "accion": "Calcular y emitir",
+    "esperado": "ISV al 18%: 18 y total 118; no coloca 18 en ISV 15",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON03",
+    "grupo": "Motor monetario",
+    "preparacion": "E05 cuatro líneas clasificadas",
+    "accion": "Emitir y consultar desglose",
+    "esperado": "Base 15 100, base 18 100, exento 50, exonerado 50, ISV 33, total 333",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON04",
+    "grupo": "Motor monetario",
+    "preparacion": "Regla sintética turismo E05 y servicio no sujeto",
+    "accion": "Calcular cargos mixtos",
+    "esperado": "Turismo solo del alojamiento; caso base 100 produce 4 bajo la regla de prueba",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON05",
+    "grupo": "Motor monetario",
+    "preparacion": "Regla de prueba descuento 10% sobre base 100 ISV 15",
+    "accion": "Calcular descuento autorizado",
+    "esperado": "Descuento 10, base 90, ISV 13.50, total 103.50; descuento no se resta dos veces",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON06",
+    "grupo": "Motor monetario",
+    "preparacion": "Beneficios con soporte válido, vencido y fuera de alcance",
+    "accion": "Cotizar/emitir casos por impuesto y línea",
+    "esperado": "Solo aplica beneficio sustentado; exoneración ISV no elimina turismo automáticamente",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON07",
+    "grupo": "Motor monetario",
+    "preparacion": "Precio inclusivo y precio neto equivalentes",
+    "accion": "Cotizar con política DEC-06 aprobada",
+    "esperado": "Importes equivalentes según fixture firmado, sin residuos cargados arbitrariamente al ISV",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON08",
+    "grupo": "Motor monetario",
+    "preparacion": "Base 0.03 y reglas E08",
+    "accion": "Emitir múltiples líneas pequeñas",
+    "esperado": "Encabezado, componentes y asiento concilian exactamente; nunca factura persistida sin asiento",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON09",
+    "grupo": "Motor monetario",
+    "preparacion": "Cantidad/precio negativos y descuento mayor 100%",
+    "accion": "Intentar venta y editar catálogo",
+    "esperado": "Rechazo antes del commit; no documento fiscal negativo",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON10",
+    "grupo": "Motor monetario",
+    "preparacion": "Cliente envía LineTotal e impuesto manipulados",
+    "accion": "Emitir y crear nota con valores falsos",
+    "esperado": "Servidor calcula desde datos autorizados o rechaza; no confía en totales del cliente",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON11",
+    "grupo": "Motor monetario",
+    "preparacion": "Cambio de regla entre cotización y confirmación",
+    "accion": "Confirmar cotización antigua",
+    "esperado": "Conflicto revisable; no cobro silencioso con monto diferente",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "MON12",
+    "grupo": "Motor monetario",
+    "preparacion": "Tasa cero legítima y configuración ausente",
+    "accion": "Cotizar ambos escenarios",
+    "esperado": "Cero se conserva; falta de configuración bloquea, no fallback 15%",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "TX01",
+    "grupo": "Atomicidad e idempotencia",
+    "preparacion": "Check-in necesita autorización y esta falta",
+    "accion": "Repetir T03",
+    "esperado": "Rechazo sin reserva ingresada, cuarto ocupado, folio ni pago residual",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "TX02",
+    "grupo": "Atomicidad e idempotencia",
+    "preparacion": "Emisión con inyección de fallos",
+    "accion": "Fallar después de cada escritura antes de commit",
+    "esperado": "Documento, número transaccional, pago, folio, asiento y evento se revierten juntos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "TX03",
+    "grupo": "Atomicidad e idempotencia",
+    "preparacion": "Solicitud confirmada pero respuesta perdida",
+    "accion": "Reenviar misma clave/cuerpo",
+    "esperado": "Mismo ID/número/pago; un solo efecto financiero",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "TX04",
+    "grupo": "Atomicidad e idempotencia",
+    "preparacion": "Una clave con dos cuerpos distintos",
+    "accion": "Enviar segunda solicitud",
+    "esperado": "409; conserva primera operación y no cambia su resultado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "TX05",
+    "grupo": "Atomicidad e idempotencia",
+    "preparacion": "Dos solicitudes simultáneas con misma clave",
+    "accion": "Confirmar operación concurrentemente",
+    "esperado": "Una operación persistida y resultado recuperable; no duplicados",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "TX06",
+    "grupo": "Atomicidad e idempotencia",
+    "preparacion": "Saldo acreditable único",
+    "accion": "Enviar dos notas que juntas lo exceden",
+    "esperado": "Solo importe elegible confirmado; impuestos y saldo no negativos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "TX07",
+    "grupo": "Atomicidad e idempotencia",
+    "preparacion": "Impresora caída tras commit",
+    "accion": "Emitir y reintentar trabajo al recuperarla",
+    "esperado": "Factura permanece emitida; mismo número en reimpresión; error separado del cobro",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "TX08",
+    "grupo": "Atomicidad e idempotencia",
+    "preparacion": "Deadlock/transitorio simulado y clave de otro usuario",
+    "accion": "Reintentar y consultar resultado por usuario no autorizado",
+    "esperado": "Retry acotado de toda transacción; sin doble efecto ni acceso cruzado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "NC01",
+    "grupo": "Notas y anulación",
+    "preparacion": "E01 sin cobrar",
+    "accion": "Emitir crédito total",
+    "esperado": "Ingreso/ISV netos cero; cliente cero; no crea caja ficticia",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "NC02",
+    "grupo": "Notas y anulación",
+    "preparacion": "E01 cobrada",
+    "accion": "Emitir crédito total sin devolver aún",
+    "esperado": "Pasivo/saldo a favor 115 y caja 115; devolución pendiente explícita",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "NC03",
+    "grupo": "Notas y anulación",
+    "preparacion": "Crédito total de caso anterior",
+    "accion": "Reembolsar 115 y reintentar con misma clave",
+    "esperado": "Caja neta cero y pasivo cero; un único reembolso",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "NC04",
+    "grupo": "Notas y anulación",
+    "preparacion": "E03 crédito 40+6",
+    "accion": "Consultar original y saldo elegible",
+    "esperado": "Original conservada; crédito 46 y saldo elegible 69",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "NC05",
+    "grupo": "Notas y anulación",
+    "preparacion": "Saldo restante 69",
+    "accion": "Emitir crédito 69 e intentar otro 0.01",
+    "esperado": "Segundo crédito válido; excedente rechazado; base/impuesto finales exactos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "NC06",
+    "grupo": "Notas y anulación",
+    "preparacion": "Débito autorizado base 10 ISV 15 en fixture",
+    "accion": "Emitir nota de débito",
+    "esperado": "Aumenta deuda 11.50 e impuesto 1.50; origen y motivo conservados",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "NC07",
+    "grupo": "Notas y anulación",
+    "preparacion": "Error de emisión y mes original cerrado",
+    "accion": "Ejecutar anulación/ajuste según casos firmados DEC-11",
+    "esperado": "Original/copia, número y motivo preservados; no modifica período cerrado por vía indirecta",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CTA01",
+    "grupo": "Contabilidad",
+    "preparacion": "E01 venta y cobro",
+    "accion": "Consultar diario/mayor/cliente",
+    "esperado": "Asientos 115 balanceados; ingreso 100, ISV 15, caja 115, cliente 0",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CTA02",
+    "grupo": "Contabilidad",
+    "preparacion": "Asiento desbalanceado o cuenta no imputable",
+    "accion": "Intentar contabilizar directamente y desde venta",
+    "esperado": "Rechazo completo; no asiento parcial ni venta que requiere asiento sin registrar",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CTA03",
+    "grupo": "Contabilidad",
+    "preparacion": "E04 anticipo condicionado",
+    "accion": "Registrar, aplicar y cobrar 65",
+    "esperado": "Caja 115, anticipo 0, cliente 0; ingreso e impuesto reconocidos una sola vez",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CTA04",
+    "grupo": "Contabilidad",
+    "preparacion": "E06 compra y dos pagos",
+    "accion": "Conciliar auxiliar y mayor",
+    "esperado": "Proveedor 115→75→0; banco disminuye 115; inventario/impuesto correctamente separados",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CTA05",
+    "grupo": "Contabilidad",
+    "preparacion": "Asiento contabilizado",
+    "accion": "Intentar borrarlo y luego reversarlo autorizadamente",
+    "esperado": "Borrado bloqueado; reverso enlazado y líneas sin huérfanos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CTA06",
+    "grupo": "Contabilidad",
+    "preparacion": "Mismo evento/origen",
+    "accion": "Forzar doble contabilización por retry",
+    "esperado": "Un asiento por evento; unicidad protegida en BD",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CTA07",
+    "grupo": "Contabilidad",
+    "preparacion": "Cuenta con historia desactivada",
+    "accion": "Generar mayor/balance del período previo",
+    "esperado": "Movimientos y saldo siguen presentes; nuevas imputaciones prohibidas",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CTA08",
+    "grupo": "Contabilidad",
+    "preparacion": "Cuentas padre e hijos",
+    "accion": "Consolidar árbol de tres niveles",
+    "esperado": "Padre suma descendientes una vez; balance general cuadra",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CTA09",
+    "grupo": "Contabilidad",
+    "preparacion": "Dos ejercicios con movimientos",
+    "accion": "Consultar año y cierre de resultado",
+    "esperado": "Filtro anual real; saldos iniciales correctos y cuenta resultado según política aprobada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "CTA10",
+    "grupo": "Contabilidad",
+    "preparacion": "Período abierto y escritura concurrente",
+    "accion": "Cerrar mientras otra operación intenta contabilizar; luego reabrir sin permiso",
+    "esperado": "Sin escritura no autorizada tras cierre; reapertura restringida y auditada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "HOT01",
+    "grupo": "Operación hotelera",
+    "preparacion": "Cuarto libre hoy y reserva futura",
+    "accion": "Consultar disponibilidad hoy y en fechas reservadas",
+    "esperado": "Disponible hoy; ocupado por reserva en su intervalo sin alterar estado físico actual",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "HOT02",
+    "grupo": "Operación hotelera",
+    "preparacion": "Reserva del 10 al 12",
+    "accion": "Reservar del 12 al 14 y del 11 al 13",
+    "esperado": "Adyacente permitida; solapada rechazada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "HOT03",
+    "grupo": "Operación hotelera",
+    "preparacion": "Reserva cancelada/salida",
+    "accion": "Intentar check-in, confirmación y fechas inválidas",
+    "esperado": "Transiciones ilegales rechazadas; estado persistido coherente",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "HOT04",
+    "grupo": "Operación hotelera",
+    "preparacion": "Capacidad 2 y solicitud 10 adultos",
+    "accion": "Ingresar reserva",
+    "esperado": "Validación de capacidad; no ocupación ni documentos parciales",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "HOT05",
+    "grupo": "Operación hotelera",
+    "preparacion": "Habitación mantenimiento y traslado",
+    "accion": "Reservar/ingresar/trasladar según política",
+    "esperado": "Bloqueos y disponibilidad consistentes; traslado conserva estadía e historia",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "HOT06",
+    "grupo": "Operación hotelera",
+    "preparacion": "Reserva seleccionada existente",
+    "accion": "Abrir wizard e ingresar",
+    "esperado": "Usa su ID; no crea segunda reserva; mantiene huésped correcto",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "HOT07",
+    "grupo": "Operación hotelera",
+    "preparacion": "Guardar huésped produce error",
+    "accion": "Intentar continuar wizard",
+    "esperado": "No avanza como éxito; datos preservados y error visible",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "HOT08",
+    "grupo": "Operación hotelera",
+    "preparacion": "Folio 1305 y factura 1190",
+    "accion": "Intentar salida sin tratar 115 pendientes",
+    "esperado": "Bloqueo o tratamiento explícito autorizado; no saldo perdido",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "HOT09",
+    "grupo": "Operación hotelera",
+    "preparacion": "Estadía ya facturada al ingreso",
+    "accion": "Agregar consumo y salir",
+    "esperado": "Factura solo cargo aún no asignado; no vuelve a cobrar estadía",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "HOT10",
+    "grupo": "Operación hotelera",
+    "preparacion": "Cliente empresarial a crédito y anticipo existente",
+    "accion": "Cerrar estancia con autorización y saldo documentado",
+    "esperado": "Habitación liberada según política; deuda permanece en auxiliar, sin falso Pagada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PAG01",
+    "grupo": "Cobros y caja",
+    "preparacion": "Venta 115 y efectivo recibido 100",
+    "accion": "Confirmar pago total y luego parcial explícito",
+    "esperado": "Total insuficiente rechazado; parcial 100 deja saldo 15 si está permitido",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PAG02",
+    "grupo": "Cobros y caja",
+    "preparacion": "Venta 115 efectivo 200 y cambio cliente 999",
+    "accion": "Confirmar cobro",
+    "esperado": "Cambio calculado 85; movimiento neto de caja 115",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PAG03",
+    "grupo": "Cobros y caja",
+    "preparacion": "Venta 115 con efectivo 50 y tarjeta 65",
+    "accion": "Confirmar pago mixto",
+    "esperado": "Aplicaciones 115; caja 50 y tarjeta 65; no efectivo 115",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PAG04",
+    "grupo": "Cobros y caja",
+    "preparacion": "Anticipo 50 y total 115",
+    "accion": "Aplicar anticipo y liquidar",
+    "esperado": "Saldo 65; no descuento fiscal adicional 50",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PAG05",
+    "grupo": "Cobros y caja",
+    "preparacion": "Caja apertura 1000 sin movimientos",
+    "accion": "Cerrar contado 1 enviando esperado 1",
+    "esperado": "Esperado servidor 1000 y diferencia−999; motivo/aprobación requeridos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PAG06",
+    "grupo": "Cobros y caja",
+    "preparacion": "Caja cerrada",
+    "accion": "Intentar cobro, egreso y reapertura sin permiso",
+    "esperado": "Sin movimientos inválidos; error visible en frontend",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PAG07",
+    "grupo": "Cobros y caja",
+    "preparacion": "E07 liquidación tarjeta 115",
+    "accion": "Registrar banco 110, comisión 3 y retención 2",
+    "esperado": "Cuenta por liquidar 0; componentes 115; ingreso no reducido a110",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PAG08",
+    "grupo": "Cobros y caja",
+    "preparacion": "Arqueo con cobros, retiros y devoluciones",
+    "accion": "Cerrar/reimprimir/consultar caja",
+    "esperado": "Esperado reconstruible desde movimientos; cierre inmutable y diferencias trazables",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "COM01",
+    "grupo": "Compras",
+    "preparacion": "Proveedor e invoice fiscal iguales",
+    "accion": "Crear dos compras secuenciales y simultáneas",
+    "esperado": "Solo una compra por clave normalizada; sin doble deuda",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "COM02",
+    "grupo": "Compras",
+    "preparacion": "Compra con dos líneas y CAI/RTN requeridos",
+    "accion": "Guardar y consultar detalle",
+    "esperado": "Líneas y campos completos; validación del comprobante documentada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "COM03",
+    "grupo": "Compras",
+    "preparacion": "Compra mixta gasto/inventario/activo",
+    "accion": "Contabilizar según catálogo",
+    "esperado": "Cuentas distintas correctas; no todo en gasto 5109",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "COM04",
+    "grupo": "Compras",
+    "preparacion": "ISV acreditable/no acreditable/prorrata",
+    "accion": "Procesar fixtures del contador",
+    "esperado": "Crédito y costo/gasto separados y conciliados con DMC/ISV",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "COM05",
+    "grupo": "Compras",
+    "preparacion": "Compra contabilizada",
+    "accion": "Intentar borrar y desactivar proveedor",
+    "esperado": "No borrado; historia y saldo permanecen; corrección por reversión",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "COM06",
+    "grupo": "Compras",
+    "preparacion": "Compra 115",
+    "accion": "Pagar 40 y75 desde UI",
+    "esperado": "Dos movimientos bancarios/asientos; saldo 75 y luego 0",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "COM07",
+    "grupo": "Compras",
+    "preparacion": "Devolución de compra inventariable",
+    "accion": "Registrar nota proveedor y devolver unidades",
+    "esperado": "Deuda/impuestos/kardex/costo se ajustan una sola vez con referencias",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "RET01",
+    "grupo": "Retenciones y obligaciones externas",
+    "preparacion": "Proveedor sujeto y otro exceptuado con soporte",
+    "accion": "Calcular retención con regla vigente",
+    "esperado": "Base/tasa/momento aprobados; excepción solo con sustento válido",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "RET02",
+    "grupo": "Retenciones y obligaciones externas",
+    "preparacion": "Deuda P y retención R",
+    "accion": "Pagar P−R y luego enterar R",
+    "esperado": "Proveedor 0; pasivoR luego 0; banco disminuyeP entre ambos eventos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "RET03",
+    "grupo": "Retenciones y obligaciones externas",
+    "preparacion": "Retención sufrida documentada",
+    "accion": "Registrar y conciliar con crédito tributario",
+    "esperado": "Activo/auxiliar correcto; no confunde con retención practicada ni turismo",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "RET04",
+    "grupo": "Retenciones y obligaciones externas",
+    "preparacion": "Constancia/formulario obligatorio",
+    "accion": "Emitir y exportar con catálogos vigentes",
+    "esperado": "Identidad/origen/importe/fecha correctos; autorización propia cuando corresponde",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "RET05",
+    "grupo": "Retenciones y obligaciones externas",
+    "preparacion": "Auxiliar externo nómina/ISR/activos",
+    "accion": "Importar lote válido, inválido y repetido",
+    "esperado": "Contrato conciliado; rechazos explicados; sin duplicados ni obligación declarada cubierta sin procedimiento",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "INV01",
+    "grupo": "Inventario y valoración",
+    "preparacion": "Stock existente",
+    "accion": "Intentar editar Stock por PUT genérico",
+    "esperado": "Rechazo; solo movimientos autorizados pueden alterarlo",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "INV02",
+    "grupo": "Inventario y valoración",
+    "preparacion": "Compra recibida con producto/costo",
+    "accion": "Confirmar recepción y repetir operación",
+    "esperado": "Una entrada kardex y valoración; no duplicación por retry",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "INV03",
+    "grupo": "Inventario y valoración",
+    "preparacion": "Consumo cargado a folio",
+    "accion": "Facturarlo y cerrar estancia",
+    "esperado": "Una salida de stock total; factura no repite el consumo",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "INV04",
+    "grupo": "Inventario y valoración",
+    "preparacion": "Conteo físico y diferencia",
+    "accion": "Ajustar con/sin permiso y motivo",
+    "esperado": "Solo ajuste autorizado con kardex y contrapartida contable",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "INV05",
+    "grupo": "Inventario y valoración",
+    "preparacion": "Producto con costo histórico y precio cambiado",
+    "accion": "Consultar costo de venta y existencias",
+    "esperado": "Valoración sigue método aprobado; precio comercial no reescribe costo histórico",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "INV06",
+    "grupo": "Inventario y valoración",
+    "preparacion": "Devolución y reverso de movimiento",
+    "accion": "Procesar y conciliar mayor/kardex",
+    "esperado": "Cantidad y valor reconstruibles; no borrado de movimientos originales",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "REP01",
+    "grupo": "Libros y declaraciones",
+    "preparacion": "Factura 115, crédito 46 y débito 11.50",
+    "accion": "Generar libro por documento",
+    "esperado": "Efecto neto 80.50; filas y tipos conservados; sin sumar crédito como venta positiva",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "REP02",
+    "grupo": "Libros y declaraciones",
+    "preparacion": "Original y anulación con reversión",
+    "accion": "Generar libros/diario",
+    "esperado": "Una neutralización correcta, sin excluir original y restar dos veces",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "REP03",
+    "grupo": "Libros y declaraciones",
+    "preparacion": "Documento mixto E05 y compras deducibles",
+    "accion": "Generar auxiliar ISV por tasa/base",
+    "esperado": "15/18/exento/exonerado separados y crédito de compras sustentado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "REP04",
+    "grupo": "Libros y declaraciones",
+    "preparacion": "Alojamiento y conceptos sin turismo",
+    "accion": "Generar auxiliar 259",
+    "esperado": "Base/importe solo aplicables; no mezcla con ISV o DMR",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "REP05",
+    "grupo": "Libros y declaraciones",
+    "preparacion": "Compras internas/importadas y notas aplicables",
+    "accion": "Generar DMC según contrato oficial aprobado",
+    "esperado": "Campos, tipos, fechas, importes y totales de control correctos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "REP06",
+    "grupo": "Libros y declaraciones",
+    "preparacion": "Retenciones practicadas y sufridas",
+    "accion": "Generar auxiliares y formularios del perfil",
+    "esperado": "Cada obligación separada; no cálculo DMR a partir del ISV de ventas",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "REP07",
+    "grupo": "Libros y declaraciones",
+    "preparacion": "Declaración exportada sin presentar",
+    "accion": "Consultar estado, luego adjuntar acuse y pago",
+    "esperado": "Preparada/revisada antes de evidencia; presentada/pagada solo con soporte; rectificación conserva historia",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "REP08",
+    "grupo": "Libros y declaraciones",
+    "preparacion": "Informe con filtros/fechas y exportación de texto",
+    "accion": "Comparar pantalla, archivo y mayor",
+    "esperado": "Mismo alcance y total; formato versionado, codificación y delimitadores válidos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "AUD01",
+    "grupo": "Bitácora",
+    "preparacion": "Evento/documento intacto",
+    "accion": "Guardar, reiniciar y verificar hash",
+    "esperado": "Verifica sin falso positivo de precisión UTC/PostgreSQL",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "AUD02",
+    "grupo": "Bitácora",
+    "preparacion": "50 mutaciones simultáneas",
+    "accion": "Verificar secuencia y cadena",
+    "esperado": "Una cadena íntegra sin bifurcaciones; todos los eventos presentes",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "AUD03",
+    "grupo": "Bitácora",
+    "preparacion": "Cambio controlado de dato auditado en copia",
+    "accion": "Verificar integridad",
+    "esperado": "Manipulación detectada con localización; no confundir con conversión de fecha",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "AUD04",
+    "grupo": "Bitácora",
+    "preparacion": "Permisos, pagos, notas, exportación y backup",
+    "accion": "Comparar operaciones con eventos",
+    "esperado": "Actor, motivo, origen, correlación y resultados suficientes; sin secretos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "AUD05",
+    "grupo": "Bitácora",
+    "preparacion": "Backup y ancla externa",
+    "accion": "Restaurar y verificar cadena/versiones",
+    "esperado": "Cadena intacta válida; limitaciones privilegiadas documentadas, no promesa absoluta de inmutabilidad",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "IMP01",
+    "grupo": "Representación e impresión",
+    "preparacion": "Factura y notas emitidas",
+    "accion": "Renderizar PDF y salida térmica",
+    "esperado": "Tipo, CAI/rango/vigencia, comprador, impuestos y referencias coinciden con snapshot",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "IMP02",
+    "grupo": "Representación e impresión",
+    "preparacion": "Ajustes de hotel que ocultan campos",
+    "accion": "Intentar suprimir bloques obligatorios",
+    "esperado": "Configuración rechazada o bloque ignorado de forma explícita; documento fiscal completo",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "IMP03",
+    "grupo": "Representación e impresión",
+    "preparacion": "Nombres largos, ñ, acentos y varias líneas",
+    "accion": "Imprimir en dispositivo Windows real",
+    "esperado": "Sin recortes ni caracteres incorrectos; totales legibles y copia fiel",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "IMP04",
+    "grupo": "Representación e impresión",
+    "preparacion": "Nueva configuración aún sin guardar",
+    "accion": "Generar vista previa",
+    "esperado": "Todos los parámetros visibles aplicados; marca de muestra y sin nuevo número fiscal",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "IMP05",
+    "grupo": "Representación e impresión",
+    "preparacion": "Documento antiguo y cambio de CAI/tarifa/logo",
+    "accion": "Reimprimir",
+    "esperado": "Información fiscal original preservada; reimpresión trazada y sin asiento nuevo",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "IMP06",
+    "grupo": "Representación e impresión",
+    "preparacion": "Impresora desconectada y spooler reiniciado",
+    "accion": "Emitir y recuperar trabajo",
+    "esperado": "Error controlado; no revierte factura; reintento conserva ID/número",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "IMP07",
+    "grupo": "Representación e impresión",
+    "preparacion": "Sistema no Windows y cuenta de servicio Windows restringida",
+    "accion": "Enumerar/imprimir en ambos entornos",
+    "esperado": "Error de capacidad controlado donde no soporte; permisos mínimos suficientes en Windows probado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI01",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Factura válida con permiso de crédito",
+    "accion": "Crear nota desde botón real",
+    "esperado": "Ruta/método/cuerpo válidos; muestra documento nuevo y saldo correcto",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI02",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Folio y autorización por fecha",
+    "accion": "Agregar cargo y crear autorización desde UI",
+    "esperado": "FolioId y DateOnly correctos; sin 400/500 de contrato",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI03",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "PDF con login",
+    "accion": "Abrir/descargar desde interfaz",
+    "esperado": "Funciona autenticado y no expone URL insegura permanente",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI04",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Checkout con comprador empresarial y exoneración válida",
+    "accion": "Revisar y confirmar",
+    "esperado": "Enum compatible, tasa cero preservada, datos del comprador correcto",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI05",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Confirmación monetaria y doble clic",
+    "accion": "Pulsar dos veces y reintentar tras timeout",
+    "esperado": "Un resultado; indicador de envío y recuperación por clave",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI06",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Flujos compra/proveedor/retención aplicables",
+    "accion": "Completar desde menú con roles adecuados",
+    "esperado": "Captura, validación, pago y consulta utilizables sin llamadas manuales API",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI07",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Red caída y formulario completo",
+    "accion": "Guardar/cargar datos",
+    "esperado": "Error explícito; datos preservados; no cero/éxito falso",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI08",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Modal y selector contable",
+    "accion": "Completar tarea usando solo teclado",
+    "esperado": "Foco visible, navegación, selección, cierre y restauración de foco correctos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI09",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Inputs e iconos",
+    "accion": "Inspeccionar accesibilidad y lector de pantalla",
+    "esperado": "Etiquetas asociadas, nombres accesibles y errores anunciados",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI10",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Viewport 390, escritorio y zoom 200%",
+    "accion": "Recorrer módulos principales",
+    "esperado": "Sin desbordamiento global; acciones y cifras accesibles; tablas con scroll local cuando procede",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI11",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Temas y estados de habitaciones",
+    "accion": "Medir contraste y distinguir estados sin color",
+    "esperado": "Objetivo 4.5:1 texto normal y3:1 grande; texto/icono además de color y foco visible",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI12",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Menú, breadcrumbs y paleta",
+    "accion": "Usar rutas/Enter con recepción y contador",
+    "esperado": "Acciones implementadas, permisos alineados y destino correcto",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI13",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Sin internet y reducción de movimiento",
+    "accion": "Abrir aplicación y provocar error de render",
+    "esperado": "Fuentes/recursos esenciales locales, movimiento reducido y recuperación mediante ErrorBoundary",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI14",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Búsqueda con respuestas fuera de orden",
+    "accion": "Escribir rápido varios términos",
+    "esperado": "Última consulta determina resultados; solicitudes obsoletas canceladas/descartadas",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI15",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Más de 15 elementos",
+    "accion": "Cambiar página, tamaño y filtros",
+    "esperado": "Paginación real de servidor; total y página coherentes",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "UI16",
+    "grupo": "Experiencia del usuario",
+    "preparacion": "Carga lenta y reintento",
+    "accion": "Consultar y enviar operaciones",
+    "esperado": "Timeout visible; retry seguro; ninguna mutación duplicada por estrategia global",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PERF01",
+    "grupo": "Volumen y velocidad",
+    "preparacion": "100 mil documentos y10 usuarios simulados",
+    "accion": "Medir listados filtrados/paginados en equipo acordado",
+    "esperado": "Objetivo inicial p95 ≤ 500 ms API sin impresión; página ≤ 200KB; registrar hardware y desviaciones",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PERF02",
+    "grupo": "Volumen y velocidad",
+    "preparacion": "Consulta contable con muchas cuentas",
+    "accion": "Medir cantidad SQL y plan",
+    "esperado": "Sin crecimiento N+1 por cuenta; agregación acotada y tiempo medido",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PERF03",
+    "grupo": "Volumen y velocidad",
+    "preparacion": "Historial creciente y exportación",
+    "accion": "Comparar 10 mil/100 mil documentos",
+    "esperado": "Memoria acotada y paginación efectiva; exportación no bloquea recepción",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PERF04",
+    "grupo": "Volumen y velocidad",
+    "preparacion": "50 escrituras concurrentes",
+    "accion": "Medir locks, deadlocks y latencia",
+    "esperado": "Sin pérdida/duplicación; p95 emisión objetivo≤ 2 s excluyendo impresión; retries acotados",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "PERF05",
+    "grupo": "Volumen y velocidad",
+    "preparacion": "Servidor Windows con uso sostenido",
+    "accion": "Ejecutar jornada simulada y revisar recursos",
+    "esperado": "Sin crecimiento continuo injustificado de memoria/conexiones; índices respaldados por medición",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "OPS01",
+    "grupo": "Continuidad local",
+    "preparacion": "Base caída o esquema incompatible",
+    "accion": "Consultar readiness e intentar emitir",
+    "esperado": "No preparado y diagnóstico seguro; no health 200 engañoso ni emisión parcial",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "OPS02",
+    "grupo": "Continuidad local",
+    "preparacion": "Arranque limpio y migración fallida",
+    "accion": "Iniciar servicio en ambos casos",
+    "esperado": "Listo solo con precondiciones cumplidas; fallo no silenciado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "OPS03",
+    "grupo": "Continuidad local",
+    "preparacion": "DB, adjuntos y documentos conservados",
+    "accion": "Generar backup y comprobar manifest",
+    "esperado": "Incluye componentes necesarios con hashes/versiones; sin credenciales expuestas",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "OPS04",
+    "grupo": "Continuidad local",
+    "preparacion": "Dos backups en el mismo segundo",
+    "accion": "Solicitar trabajos y descargar cada ID",
+    "esperado": "Archivos distintos y correctos; no descarga de último global",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "OPS05",
+    "grupo": "Continuidad local",
+    "preparacion": "Ruta Windows con espacios y proceso colgado",
+    "accion": "Ejecutar backup/cancelación",
+    "esperado": "Argumentos seguros, timeout y stderr capturado; no proceso huérfano ni shell injection",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "OPS06",
+    "grupo": "Continuidad local",
+    "preparacion": "Disco lleno y destino externo desconectado",
+    "accion": "Ejecutar tarea programada",
+    "esperado": "Fallo visible; no elimina último respaldo válido; recuperación/reintento controlados",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "OPS07",
+    "grupo": "Continuidad local",
+    "preparacion": "Backup cifrado y equipo alterno",
+    "accion": "Restaurar con custodia de clave",
+    "esperado": "Datos/archivos/historia verifican; RPO/RTO medidos contra acuerdo del hotel",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "OPS08",
+    "grupo": "Continuidad local",
+    "preparacion": "Backup anterior a documentos ya entregados",
+    "accion": "Ensayar recuperación y reabrir emisión",
+    "esperado": "Emisión bloqueada hasta reconciliar operaciones/números posteriores; cero reutilización fiscal",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "M01",
+    "grupo": "Migración",
+    "preparacion": "Copia identificada de origen real o sintético",
+    "accion": "Inventariar y restaurar antes de migrar",
+    "esperado": "Procedencia y contenido conocidos; original preservado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "M02",
+    "grupo": "Migración",
+    "preparacion": "Base auditada y migraciones nuevas",
+    "accion": "Actualizar esquema en copia",
+    "esperado": "Instalación y actualización válidas en versión PostgreSQL objetivo",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "M03",
+    "grupo": "Migración",
+    "preparacion": "Datos históricos incompletos",
+    "accion": "Importar y repetir lote",
+    "esperado": "Sin duplicados; rechazos/procedencia explícitos; ningún CAI o impuesto inventado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "M04",
+    "grupo": "Migración",
+    "preparacion": "Corte ensayado y fallos",
+    "accion": "Restaurar conjunto DB/archivos/configuración",
+    "esperado": "Recuperación completa cronometrada; hashes y saldo iguales al punto respaldado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "M05",
+    "grupo": "Migración",
+    "preparacion": "Documentos y auxiliares migrados",
+    "accion": "Comparar conteos, sumas, Debe/Haber, stock y secuencia",
+    "esperado": "Diferencias cero o ajuste individual documentado/aprobado; sin eliminación silenciosa",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "M06",
+    "grupo": "Migración",
+    "preparacion": "Rollback antes/después de nuevas emisiones",
+    "accion": "Ejecutar procedimientos separados",
+    "esperado": "Antes recupera base coherente; después preserva/reconcilia todas las operaciones nuevas",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "E2E01",
+    "grupo": "Aceptación integral",
+    "preparacion": "Reserva futura y anticipo",
+    "accion": "Completar reserva→ingreso→consumos→salida",
+    "esperado": "Una estadía; impuestos según perfil; pagos/folio/asientos conciliados",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "E2E02",
+    "grupo": "Aceptación integral",
+    "preparacion": "Venta pagada y devolución parcial",
+    "accion": "Emitir crédito→reembolsar→reimprimir",
+    "esperado": "Crédito y efectivo independientes y conciliados; original conservada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "E2E03",
+    "grupo": "Aceptación integral",
+    "preparacion": "Folio con facturación parcial y crédito empresarial",
+    "accion": "Liquidar salida y consultar cartera",
+    "esperado": "Sin cargos sin tratar ni doble factura; deuda autorizada visible",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "E2E04",
+    "grupo": "Aceptación integral",
+    "preparacion": "Compra inventariable y dos abonos",
+    "accion": "Recibir→consumir→pagar→conciliar",
+    "esperado": "Proveedor, banco, kardex y mayor coinciden",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "E2E05",
+    "grupo": "Aceptación integral",
+    "preparacion": "Jornada con medios mixtos",
+    "accion": "Cerrar caja→libros→declaraciones→período",
+    "esperado": "Totales coinciden al centavo y período cerrado impide cambios",
+    "estado": "Pendiente"
+  },
+  {
+    "id": "E2E06",
+    "grupo": "Aceptación integral",
+    "preparacion": "Release candidata en Windows y copia migrada",
+    "accion": "Recepción opera, imprime, recupera y revisa primer cierre simulado",
+    "esperado": "Actas técnica/contable/operativa con evidencia; Docker permanece pendiente",
+    "estado": "Pendiente"
+  }
+]

@@ -1,5 +1,6 @@
 using hotel_erp.Api.Dtos.Common;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace hotel_erp.Api.Dtos.Auth
 {
@@ -9,29 +10,30 @@ namespace hotel_erp.Api.Dtos.Auth
 
     public record RegisterRequest(
         [Required, StringLength(50, MinimumLength = 3)] string Username,
-        [Required, StringLength(100, MinimumLength = 8)] string Password,
+        [Required, StringLength(100, MinimumLength = 12), StrongPassword] string Password,
         [Required, EmailAddress, StringLength(100)] string Email,
         [Required, StringLength(50, MinimumLength = 2)] string FirstName,
         [Required, StringLength(50, MinimumLength = 2)] string LastName);
 
-    public record RefreshTokenRequest([Required] string RefreshToken);
+    public record RefreshTokenRequest(string? RefreshToken = null);
 
     public record ChangePasswordRequest(
         [Required] string CurrentPassword,
-        [Required, StringLength(100, MinimumLength = 8)] string NewPassword);
+        [Required, StringLength(100, MinimumLength = 12), StrongPassword] string NewPassword);
 
     public record ForgotPasswordRequest([Required, EmailAddress, StringLength(100)] string Email);
 
     public record ResetPasswordRequest(
         [Required, EmailAddress, StringLength(100)] string Email,
         [Required] string Token,
-        [Required, StringLength(100, MinimumLength = 8)] string NewPassword);
+        [Required, StringLength(100, MinimumLength = 12), StrongPassword] string NewPassword);
 
     public record AuthResponse
     {
         public bool Success { get; set; }
         public string? Message { get; set; }
         public string? AccessToken { get; set; }
+        [JsonIgnore]
         public string? RefreshToken { get; set; }
         public DateTime? ExpiresAt { get; set; }
         public UserDto? User { get; set; }
@@ -45,6 +47,7 @@ namespace hotel_erp.Api.Dtos.Auth
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public bool IsActive { get; set; }
+        public bool MustChangePassword { get; set; }
         public List<string> Roles { get; set; } = new();
         public List<string> Permissions { get; set; } = new();
     }
@@ -54,6 +57,7 @@ namespace hotel_erp.Api.Dtos.Auth
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
+        public bool IsSystem { get; set; }
         public List<string> Permissions { get; set; } = new();
     }
 
@@ -84,7 +88,7 @@ namespace hotel_erp.Api.Dtos.Auth
 
     public record CreateUserRequest(
         [Required, StringLength(50, MinimumLength = 3)] string Username,
-        [Required, StringLength(100, MinimumLength = 8)] string Password,
+        [Required, StringLength(100, MinimumLength = 12), StrongPassword] string Password,
         [Required, EmailAddress, StringLength(100)] string Email,
         [Required, StringLength(50, MinimumLength = 2)] string FirstName,
         [Required, StringLength(50, MinimumLength = 2)] string LastName,
@@ -98,8 +102,5 @@ namespace hotel_erp.Api.Dtos.Auth
         List<string>? Roles);
 
     public record AdminResetPasswordRequest(
-        [Required, StringLength(100, MinimumLength = 8)] string NewPassword);
+        [Required, StringLength(100, MinimumLength = 12), StrongPassword] string NewPassword);
 }
-
-
-

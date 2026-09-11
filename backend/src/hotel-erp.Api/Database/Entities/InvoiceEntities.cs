@@ -43,6 +43,8 @@ namespace hotel_erp.Api.Database.Entities
         public Customer? Customer { get; set; }
         public Guid? GuestId { get; set; }
         public Guest? Guest { get; set; }
+        public Guid? FolioId { get; set; }
+        public Folio? Folio { get; set; }
         public string? RTNCliente { get; set; }
         public string CustomerName { get; set; } = string.Empty;
         public string? CustomerAddress { get; set; }
@@ -52,6 +54,10 @@ namespace hotel_erp.Api.Database.Entities
         public decimal ISV18Amount { get; set; }
         public decimal TouristTaxAmount { get; set; }
         public decimal DiscountsAmount { get; set; }
+        public Guid? AppliedDiscountId { get; set; }
+        public Discount? AppliedDiscount { get; set; }
+        public string? AppliedDiscountNameSnapshot { get; set; }
+        public decimal? AppliedDiscountPercentageSnapshot { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal TaxableAmount { get; set; }
         public decimal ExemptAmount { get; set; }
@@ -72,6 +78,9 @@ namespace hotel_erp.Api.Database.Entities
         public InvoiceStatus Status { get; set; } = InvoiceStatus.Emitida;
 
         public ICollection<InvoiceItem> InvoiceItems { get; set; } = new List<InvoiceItem>();
+        public ICollection<PaymentApplication> PaymentApplications { get; set; } = new List<PaymentApplication>();
+        public ICollection<Invoice> CreditNotes { get; set; } = new List<Invoice>();
+        public ICollection<RefundApplication> RefundApplications { get; set; } = new List<RefundApplication>();
 
         public string? PaymentMethod { get; set; }
         public decimal? CashReceived { get; set; }
@@ -82,6 +91,10 @@ namespace hotel_erp.Api.Database.Entities
     {
         public Guid InvoiceId { get; set; }
         public Invoice Invoice { get; set; } = null!;
+        public Guid? OriginalInvoiceItemId { get; set; }
+        public InvoiceItem? OriginalInvoiceItem { get; set; }
+        public Guid? FolioItemId { get; set; }
+        public FolioItem? FolioItem { get; set; }
         public string Description { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
@@ -100,5 +113,3 @@ namespace hotel_erp.Api.Database.Entities
         public string? ApplicableTo { get; set; }
     }
 }
-
-

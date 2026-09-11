@@ -1,0 +1,55 @@
+[
+  {
+    "prueba": "C01 cargo como frontend",
+    "status": 400,
+    "respuesta": {
+      "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+      "title": "One or more validation errors occurred.",
+      "status": 400,
+      "errors": {
+        "folioId": [
+          "The field FolioId is invalid."
+        ]
+      },
+      "traceId": "00-f66f9e7cca04ce39a002d70290c1dbf1-2a3e5dfc6b5c9330-00"
+    }
+  },
+  {
+    "prueba": "C02 ruta nota crédito frontend",
+    "status": 405,
+    "respuesta": ""
+  },
+  {
+    "prueba": "C03 tipo Empresa frontend",
+    "status": 400,
+    "respuesta": {
+      "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+      "title": "One or more validation errors occurred.",
+      "status": 400,
+      "errors": {
+        "TaxpayerType": [
+          "The field TaxpayerType must match the regular expression '^(ConsumidorFinal|Gravado|Exonerado)$'."
+        ]
+      },
+      "traceId": "00-d062594ac62443321598e81eff2f3575-9ad80e0e8868ec43-00"
+    }
+  },
+  {
+    "prueba": "C04 fecha ISO autorización frontend",
+    "status": 400,
+    "respuesta": {
+      "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+      "title": "One or more validation errors occurred.",
+      "status": 400,
+      "errors": {
+        "request": [
+          "The request field is required."
+        ],
+        "$.issueDate": [
+          "The JSON value could not be converted to hotel_erp.Api.Dtos.Common.CreateDocumentAuthorizationRequest. Path: $.issueDate | LineNumber: 0 | BytePositionInLine: 97."
+        ]
+      },
+      "traceId": "00-94fa74fd257add602aa6e389d9b0538f-31d1799ac3f05b18-00"
+    }
+  }
+]

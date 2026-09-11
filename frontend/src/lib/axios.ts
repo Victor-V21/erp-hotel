@@ -1,22 +1,27 @@
 import axios, { type InternalAxiosRequestConfig } from 'axios'
+import { getAccessToken } from '@/lib/authSession'
+import { refreshBrowserSession } from '@/lib/sessionRefresh'
+import { useAuthStore } from '@/store/authStore'
 
-const authPaths = ['/auth/login', '/auth/register', '/auth/refresh']
+const authPaths = ['/auth/login', '/auth/refresh']
 
 const isAuthRequest = (url?: string) =>
   !!url && authPaths.some((path) => url.includes(path))
 
 const api = axios.create({
   baseURL: '/api',
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken')
+  const token = getAccessToken()
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
+
   return config
 })
 
@@ -28,12 +33,12 @@ let failedQueue: Array<{
 }> = []
 
 const processQueue = (error: Error | null, token: string | null = null) => {
-  failedQueue.forEach((prom) => {
+  failedQueue.forEach((pending) => {
     if (error) {
-      prom.reject(error)
+      pending.reject(error)
     } else if (token) {
-      prom.config.headers.Authorization = `Bearer ${token}`
-      prom.resolve(api(prom.config))
+      pending.config.headers.Authorization = `Bearer ${token}`
+      pending.resolve(api(pending.config))
     }
   })
   failedQueue = []
@@ -42,7 +47,7 @@ const processQueue = (error: Error | null, token: string | null = null) => {
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config
+    const originalRequest = error.config as (InternalAxiosRequestConfig & { _retry?: boolean }) | undefined
 
     if (
       error.response?.status === 401 &&
@@ -60,39 +65,27 @@ api.interceptors.response.use(
       isRefreshing = true
 
       try {
-        const refreshToken = localStorage.getItem('refreshToken')
-        if (!refreshToken) throw new Error('No refresh token available')
+        const { accessToken, user } = await refreshBrowserSession()
+        if (!accessToken || !user) throw new Error('Invalid refresh response')
 
-        const response = await axios.post('/api/auth/refresh', {
-          refreshToken,
-        })
-
-        const { accessToken, refreshToken: newRefreshToken } = response.data
-        localStorage.setItem('accessToken', accessToken)
-        localStorage.setItem('refreshToken', newRefreshToken)
-
-        api.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+        useAuthStore.getState().setAuth(user, accessToken)
         originalRequest.headers.Authorization = `Bearer ${accessToken}`
-
         processQueue(null, accessToken)
         return api(originalRequest)
-      } catch (refreshErr) {
-        processQueue(refreshErr as Error, null)
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
-        localStorage.removeItem('user')
+      } catch (refreshError) {
+        processQueue(refreshError as Error)
+        useAuthStore.getState().logout()
         if (window.location.pathname !== '/login') {
           window.location.href = '/login'
         }
-        return Promise.reject(refreshErr)
+        return Promise.reject(refreshError)
       } finally {
         isRefreshing = false
       }
     }
 
     return Promise.reject(error)
-  }
+  },
 )
 
 export default api
-

@@ -11,13 +11,19 @@ namespace hotel_erp.Api.Database.Repositories
         public RoleRepository(ApplicationDbContext context) => _context = context;
 
         public async Task<Role?> GetByIdAsync(Guid id)
-            => await _context.Roles.Include(r => r.RolePermissions).ThenInclude(rp => rp.Permission).FirstOrDefaultAsync(r => r.Id == id);
+            => await _context.Roles.Include(r => r.RolePermissions).ThenInclude(rp => rp.Permission).FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
 
         public async Task<Role?> GetByNameAsync(string name)
-            => await _context.Roles.Include(r => r.RolePermissions).ThenInclude(rp => rp.Permission).FirstOrDefaultAsync(r => r.Name == name);
+        {
+            var normalizedName = SecurityCatalogSeeder.NormalizeRoleName(name);
+            return await _context.Roles
+                .Include(r => r.RolePermissions)
+                .ThenInclude(rp => rp.Permission)
+                .FirstOrDefaultAsync(r => !r.IsDeleted && r.NormalizedName == normalizedName);
+        }
 
         public async Task<IEnumerable<Role>> GetAllAsync()
-            => await _context.Roles.Include(r => r.RolePermissions).ThenInclude(rp => rp.Permission).ToListAsync();
+            => await _context.Roles.Where(r => !r.IsDeleted).Include(r => r.RolePermissions).ThenInclude(rp => rp.Permission).ToListAsync();
 
         public async Task AddAsync(Role role) { await _context.Roles.AddAsync(role); await _context.SaveChangesAsync(); }
 
@@ -58,4 +64,3 @@ namespace hotel_erp.Api.Database.Repositories
         public async Task DeleteAsync(Guid id) { var p = await _context.Permissions.FindAsync(id); if (p != null) { p.IsDeleted = true; await _context.SaveChangesAsync(); } }
     }
 }
-

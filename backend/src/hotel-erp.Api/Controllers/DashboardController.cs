@@ -27,7 +27,7 @@ namespace hotel_erp.Api.Controllers
             var todayStart = HondurasTime.Now.Date;
             var todayEnd = todayStart.AddDays(1);
 
-            var occupiedStatuses = new[] { RoomStatus.Ocupada, RoomStatus.Reservada };
+            var occupiedStatuses = new[] { RoomStatus.Ocupada };
             var occupiedRooms = await _context.Rooms.CountAsync(r => occupiedStatuses.Contains(r.Status));
             var freeRooms = await _context.Rooms.CountAsync(r => r.Status == RoomStatus.Libre);
 
@@ -89,7 +89,8 @@ namespace hotel_erp.Api.Controllers
             {
                 cashBalance = await _context.CashMovements
                     .Where(cm => cm.CashRegisterId == cashRegister.Id)
-                    .OrderByDescending(cm => cm.MovementDate)
+                    .OrderByDescending(cm => cm.CreatedAt)
+                    .ThenByDescending(cm => cm.Id)
                     .Select(cm => (decimal?)cm.BalanceAfter)
                     .FirstOrDefaultAsync() ?? 0;
                 cashName = cashRegister.Name;

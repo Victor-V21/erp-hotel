@@ -46,7 +46,7 @@ namespace hotel_erp.Api.Dtos.Common
         [StringLength(10, MinimumLength = 1)] string? RoomNumber,
         [Range(0, 200)] int? Floor,
         Guid? RoomTypeId,
-        [RegularExpression("^(Libre|Ocupada|Limpieza|Mantenimiento|Reservada|Bloqueada)$")] string? Status,
+        [RegularExpression("^(Libre|Ocupada|Limpieza|Mantenimiento|Bloqueada)$")] string? Status,
         [StringLength(500)] string? Observations);
 
     public record ReservationDto
@@ -64,6 +64,7 @@ namespace hotel_erp.Api.Dtos.Common
         public decimal AdvancePayment { get; set; }
         public string Status { get; set; } = string.Empty;
         public string? Notes { get; set; }
+        public int Version { get; set; }
     }
 
     public record CreateReservationRequest(
@@ -92,7 +93,8 @@ namespace hotel_erp.Api.Dtos.Common
         [Range(0, 20)] int? Children,
         [RegularExpression("^(Efectivo|Tarjeta|Transferencia)$")] string? PaymentMethod,
         [Range(0, 999999.99)] decimal? AdvancePayment,
-        [StringLength(1000)] string? Notes) : IValidatableObject
+        [StringLength(1000)] string? Notes,
+        [Range(1, int.MaxValue)] int ExpectedVersion) : IValidatableObject
     {
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -104,15 +106,18 @@ namespace hotel_erp.Api.Dtos.Common
     public record CheckInRequest(
         [NotEmptyGuid] Guid ReservationId,
         [NotEmptyGuid] Guid RoomId,
-        List<Guid>? DiscountIds = null,
-        [RegularExpression("^(Efectivo|Tarjeta|Transferencia)$")] string? PaymentMethod = null,
-        [Range(0, 999999.99)] decimal? CashReceived = null,
-        [Range(0, 999999.99)] decimal? CashChange = null);
+        [Range(1, int.MaxValue)] int ExpectedVersion,
+        List<Guid>? DiscountIds = null);
+
+    public record ConfirmReservationRequest(
+        [Range(1, int.MaxValue)] int ExpectedVersion);
+
+    public record CancelReservationRequest(
+        [Range(1, int.MaxValue)] int ExpectedVersion,
+        [Required, StringLength(500, MinimumLength = 3)] string Reason);
 
     public record CheckOutRequest(
-        [NotEmptyGuid] Guid ReservationId,
-        [Range(0, 100)] decimal? DiscountPercentage,
-        [StringLength(250)] string? DiscountReason);
+        [NotEmptyGuid] Guid InvoiceId);
 
     public record FolioDto
     {
@@ -143,13 +148,11 @@ namespace hotel_erp.Api.Dtos.Common
     }
 
     public record AddFolioItemRequest(
-        [NotEmptyGuid] Guid FolioId,
         [Required, StringLength(250, MinimumLength = 2)] string Description,
         [Range(1, 1000)] int Quantity,
-        [Range(0, 999999.99)] decimal UnitPrice,
+        [Range(typeof(decimal), "0.01", "999999.99")] decimal UnitPrice,
         bool IsExempt,
         [Range(0, 1)] decimal ISVRate,
         bool IsTouristTaxable,
         [Range(0, 100)] decimal DiscountPercentage);
 }
-

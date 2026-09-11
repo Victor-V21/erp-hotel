@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import api from '@/lib/axios'
+import { getApiErrorMessage } from '@/lib/errors'
 import type { CAI, DocumentAuthorization } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -20,7 +19,7 @@ interface UnifiedAuth {
   currentCorrelative: string
   status: string
   isExpiringSoon: boolean
-  attachmentPath?: string
+  hasAttachment?: boolean
 }
 
 const docTypes = ['Factura (general)', 'Factura', 'NotaCredito', 'NotaDebito']
@@ -38,6 +37,16 @@ const schema = z.object({
 })
 
 type FormData = z.infer<typeof schema>
+type FormErrors = Partial<Record<keyof FormData, string>>
+
+const emptyForm: FormData = {
+  docType: 'Factura (general)',
+  caiNumber: '',
+  issueDate: '',
+  dueDate: '',
+  initialRange: '',
+  finalRange: '',
+}
 
 export default function AuthorizationsPage() {
   const navigate = useNavigate()
@@ -46,18 +55,11 @@ export default function AuthorizationsPage() {
   const [file, setFile] = useState<File | null>(null)
   const [error, setError] = useState('')
   const [serverError, setServerError] = useState('')
+  const [form, setForm] = useState<FormData>(emptyForm)
+  const [errors, setErrors] = useState<FormErrors>({})
   const fileRef = useRef<HTMLInputElement>(null)
 
-  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: { docType: 'Factura (general)', caiNumber: '', issueDate: '', dueDate: '', initialRange: '', finalRange: '' },
-  })
-
-  const docType = watch('docType')
-
-  useEffect(() => { load() }, [])
-
-  const load = async () => {
+  const load = useCallback(async () => {
     const [caiRes, docAuthRes] = await Promise.all([
       api.get<CAI[]>('/cai'),
       api.get<DocumentAuthorization[]>('/document-authorizations')
@@ -67,13 +69,21 @@ export default function AuthorizationsPage() {
       ...docAuthRes.data.map(d => ({ ...d, source: 'document' as const, documentType: d.documentType })),
     ]
     setItems(unified)
-  }
+  }, [])
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void load(), 0)
+    return () => window.clearTimeout(timer)
+  }, [load])
 
   const onSubmit = async (data: FormData) => {
     setError('')
     setServerError('')
     if (file && !file.name.toLowerCase().endsWith('.pdf')) {
       setError('El archivo debe ser PDF'); return
+    }
+    if (file && file.size > 10 * 1024 * 1024) {
+      setError('El archivo PDF no puede exceder 10 MB'); return
     }
     try {
       if (data.docType === 'Factura (general)') {
@@ -90,7 +100,7 @@ export default function AuthorizationsPage() {
         fd.append('documentType', docTypeMap[data.docType])
         fd.append('caiNumber', data.caiNumber)
         fd.append('issueDate', data.issueDate)
-        fd.append('dueDate', new Date(data.dueDate).toISOString())
+        fd.append('dueDate', data.dueDate)
         fd.append('initialRange', data.initialRange)
         fd.append('finalRange', data.finalRange)
         if (file) fd.append('file', file)
@@ -99,13 +109,31 @@ export default function AuthorizationsPage() {
         })
       }
       setShowForm(false)
-      reset()
+      setForm(emptyForm)
+      setErrors({})
       setFile(null)
       if (fileRef.current) fileRef.current.value = ''
       load()
-    } catch (e: any) {
-      setServerError(e?.response?.data ?? 'Error al guardar la autorización')
+    } catch (error: unknown) {
+      setServerError(getApiErrorMessage(error, 'Error al guardar la autorización'))
     }
+  }
+
+  const submit = async () => {
+    const result = schema.safeParse(form)
+    if (!result.success) {
+      const nextErrors: FormErrors = {}
+      for (const issue of result.error.issues) {
+        const field = issue.path[0]
+        if (typeof field === 'string' && !(field in nextErrors))
+          nextErrors[field as keyof FormData] = issue.message
+      }
+      setErrors(nextErrors)
+      return
+    }
+
+    setErrors({})
+    await onSubmit(result.data)
   }
 
   const deleteItem = async (item: UnifiedAuth) => {
@@ -122,9 +150,31 @@ export default function AuthorizationsPage() {
     }
   }
 
-  const viewFile = (item: UnifiedAuth) => {
-    if (item.source === 'document' && item.attachmentPath)
-      window.open(`/api/document-authorizations/${item.id}/file`, '_blank')
+  const viewFile = async (item: UnifiedAuth) => {
+    if (item.source !== 'document' || !item.hasAttachment) return
+
+    setServerError('')
+    const previewWindow = window.open('about:blank', '_blank')
+    if (previewWindow) {
+      previewWindow.opener = null
+      previewWindow.document.title = 'Cargando autorización fiscal…'
+    }
+    try {
+      const response = await api.get(`/document-authorizations/${item.id}/file`, { responseType: 'blob' })
+      const blobUrl = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
+      if (previewWindow) {
+        previewWindow.location.replace(blobUrl)
+      } else {
+        const link = document.createElement('a')
+        link.href = blobUrl
+        link.download = `autorizacion-fiscal-${item.id}.pdf`
+        link.click()
+      }
+      window.setTimeout(() => window.URL.revokeObjectURL(blobUrl), 60_000)
+    } catch (error: unknown) {
+      previewWindow?.close()
+      setServerError(getApiErrorMessage(error, 'No se pudo abrir el PDF de la autorización'))
+    }
   }
 
   return (
@@ -140,45 +190,45 @@ export default function AuthorizationsPage() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-sm">Tipo Documento *</label>
-              <select {...register('docType')} className="border border-input rounded-md px-3 py-2 text-sm w-full bg-background">
+              <select id="authorization-document-type" value={form.docType} onChange={event => setForm(current => ({ ...current, docType: event.target.value }))} className="border border-input rounded-md px-3 py-2 text-sm w-full bg-background">
                 {docTypes.map(d => <option key={d}>{d}</option>)}
               </select>
             </div>
             <div>
               <label className="text-sm">Número CAI *</label>
-              <Input {...register('caiNumber')} />
-              {errors.caiNumber && <p className="text-xs text-red-500 mt-1">{errors.caiNumber.message}</p>}
+              <Input value={form.caiNumber} onChange={event => setForm(current => ({ ...current, caiNumber: event.target.value }))} />
+              {errors.caiNumber && <p className="text-xs text-red-500 mt-1">{errors.caiNumber}</p>}
             </div>
             <div>
               <label className="text-sm">Fecha Emisión *</label>
-              <Input type="date" {...register('issueDate')} />
-              {errors.issueDate && <p className="text-xs text-red-500 mt-1">{errors.issueDate.message}</p>}
+              <Input type="date" value={form.issueDate} onChange={event => setForm(current => ({ ...current, issueDate: event.target.value }))} />
+              {errors.issueDate && <p className="text-xs text-red-500 mt-1">{errors.issueDate}</p>}
             </div>
             <div>
               <label className="text-sm">Fecha Vencimiento *</label>
-              <Input type={docType === 'Factura (general)' ? 'date' : 'datetime-local'} {...register('dueDate')} />
-              {errors.dueDate && <p className="text-xs text-red-500 mt-1">{errors.dueDate.message}</p>}
+              <Input type="date" value={form.dueDate} onChange={event => setForm(current => ({ ...current, dueDate: event.target.value }))} />
+              {errors.dueDate && <p className="text-xs text-red-500 mt-1">{errors.dueDate}</p>}
             </div>
             <div>
               <label className="text-sm">Rango Inicial *</label>
-              <Input {...register('initialRange')} placeholder="000-001-01-00000001" />
-              {errors.initialRange && <p className="text-xs text-red-500 mt-1">{errors.initialRange.message}</p>}
+              <Input value={form.initialRange} onChange={event => setForm(current => ({ ...current, initialRange: event.target.value }))} placeholder="000-001-01-00000001" />
+              {errors.initialRange && <p className="text-xs text-red-500 mt-1">{errors.initialRange}</p>}
             </div>
             <div>
               <label className="text-sm">Rango Final *</label>
-              <Input {...register('finalRange')} placeholder="000-001-01-00001000" />
-              {errors.finalRange && <p className="text-xs text-red-500 mt-1">{errors.finalRange.message}</p>}
+              <Input value={form.finalRange} onChange={event => setForm(current => ({ ...current, finalRange: event.target.value }))} placeholder="000-001-01-00001000" />
+              {errors.finalRange && <p className="text-xs text-red-500 mt-1">{errors.finalRange}</p>}
             </div>
             <div>
-              <label className="text-sm">Archivo PDF (opcional)</label>
-              <input ref={fileRef} type="file" accept=".pdf" onChange={e => setFile(e.target.files?.[0] || null)} className="border border-input rounded-md px-3 py-2 text-sm w-full bg-background file:mr-2 file:py-1 file:px-3 file:border-0 file:text-sm file:bg-primary file:text-primary-foreground file:rounded-md" />
+              <label className="text-sm">Archivo PDF (opcional, máximo 10 MB)</label>
+              <input ref={fileRef} type="file" accept="application/pdf,.pdf" onChange={e => setFile(e.target.files?.[0] || null)} className="border border-input rounded-md px-3 py-2 text-sm w-full bg-background file:mr-2 file:py-1 file:px-3 file:border-0 file:text-sm file:bg-primary file:text-primary-foreground file:rounded-md" />
             </div>
           </div>
           {error && <div className="text-sm text-red-600 dark:text-red-400 p-2 bg-red-50 dark:bg-red-900/20 rounded">{error}</div>}
           {serverError && <div className="text-sm text-red-600 dark:text-red-400 p-2 bg-red-50 dark:bg-red-900/20 rounded">{serverError}</div>}
           <div className="flex gap-2">
-            <Button onClick={handleSubmit(onSubmit)}>Guardar</Button>
-            <Button variant="outline" onClick={() => { setShowForm(false); reset(); setFile(null); if (fileRef.current) fileRef.current.value = '' }}>Cancelar</Button>
+            <Button onClick={() => void submit()}>Guardar</Button>
+            <Button variant="outline" onClick={() => { setShowForm(false); setForm(emptyForm); setErrors({}); setFile(null); if (fileRef.current) fileRef.current.value = '' }}>Cancelar</Button>
           </div>
         </div>
       )}
@@ -215,8 +265,8 @@ export default function AuthorizationsPage() {
                 </td>
                 <td className="p-3">
                   <div className="flex gap-1">
-                    {item.source === 'document' && item.attachmentPath &&
-                      <Button size="sm" variant="outline" onClick={() => viewFile(item)}>Ver PDF</Button>
+                    {item.source === 'document' && item.hasAttachment &&
+                      <Button size="sm" variant="outline" onClick={() => void viewFile(item)}>Ver PDF</Button>
                     }
                     <Button size="sm" variant="outline" onClick={() => navigate(`/invoices?filter=${item.source}:${item.id}`)}>Ver Facturas</Button>
                   </div>

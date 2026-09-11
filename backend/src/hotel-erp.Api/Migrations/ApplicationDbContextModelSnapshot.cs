@@ -112,6 +112,10 @@ namespace hotel_erp.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ReferenceId")
+                        .IsUnique()
+                        .HasFilter("\"ReferenceId\" IS NOT NULL AND NOT \"IsDeleted\"");
+
                     b.ToTable("AccountingEntries");
                 });
 
@@ -255,6 +259,38 @@ namespace hotel_erp.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("FiscalApprovalNote")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("FiscalApprovedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("FiscalApprovedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FiscalProfileStatus")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int>("FiscalProfileVersion")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("FiscalRetiredAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("FiscalRetiredByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FiscalRetirementReason")
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly?>("FiscalValidFrom")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FiscalValidUntil")
+                        .HasColumnType("date");
+
                     b.Property<string>("Footer")
                         .IsRequired()
                         .HasColumnType("text");
@@ -337,6 +373,8 @@ namespace hotel_erp.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FiscalProfileStatus");
+
                     b.ToTable("BusinessSettings");
                 });
 
@@ -397,6 +435,152 @@ namespace hotel_erp.Api.Migrations
                     b.ToTable("CAIs");
                 });
 
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.CardSettlement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AccountingEntryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("BankDepositAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("CommissionAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ExternalReference")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<decimal>("GrossAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("RecordedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("SettlementDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("SettlementNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<decimal>("WithholdingAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountingEntryId")
+                        .IsUnique();
+
+                    b.HasIndex("ExternalReference")
+                        .IsUnique()
+                        .HasFilter("NOT \"IsDeleted\"");
+
+                    b.HasIndex("RecordedByUserId");
+
+                    b.HasIndex("SettlementDate");
+
+                    b.HasIndex("SettlementNumber")
+                        .IsUnique()
+                        .HasFilter("NOT \"IsDeleted\"");
+
+                    b.ToTable("CardSettlements", t =>
+                        {
+                            t.HasCheckConstraint("CK_CardSettlements_Components_NonNegative", "\"BankDepositAmount\" >= 0 AND \"CommissionAmount\" >= 0 AND \"WithholdingAmount\" >= 0");
+
+                            t.HasCheckConstraint("CK_CardSettlements_Components_Total", "\"BankDepositAmount\" + \"CommissionAmount\" + \"WithholdingAmount\" = \"GrossAmount\"");
+
+                            t.HasCheckConstraint("CK_CardSettlements_Currency_HNL", "\"Currency\" = 'HNL'");
+
+                            t.HasCheckConstraint("CK_CardSettlements_GrossAmount_Positive", "\"GrossAmount\" > 0");
+
+                            t.HasCheckConstraint("CK_CardSettlements_Reference", "length(btrim(\"ExternalReference\")) >= 3");
+
+                            t.HasCheckConstraint("CK_CardSettlements_Status", "\"Status\" IN ('Confirmado', 'Anulado')");
+                        });
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.CardSettlementApplication", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid>("CardSettlementId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentId");
+
+                    b.HasIndex("CardSettlementId", "PaymentId")
+                        .IsUnique()
+                        .HasFilter("NOT \"IsDeleted\"");
+
+                    b.ToTable("CardSettlementApplications", t =>
+                        {
+                            t.HasCheckConstraint("CK_CardSettlementApplications_Amount_Positive", "\"Amount\" > 0");
+                        });
+                });
+
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.CashMovement", b =>
                 {
                     b.Property<Guid>("Id")
@@ -404,13 +588,19 @@ namespace hotel_erp.Api.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<decimal>("BalanceAfter")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<Guid>("CashRegisterId")
                         .HasColumnType("uuid");
+
+                    b.Property<decimal?>("CountedAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -423,6 +613,14 @@ namespace hotel_erp.Api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<decimal?>("Difference")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal?>("ExpectedAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -433,6 +631,10 @@ namespace hotel_erp.Api.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<Guid?>("ReferenceId")
                         .HasColumnType("uuid");
@@ -447,11 +649,20 @@ namespace hotel_erp.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CashRegisterId");
+                    b.HasIndex("ReferenceId")
+                        .IsUnique()
+                        .HasFilter("\"ReferenceId\" IS NOT NULL AND NOT \"IsDeleted\"");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CashMovements");
+                    b.HasIndex("CashRegisterId", "CreatedAt", "Id");
+
+                    b.ToTable("CashMovements", t =>
+                        {
+                            t.HasCheckConstraint("CK_CashMovements_Amount_NonNegative", "\"Amount\" >= 0");
+
+                            t.HasCheckConstraint("CK_CashMovements_Balance_NonNegative", "\"BalanceAfter\" >= 0");
+                        });
                 });
 
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.CashRegister", b =>
@@ -469,7 +680,8 @@ namespace hotel_erp.Api.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -479,7 +691,8 @@ namespace hotel_erp.Api.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -487,6 +700,10 @@ namespace hotel_erp.Api.Migrations
                         .HasDefaultValueSql("NOW()");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("NOT \"IsDeleted\"");
 
                     b.ToTable("CashRegisters");
                 });
@@ -1003,6 +1220,46 @@ namespace hotel_erp.Api.Migrations
                     b.ToTable("Guests");
                 });
 
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.IdempotencyRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("RequestHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Scope")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Scope", "Key")
+                        .IsUnique();
+
+                    b.ToTable("IdempotencyRecords");
+                });
+
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.InventoryMovement", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1069,6 +1326,15 @@ namespace hotel_erp.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("AppliedDiscountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AppliedDiscountNameSnapshot")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("AppliedDiscountPercentageSnapshot")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime?>("AuthorizationDueDateSnapshot")
                         .HasColumnType("timestamp without time zone");
 
@@ -1134,6 +1400,9 @@ namespace hotel_erp.Api.Migrations
 
                     b.Property<string>("FiscalSnapshotJson")
                         .HasColumnType("text");
+
+                    b.Property<Guid?>("FolioId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("GuestId")
                         .HasColumnType("uuid");
@@ -1209,7 +1478,13 @@ namespace hotel_erp.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AppliedDiscountId");
+
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("FolioId")
+                        .IsUnique()
+                        .HasFilter("\"FolioId\" IS NOT NULL AND NOT \"IsDeleted\"");
 
                     b.HasIndex("GuestId");
 
@@ -1245,6 +1520,9 @@ namespace hotel_erp.Api.Migrations
                     b.Property<decimal>("DiscountPercentage")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("FolioItemId")
+                        .HasColumnType("uuid");
+
                     b.Property<decimal>("ISVRate")
                         .HasColumnType("numeric");
 
@@ -1263,6 +1541,9 @@ namespace hotel_erp.Api.Migrations
                     b.Property<decimal>("LineTotal")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("OriginalInvoiceItemId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
@@ -1276,9 +1557,159 @@ namespace hotel_erp.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FolioItemId")
+                        .IsUnique()
+                        .HasFilter("\"FolioItemId\" IS NOT NULL AND NOT \"IsDeleted\"");
+
                     b.HasIndex("InvoiceId");
 
+                    b.HasIndex("OriginalInvoiceItemId");
+
                     b.ToTable("InvoiceItems");
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AccountingEntryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal?>("CashChange")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal?>("CashReceived")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid?>("CashRegisterId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ExternalReference")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("PaymentNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<Guid>("RecordedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountingEntryId")
+                        .IsUnique();
+
+                    b.HasIndex("CashRegisterId");
+
+                    b.HasIndex("PaymentDate");
+
+                    b.HasIndex("PaymentNumber")
+                        .IsUnique()
+                        .HasFilter("NOT \"IsDeleted\"");
+
+                    b.HasIndex("RecordedByUserId");
+
+                    b.ToTable("Payments", t =>
+                        {
+                            t.HasCheckConstraint("CK_Payments_Amount_Positive", "\"Amount\" > 0");
+
+                            t.HasCheckConstraint("CK_Payments_Currency_HNL", "\"Currency\" = 'HNL'");
+
+                            t.HasCheckConstraint("CK_Payments_MethodFields", "(\"Method\" = 'Efectivo' AND \"CashRegisterId\" IS NOT NULL AND \"CashReceived\" IS NOT NULL AND \"CashReceived\" >= \"Amount\" AND \"CashChange\" = \"CashReceived\" - \"Amount\" AND \"ExternalReference\" = '') OR (\"Method\" IN ('Tarjeta', 'Transferencia') AND \"CashRegisterId\" IS NULL AND \"CashReceived\" IS NULL AND \"CashChange\" IS NULL AND length(btrim(\"ExternalReference\")) >= 3)");
+
+                            t.HasCheckConstraint("CK_Payments_Status", "\"Status\" IN ('Confirmado', 'Anulado', 'ParcialmenteReembolsado', 'Reembolsado')");
+                        });
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.PaymentApplication", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("InvoiceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("PaymentId", "InvoiceId")
+                        .IsUnique()
+                        .HasFilter("NOT \"IsDeleted\"");
+
+                    b.ToTable("PaymentApplications", t =>
+                        {
+                            t.HasCheckConstraint("CK_PaymentApplications_Amount_Positive", "\"Amount\" > 0");
+                        });
                 });
 
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.Permission", b =>
@@ -1533,6 +1964,152 @@ namespace hotel_erp.Api.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.Refund", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AccountingEntryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid?>("CashRegisterId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ExternalReference")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<Guid>("RecordedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("RefundDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("RefundNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountingEntryId")
+                        .IsUnique();
+
+                    b.HasIndex("CashRegisterId");
+
+                    b.HasIndex("PaymentId");
+
+                    b.HasIndex("RecordedByUserId");
+
+                    b.HasIndex("RefundDate");
+
+                    b.HasIndex("RefundNumber")
+                        .IsUnique()
+                        .HasFilter("NOT \"IsDeleted\"");
+
+                    b.ToTable("Refunds", t =>
+                        {
+                            t.HasCheckConstraint("CK_Refunds_Amount_Positive", "\"Amount\" > 0");
+
+                            t.HasCheckConstraint("CK_Refunds_Currency_HNL", "\"Currency\" = 'HNL'");
+
+                            t.HasCheckConstraint("CK_Refunds_MethodFields", "(\"Method\" = 'Efectivo' AND \"CashRegisterId\" IS NOT NULL AND \"ExternalReference\" = '') OR (\"Method\" IN ('Tarjeta', 'Transferencia') AND \"CashRegisterId\" IS NULL AND length(btrim(\"ExternalReference\")) >= 3)");
+
+                            t.HasCheckConstraint("CK_Refunds_Status", "\"Status\" IN ('Confirmado', 'Anulado')");
+                        });
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.RefundApplication", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<Guid>("CreditNoteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("RefundId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreditNoteId");
+
+                    b.HasIndex("RefundId", "CreditNoteId")
+                        .IsUnique()
+                        .HasFilter("NOT \"IsDeleted\"");
+
+                    b.ToTable("RefundApplications", t =>
+                        {
+                            t.HasCheckConstraint("CK_RefundApplications_Amount_Positive", "\"Amount\" > 0");
+                        });
+                });
+
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.Reservation", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1587,6 +2164,10 @@ namespace hotel_erp.Api.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("NOW()");
 
+                    b.Property<int>("Version")
+                        .IsConcurrencyToken()
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GuestId");
@@ -1620,6 +2201,13 @@ namespace hotel_erp.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SystemKey")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
@@ -1627,7 +2215,10 @@ namespace hotel_erp.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("NormalizedName")
+                        .IsUnique();
+
+                    b.HasIndex("SystemKey")
                         .IsUnique();
 
                     b.ToTable("Roles");
@@ -1877,9 +2468,15 @@ namespace hotel_erp.Api.Migrations
                     b.Property<DateTime?>("LockoutEnd")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<bool>("MustChangePassword")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("SecurityVersion")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -1934,6 +2531,43 @@ namespace hotel_erp.Api.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.CardSettlement", b =>
+                {
+                    b.HasOne("hotel_erp.Api.Database.Entities.AccountingEntry", "AccountingEntry")
+                        .WithOne()
+                        .HasForeignKey("hotel_erp.Api.Database.Entities.CardSettlement", "AccountingEntryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("hotel_erp.Api.Database.Entities.User", "RecordedByUser")
+                        .WithMany()
+                        .HasForeignKey("RecordedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AccountingEntry");
+
+                    b.Navigation("RecordedByUser");
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.CardSettlementApplication", b =>
+                {
+                    b.HasOne("hotel_erp.Api.Database.Entities.CardSettlement", "CardSettlement")
+                        .WithMany("Applications")
+                        .HasForeignKey("CardSettlementId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("hotel_erp.Api.Database.Entities.Payment", "Payment")
+                        .WithMany("CardSettlementApplications")
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CardSettlement");
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.CashMovement", b =>
@@ -2032,6 +2666,11 @@ namespace hotel_erp.Api.Migrations
 
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.Invoice", b =>
                 {
+                    b.HasOne("hotel_erp.Api.Database.Entities.Discount", "AppliedDiscount")
+                        .WithMany()
+                        .HasForeignKey("AppliedDiscountId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("hotel_erp.Api.Database.Entities.CAI", "CAI")
                         .WithMany("Invoices")
                         .HasForeignKey("CAIId")
@@ -2048,21 +2687,30 @@ namespace hotel_erp.Api.Migrations
                         .HasForeignKey("DocumentAuthorizationId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("hotel_erp.Api.Database.Entities.Folio", "Folio")
+                        .WithOne("SettlementInvoice")
+                        .HasForeignKey("hotel_erp.Api.Database.Entities.Invoice", "FolioId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("hotel_erp.Api.Database.Entities.Guest", "Guest")
                         .WithMany("Invoices")
                         .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("hotel_erp.Api.Database.Entities.Invoice", "OriginalInvoice")
-                        .WithMany()
+                        .WithMany("CreditNotes")
                         .HasForeignKey("OriginalInvoiceId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("AppliedDiscount");
 
                     b.Navigation("CAI");
 
                     b.Navigation("Customer");
 
                     b.Navigation("DocumentAuthorization");
+
+                    b.Navigation("Folio");
 
                     b.Navigation("Guest");
 
@@ -2071,13 +2719,71 @@ namespace hotel_erp.Api.Migrations
 
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.InvoiceItem", b =>
                 {
+                    b.HasOne("hotel_erp.Api.Database.Entities.FolioItem", "FolioItem")
+                        .WithOne("InvoiceItem")
+                        .HasForeignKey("hotel_erp.Api.Database.Entities.InvoiceItem", "FolioItemId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("hotel_erp.Api.Database.Entities.Invoice", "Invoice")
                         .WithMany("InvoiceItems")
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("hotel_erp.Api.Database.Entities.InvoiceItem", "OriginalInvoiceItem")
+                        .WithMany()
+                        .HasForeignKey("OriginalInvoiceItemId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("FolioItem");
+
                     b.Navigation("Invoice");
+
+                    b.Navigation("OriginalInvoiceItem");
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.Payment", b =>
+                {
+                    b.HasOne("hotel_erp.Api.Database.Entities.AccountingEntry", "AccountingEntry")
+                        .WithOne()
+                        .HasForeignKey("hotel_erp.Api.Database.Entities.Payment", "AccountingEntryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("hotel_erp.Api.Database.Entities.CashRegister", "CashRegister")
+                        .WithMany()
+                        .HasForeignKey("CashRegisterId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("hotel_erp.Api.Database.Entities.User", "RecordedByUser")
+                        .WithMany()
+                        .HasForeignKey("RecordedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AccountingEntry");
+
+                    b.Navigation("CashRegister");
+
+                    b.Navigation("RecordedByUser");
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.PaymentApplication", b =>
+                {
+                    b.HasOne("hotel_erp.Api.Database.Entities.Invoice", "Invoice")
+                        .WithMany("PaymentApplications")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("hotel_erp.Api.Database.Entities.Payment", "Payment")
+                        .WithMany("Applications")
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.Product", b =>
@@ -2121,6 +2827,58 @@ namespace hotel_erp.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.Refund", b =>
+                {
+                    b.HasOne("hotel_erp.Api.Database.Entities.AccountingEntry", "AccountingEntry")
+                        .WithOne()
+                        .HasForeignKey("hotel_erp.Api.Database.Entities.Refund", "AccountingEntryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("hotel_erp.Api.Database.Entities.CashRegister", "CashRegister")
+                        .WithMany()
+                        .HasForeignKey("CashRegisterId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("hotel_erp.Api.Database.Entities.Payment", "Payment")
+                        .WithMany("Refunds")
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("hotel_erp.Api.Database.Entities.User", "RecordedByUser")
+                        .WithMany()
+                        .HasForeignKey("RecordedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AccountingEntry");
+
+                    b.Navigation("CashRegister");
+
+                    b.Navigation("Payment");
+
+                    b.Navigation("RecordedByUser");
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.RefundApplication", b =>
+                {
+                    b.HasOne("hotel_erp.Api.Database.Entities.Invoice", "CreditNote")
+                        .WithMany("RefundApplications")
+                        .HasForeignKey("CreditNoteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("hotel_erp.Api.Database.Entities.Refund", "Refund")
+                        .WithMany("Applications")
+                        .HasForeignKey("RefundId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CreditNote");
+
+                    b.Navigation("Refund");
                 });
 
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.Reservation", b =>
@@ -2208,6 +2966,11 @@ namespace hotel_erp.Api.Migrations
                     b.Navigation("Invoices");
                 });
 
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.CardSettlement", b =>
+                {
+                    b.Navigation("Applications");
+                });
+
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.CashRegister", b =>
                 {
                     b.Navigation("CashMovements");
@@ -2231,6 +2994,13 @@ namespace hotel_erp.Api.Migrations
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.Folio", b =>
                 {
                     b.Navigation("FolioItems");
+
+                    b.Navigation("SettlementInvoice");
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.FolioItem", b =>
+                {
+                    b.Navigation("InvoiceItem");
                 });
 
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.Guest", b =>
@@ -2244,7 +3014,22 @@ namespace hotel_erp.Api.Migrations
 
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.Invoice", b =>
                 {
+                    b.Navigation("CreditNotes");
+
                     b.Navigation("InvoiceItems");
+
+                    b.Navigation("PaymentApplications");
+
+                    b.Navigation("RefundApplications");
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.Payment", b =>
+                {
+                    b.Navigation("Applications");
+
+                    b.Navigation("CardSettlementApplications");
+
+                    b.Navigation("Refunds");
                 });
 
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.Permission", b =>
@@ -2260,6 +3045,11 @@ namespace hotel_erp.Api.Migrations
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.PurchaseInvoice", b =>
                 {
                     b.Navigation("PurchaseInvoiceItems");
+                });
+
+            modelBuilder.Entity("hotel_erp.Api.Database.Entities.Refund", b =>
+                {
+                    b.Navigation("Applications");
                 });
 
             modelBuilder.Entity("hotel_erp.Api.Database.Entities.Reservation", b =>

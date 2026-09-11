@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import api from '@/lib/axios'
 import type { Room, RoomType } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -12,7 +12,6 @@ const statusColors: Record<string, string> = {
   Ocupada: 'bg-red-100 dark:bg-red-950/40 text-red-800 dark:text-red-300 border-red-300 dark:border-red-800',
   Limpieza: 'bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800',
   Mantenimiento: 'bg-orange-100 dark:bg-orange-950/40 text-orange-800 dark:text-orange-300 border-orange-300 dark:border-orange-800',
-  Reservada: 'bg-sky-100 dark:bg-sky-950/40 text-sky-800 dark:text-sky-300 border-sky-300 dark:border-sky-800',
   Bloqueada: 'bg-gray-100 dark:bg-gray-800/60 text-gray-800 dark:text-gray-300 border-gray-300 dark:border-gray-600',
 }
 
@@ -28,11 +27,7 @@ export default function RoomsPage() {
   const [deleteTarget, setDeleteTarget] = useState<Room | null>(null)
   const [alertInfo, setAlertInfo] = useState<{ variant: 'error' | 'success'; message: string } | null>(null)
 
-  useEffect(() => {
-    load()
-  }, [])
-
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true)
     try {
       const [r, rt] = await Promise.all([
@@ -46,7 +41,12 @@ export default function RoomsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void load(), 0)
+    return () => window.clearTimeout(timer)
+  }, [load])
 
   const changeStatus = async (id: string, status: string) => {
     try {
@@ -296,7 +296,7 @@ export default function RoomsPage() {
                   Cambiar estado
                 </div>
                 <div className="flex gap-1 flex-wrap">
-                  {['Libre', 'Ocupada', 'Limpieza', 'Mantenimiento', 'Reservada', 'Bloqueada'].map((status) => (
+                  {['Libre', 'Ocupada', 'Limpieza', 'Mantenimiento', 'Bloqueada'].map((status) => (
                     <button
                       key={status}
                       onClick={() => changeStatus(room.id, status)}
@@ -348,4 +348,3 @@ export default function RoomsPage() {
     </div>
   )
 }
-

@@ -1,4 +1,5 @@
 using hotel_erp.Api.Database;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace hotel_erp.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Policy = PermissionNames.ManageBackups)]
     public class BackupController : ControllerBase
     {
         private readonly DatabaseBackupService _backupService;
@@ -64,5 +65,4 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
-
 

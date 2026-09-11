@@ -1,0 +1,1620 @@
+[
+  {
+    "id": "FIN-01",
+    "prioridad": "P0",
+    "area": "contabilidad",
+    "titulo": "Las notas de crédito aumentan ingresos en lugar de revertirlos",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/AccountingService.cs",
+        "linea": 17,
+        "ancla": "CreateInvoiceEntryAsync"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+        "linea": 253,
+        "ancla": "CreateCreditNote"
+      }
+    ],
+    "evidencia": "Reproducido T09: factura base L100 y nota base L100 producen dos créditos positivos a ingresos. El ISV de la nota fue cero por FIN-03; aun así el error de signo del asiento queda demostrado. La original se marca Anulada sin reversar su asiento.",
+    "impacto": "El saldo de ingresos llega a L200 cuando la devolución total debería neutralizar L100. Una nota parcial también anula la factura completa; no hay control acumulado del importe ya acreditado.",
+    "recomendacion": "Modelar factura, nota de crédito y débito como eventos distintos; invertir el asiento de la nota de crédito, enlazar líneas de origen y limitar el acumulado acreditado. Mantener el documento original y su historia.",
+    "aceptacion": "Factura 100+15; nota total 100+15: ingreso e ISV netos cero, devolución/cuenta por pagar conciliada. Dos notas parciales nunca exceden el saldo disponible."
+  },
+  {
+    "id": "FIN-02",
+    "prioridad": "P0",
+    "area": "contabilidad",
+    "titulo": "Las operaciones se guardan parcialmente antes de devolver un error",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReservationsController.cs",
+        "linea": 176,
+        "ancla": "CheckIn("
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+        "linea": 131,
+        "ancla": "Create("
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+        "linea": 41,
+        "ancla": "public async Task AddAsync(Invoice"
+      }
+    ],
+    "evidencia": "T03: check-in sin CAI devuelve 400, pero deja reserva CheckIn, habitación ocupada y folio. T32–T33: factura de L0.04 queda persistida sin asiento tras un 500. Correlativo, factura, asientos y bitácora se guardan en pasos separados.",
+    "impacto": "Reintentar después del error puede duplicar documentos, consumir correlativos o dejar estadías y contabilidad inconsistentes. Una transacción interna de SaveChanges no abarca el caso de uso completo.",
+    "recomendacion": "Una transacción de PostgreSQL por operación de negocio, con validaciones previas y clave de idempotencia. Correlativo, documento, folio, pago, asiento y evento de auditoría deben confirmar juntos; impresión y nube van después mediante cola persistente.",
+    "aceptacion": "Inyectar fallo en cada paso y comprobar rollback completo. Repetir la misma clave devuelve el mismo resultado y no crea otra venta."
+  },
+  {
+    "id": "FIN-03",
+    "prioridad": "P1",
+    "area": "contabilidad",
+    "titulo": "Las notas calculan impuestos desde LineTotal suministrado por el cliente",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+        "linea": 310,
+        "ancla": "var isvAmount = request.Items.Sum"
+      },
+      {
+        "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+        "linea": 173,
+        "ancla": "handleCreditNoteSubmit"
+      }
+    ],
+    "evidencia": "T09: cantidad 1, precio 100 y tasa 15%, sin LineTotal en JSON, generan subtotal 100 e ISV0. La interfaz construye líneas sin ese campo. El subtotal se recalcula por un camino y el impuesto por otro.",
+    "impacto": "El importe de impuestos depende de un campo manipulable o ausente; también afecta notas de débito.",
+    "recomendacion": "Calcular base, descuentos e impuestos exclusivamente en servidor a partir de cantidades y precios autorizados; eliminar totales derivados de los DTO de entrada.",
+    "aceptacion": "Omitir, falsear o enviar LineTotal=999 no cambia el resultado correcto de la nota."
+  },
+  {
+    "id": "FIN-04",
+    "prioridad": "P1",
+    "area": "contabilidad",
+    "titulo": "Desglose fiscal de tasas y bases incorrecto",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+        "linea": 213,
+        "ancla": "ISV15Amount ="
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/PurchaseInvoicesController.cs",
+        "linea": 81,
+        "ancla": "ISV15Amount ="
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReportsController.cs",
+        "linea": 72,
+        "ancla": "salesTaxed15"
+      }
+    ],
+    "evidencia": "T13: base 100 a 18% guarda ISV15Amount=18 e ISV18Amount=0. T14: línea exenta100 guarda TaxableAmount100 y ExemptAmount0. El resumen de base 15 suma todo el subtotal de documentos con ISV15 positivo, incluso documentos mixtos.",
+    "impacto": "Los libros y resúmenes no representan las bases gravadas, exentas y exoneradas reales. No se está dictaminando la tasa legal aplicable a cada producto: falla incluso la clasificación de la tasa solicitada.",
+    "recomendacion": "Motor fiscal único por línea, con base y tasa explícitas, redondeo definido y agregados separados. Usarlo en ventas, compras, notas, hospedaje y reportes.",
+    "aceptacion": "Documento mixto con bases exenta100, 15%100 y 18%100: cada casilla debe coincidir con sus líneas; validar exoneración global y parcial."
+  },
+  {
+    "id": "FIN-05",
+    "prioridad": "P1",
+    "area": "contabilidad",
+    "titulo": "Redondeo monetario inconsistente rompe la partida doble",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+        "linea": 117,
+        "ancla": "TotalAmount = Math.Round"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/AccountingService.cs",
+        "linea": 78,
+        "ancla": "if (debit != credit)"
+      }
+    ],
+    "evidencia": "T32: base 0.03 con 15% y 4%: componentes redondeados0.03+0+0 frente a total 0.04. AccountingService rechaza el asiento después de guardar la factura. T15 fue un control negativo: su primer ejemplo sí pasó, no constituye reproducción del defecto.",
+    "impacto": "Importes legítimos de centavos pueden fallar y dejar documentos huérfanos; otras rutas redondean de forma distinta.",
+    "recomendacion": "Definir una política monetaria única y hacer que el total sea la suma de componentes contabilizados, con ajuste explícito de redondeo cuando corresponda. Validar escala y límites en DTO y BD.",
+    "aceptacion": "Casos de medio centavo, varias líneas, descuento y exoneración deben mantener suma de componentes=total y débito=crédito a la precisión monetaria."
+  },
+  {
+    "id": "FIN-06",
+    "prioridad": "P1",
+    "area": "contabilidad",
+    "titulo": "Notas fiscales editables dejan hash y asientos obsoletos",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+        "linea": 75,
+        "ancla": "Update("
+      }
+    ],
+    "evidencia": "T11: una nota emitida se edita de 100 a 25; FiscalHash permanece igual y su asiento sigue por 100. El bloqueo de edición solo considera Factura. T16 acepta creación directa de NotaCredito sin documento original ni motivo.",
+    "impacto": "Documento, snapshot y mayor contable dejan de describir la misma operación. Se puede eludir el flujo específico de notas.",
+    "recomendacion": "Inmutabilidad de todos los documentos emitidos; corregir mediante documento compensatorio y autorización apropiada. DTO y rutas por tipo con origen obligatorio y enum validado.",
+    "aceptacion": "PUT de cualquier documento emitido es rechazado; no existen notas huérfanas ni tipos numéricos fuera del enum."
+  },
+  {
+    "id": "FIN-07",
+    "prioridad": "P1",
+    "area": "contabilidad",
+    "titulo": "Los libros suman documentos sin aplicar su naturaleza ni estado",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReportsController.cs",
+        "linea": 67,
+        "ancla": "GetTaxSummary"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReportsController.cs",
+        "linea": 200,
+        "ancla": "sales-book"
+      }
+    ],
+    "evidencia": "Código y T10: agregados sin filtro de tipo/estado ni signo para notas; una factura anulada permanece en la selección y su nota entra con signo positivo. El ejemplo T10 no demuestra duplicación del ISV porque FIN-03 dejó el impuesto de la nota en cero.",
+    "impacto": "Ingresos e impuestos pueden incluir documentos anulados, notas y otros tipos como ventas normales. La UI llama a estas salidas oficiales sin una conciliación demostrada.",
+    "recomendacion": "Definir libro de eventos fiscales por tipo y signo, con trazabilidad al original; conciliar contra mayor y documentos, y validar formato con el responsable contable antes de usarlo para declarar.",
+    "aceptacion": "Mes con factura, nota parcial, nota total y documento no fiscal: libro, resumen y mayor coinciden y no incluyen ventas inexistentes."
+  },
+  {
+    "id": "FIN-08",
+    "prioridad": "P1",
+    "area": "contabilidad",
+    "titulo": "Pagar compras no registra la salida de dinero",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/PurchaseInvoicesController.cs",
+        "linea": 95,
+        "ancla": "MarkAsPaid"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/AccountingService.cs",
+        "linea": 102,
+        "ancla": "CreatePurchaseEntryAsync"
+      }
+    ],
+    "evidencia": "T18: PUT /purchase-invoices/{id}/pay cambia estado; permanece un único asiento de compra. Toda compra usa gasto 5109 y crédito a proveedores, sin modelo de pago, vencimiento o clasificación de activo/inventario.",
+    "impacto": "Una factura pagada sigue como deuda contable y no reduce caja/banco. Compras de existencias o activos terminan en gastos genéricos.",
+    "recomendacion": "Registrar pagos aplicados a documentos, con asiento, caja/banco y referencia. Permitir clasificación contable de líneas y tratar impuestos recuperables según política validada.",
+    "aceptacion": "Compra 115 a crédito y pago 115 dejan proveedor 0 y banco -115; probar abonos, reverso y compra de activo/inventario."
+  },
+  {
+    "id": "FIN-09",
+    "prioridad": "P1",
+    "area": "contabilidad",
+    "titulo": "Compras duplicadas y borrado con saldos contradictorios",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/PurchaseInvoicesController.cs",
+        "linea": 50,
+        "ancla": "Create("
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/AccountingService.cs",
+        "linea": 151,
+        "ancla": "DeleteEntryByReferenceIdAsync"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Database/Repositories/AccountingRepository.cs",
+        "linea": 79,
+        "ancla": "GetAllAccountBalancesAsync"
+      }
+    ],
+    "evidencia": "T19 registra dos compras del mismo proveedor con igual número. T20 borra una y el catálogo muestra proveedor 230 mientras el balance de comprobación muestra 115: se marca eliminado el asiento por una ruta que no elimina sus líneas y los agregados aplican filtros distintos.",
+    "impacto": "Duplica gastos/deudas y ofrece saldos diferentes para una misma cuenta.",
+    "recomendacion": "Clave de documento de proveedor definida con el contador e índice único; reemplazar borrado de documentos contabilizados por reversos. Unificar filtros de cabecera/líneas en todos los agregados.",
+    "aceptacion": "Duplicado concurrente rechazado; todos los informes concilian antes y después de un reverso."
+  },
+  {
+    "id": "FIN-10",
+    "prioridad": "P1",
+    "area": "contabilidad",
+    "titulo": "Caja y arqueos no representan cobros reales",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/CashRegistersController.cs",
+        "linea": 66,
+        "ancla": "Close("
+      },
+      {
+        "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+        "linea": 210,
+        "ancla": "/movements"
+      }
+    ],
+    "evidencia": "T22: apertura 1000, expectedAmount1 y countedAmount1 enviados por cliente cierran con diferencia0. T23: ventas no generan movimientos; el controller solo ofrece apertura/cierre. Checkout intenta POST /cash-registers/{id}/movements, ruta inexistente, y silencia el error.",
+    "impacto": "El arqueo puede ocultar faltantes y no permite conciliar ventas, devoluciones, anticipos y pagos. No hay turno financiero consistente.",
+    "recomendacion": "El servidor calcula saldo esperado desde movimientos inmutables por turno; vincular cada cobro/pago/reembolso y exigir motivo/aprobación para diferencias.",
+    "aceptacion": "Apertura 1000+venta 115-devolución 15 =>esperado 1100; el cliente no puede alterarlo. Caja cerrada rechaza movimientos y doble cierre."
+  },
+  {
+    "id": "FIN-11",
+    "prioridad": "P1",
+    "area": "contabilidad",
+    "titulo": "Cuentas históricas y cierre contable carecen de protección efectiva",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReportsController.cs",
+        "linea": 101,
+        "ancla": "accounts.Where(a => a.IsActive)"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/AccountingController.cs",
+        "linea": 81,
+        "ancla": "UpdateAccount"
+      },
+      {
+        "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+        "linea": 194,
+        "ancla": "firstDayOfCurrentMonth"
+      }
+    ],
+    "evidencia": "Los reportes excluyen cuentas inactivas aunque tengan historia; el tipo de cuenta puede editarse y cambiar signos retroactivamente. La interfaz dice que meses anteriores están cerrados por comparar con el mes actual; no existe entidad ni autorización de períodos cerrados en servidor.",
+    "impacto": "Desaparecen saldos y se puede modificar un período supuestamente cerrado llamando a la API. El primer día local también puede rechazarse por mezclar fecha UTC y medianoche local.",
+    "recomendacion": "Separar cuentas habilitadas para nuevos asientos de cuentas incluidas en informes. Bloquear cambios estructurales con historia; períodos explícitos, cierre/reapertura autorizados y auditados.",
+    "aceptacion": "Desactivar cuenta conserva todos sus saldos; API rechaza asientos en período cerrado, permite el primer día de un período abierto y conserva trazabilidad de reapertura."
+  },
+  {
+    "id": "FIN-12",
+    "prioridad": "P2",
+    "area": "contabilidad",
+    "titulo": "Catálogo y estados financieros necesitan reglas de consolidación explícitas",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/AccountingController.cs",
+        "linea": 31,
+        "ancla": "Balance ="
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReportsController.cs",
+        "linea": 142,
+        "ancla": "currentPeriodIncome"
+      }
+    ],
+    "evidencia": "Saldos de cuentas padre se calculan por movimientos propios, no consolidan hijos. Balance general acumula ingresos históricos y usa código 3102 para resultado; el catálogo inicial define otra cuenta para utilidad. No se identificó cierre anual que delimite resultado del ejercicio.",
+    "impacto": "La presentación jerárquica induce a interpretar subtotales que no existen; el resultado acumulado puede confundirse con el del período.",
+    "recomendacion": "Definir cuentas de movimiento y agrupación, roll-up sin doble conteo, resultados del ejercicio/acumulados y saldos de apertura aprobados por contabilidad.",
+    "aceptacion": "Plan de cuentas con dos niveles y dos ejercicios: conciliación exacta entre mayores, subtotales, resultado y patrimonio."
+  },
+  {
+    "id": "HOT-01",
+    "prioridad": "P1",
+    "area": "operacion",
+    "titulo": "Disponibilidad por fechas se mezcla con estado físico actual",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoomRepository.cs",
+        "linea": 30,
+        "ancla": "GetAvailableAsync"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReservationsController.cs",
+        "linea": 110,
+        "ancla": "room.Status = RoomStatus.Reservada"
+      }
+    ],
+    "evidencia": "T04: una habitación ocupada hoy se excluye de fechas futuras no solapadas. Crear una reserva futura cambia de inmediato el estado global a Reservada. La comprobación de solapamiento y el INSERT son separados.",
+    "impacto": "Se pierde capacidad de venta futura y dos solicitudes concurrentes pueden reservar el mismo intervalo. Un único servidor sigue atendiendo solicitudes concurrentes.",
+    "recomendacion": "Separar disponibilidad por intervalo y limpieza/mantenimiento físico; bloqueo por habitación o restricción PostgreSQL de exclusión para reservas activas, con límites de fecha [entrada, salida).",
+    "aceptacion": "Reservas adyacentes permitidas; solapadas concurrentes dejan exactamente una. La reserva del próximo mes no ocupa hoy el cuarto."
+  },
+  {
+    "id": "HOT-02",
+    "prioridad": "P1",
+    "area": "operacion",
+    "titulo": "Transiciones de reserva permiten estados imposibles",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReservationsController.cs",
+        "linea": 146,
+        "ancla": "public async Task<ActionResult> Confirm"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReservationsController.cs",
+        "linea": 156,
+        "ancla": "public async Task<ActionResult> Cancel"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Dtos/common/HotelDtos.cs",
+        "linea": 87,
+        "ancla": "UpdateReservationRequest"
+      }
+    ],
+    "evidencia": "T05 cancela estadía en curso, T06 confirma la cancelada y T07 acepta editar solamente salida a una fecha anterior a entrada. T39 repetir check-in tras checkout acaba en 500 por folio único después de mutaciones.",
+    "impacto": "Habitación libre con huésped alojado, estadías negativas o reservaciones cerradas reabiertas sin reconciliación.",
+    "recomendacion": "Máquina de estados de servidor y validación del estado final tras aplicar PATCH; transiciones con versión/concurrencia y motivo. Repeticiones idempotentes.",
+    "aceptacion": "Matriz completa de transiciones válidas/invalidas; ninguna mutación ante una transición rechazada."
+  },
+  {
+    "id": "HOT-03",
+    "prioridad": "P1",
+    "area": "operacion",
+    "titulo": "Check-in acepta sobrecapacidad y efectivo incoherente",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReservationsController.cs",
+        "linea": 176,
+        "ancla": "CheckIn("
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Dtos/common/HotelDtos.cs",
+        "linea": 109,
+        "ancla": "CashReceived"
+      }
+    ],
+    "evidencia": "T36: habitación de capacidad 2, adultos 10, recibido 1 y cambio 500 se registra con factura total 1190. No se liquida el anticipo 200. El endpoint no valida de forma completa disponibilidad, capacidad y coherencia del pago.",
+    "impacto": "Sobreocupación y documentos marcados pagados sin el cobro necesario. El anticipo queda como dato sin aplicación contable.",
+    "recomendacion": "Validar cupo y cuarto en la transacción; calcular cambio y saldo en servidor; registrar anticipo como pasivo/pago aplicado según política contable, nunca confiar en cambio del navegador.",
+    "aceptacion": "Rechazar 10 adultos en cupo 2; anticipo 200 sobre1190 deja saldo 990; recibido 1000 produce cambio 10 y asientos conciliados."
+  },
+  {
+    "id": "HOT-04",
+    "prioridad": "P1",
+    "area": "operacion",
+    "titulo": "Check-out puede cerrar saldos pendientes o volver a facturar la estadía",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReservationsController.cs",
+        "linea": 340,
+        "ancla": "CheckOut("
+      },
+      {
+        "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+        "linea": 128,
+        "ancla": "api.post"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Database/Entities/InvoiceEntities.cs",
+        "linea": 44,
+        "ancla": "GuestId"
+      }
+    ],
+    "evidencia": "T38: folio 1305 se cierra con una sola factura 1190 del huésped, dejando consumo sin facturar. El frontend intenta facturar todas las líneas del folio pese a que check-in ya factura hospedaje; no existe vínculo de asignación factura↔línea de folio/reserva.",
+    "impacto": "Riesgo de pérdida de ingresos o doble facturación; consultar por huésped mezcla estadías distintas.",
+    "recomendacion": "Separar consumos, documentos y aplicaciones de pago; facturar solo líneas pendientes y cerrar cuando saldo/resolución autorizada sea cero. Enlazar factura y reserva/folio.",
+    "aceptacion": "Estadía 1190 facturada al ingreso +extra 115: salida emite solo115 y saldo 0; reintento no factura otra vez."
+  },
+  {
+    "id": "HOT-05",
+    "prioridad": "P1",
+    "area": "operacion",
+    "titulo": "Descuentos y exoneraciones se aplican con reglas divergentes",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReservationsController.cs",
+        "linea": 23,
+        "ancla": "discount"
+      },
+      {
+        "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+        "linea": 47,
+        "ancla": "discount"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Dtos/Discount/DiscountDtos.cs",
+        "linea": 28,
+        "ancla": "Range"
+      }
+    ],
+    "evidencia": "Código: se suman valores de descuento sin interpretar consistentemente monto fijo/porcentaje, documentación, edad y alcance; se permiten valores de porcentaje superiores a 100 en el catálogo. La rama exonerada de check-in vuelve a aplicar descuento sobre una base ya descontada. Checkout usa tasa ||0.15, convirtiendo0 en 15%.",
+    "impacto": "Tarifas negativas o reducidas dos veces, impuestos distintos entre pantallas y servidor, descuentos sin evidencia.",
+    "recomendacion": "Una función de precio autoritativa de servidor, reglas de combinación, tipo, vigencia, elegibilidad y máximo; respuesta de cotización detallada usada por frontend.",
+    "aceptacion": "Probar descuento fijo50, porcentaje10, acumulación, huésped no elegible, base exonerada y tasa 0; misma cotización en reserva, factura y folio."
+  },
+  {
+    "id": "HOT-06",
+    "prioridad": "P1",
+    "area": "operacion",
+    "titulo": "Borrado lógico oculta historia relacionada sin un criterio uniforme",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/SuppliersController.cs",
+        "linea": 73,
+        "ancla": "Delete("
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/RoomsController.cs",
+        "linea": 76,
+        "ancla": "Delete("
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+        "linea": 139,
+        "ancla": "HasQueryFilter"
+      }
+    ],
+    "evidencia": "T21: borrar proveedor oculta compras aún contabilizadas. Relaciones en cascada más filtros lógicos afectan la visibilidad; Folio/FolioItem y Role no tienen los mismos filtros. Los endpoints de clientes y huéspedes sí tienen bloqueos específicos: no se les atribuye este defecto indiscriminadamente.",
+    "impacto": "Historial operativo/fiscal desaparece de consultas mientras sus saldos siguen vivos; habitaciones pueden eliminarse sin la misma protección que clientes.",
+    "recomendacion": "Desactivar maestros con historia; restringir borrado referencial y definir consultas históricas independientes de la vigencia del maestro. Revisar cada cascada y filtro con pruebas de regresión.",
+    "aceptacion": "Desactivar proveedor/cuarto conserva compras, reservas, folios y reportes; no quedan referencias invisibles o restauraciones parciales."
+  },
+  {
+    "id": "INV-01",
+    "prioridad": "P1",
+    "area": "operacion",
+    "titulo": "Edición de stock evita el kardex y la concurrencia pierde salidas",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/InventoryController.cs",
+        "linea": 81,
+        "ancla": "CurrentStock ="
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/InventoryController.cs",
+        "linea": 167,
+        "ancla": "CreateMovement"
+      }
+    ],
+    "evidencia": "T24: PUT de producto fija stock -10 sin movimiento. T40: dos salidas de 7 desde10 responden 200; saldo final 3 aunque el kardex registra14 unidades de salida.",
+    "impacto": "Existencias y movimientos no concilian. Inventario negativo o consumo no descontado aun en una sola máquina.",
+    "recomendacion": "Stock derivado de movimientos o actualizado atómicamente con condición stock suficiente y versión; ajustes con motivo/usuario, nunca PUT de saldo. Abrir existencias mediante movimiento inicial.",
+    "aceptacion": "Con 10 unidades, dos salidas simultáneas de 7 dejan una aceptada y otra conflicto; saldo 3, salida total 7. Edición directa de saldo prohibida."
+  },
+  {
+    "id": "INV-02",
+    "prioridad": "P2",
+    "area": "operacion",
+    "titulo": "Inventario carece de integración de valoración y compras/consumos",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Database/Entities/ProductEntities.cs",
+        "linea": 15,
+        "ancla": "InventoryMovement"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Database/Entities/InvoiceEntities.cs",
+        "linea": 74,
+        "ancla": "InvoiceItem"
+      }
+    ],
+    "evidencia": "Modelo revisado: cantidades y precios de movimiento, pero sin vínculo sistemático compra→entrada→consumo→costo contable; líneas de factura no identifican producto y no hay unidad/conversión ni método de valoración.",
+    "impacto": "Sirve como registro aislado de cantidades; no permite confiar en costo de venta, inventario valorizado ni reposición conciliada con compras.",
+    "recomendacion": "Definir alcance requerido: si se gestionan artículos, integrar documentos, unidades, costo promedio/FIFO elegido y asientos. Si es solo control auxiliar, nombrarlo y limitar las promesas.",
+    "aceptacion": "Compra 10 a 5, compra 10 a 7 y salida5 producen existencias y costo según política, conciliados con mayor."
+  },
+  {
+    "id": "SEG-01",
+    "prioridad": "P0",
+    "area": "seguridad",
+    "titulo": "Recepción puede convertirse en administrador modificando roles",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/RolesController.cs",
+        "linea": 12,
+        "ancla": "[Authorize]"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/RolesController.cs",
+        "linea": 73,
+        "ancla": "role.Name ="
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+        "linea": 220,
+        "ancla": "ClaimTypes.Role"
+      }
+    ],
+    "evidencia": "T42 reproducido: recepción renombra Admin a AdminAnterior, renombra Recepcion a Admin y refresca su sesión. Recibe rol Admin y GET /audit-logs devuelve 200. El controller de roles solo exige autenticación.",
+    "impacto": "Escalación completa: quien tenga una cuenta operativa puede administrar usuarios y acceder a información reservada. No requiere acceso al sistema operativo.",
+    "recomendacion": "Políticas de autorización de servidor para administración de roles; identificadores estables de roles privilegiados, nombres no usados como identidad mutable y protección de último administrador. Auditoría y revocación de sesiones al cambiar privilegios.",
+    "aceptacion": "Recepción y Contador reciben 403 en POST/PUT/DELETE roles; no pueden alterar permisos o nombres. Pruebas negativas por cada endpoint administrativo."
+  },
+  {
+    "id": "SEG-02",
+    "prioridad": "P0",
+    "area": "seguridad",
+    "titulo": "Credenciales iniciales y clave de firma están publicadas en el proyecto",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/appsettings.json",
+        "linea": 14,
+        "ancla": "SecretKey"
+      },
+      {
+        "archivo": "docker/docker-compose.yml",
+        "linea": 28,
+        "ancla": "Jwt__SecretKey"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Program.cs",
+        "linea": 311,
+        "ancla": "Admin123"
+      }
+    ],
+    "evidencia": "T01: el arranque nuevo permite el usuario/contraseña predecibles del seed. appsettings y Compose contienen claveJWT y contraseña de base literales. No se vuelven a copiar esos secretos en este informe.",
+    "impacto": "Si se despliega con esos valores, se puede entrar como admin y la clave de firma conocida permite fabricar tokens. La red local del hotel no constituye autorización.",
+    "recomendacion": "Rotar secretos, incluir historial del repositorio en la evaluación de exposición; configuración externa protegida, bootstrap de un solo uso y cambio obligatorio de contraseña. Fallar el arranque si sigue la clave de ejemplo.",
+    "aceptacion": "Instalación limpia no acepta contraseña compartida; tokens firmados con clave anterior se rechazan; escaneo de secretos no encuentra credenciales operativas versionadas."
+  },
+  {
+    "id": "SEG-03",
+    "prioridad": "P1",
+    "area": "seguridad",
+    "titulo": "Permisos declarados no se aplican a operaciones sensibles",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Program.cs",
+        "linea": 113,
+        "ancla": "AddAuthorization"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/AccountingController.cs",
+        "linea": 12,
+        "ancla": "[Authorize]"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/TaxConfigurationsController.cs",
+        "linea": 13,
+        "ancla": "[Authorize]"
+      }
+    ],
+    "evidencia": "T25: recepción crea una cuenta contable y exporta huéspedes; otros endpoints fiscales, inventario, reportes y configuración solo requieren autenticación. Los claims de permisos no tienen políticas que los utilicen. Ocultar menús no protege una API.",
+    "impacto": "Cambios contables/fiscales y extracciones de datos fuera de las funciones del usuario; facilita fraude interno y errores accidentales.",
+    "recomendacion": "Matriz servidor recurso/acción/rol con denegación por defecto, separando consulta, emisión, ajustes, exportación, configuración y administración. Reutilizarla para navegación y backend.",
+    "aceptacion": "Tabla de pruebas para anónimo/recepción/contador/admin con 401/403/éxito esperado; ningún permiso se sustenta solo en la interfaz."
+  },
+  {
+    "id": "SEG-04",
+    "prioridad": "P1",
+    "area": "seguridad",
+    "titulo": "Recepción puede descargar un respaldo completo de PostgreSQL",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/BackupController.cs",
+        "linea": 11,
+        "ancla": "[Authorize]"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/BackupController.cs",
+        "linea": 23,
+        "ancla": "manual"
+      }
+    ],
+    "evidencia": "T41: cuentaRecepcion solicita respaldo manual y recibe 200 con el dump. Contiene todas las tablas, incluidas credenciales derivadas y sesiones. T25 también accede a logs de respaldo.",
+    "impacto": "Permite sacar el conjunto completo de datos personales y material de autenticación desde una cuenta operativa.",
+    "recomendacion": "Restringir generación y descarga a administración autorizada, registrar acceso, retención y almacenamiento cifrado. La exportación operativa debe limitarse al conjunto necesario.",
+    "aceptacion": "Recepción403 tanto al generar como descargar/listar; respaldo autorizado deja evento de auditoría y no expone rutas internas al resto."
+  },
+  {
+    "id": "SEG-05",
+    "prioridad": "P1",
+    "area": "seguridad",
+    "titulo": "Desactivar un usuario no invalida su token de acceso",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+        "linea": 121,
+        "ancla": "Revoke"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Program.cs",
+        "linea": 86,
+        "ancla": "TokenValidationParameters"
+      },
+      {
+        "archivo": "frontend/src/store/authStore.ts",
+        "linea": 43,
+        "ancla": "logout"
+      }
+    ],
+    "evidencia": "T26: token de usuario desactivado sigue obteniendo200. Revocación afecta refresh tokens; JwtBearer no comprueba estado/version del usuario. Logout del frontend limpia almacenamiento sin llamar a la revocación del backend; axios mantiene Authorization por defecto.",
+    "impacto": "Acceso continúa hasta expiración del token, con ventana aproximada configurada de 60 minutos más tolerancia. Roles/usuario en Zustand pueden quedar desactualizados tras refresh.",
+    "recomendacion": "Versión de sesión/seguridad validada por servidor en operaciones protegidas; invalidar al desactivar, cambiar credenciales o privilegios. Logout revoca sesión, limpia cabeceras y sincroniza pestañas.",
+    "aceptacion": "Token previo devuelve 401 inmediatamente tras desactivación/cambio de seguridad; refresh y pestañas abiertas se actualizan coherentemente."
+  },
+  {
+    "id": "SEG-06",
+    "prioridad": "P1",
+    "area": "seguridad",
+    "titulo": "Bitácora declara corrupta su propia cadena sin manipulación",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/AuditService.cs",
+        "linea": 42,
+        "ancla": "Timestamp:O"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/AuditLogsController.cs",
+        "linea": 146,
+        "ancla": "Timestamp:O"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+        "linea": 24,
+        "ancla": "timestamp without time zone"
+      }
+    ],
+    "evidencia": "T31: verificación falla en primer registro recién creado. Comprobación final reconstruye el hash con 2026-09-07T05:35:04.9015318Z; PostgreSQL almacenó 2026-09-07T05:35:04.901531. Se pierde precisión de 100ns y representación de zona antes de verificar.",
+    "impacto": "Falsas alarmas de manipulación; la cadena no ofrece la garantía que anuncia la interfaz.",
+    "recomendacion": "Serialización canónica estable antes de persistir y firmar, con precisión PostgreSQL y zona explícita. Probar round-trip de datos antes de habilitar la verificación.",
+    "aceptacion": "Cadena nueva verifica íntegra después de reiniciar, restaurar y cambiar zona del host; una modificación real se detecta en el registro exacto."
+  },
+  {
+    "id": "SEG-07",
+    "prioridad": "P1",
+    "area": "seguridad",
+    "titulo": "La auditoría no es completa ni resistente a modificaciones privilegiadas",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/AuditService.cs",
+        "linea": 25,
+        "ancla": "OrderByDescending"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/AuditLogsController.cs",
+        "linea": 86,
+        "ancla": "OrderBy"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/RolesController.cs",
+        "linea": 68,
+        "ancla": "Update("
+      }
+    ],
+    "evidencia": "T30 muestra cobertura principalmente de login/facturas mientras cambios de roles, caja, inventario y otros flujos no generan eventos equivalentes. Leer el último hash sin exclusión permite bifurcaciones concurrentes. Misma cuenta de BD tiene permisos para reescribir datos y cadena.",
+    "impacto": "No se puede reconstruir quién cambió datos críticos ni distinguir una reescritura completa. SHA256 por sí solo no es una firma digital ni inmutabilidad frente al administrador de la BD.",
+    "recomendacion": "Auditar todas las mutaciones críticas y fallos de autenticación; secuencia determinista serializada, almacenamiento append-only con privilegios separados y anclaje/copia externa. No registrar secretos en Changes.",
+    "aceptacion": "Operaciones simultáneas mantienen una sola cadena; toda acción privilegiada tiene actor, antes/después, hora y correlación. Intento de UPDATE con usuario API es denegado."
+  },
+  {
+    "id": "SEG-08",
+    "prioridad": "P1",
+    "area": "seguridad",
+    "titulo": "Puertos y privilegios exponen innecesariamente la base en la LAN",
+    "ubicaciones": [
+      {
+        "archivo": "docker/docker-compose.yml",
+        "linea": 12,
+        "ancla": "5432:5432"
+      },
+      {
+        "archivo": "docker/docker-compose.yml",
+        "linea": 7,
+        "ancla": "POSTGRES_USER"
+      },
+      {
+        "archivo": "docker/nginx/nginx.conf",
+        "linea": 13,
+        "ancla": "listen 80"
+      }
+    ],
+    "evidencia": "Compose publica 5432, 8080, 3000 y 80 en todas las interfaces; API usa usuario postgres con contraseña literal. No se configura TLS en el proxy. Include Error Detail=true incrementa detalle de errores de BD.",
+    "impacto": "Equipos de la LAN pueden acceder directamente a servicios internos; HTTP deja expuestos credenciales/tokens al tráfico interceptado. Un fallo de API dispone de permisos de superusuario de BD.",
+    "recomendacion": "Publicar únicamente proxy en la interfaz administrativa/LAN necesaria, TLS con confianza local, firewall/VLAN separada de huéspedes. Usuario API de mínimo privilegio, migraciones con credencial separada; quitar detalle sensible en producción.",
+    "aceptacion": "Desde puesto del hotel solo se alcanza proxy;5432/8080 inaccesibles por red. Usuario API no crea roles ni cambia esquema y el login viaja cifrado."
+  },
+  {
+    "id": "SEG-09",
+    "prioridad": "P2",
+    "area": "seguridad",
+    "titulo": "Endurecimiento de sesión, archivos y errores incompleto",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/lib/axios.ts",
+        "linea": 16,
+        "ancla": "localStorage"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/DocumentAuthorizationsController.cs",
+        "linea": 122,
+        "ancla": "AttachmentPath"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Program.cs",
+        "linea": 66,
+        "ancla": "AddControllers"
+      }
+    ],
+    "evidencia": "Revisión estática: tokens accesibles a JavaScript en localStorage; faltan límites de frecuencia por origen aunque existe bloqueo por fallos de contraseña. Adjunto fiscal valida principalmente extensión, usa datos del CAI en nombre y no explicita tamaño/contenido seguro. No se confirmó escritura por traversal ni XSS explotable.",
+    "impacto": "Amplía impacto de un futuro XSS y facilita consumo de recursos/errores de archivo. Mensajes de validación y 500 son inconsistentes para el cliente.",
+    "recomendacion": "Evaluar sesión con cookie HttpOnly/SameSite y CSRF si se adopta; CSP y límites de login. Nombre aleatorio de adjunto, confinamiento de ruta, tamaño y firma PDF; ProblemDetails estable sin trazas sensibles.",
+    "aceptacion": "Archivo inválido/sobredimensionado es rechazado antes de guardar; no sale de Uploads;429 ante abuso y mensajes de error seguros y accionables."
+  },
+  {
+    "id": "SEG-10",
+    "prioridad": "P1",
+    "area": "seguridad",
+    "titulo": "Repositorios y lockfiles incluyen material sensible o vulnerable",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/package-lock.json",
+        "linea": 1516,
+        "ancla": "\"node_modules/axios\""
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/hotel-erp.Api.csproj",
+        "linea": 15,
+        "ancla": "AutoMapper"
+      },
+      {
+        "archivo": ".gitignore",
+        "linea": 4,
+        "ancla": "obj"
+      }
+    ],
+    "evidencia": "npm audit sobre package-lock:10 paquetes afectados (8 high, 1 moderate, 1 low); NuGet: AutoMapper 12.0.1 y Microsoft.OpenApi 2.0.0 con avisos high. node_modules real usa, por ejemplo, axios1.19.0, router-dom7.18.2 y Vite 8.2.1, distintos del lock npm. SQLite versionado contiene 1 usuario y 7 registros de refresh, sin huéspedes ni facturas; hay logs y bin/obj versionados.",
+    "impacto": "Reinstalar con npm puede introducir versiones distintas de las probadas. El historial conserva credenciales derivadas y artefactos sin procedencia clara. Aviso de dependencia no equivale a explotación demostrada: SSR/RSC/Node-adapter no están expuestos por esta SPA.",
+    "recomendacion": "Elegir un gestor y lockfile, instalación inmutable, actualizar versiones compatibles y repetir pruebas. Retirar de seguimiento datos/logs/binarios generados conservando respaldo privado; rotar material potencialmente expuesto. Clasificar alcanzabilidad de cada aviso.",
+    "aceptacion": "Build limpio usa versiones inventariadas, audit no contiene avisos sin evaluación, no se versionan BD/sesiones/logs; ejecutar regresión de mapeos y autenticación tras actualizar."
+  },
+  {
+    "id": "OPS-01",
+    "prioridad": "P0",
+    "area": "infraestructura",
+    "titulo": "El frontend actual no compila",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/pages/reservations/CheckInPage.tsx",
+        "linea": 1,
+        "ancla": "import { useState"
+      },
+      {
+        "archivo": "frontend/src/pages/accounting/ChartOfAccountsPage.tsx",
+        "linea": 189,
+        "ancla": "const filterAccounts"
+      }
+    ],
+    "evidencia": "npm run build falla con 7 diagnósticos de sintaxis en CheckInPage(179–191) y ChartOfAccountsPage(384). Hay imports duplicados/JSX incompleto en CheckIn y falta cerrar handleDeleteConfirm antes de filterAccounts en catálogo. No se usó un bundle viejo para ocultar el fallo.",
+    "impacto": "No puede producirse una versión de frontend desplegable desde el código auditado; entrada de huéspedes y catálogo no se cargan correctamente.",
+    "recomendacion": "Reparar estructura de ambos archivos y después atender los errores adicionales que puedan aparecer en compilación completa. Exigir build limpio como puerta de entrega.",
+    "aceptacion": "npm ci con lock elegido, typecheck y build exitosos; navegar check-in y catálogo del artefacto recién construido y completar flujos de prueba."
+  },
+  {
+    "id": "OPS-02",
+    "prioridad": "P0",
+    "area": "infraestructura",
+    "titulo": "El Dockerfile de backend copia el código a una ruta distinta de la compilada",
+    "ubicaciones": [
+      {
+        "archivo": "docker/backend/Dockerfile",
+        "linea": 8,
+        "ancla": "COPY backend/src/. ."
+      },
+      {
+        "archivo": "docker/backend/Dockerfile",
+        "linea": 9,
+        "ancla": "WORKDIR /src/backend/src/hotel-erp.Api"
+      }
+    ],
+    "evidencia": "Verificación de rutas: csproj se copia a/src/backend/src/hotel-erp.Api; COPY backend/src/. . coloca Program.cs en/src/hotel-erp.Api. Build vuelve al primer directorio, que no contiene fuentes. No se ejecutó docker build de extremo a extremo; el fallo se deduce del contexto y las instrucciones COPY.",
+    "impacto": "Construcción nueva del contenedor backend falla por ausencia de código/entrypoint, aunque dotnet build del árbol real funciona.",
+    "recomendacion": "Alinear rutas de COPY y WORKDIR; .dockerignore para excluir bin/obj/node_modules/docs de laboratorio; construir en contexto limpio y publicar solo salida verificada.",
+    "aceptacion": "docker compose build --no-cache exitoso desde checkout limpio y API arrancando con DB nueva."
+  },
+  {
+    "id": "OPS-03",
+    "prioridad": "P1",
+    "area": "infraestructura",
+    "titulo": "Nginx no entrega la aplicación y cambia las rutas de la API",
+    "ubicaciones": [
+      {
+        "archivo": "docker/nginx/nginx.conf",
+        "linea": 22,
+        "ancla": "proxy_pass"
+      },
+      {
+        "archivo": "docker/docker-compose.yml",
+        "linea": 56,
+        "ancla": "nginx:"
+      },
+      {
+        "archivo": "docker/frontend/Dockerfile",
+        "linea": 11,
+        "ancla": "COPY --from=build"
+      }
+    ],
+    "evidencia": "Proxy exterior sirve/usr/share/nginx/html del nginx estándar sin montar/proxyar frontend. proxy_pass http://api:8080/ dentro de/api/ elimina ese prefijo. Nginx interior del frontend conserva configuración estándar sin fallbackSPA ni proxy API.",
+    "impacto": "Puerto80 muestra contenido estándar; llamadas/api llegan con ruta incorrecta. Puerto3000 no resuelve la API relativa y recargar rutas profundas falla.",
+    "recomendacion": "Una entrada web coherente: proxy exterior al servicio frontend o servir su build en el mismo nginx; preservar/api y habilitar fallbackSPA en el servidor que realmente contiene los assets.",
+    "aceptacion": "Desde otro equipo LAN: login, llamada/api, navegación y recarga de/invoices funcionan por una única URL."
+  },
+  {
+    "id": "OPS-04",
+    "prioridad": "P1",
+    "area": "infraestructura",
+    "titulo": "La impresión usa APIs de Windows dentro del destino Linux",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/RawPrinterHelper.cs",
+        "linea": 7,
+        "ancla": "winspool"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/EscPosService.cs",
+        "linea": 298,
+        "ancla": "System.Drawing"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/PrintController.cs",
+        "linea": 29,
+        "ancla": "printers"
+      }
+    ],
+    "evidencia": "T27: GET /print/printers devuelve 500 en Linux. Build emite CA1416 por APIs disponibles solo en Windows. El Dockerfile final usa ASP.NET Linux.",
+    "impacto": "Facturación no dispone de impresión física soportada en el despliegue previsto. No son advertencias inocuas por usar una sola máquina.",
+    "recomendacion": "Adaptador de impresión compatible con el host real: colaCUPS, ESC/POS TCP o servicio de impresión Windows separado si el hardware lo exige. Resolver imagen/raster sin System.Drawing Windows-only.",
+    "aceptacion": "Prueba en la imagen Linux y modelo real de impresora: enumerar, imprimir, reintentar fallo y evitar doble emisión fiscal."
+  },
+  {
+    "id": "OPS-05",
+    "prioridad": "P1",
+    "area": "infraestructura",
+    "titulo": "Recibo impreso no conserva fielmente el documento fiscal emitido",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/EscPosService.cs",
+        "linea": 115,
+        "ancla": "FACTURA"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/PrintController.cs",
+        "linea": 149,
+        "ancla": "FirstOrDefault"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReservationsController.cs",
+        "linea": 264,
+        "ancla": "new Invoice"
+      }
+    ],
+    "evidencia": "Código: título FACTURA genérico, rango inicial fijo, tasa 15/4 y datos CAI actuales en vez de snapshot completo; selección de primera reserva del huésped para fechas. T37: factura de check-in carece de FiscalHash/snapshot por el camino usado. Configuración permite ocultar bloques fiscales/totales.",
+    "impacto": "Reimpresión puede diferir del documento original o mostrar otra estadía; notas se presentan como facturas y se omiten datos necesarios.",
+    "recomendacion": "Snapshot inmutable completo en todas las rutas, plantilla por tipo de documento y datos de la estadía enlazada. Campos obligatorios no configurables como invisibles; validar formato fiscal con responsable autorizado.",
+    "aceptacion": "Modificar CAI/datos del hotel después de emitir no cambia la reimpresión; nota muestra su tipo y referencia; fechas corresponden a esa reserva."
+  },
+  {
+    "id": "OPS-06",
+    "prioridad": "P1",
+    "area": "infraestructura",
+    "titulo": "Respaldo SQL no cubre todos los datos persistentes ni una recuperación del equipo",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+        "linea": 107,
+        "ancla": "pg_dump"
+      },
+      {
+        "archivo": "docker/docker-compose.yml",
+        "linea": 9,
+        "ancla": "volumes:"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/BackupOptions.cs",
+        "linea": 9,
+        "ancla": "RetentionYears"
+      }
+    ],
+    "evidencia": "Respaldo manual sintético se restauró exitosamente en otra BD local PG18 (10 facturas, 12 líneas, 2 usuarios). No incluye Uploads; Compose no persiste ese directorio ni logs API. RetentionYears no tiene implementación efectiva de retención; rclone requiere configuración externa no provista por el repositorio.",
+    "impacto": "Recrear contenedor puede perder adjuntos; daño del disco puede perder base y copia local a la vez. Restaurar SQL no recupera impresora, secretos, adjuntos ni configuración.",
+    "recomendacion": "Persistir y respaldar adjuntos/configuración, copia cifrada fuera del equipo, retención verificable, monitoreo de espacio y simulacro en máquina reemplazante. Definir RPO/RTO y UPS para el servidor único.",
+    "aceptacion": "Recuperar en otro equipo desde copia externa: BD+adjuntos+configuración, login, factura, impresión y conciliación; medir tiempo y pérdida máxima de datos."
+  },
+  {
+    "id": "OPS-07",
+    "prioridad": "P2",
+    "area": "infraestructura",
+    "titulo": "Procesos de respaldo presentan carreras y fallos de disponibilidad",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+        "linea": 105,
+        "ancla": "ProcessStartInfo"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/BackupHostedService.cs",
+        "linea": 18,
+        "ancla": "ExecuteAsync"
+      }
+    ],
+    "evidencia": "Revisión estática: nombres a resolución de segundos, elección del último respaldo global para descarga, procesos externos sin plazo/terminación robusta y salida redirigida sin drenaje completo en todos los caminos. Reintentos limitados a primeros pendientes pueden postergar otros; errores no contenidos en servicio hospedado pueden detener API. Hora 02:00 depende del host/contenedor.",
+    "impacto": "Dos respaldos pueden colisionar o devolver archivo equivocado; procesos trabados, disco lleno o nube inaccesible pueden afectar disponibilidad. Estas carreras no fueron reproducidas como carga destructiva.",
+    "recomendacion": "Identificador único por ejecución, exclusión de trabajos, descargar por id, timeout/kill y drenaje asíncrono; capturar errores por ciclo, backoff y cola justa. Zona explícita y compatibilidad pg_dump/servidor.",
+    "aceptacion": "Simular nube caída, proceso colgado, disco lleno y dos solicitudes; API sigue disponible y cada resultado corresponde al trabajo correcto."
+  },
+  {
+    "id": "OPS-08",
+    "prioridad": "P2",
+    "area": "infraestructura",
+    "titulo": "Salud y arranque no reflejan preparación real",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Program.cs",
+        "linea": 158,
+        "ancla": "/health"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Program.cs",
+        "linea": 189,
+        "ancla": "Database.Migrate()"
+      }
+    ],
+    "evidencia": "T43 obtiene 200 del endpoint de salud; el código devuelve un literal sin consulta a BD. Migraciones y seed corren al inicio; catch fatal no garantiza una salida no-cero explícita. Compose espera DBhealthy pero no una API ready.",
+    "impacto": "Monitoreo puede anunciar servicio sano sin capacidad operativa y un fallo de migración puede producir bucles poco diagnósticos.",
+    "recomendacion": "Separar liveness/readiness; readiness con conexión/migración y dependencias esenciales. Migraciones controladas con respaldo previo y señal clara de fallo; healthchecks de API/proxy.",
+    "aceptacion": "Cortar BD hace readiness 503 sin matar liveness; migración fallida sale con error visible y no acepta solicitudes."
+  },
+  {
+    "id": "DB-01",
+    "prioridad": "P1",
+    "area": "infraestructura",
+    "titulo": "Correlativo protegido por lock sigue usando el CAI obsoleto de EF",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+        "linea": 53,
+        "ancla": "GetNextCorrelativeAsync"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/PostgresCorrelativeLock.cs",
+        "linea": 21,
+        "ancla": "pg_advisory_xact_lock"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+        "linea": 53,
+        "ancla": "GetByIdAsync"
+      }
+    ],
+    "evidencia": "T28: dos solicitudes que precargaron el mismo CAI esperan el lock; una responde 201 y la otra 500 por correlativo único. EF conserva valores de la entidad ya seguida dentro del contexto. El índice único sí evitó dos facturas con igual número.",
+    "impacto": "Errores bajo concurrencia normal y reintentos inciertos. No se atribuye el mismo fallo automáticamente al servicio de DocumentAuthorization que carga dentro del lock.",
+    "recomendacion": "Actualizar/retornar secuencia atómicamente en BD o recargar la entidad dentro del lock y transacción del documento. Claves de idempotencia y respuesta409/reintento controlado.",
+    "aceptacion": "Solicitudes concurrentes producen números únicos consecutivos válidos y ninguna 500 por carrera; rango agotado no permite emisión."
+  },
+  {
+    "id": "DB-02",
+    "prioridad": "P1",
+    "area": "infraestructura",
+    "titulo": "Inicio de rango y validación de autorización son inconsistentes",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/CAIController.cs",
+        "linea": 60,
+        "ancla": "CurrentCorrelative ="
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/DocumentAuthorizationsController.cs",
+        "linea": 67,
+        "ancla": "CurrentCorrelative ="
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/FiscalAuthorizationService.cs",
+        "linea": 42,
+        "ancla": "sequential"
+      }
+    ],
+    "evidencia": "T08: rango inicial...00000001 emite primero...00000002, porque CurrentCorrelative inicia en InitialRange y luego se incrementa. Validación textual no garantiza igualdad de prefijos/tipo entre límites y no aplica de manera uniforme fecha inicial/final.",
+    "impacto": "Se omite el primer comprobante autorizado y pueden aceptarse rangos incoherentes o autorizaciones fuera de vigencia.",
+    "recomendacion": "Guardar siguiente número o último emitido con semántica inequívoca; parseo estructurado de rango, prefijo y tipo; validación uniforme de vigencia por fecha fiscal local.",
+    "aceptacion": "Primer número coincide con inicio; último se emite una sola vez; rango invertido, prefijos diferentes o fuera de vigencia son rechazados."
+  },
+  {
+    "id": "DB-03",
+    "prioridad": "P1",
+    "area": "infraestructura",
+    "titulo": "Mezcla de UTC, hora hondureña y límites de consulta",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Services/HondurasTime.cs",
+        "linea": 7,
+        "ancla": "Add(Offset)"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+        "linea": 30,
+        "ancla": "i.InvoiceDate <= end"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReportsController.cs",
+        "linea": 69,
+        "ancla": "to.AddDays(1)"
+      }
+    ],
+    "evidencia": "Se resta 6 horas a DateTimeUtc conservando KindUtc; una hora local se serializa con Z como si fuera UTC. Hay columnas timestamp without time zone y comprobaciones de vencimientoUTC frente a fecha local. Reportes usan <=día siguiente incluyendo medianoche siguiente; listado de facturas puede recibir día final a 00:00 y excluir su jornada.",
+    "impacto": "Documentos caen en fecha/período equivocado y CAI puede vencerse antes de finalizar el día en Honduras. Rangos adyacentes pueden contar la misma medianoche.",
+    "recomendacion": "UTC para instantes reales, DateOnly para fecha fiscal/estadía, zonaAmerica/Tegucigalpa al presentar; intervalos [inicio, finExclusivo) y contrato de fechas documentado.",
+    "aceptacion": "Probar 23:59/00:00 local, último día fiscal y cambio de mes: cada factura pertenece exactamente a un período y CAI vence al momento definido."
+  },
+  {
+    "id": "DB-04",
+    "prioridad": "P1",
+    "area": "infraestructura",
+    "titulo": "DTO devuelven líneas vacías y autorizaciones fallan al mapear fechas",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Dtos/Mappings/MappingProfile.cs",
+        "linea": 69,
+        "ancla": "CreateMap<Invoice,"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Dtos/Mappings/MappingProfile.cs",
+        "linea": 64,
+        "ancla": "CreateMap<DocumentAuthorization,"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Dtos/common/InvoiceDtos.cs",
+        "linea": 18,
+        "ancla": "DocumentAuthorizationDto"
+      }
+    ],
+    "evidencia": "T34: Items API vacío con líneas presentes en BD; InvoiceItems/FolioItems/PurchaseInvoiceItems no se enlazan explícitamente a Items y falta mapa de línea de factura. T17/T35: autorización se inserta pero mapear DueDate DateOnly→DateTime produce 500; listar también falla con una fila.",
+    "impacto": "Detalles y liquidación muestran cero o sin consumos, no se pueden operar autorizaciones y reintentar creación puede duplicar datos.",
+    "recomendacion": "Mapas explícitos de colecciones y tipos de fecha consistentes; pruebas AssertConfigurationIsValid más round-trip DTO con entidad real y navegación cargada.",
+    "aceptacion": "Crear/listar/detallar cada documento devuelve todas sus líneas y totales; autorizaciónDateOnly crea201 y lista 200 sin escrituras parciales."
+  },
+  {
+    "id": "DB-05",
+    "prioridad": "P2",
+    "area": "infraestructura",
+    "titulo": "Listados completos y N+1 de reportes crecerán con el historial",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+        "linea": 29,
+        "ancla": "GetAllAsync() => await _context.Invoices"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReportsController.cs",
+        "linea": 101,
+        "ancla": "foreach (var account"
+      },
+      {
+        "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+        "linea": 62,
+        "ancla": "Promise.all"
+      }
+    ],
+    "evidencia": "Medición local:10 facturas=10.082 bytes y 8–16 ms;5.010=4.998.975 bytes y 397–562 ms, incluso sin líneas nuevas. Reportes hacen una consulta por cuenta y filtran fechas en memoria. Listados incluyen entidades/navegaciones completas y paginan en navegador; inventario carga productos/categorías/movimientos aun en pestaña no visible.",
+    "impacto": "Memoria, tráfico y espera crecen por años de operación; varias recepciones compiten con backups y reportes en el mismo servidor. Estas cifras no son un SLA del hardware del hotel.",
+    "recomendacion": "Paginación/filtrado/orden estable en SQL, DTO proyectado con AsNoTracking para lectura, agregación por cuenta y período en SQL; carga de detalle bajo demanda y cancelación de solicitudes.",
+    "aceptacion": "Con 50 mil documentos, listado devuelve solo página 50 y tamaño acotado; estado de resultados usa consultas constantes y mediana/p95 acordados medidos en equipo destino."
+  },
+  {
+    "id": "DB-06",
+    "prioridad": "P2",
+    "area": "infraestructura",
+    "titulo": "Esquema requiere restricciones e índices de negocio",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+        "linea": 66,
+        "ancla": "OnModelCreating"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+        "linea": 964,
+        "ancla": "CreateIndex"
+      }
+    ],
+    "evidencia": "EXPLAIN local consulta24 facturas por día y escanea 5.010, descarta 4.986 (5.34 ms, 1002 buffers). Faltan índices de fecha compuestos alineados con consultas. No hay exclusión temporal de reservas ni protección de stock concurrente; importes numeric sin escala fija/checks suficientes.",
+    "impacto": "Validación exclusivamente de aplicación permite corrupción por carreras y entradas fuera de dominio; consultas históricas escalan linealmente.",
+    "recomendacion": "Diseñar índices a partir de consultas reales (fecha/id, estado/fecha, cuarto/intervalo), restricciones de integridad y precisión por dominio. Medir planes antes/después; no añadir índices indiscriminadamente.",
+    "aceptacion": "EXPLAIN con volumen real confirma menos lecturas; restricciones rechazan fechas/importes/solapamientos inválidos incluso mediante SQL directo."
+  },
+  {
+    "id": "DB-07",
+    "prioridad": "P2",
+    "area": "infraestructura",
+    "titulo": "PostgreSQL ya está implementado, pero falta validar migración de datos históricos",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Program.cs",
+        "linea": 28,
+        "ancla": "UseNpgsql"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+        "linea": 9,
+        "ancla": "InitialPostgresCreate"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Data/hotel.db",
+        "linea": 1,
+        "ancla": ""
+      }
+    ],
+    "evidencia": "El código actual usa Npgsql y migración inicialPostgreSQL; arrancó y migró correctamente en PG18.6 del laboratorio. Compose especificaPG16, no ejecutado aquí. Sigue versionada una SQLite con 4 migraciones y datos de usuario/sesiones; no hay procedimiento de transferencia y conciliación de un hotel existente.",
+    "impacto": "Confundir base nueva con migración exitosa puede dejar atrás historia o usar datos/bundle anteriores. El arranque en PG18 no certifica la imagenPG16.",
+    "recomendacion": "Definir origen oficial, exportación transformada, saldos iniciales, secuencias fiscales, identidades y conteos/conciliación; ensayo con copia protegida. Probar la versiónPG16 exacta o actualizar el objetivo de manera deliberada.",
+    "aceptacion": "Ensayo de migración con documentos reales anonimizados conserva totales, líneas y correlativos; plan de rollback documentado y aprobado por responsables."
+  },
+  {
+    "id": "UX-01",
+    "prioridad": "P1",
+    "area": "frontend",
+    "titulo": "Menú fijo impide trabajar con comodidad en pantallas estrechas",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/components/layout/Sidebar.tsx",
+        "linea": 111,
+        "ancla": "w-64"
+      },
+      {
+        "archivo": "frontend/src/components/layout/AppLayout.tsx",
+        "linea": 33,
+        "ancla": "ml-64"
+      }
+    ],
+    "evidencia": "Captura dashboard-movil.png: sidebar abierto de 256 px en viewport 390 px; medición DOM previa width 390, scrollWidth 575. No hay drawer/breakpoint del shell; el contenido queda comprimido y desborda. Sí existen breakpoints dentro de numerosas páginas.",
+    "impacto": "El personal que use tableta/móvil o zoom pierde acceso legible a operaciones. Afecta reflowWCAG 1.4.10; no se hizo certificación completa WCAG.",
+    "recomendacion": "Menú como drawer en anchuras pequeñas, cerrado inicialmente y con foco controlado; main sin margen fijo cuando sea overlay. Mantener tablas con desplazamiento propio y acciones visibles. $impeccable adapt.",
+    "aceptacion": "320/390/768 px y zoom 200%: sin scroll horizontal de toda la página, navegación y tareas esenciales accesibles."
+  },
+  {
+    "id": "UX-02",
+    "prioridad": "P1",
+    "area": "frontend",
+    "titulo": "Contraste insuficiente en botones y estados de habitación",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/index.css",
+        "linea": 13,
+        "ancla": "C69C4B"
+      },
+      {
+        "archivo": "frontend/src/pages/admin/AuditLogsPage.tsx",
+        "linea": 159,
+        "ancla": "text-white"
+      },
+      {
+        "archivo": "frontend/src/pages/rooms/FloorMapPage.tsx",
+        "linea": 131,
+        "ancla": "text-white"
+      }
+    ],
+    "evidencia": "Cálculo sRGB del color sólido blanco sobre#C69C4B y sobre verde#22c55e/amarillo#eab308 del mapa queda por debajo de 4.5:1 para texto normal. El mapa muestra estado principalmente como color antes de abrir detalle; faltan estados Limpieza/Bloqueada en su leyenda.",
+    "impacto": "Baja legibilidad para recepcionistas con visión reducida y ambigüedad de estado para daltonismo. WCAG 1.4.3 y uso del color1.4.1.",
+    "recomendacion": "Tokens accesibles por tema y pareja fondo/texto con contraste comprobado; estado textual en cada cuarto, leyenda completa. Preservar dorado como acento de marca. $impeccable colorize.",
+    "aceptacion": "Texto normal≥4.5:1 y grande≥3:1 en ambos temas; estado comprensible en escala de grises."
+  },
+  {
+    "id": "UX-03",
+    "prioridad": "P1",
+    "area": "frontend",
+    "titulo": "Etiquetas, iconos y selección contable no son accesibles por teclado",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/pages/auth/LoginPage.tsx",
+        "linea": 60,
+        "ancla": "<label"
+      },
+      {
+        "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+        "linea": 34,
+        "ancla": "function AccountCombobox"
+      },
+      {
+        "archivo": "frontend/src/components/ui/Pagination.tsx",
+        "linea": 56,
+        "ancla": "<select"
+      }
+    ],
+    "evidencia": "Labels visuales sin htmlFor/id en login y muchos formularios; mostrar contraseña/cerrar modales sin nombre accesible. AccountCombobox usa div/onMouseDown sin roles, tabIndex ni manejo de teclado. Selector de tamaño de página no tiene etiqueta asociada.",
+    "impacto": "Dificulta lectores de pantalla y puede impedir crear asientos sin ratón. Relacionado con WCAG 1.3.1, 2.1.1, 4.1.2.",
+    "recomendacion": "Controles nativos o combobox accesible, ids/labels y errores asociados; nombres y estados aria de iconos. Foco visible también en acciones que hoy aparecen solo con hover. $impeccable harden.",
+    "aceptacion": "Crear asiento, autenticar y paginar usando solo Tab/ShiftTab/Enter/Escape, con lector de pantalla anunciando nombre, error y estado."
+  },
+  {
+    "id": "UX-04",
+    "prioridad": "P1",
+    "area": "frontend",
+    "titulo": "Modales carecen de un patrón consistente de foco y cierre",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/components/ui/ConfirmDialog.tsx",
+        "linea": 47,
+        "ancla": "role=\"dialog\""
+      },
+      {
+        "archivo": "frontend/src/components/layout/CommandPalette.tsx",
+        "linea": 107,
+        "ancla": "autoFocus"
+      },
+      {
+        "archivo": "frontend/src/pages/rooms/FloorMapPage.tsx",
+        "linea": 147,
+        "ancla": "selectedRoom &&"
+      }
+    ],
+    "evidencia": "ConfirmDialog tiene role y título, pero no trap/retorno de foco ni Escape; múltiples modales manuales ni siquiera tienen semántica dialog. Fondo clicable puede cerrar durante envío. Paleta sí maneja Escape, pero no establece navegación completa de opciones.",
+    "impacto": "Foco puede ir a controles de fondo; cierre inesperado pierde contexto o hace dudar si una operación terminó. PatrónAPG dialog y WCAG 2.4.3/4.1.2.",
+    "recomendacion": "Un componente de diálogo accesible común: foco inicial/encerrado/retorno, Escape según estado, inert del fondo y bloqueo coherente en envío. $impeccable harden.",
+    "aceptacion": "Abrir/cerrar vuelve al disparador; Tab no sale al fondo; la operación en curso no queda sin estado visible."
+  },
+  {
+    "id": "UX-05",
+    "prioridad": "P1",
+    "area": "frontend",
+    "titulo": "Botones de notas, cargos y autorizaciones no coinciden con el contrato API",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+        "linea": 179,
+        "ancla": "/invoices/credit-note"
+      },
+      {
+        "archivo": "frontend/src/pages/folios/FoliosPage.tsx",
+        "linea": 41,
+        "ancla": "/items"
+      },
+      {
+        "archivo": "frontend/src/pages/invoices/AuthorizationsPage.tsx",
+        "linea": 93,
+        "ancla": "toISOString"
+      }
+    ],
+    "evidencia": "Código: nota crédito usa ruta/invoices/credit-note en vez de/invoices/{id}/credit-note. Añadir consumo desde Folios/Checkout omiteFolioId requerido por DTO. Autorización envía timestampISO a DateOnly; abrir PDF conwindow.open no aporta bearer. Source=document se filtra luego como docauth. La ruta de anulación visible está rechazada por diseño del backend.",
+    "impacto": "Acciones principales fallan aun después de corregir compilación, con mensajes genéricos; bloquea cargos/notas/gestión fiscal. Hay evidencia API independiente en DB-04.",
+    "recomendacion": "Contrato único tipado generado desde Open API; pruebas de integración por acción de pantalla. Eliminar acciones incompatibles y descargar adjuntos vía cliente autenticado. $impeccable harden.",
+    "aceptacion": "Cada botón produce la ruta/cuerpo esperado; cargo queda visible, nota se vincula al original, PDF abre autorizado y filtro de autorización funciona."
+  },
+  {
+    "id": "UX-06",
+    "prioridad": "P1",
+    "area": "frontend",
+    "titulo": "Checkout calcula y envía datos fiscales incompatibles",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+        "linea": 188,
+        "ancla": "Empresa"
+      },
+      {
+        "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+        "linea": 133,
+        "ancla": "0.15"
+      },
+      {
+        "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+        "linea": 91,
+        "ancla": "catch"
+      }
+    ],
+    "evidencia": "TaxpayerType=Empresa al introducir RTN no coincide con valores admitidos por backend. Se envían propiedades de pago no soportadas por CreateInvoice DTO; cálculos duplicados ignoran descuentos de línea o interpretan fijo como porcentaje. Error del movimiento de caja se descarta. Selección de nuevo huésped no reinicia todo el estado de pago/RTN.",
+    "impacto": "Cobro rechazado para empresas o con impuestos/caja erróneos, y posible aplicación de datos del huésped anterior.",
+    "recomendacion": "Cotización y liquidación autoritativas de servidor con DTO compartido; limpiar estado por reserva y tratar flujo como una única operación con resultado integral. $impeccable harden.",
+    "aceptacion": "Empresa con RTN, consumidor, exento, descuento fijo y cambio dehuésped: importes correctos, sin datos arrastrados ni éxito parcial."
+  },
+  {
+    "id": "UX-07",
+    "prioridad": "P1",
+    "area": "frontend",
+    "titulo": "La acción de ingresar una reserva no conserva la reserva seleccionada",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/pages/reservations/ReservationsPage.tsx",
+        "linea": 73,
+        "ancla": "navigate('/checkin')"
+      },
+      {
+        "archivo": "frontend/src/pages/reservations/CheckInPage.tsx",
+        "linea": 140,
+        "ancla": "/reservations"
+      }
+    ],
+    "evidencia": "La lista navega/checkin sin identificador; wizard crea otra reserva. El guardado de huésped puede fallar y aun avanzar. No hay implementación completa del calendario que promete el acceso de Dashboard.",
+    "impacto": "El recepcionista pierde la reserva preparada, repite datos o genera otra operación; mayor demora justo en llegada.",
+    "recomendacion": "Ruta/checkin?reservationId=... oparam explícito, precargar reserva y actualizar la misma; avanzar solo después de validación/guardado exitoso. Mostrar agenda real o nombrar vista como lista. $impeccable shape.",
+    "aceptacion": "Desde reserva existente el check-in conservaId, cuarto, fechas y anticipo, no crea otra y permite volver sin perder datos."
+  },
+  {
+    "id": "UX-08",
+    "prioridad": "P1",
+    "area": "frontend",
+    "titulo": "Errores y cargas se presentan como cero, vacío o éxito",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/pages/accounting/TrialBalancePage.tsx",
+        "linea": 20,
+        "ancla": "finally"
+      },
+      {
+        "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+        "linea": 302,
+        "ancla": "taxSummary?."
+      },
+      {
+        "archivo": "frontend/src/pages/invoices/InvoiceEditPage.tsx",
+        "linea": 45,
+        "ancla": "!invoice"
+      },
+      {
+        "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+        "linea": 68,
+        "ancla": "catch"
+      }
+    ],
+    "evidencia": "TrialBalance no captura error de carga; inicial vacío puede parecer balance cero. Reportes muestran0 antes de tener respuesta y retienen resultados anteriores al cambiar filtros. InvoiceEdit oculta alerta cuando!invoice y quedaCargando. Settings silencia cargas y no presenta todos los fallos de guardado.",
+    "impacto": "Cero se interpreta como ausencia de obligaciones y el usuario puede trabajar con resultados de otro período o configuración no guardada.",
+    "recomendacion": "Estados explícitos cargando/sin datos/error/desactualizado/guardado; mostrar período aplicado a los resultados, invalidar o marcar al cambiar filtros. Mantener datos solo si se indica su antigüedad. $impeccable harden.",
+    "aceptacion": "Simular 500, desconexión y respuesta lenta por pantalla: nunca se anuncia cero/éxito sin confirmación y siempre hay reintento."
+  },
+  {
+    "id": "UX-09",
+    "prioridad": "P2",
+    "area": "frontend",
+    "titulo": "Búsquedas y paginación generan carreras y trabajo innecesario",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+        "linea": 78,
+        "ancla": "[search]"
+      },
+      {
+        "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+        "linea": 70,
+        "ancla": "[search]"
+      },
+      {
+        "archivo": "frontend/src/lib/axios.ts",
+        "linea": 8,
+        "ancla": "axios.create"
+      }
+    ],
+    "evidencia": "Búsqueda lanza solicitud por cada carácter, sin debounce/cancelación y luego vuelve a filtrar localmente. Respuestas fuera deorden pueden sobrescribir resultados. Paginación local con valor inicial de 15 mientras selector ofrece otros tamaños. Cliente HTTP no define timeout global.",
+    "impacto": "Resultados saltan, aumenta carga de BD y la UIpuede esperar indefinidamente. Listar15 filas no significa descargar15 registros.",
+    "recomendacion": "Debounce y AbortSignal, paginación real de servidor y filtros coherentes, reset/clamp de página. Usar ReactQuery ya instalado para caché, invalidación y estados. $impeccable optimize.",
+    "aceptacion": "Escribirconsulta rápida con respuestas reordenadas deja solo resultados de última consulta; ninguna página queda vacía fuera de rango."
+  },
+  {
+    "id": "UX-10",
+    "prioridad": "P2",
+    "area": "frontend",
+    "titulo": "Navegación, permisos y atajos prometidos no están alineados",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/components/layout/CommandPalette.tsx",
+        "linea": 151,
+        "ancla": "Enter"
+      },
+      {
+        "archivo": "frontend/src/components/layout/Breadcrumbs.tsx",
+        "linea": 34,
+        "ancla": "pathname"
+      },
+      {
+        "archivo": "frontend/src/App.tsx",
+        "linea": 19,
+        "ancla": "guests"
+      },
+      {
+        "archivo": "frontend/src/components/layout/Sidebar.tsx",
+        "linea": 50,
+        "ancla": "Contador"
+      }
+    ],
+    "evidencia": "Paleta anunciaEnter para seleccionar pero carece de manejador de selección por Enter/flechas. Búsqueda literal no encuentra facturas con el texto deejemplo si el módulo se llamaFacturación. Breadcrumbs genera padres/accounting y detalles no declarados. MenúHuéspedes permiteContador mientras ruta loexcluye. Los alias Recepcion/Recepcionista sí se normalizan: no son el fallo.",
+    "impacto": "Atajos poco fiables, enlaces404 y acciones que terminan en denegación; fricción repetida en trabajo diario.",
+    "recomendacion": "Una definición de rutas/metadatos/permisos para menú, paleta, breadcrumb; búsqueda por sinónimos y teclado completo. $impeccable clarify.",
+    "aceptacion": "Todos los enlaces corresponden a rutas válidas y permisos;facturas encuentra Facturación; flechas y Enter abren opción correcta."
+  },
+  {
+    "id": "UX-11",
+    "prioridad": "P2",
+    "area": "frontend",
+    "titulo": "Acciones duplicables y validación inconsistente entre capas",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+        "linea": 43,
+        "ancla": "const save"
+      },
+      {
+        "archivo": "frontend/src/pages/rooms/RoomTypesPage.tsx",
+        "linea": 41,
+        "ancla": "const save"
+      },
+      {
+        "archivo": "frontend/src/pages/users/UsersPage.tsx",
+        "linea": 94,
+        "ancla": "length < 6"
+      }
+    ],
+    "evidencia": "Varios formularios permiten pulsarGuardar varias veces sin indicador/disabled (descuentos, tipos, habitaciones, caja). Usuario acepta contraseña de 6 caracteres en frontend frente a 8 en backend. Errores esperan response.data.message aunque API devuelve string o ValidationProblemDetails.",
+    "impacto": "Duplicados, errores genéricos y retrabajo; la indicación visual de guardado varía de un módulo a otro.",
+    "recomendacion": "Estado de envío uniforme, idempotencia de servidor para operaciones financieras, restricciones compartidas y traducción centralizada de errores. $impeccable harden.",
+    "aceptacion": "Doble clic no duplica; contraseña inválida se explica antes/después; errors DTO resaltan el campo correspondiente."
+  },
+  {
+    "id": "UX-12",
+    "prioridad": "P2",
+    "area": "frontend",
+    "titulo": "La interfaz afirma funciones que no están implementadas o comprobadas",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+        "linea": 364,
+        "ancla": "Descargar Formato Guía PDF"
+      },
+      {
+        "archivo": "frontend/src/pages/admin/AuditLogsPage.tsx",
+        "linea": 148,
+        "ancla": "Registro inmutable"
+      },
+      {
+        "archivo": "frontend/src/pages/dashboard/DashboardPage.tsx",
+        "linea": 78,
+        "ancla": "tiempo real"
+      }
+    ],
+    "evidencia": "BotónDescargar Formato Guía PDF no tiene onClick. Copyinmutable contradiceSEG-06/07. Dashboard/mapa se actualizan bajo solicitud, no por canal en tiempo real. Casillas DMR-1 están codificadas sin fuente/versionado fiscal en proyecto.",
+    "impacto": "Personal confía en controles o actualizaciones inexistentes; la guía fiscal puede confundirse con declaración validada.",
+    "recomendacion": "Implementar acción o retirarla; indicar última actualización y límites reales de bitácora/reportes. Revisar formato DMR-1 con documentación oficial y contador; mostrar borrador yversión. $impeccable clarify.",
+    "aceptacion": "Ningún botón inactivo sin explicación; descripciones coinciden con comportamiento y reportes muestran fecha/período/fuente aplicados."
+  },
+  {
+    "id": "UX-13",
+    "prioridad": "P2",
+    "area": "frontend",
+    "titulo": "Previsualización de impresión ignora cambios aún no guardados",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+        "linea": 74,
+        "ancla": "preview"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/PrintController.cs",
+        "linea": 46,
+        "ancla": "preview"
+      }
+    ],
+    "evidencia": "Efecto observa numerosas opciones pero petición depreview solo lleva ancho; APIusa configuración persistida. Cambiarlogo/font/visibilidad puede mostrar recibo distinto de loque se guardará. LogoBase64 no tiene límite explícito y borrar logo no se expresa de forma uniforme.",
+    "impacto": "Configuración de impresora por ensayo/error y resultados engañosos; logo grande incrementa cargas.",
+    "recomendacion": "Preview puro que reciba todas las opciones no guardadas o aclarar que muestra la última configuración guardada; límites/dimensiones de logo y eliminación explícita. $impeccable harden.",
+    "aceptacion": "Cambiar cada opción produce la previsualización esperada antes de guardar; imprimir coincide con ella dentro de restricciones del dispositivo."
+  },
+  {
+    "id": "UX-14",
+    "prioridad": "P2",
+    "area": "frontend",
+    "titulo": "Tokens y movimiento necesitan una política común",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/index.css",
+        "linea": 1,
+        "ancla": "@import"
+      },
+      {
+        "archivo": "frontend/src/pages/common/NotFoundPage.tsx",
+        "linea": 10,
+        "ancla": "animate-bounce"
+      },
+      {
+        "archivo": "frontend/src/App.tsx",
+        "linea": 3,
+        "ancla": "Suspense"
+      }
+    ],
+    "evidencia": "Tokens claros/oscuros existen, pero muchos componentes fuerzan#C69C4B/textwhite y tamaños de 11 px. No hay prefers-reduced-motion. Fuente Google externa añade dependencia de internet en producto LAN. Suspense global sustituye todo el shell al cargar un módulo y falta ErrorBoundary de ruta.",
+    "impacto": "Tema oscuro pierde coherencia; usuarios sensibles al movimiento no tienen alternativa; fallos dechunk pueden dejar pantalla sin recuperación.",
+    "recomendacion": "Tokens semánticos, fuente local con fallback, movimiento reducido que conserve feedback y boundaries/skeletons por contenido. $impeccable optimize y $impeccable harden.",
+    "aceptacion": "Ambos temas, sin internet, reduce-motion y chunk fallido: texto legible, shell estable y reintento accesible."
+  },
+  {
+    "id": "QA-01",
+    "prioridad": "P1",
+    "area": "calidad",
+    "titulo": "No hay una puerta automatizada que impida entregar código roto",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/package.json",
+        "linea": 6,
+        "ancla": "\"scripts\""
+      },
+      {
+        "archivo": "frontend/eslint.config.js",
+        "linea": 6,
+        "ancla": "defineConfig"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/hotel-erp.Api.csproj",
+        "linea": 4,
+        "ancla": "TargetFramework"
+      }
+    ],
+    "evidencia": "Build frontend falla y ESLint arroja 93 problemas:88 errores/5 warnings. No se encontró suite de pruebas de producto ni pipeline CI versionado. Backend compila con 10 warnings/0 errores usando paquetes existentes. Los scripts de esta auditoría son reproducciones, no una suite previa del producto.",
+    "impacto": "Regresiones sintácticas, contractuales y financieras llegan al despliegue; aprobar porque backend compila no valida ERP.",
+    "recomendacion": "CI con restore inmutable, build, lint y pruebas de invariantes: asientos, impuestos, idempotencia, permisos, concurrencia y contratos UI. Priorizar pruebas reales sobre snapshots que repitan implementación.",
+    "aceptacion": "PR con error de sintaxis, permiso abierto o asiento incorrecto falla CI; versión desplegada tiene SHA y resultados verificables."
+  },
+  {
+    "id": "QA-02",
+    "prioridad": "P2",
+    "area": "calidad",
+    "titulo": "Lógica de negocio duplicada en controladores y navegador",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+        "linea": 113,
+        "ancla": "SubTotal"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReservationsController.cs",
+        "linea": 276,
+        "ancla": "SubTotal"
+      },
+      {
+        "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+        "linea": 155,
+        "ancla": "subtotal"
+      }
+    ],
+    "evidencia": "Cálculos y persistencia repartidos en controllers extensos, repositorios con SaveChanges y formulas TypeScript. DTO compartidos entre lectura/escritura permiten campos derivados y estados débiles. TaxService no concentra todos los caminos.",
+    "impacto": "Cada corrección puede dejar compras/notas/check-in/checkout divergentes; transacciones y testeo resultan difíciles.",
+    "recomendacion": "Casos de uso para emitir, acreditar, liquidar, ajustar stock y cerrar caja; dominio monetario común, DTO de entrada/salida distintos y controladores delgados. Refactorizar después de fijar pruebas de comportamiento.",
+    "aceptacion": "Una misma cotización produce resultados idénticos en todos los flujos y las pruebas ejercitan el servicio de negocio sin navegador."
+  },
+  {
+    "id": "QA-03",
+    "prioridad": "P2",
+    "area": "calidad",
+    "titulo": "Falta trazabilidad de entrega y manual de operación local",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/README.md",
+        "linea": 1,
+        "ancla": "#"
+      },
+      {
+        "archivo": "docs/QA_FIX_PLAN.md",
+        "linea": 1,
+        "ancla": "#"
+      },
+      {
+        "archivo": ".codex/hooks.json",
+        "linea": 9,
+        "ancla": "C:"
+      }
+    ],
+    "evidencia": "README frontend conserva contenido base; planes/auditorías previos no acreditan el build actual. Se versionan dos lockfiles, bundles/binarios generados y hooks a rutasWindows personales. No hay runbook completo de instalación, actualización, recuperación e impresora para el hotel.",
+    "impacto": "Otra persona puede ejecutar artefacto antiguo o perder datos al actualizar. Los hooks de una máquina no sustituyen CI ni son por sí mismos indicio de malware.",
+    "recomendacion": "Manifiesto de release con commit/imágenes/migraciones, un runbook probado y configuración portable. Vincular correcciones a evidencia nueva, mantener auditorías previas como historia.",
+    "aceptacion": "Técnico distinto instala y recupera usando solo documentación y secretos entregados de forma segura; puede identificar la versión en ejecución."
+  },
+  {
+    "id": "FIN-13",
+    "prioridad": "P1",
+    "area": "contabilidad",
+    "titulo": "La API permite facturas con líneas e importes negativos",
+    "ubicaciones": [
+      {
+        "archivo": "backend/src/hotel-erp.Api/Dtos/common/InvoiceDtos.cs",
+        "linea": 107,
+        "ancla": "public record InvoiceItemDto"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+        "linea": 86,
+        "ancla": "request.Items"
+      }
+    ],
+    "evidencia": "T12: factura normal con cantidad 1 y precio -100 obtiene 201. El DTO de líneas usado para entrada carece de validaciones monetarias equivalentes a otros módulos; balancear un asiento con importes negativos no valida su significado.",
+    "impacto": "Puede reducir caja/ingresos mediante una factura ordinaria sin pasar por autorización, motivo y referencia de una nota de crédito.",
+    "recomendacion": "DTO de entrada específico con cantidad positiva, precio no negativo, descuento acotado, tasas permitidas y precisión definida; correcciones negativas mediante eventos/documentos autorizados.",
+    "aceptacion": "Factura con precio/cantidad negativos, descuento superior a 100 o tasa fuera de dominio devuelve 400 sin consumir correlativo ni guardar asiento."
+  },
+  {
+    "id": "FIN-14",
+    "prioridad": "P1",
+    "area": "contabilidad",
+    "titulo": "El borrador DMR-1 muestra un cálculo de ISV sin modelo de retenciones",
+    "ubicaciones": [
+      {
+        "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+        "linea": 351,
+        "ancla": "Período Fiscal DMR-1"
+      },
+      {
+        "archivo": "backend/src/hotel-erp.Api/Controllers/ReportsController.cs",
+        "linea": 10,
+        "ancla": "TaxSummaryDto"
+      }
+    ],
+    "evidencia": "La pestaña DMR-1 reutiliza tax-summary (ventas, ISV de compras y tasa turística), con casillas 30/40/55/70 codificadas. No tiene detalle de retenciones por tercero/concepto. El SAR describe la DMR como información de retenciones efectuadas a terceros: [SAR, DMR](https://www.sar.gob.hn/dmr/). La discrepancia de alcance está confirmada; no se certifica aquí un formulario sustituto ni las obligaciones particulares del hotel.",
+    "impacto": "Un usuario puede confundir el resumen de ISV con la declaración de retenciones y trasladar valores a un trámite fiscal equivocado.",
+    "recomendacion": "Retirar la identificación DMR-1 hasta implementar y validar el formulario vigente aplicable. Separar ISV, compras y retenciones, con versión de normativa, período y conciliación por tercero; revisar junto al contador del hotel.",
+    "aceptacion": "El responsable contable compara una declaración completa con la guía oficial vigente; campos, bases y retenciones se corresponden con sus documentos, sin reutilizar un resumen de otro impuesto."
+  }
+]

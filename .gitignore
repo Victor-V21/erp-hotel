@@ -6,3 +6,5 @@ data/secrets/
 frontend/dist/
 *.user
 *.suo
+.codex
+.agents

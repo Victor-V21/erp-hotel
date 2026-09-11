@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Database;
 using hotel_erp.Api.Database.Entities;
 using hotel_erp.Api.Dtos.Inventory;
@@ -10,7 +11,7 @@ namespace hotel_erp.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Policy = PermissionNames.ManageInventory)]
     public class InventoryController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

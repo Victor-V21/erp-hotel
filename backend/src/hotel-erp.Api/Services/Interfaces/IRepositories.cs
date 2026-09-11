@@ -148,6 +148,7 @@ namespace hotel_erp.Api.Services.Interfaces
         Task<IEnumerable<Invoice>> GetByGuestDocumentAsync(string documentNumber);
         Task<IEnumerable<Invoice>> GetByGuestAsync(Guid guestId);
         Task<IEnumerable<Invoice>> GetByAuthorizationAsync(Guid? caiId, Guid? documentAuthorizationId);
+        Task<IEnumerable<Invoice>> GetByOriginalInvoiceAsync(Guid originalInvoiceId);
         Task AddAsync(Invoice invoice);
         Task DeleteInvoiceItemsAsync(Guid invoiceId);
         Task UpdateAsync(Invoice invoice);
@@ -230,6 +231,9 @@ namespace hotel_erp.Api.Services.Interfaces
     public interface IAccountingService
     {
         Task CreateInvoiceEntryAsync(Invoice invoice);
+        Task CreatePaymentEntryAsync(Payment payment);
+        Task CreateRefundEntryAsync(Refund refund);
+        Task CreateCardSettlementEntryAsync(CardSettlement settlement);
         Task CreatePurchaseEntryAsync(PurchaseInvoice purchaseInvoice);
         Task DeleteEntryByReferenceIdAsync(Guid referenceId);
     }

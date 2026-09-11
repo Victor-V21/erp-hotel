@@ -1,0 +1,6 @@
+{
+  "archivo": "hotel_erp_20260907_054432.sql",
+  "exit_code": 0,
+  "conteos_facturas_lineas_usuarios": "10|12|2",
+  "alcance": "Restauraci\u00f3n SQL del respaldo sint\u00e9tico en otra BD local PG18; no cubre adjuntos, configuraci\u00f3n, PostgreSQL16 ni un equipo reemplazante."
+}

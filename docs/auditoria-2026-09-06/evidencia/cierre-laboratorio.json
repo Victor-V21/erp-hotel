@@ -1,0 +1,16 @@
+[
+  {
+    "pid": 25199,
+    "estado": "SIGTERM enviado",
+    "comando": "node frontend/node_modules/vite/bin/vite.js --config docs/auditoria-2026-09-06/pruebas/vite-audit.config.mjs "
+  },
+  {
+    "pid": 21382,
+    "estado": "SIGTERM enviado",
+    "comando": "dotnet /home/vm/Projects/erp-hotel/docs/auditoria-2026-09-06/pruebas/backend-build/hotel-erp.Api.dll "
+  },
+  {
+    "postgres_exit": 0,
+    "salida": "waiting for server to shut down.... done\nserver stopped\n"
+  }
+]

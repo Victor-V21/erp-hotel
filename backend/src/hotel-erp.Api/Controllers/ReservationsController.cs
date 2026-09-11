@@ -1,10 +1,14 @@
+using System.Security.Claims;
 using AutoMapper;
+using hotel_erp.Api.Authorization;
+using hotel_erp.Api.Database;
 using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Services;
 using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace hotel_erp.Api.Controllers
 {
@@ -14,40 +18,28 @@ namespace hotel_erp.Api.Controllers
     public class ReservationsController : ControllerBase
     {
         private readonly IReservationRepository _repo;
-        private readonly IRoomRepository _roomRepo;
-        private readonly IFolioRepository _folioRepo;
-        private readonly IGuestRepository _guestRepo;
-        private readonly IInvoiceRepository _invoiceRepo;
-        private readonly ICAIRepository _caiRepo;
         private readonly IBusinessSettingsRepository _settingsRepo;
         private readonly IDiscountRepository _discountRepo;
-        private readonly IAccountingService _accountingService;
         private readonly TaxService _taxService;
+        private readonly ApplicationDbContext _context;
+        private readonly AuditService _auditService;
         private readonly IMapper _mapper;
 
         public ReservationsController(
             IReservationRepository repo,
-            IRoomRepository roomRepo,
-            IFolioRepository folioRepo,
-            IGuestRepository guestRepo,
-            IInvoiceRepository invoiceRepo,
-            ICAIRepository caiRepo,
             IBusinessSettingsRepository settingsRepo,
             IDiscountRepository discountRepo,
-            IAccountingService accountingService,
             TaxService taxService,
+            ApplicationDbContext context,
+            AuditService auditService,
             IMapper mapper)
         {
             _repo = repo;
-            _roomRepo = roomRepo;
-            _folioRepo = folioRepo;
-            _guestRepo = guestRepo;
-            _invoiceRepo = invoiceRepo;
-            _caiRepo = caiRepo;
             _settingsRepo = settingsRepo;
             _discountRepo = discountRepo;
-            _accountingService = accountingService;
             _taxService = taxService;
+            _context = context;
+            _auditService = auditService;
             _mapper = mapper;
         }
 
@@ -80,105 +72,215 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult<ReservationDto>> Create([FromBody] CreateReservationRequest request)
         {
-            // Validate room availability
-            var availableRooms = await _roomRepo.GetAvailableAsync(request.CheckInDate, request.CheckOutDate);
-            if (!availableRooms.Any(r => r.Id == request.RoomId))
-                return BadRequest("La habitación no está disponible para las fechas seleccionadas");
+            if (request.AdvancePayment > 0m)
+                return BadRequest("Los anticipos estarán disponibles cuando puedan registrarse y aplicarse contablemente");
+
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            var roomLock = $"room-schedule:{request.RoomId:N}";
+            await _context.Database.ExecuteSqlInterpolatedAsync(
+                $"SELECT pg_advisory_xact_lock(hashtext({roomLock}));");
+
+            var room = await _context.Rooms
+                .Include(candidate => candidate.RoomType)
+                .SingleOrDefaultAsync(candidate => candidate.Id == request.RoomId);
+            if (room is null) return NotFound("Habitación no encontrada");
+            if (room.Status is RoomStatus.Mantenimiento or RoomStatus.Bloqueada)
+                return Conflict($"La habitación no admite reservas: {room.Status}");
+            if (request.Adults + request.Children > room.RoomType.Capacity)
+                return BadRequest("La ocupación supera la capacidad de la habitación");
+
+            var guest = await _context.Guests.SingleOrDefaultAsync(candidate => candidate.Id == request.GuestId);
+            if (guest is null) return NotFound("Huésped no encontrado");
+            if (await _repo.HasOverlapAsync(
+                    request.RoomId,
+                    request.CheckInDate,
+                    request.CheckOutDate,
+                    Guid.Empty))
+                return Conflict("La habitación ya tiene una reserva activa que se superpone con las fechas");
 
             var reservation = new Reservation
             {
-                GuestId = request.GuestId,
-                RoomId = request.RoomId,
+                Guest = guest,
+                Room = room,
                 CheckInDate = request.CheckInDate,
                 CheckOutDate = request.CheckOutDate,
                 Adults = request.Adults,
                 Children = request.Children,
                 PaymentMethod = request.PaymentMethod,
-                AdvancePayment = request.AdvancePayment,
+                AdvancePayment = 0m,
                 Notes = request.Notes,
-                Status = ReservationStatus.Pendiente
+                Status = ReservationStatus.Pendiente,
+                Version = 1
             };
 
-            await _repo.AddAsync(reservation);
-
-            // Mark room as reserved
-            var room = await _roomRepo.GetByIdAsync(request.RoomId);
-            if (room != null)
-            {
-                room.Status = RoomStatus.Reservada;
-                await _roomRepo.UpdateAsync(room);
-            }
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _auditService.LogAsync(
+                userId,
+                "CreateReservation",
+                nameof(Reservation),
+                reservation.Id,
+                new { reservation.GuestId, reservation.RoomId, reservation.CheckInDate, reservation.CheckOutDate, reservation.Adults, reservation.Children, reservation.Version });
+            await transaction.CommitAsync();
 
             return CreatedAtAction(nameof(GetById), new { id = reservation.Id }, _mapper.Map<ReservationDto>(reservation));
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult> Update(Guid id, [FromBody] UpdateReservationRequest request)
         {
-            var reservation = await _repo.GetByIdAsync(id);
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            await LockReservationAsync(id);
+            var reservation = await _context.Reservations
+                .Include(candidate => candidate.Guest)
+                .Include(candidate => candidate.Room)
+                .SingleOrDefaultAsync(candidate => candidate.Id == id);
             if (reservation == null) return NotFound();
-            if (reservation.Status == ReservationStatus.CheckIn || reservation.Status == ReservationStatus.CheckOut)
-                return BadRequest("No se puede modificar una reserva en curso");
+            if (reservation.Status is not (ReservationStatus.Pendiente or ReservationStatus.Confirmada))
+                return Conflict($"No se puede modificar una reserva en estado {reservation.Status}");
+            if (reservation.Version != request.ExpectedVersion)
+                return VersionConflict(reservation.Version);
+            if (request.AdvancePayment is > 0m)
+                return BadRequest("Los anticipos estarán disponibles cuando puedan registrarse y aplicarse contablemente");
 
-            if (request.RoomId.HasValue) reservation.RoomId = request.RoomId.Value;
-            if (request.CheckInDate.HasValue) reservation.CheckInDate = request.CheckInDate.Value;
-            if (request.CheckOutDate.HasValue) reservation.CheckOutDate = request.CheckOutDate.Value;
+            var roomId = request.RoomId ?? reservation.RoomId;
+            var checkInDate = request.CheckInDate ?? reservation.CheckInDate;
+            var checkOutDate = request.CheckOutDate ?? reservation.CheckOutDate;
+            var adults = request.Adults ?? reservation.Adults;
+            var children = request.Children ?? reservation.Children;
+            if (checkOutDate <= checkInDate)
+                return BadRequest("La fecha de salida debe ser posterior a la fecha de entrada");
 
-            if (request.RoomId.HasValue || request.CheckInDate.HasValue || request.CheckOutDate.HasValue)
-            {
-                var hasConflict = await _repo.HasOverlapAsync(reservation.RoomId, reservation.CheckInDate, reservation.CheckOutDate, id);
-                if (hasConflict)
-                    return BadRequest("La habitación no está disponible para las fechas seleccionadas");
-            }
+            var roomIds = new[] { reservation.RoomId, roomId }.Distinct().Order().ToList();
+            foreach (var lockedRoomId in roomIds)
+                await LockRoomScheduleAsync(lockedRoomId);
 
-            if (request.Adults.HasValue) reservation.Adults = request.Adults.Value;
-            if (request.Children.HasValue) reservation.Children = request.Children.Value;
+            var room = await _context.Rooms
+                .Include(candidate => candidate.RoomType)
+                .SingleOrDefaultAsync(candidate => candidate.Id == roomId);
+            if (room is null) return NotFound("Habitación no encontrada");
+            if (room.Status is RoomStatus.Mantenimiento or RoomStatus.Bloqueada)
+                return Conflict($"La habitación no admite reservas: {room.Status}");
+            if (adults + children > room.RoomType.Capacity)
+                return BadRequest("La ocupación supera la capacidad de la habitación");
+            if (await _repo.HasOverlapAsync(roomId, checkInDate, checkOutDate, id))
+                return Conflict("La habitación ya tiene una reserva activa que se superpone con las fechas");
+
+            reservation.RoomId = roomId;
+            reservation.Room = room;
+            reservation.CheckInDate = checkInDate;
+            reservation.CheckOutDate = checkOutDate;
+            reservation.Adults = adults;
+            reservation.Children = children;
             if (request.PaymentMethod != null) reservation.PaymentMethod = request.PaymentMethod;
-            if (request.AdvancePayment.HasValue) reservation.AdvancePayment = request.AdvancePayment.Value;
             if (request.Notes != null) reservation.Notes = request.Notes;
-            await _repo.UpdateAsync(reservation);
-            return NoContent();
+            reservation.Version++;
+
+            await _context.SaveChangesAsync();
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _auditService.LogAsync(
+                userId,
+                "UpdateReservation",
+                nameof(Reservation),
+                reservation.Id,
+                new { reservation.RoomId, reservation.CheckInDate, reservation.CheckOutDate, reservation.Adults, reservation.Children, reservation.Version });
+            await transaction.CommitAsync();
+            return Ok(new { reservation.Version });
         }
 
         [HttpPost("{id}/confirm")]
-        public async Task<ActionResult> Confirm(Guid id)
+        [Authorize(Policy = PermissionNames.ManageReservations)]
+        public async Task<ActionResult> Confirm(Guid id, [FromBody] ConfirmReservationRequest request)
         {
-            var reservation = await _repo.GetByIdAsync(id);
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            await LockReservationAsync(id);
+            var reservation = await _context.Reservations.SingleOrDefaultAsync(candidate => candidate.Id == id);
             if (reservation == null) return NotFound();
+
+            if (reservation.Status == ReservationStatus.Confirmada)
+            {
+                await transaction.CommitAsync();
+                return Ok(new { message = "La reserva ya estaba confirmada", reservation.Version });
+            }
+            if (reservation.Status != ReservationStatus.Pendiente)
+                return Conflict($"No se puede confirmar una reserva en estado {reservation.Status}");
+            if (reservation.Version != request.ExpectedVersion)
+                return VersionConflict(reservation.Version);
+
             reservation.Status = ReservationStatus.Confirmada;
-            await _repo.UpdateAsync(reservation);
-            return Ok(new { message = "Reserva confirmada" });
+            reservation.Version++;
+            await _context.SaveChangesAsync();
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _auditService.LogAsync(
+                userId,
+                "ConfirmReservation",
+                nameof(Reservation),
+                reservation.Id,
+                new { reservation.Status, reservation.Version });
+            await transaction.CommitAsync();
+            return Ok(new { message = "Reserva confirmada", reservation.Version });
         }
 
         [HttpPost("{id}/cancel")]
-        public async Task<ActionResult> Cancel(Guid id)
+        [Authorize(Policy = PermissionNames.ManageReservations)]
+        public async Task<ActionResult> Cancel(Guid id, [FromBody] CancelReservationRequest request)
         {
-            var reservation = await _repo.GetByIdAsync(id);
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            await LockReservationAsync(id);
+            var reservation = await _context.Reservations.SingleOrDefaultAsync(candidate => candidate.Id == id);
             if (reservation == null) return NotFound();
 
-            reservation.Status = ReservationStatus.Cancelada;
-
-            // Free the room
-            var room = await _roomRepo.GetByIdAsync(reservation.RoomId);
-            if (room != null)
+            if (reservation.Status == ReservationStatus.Cancelada)
             {
-                room.Status = RoomStatus.Libre;
-                await _roomRepo.UpdateAsync(room);
+                await transaction.CommitAsync();
+                return Ok(new { message = "La reserva ya estaba cancelada", reservation.Version });
             }
+            if (reservation.Status is not (ReservationStatus.Pendiente or ReservationStatus.Confirmada))
+                return Conflict($"No se puede cancelar una reserva en estado {reservation.Status}");
+            if (reservation.Version != request.ExpectedVersion)
+                return VersionConflict(reservation.Version);
 
-            await _repo.UpdateAsync(reservation);
-            return Ok(new { message = "Reserva cancelada" });
+            reservation.Status = ReservationStatus.Cancelada;
+            reservation.Version++;
+            await _context.SaveChangesAsync();
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _auditService.LogAsync(
+                userId,
+                "CancelReservation",
+                nameof(Reservation),
+                reservation.Id,
+                new { Reason = request.Reason.Trim(), reservation.Status, reservation.Version });
+            await transaction.CommitAsync();
+            return Ok(new { message = "Reserva cancelada", reservation.Version });
         }
 
         [HttpPost("checkin")]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult> CheckIn([FromBody] CheckInRequest request)
         {
-            var reservation = await _repo.GetByIdAsync(request.ReservationId);
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            await LockReservationAsync(request.ReservationId);
+            await LockRoomScheduleAsync(request.RoomId);
+
+            var reservation = await _context.Reservations
+                .Include(candidate => candidate.Guest)
+                .SingleOrDefaultAsync(candidate => candidate.Id == request.ReservationId);
             if (reservation == null) return NotFound("Reserva no encontrada");
-            if (reservation.Status == ReservationStatus.Cancelada)
-                return BadRequest("La reserva está cancelada");
+            if (reservation.Status is not (ReservationStatus.Pendiente or ReservationStatus.Confirmada))
+                return Conflict($"No se puede registrar check-in desde el estado {reservation.Status}");
+            if (reservation.Version != request.ExpectedVersion)
+                return VersionConflict(reservation.Version);
+            if (reservation.RoomId != request.RoomId)
+                return BadRequest("La habitación solicitada no coincide con la reserva");
+            if (reservation.CheckOutDate <= reservation.CheckInDate)
+                return BadRequest("La estadía debe ser al menos 1 noche");
+            if (await _context.Folios.IgnoreQueryFilters().AnyAsync(folio => folio.ReservationId == reservation.Id))
+                return Conflict("La reserva ya tiene un folio de estancia");
 
             // Load business settings for tax rates
             var settings = await _settingsRepo.GetAsync();
@@ -188,19 +290,23 @@ namespace hotel_erp.Api.Controllers
                 _taxService.TouristTaxRate = settings.TouristTaxRate;
             }
 
-            reservation.Status = ReservationStatus.CheckIn;
-            reservation.RoomId = request.RoomId;
-
-            var room = await _roomRepo.GetByIdAsync(request.RoomId);
+            var room = await _context.Rooms
+                .Include(candidate => candidate.RoomType)
+                .SingleOrDefaultAsync(candidate => candidate.Id == request.RoomId);
             if (room == null) return NotFound("Habitación no encontrada");
-            room.Status = RoomStatus.Ocupada;
-            await _roomRepo.UpdateAsync(room);
-            await _repo.UpdateAsync(reservation);
+            if (room.Status != RoomStatus.Libre)
+                return Conflict($"La habitación no está disponible físicamente: {room.Status}");
+            if (reservation.Adults + reservation.Children > room.RoomType.Capacity)
+                return BadRequest("La ocupación supera la capacidad de la habitación");
+            if (await _repo.HasOverlapAsync(
+                    request.RoomId,
+                    reservation.CheckInDate,
+                    reservation.CheckOutDate,
+                    reservation.Id))
+                return Conflict("Existe otra reserva activa que se superpone con la estancia");
 
             var nights = (reservation.CheckOutDate.DayNumber - reservation.CheckInDate.DayNumber);
-            if (nights <= 0) return BadRequest("La estadía debe ser al menos 1 noche");
-
-            var sellingPricePerNight = room.RoomType?.PricePerNight ?? 0;
+            var sellingPricePerNight = room.RoomType.PricePerNight;
             var taxResult = _taxService.CalculateFromSellingPrice(sellingPricePerNight, nights);
 
             // Apply discounts
@@ -208,12 +314,18 @@ namespace hotel_erp.Api.Controllers
             if (request.DiscountIds?.Any() == true)
             {
                 var discounts = await _discountRepo.GetActiveAsync();
-                var selectedDiscounts = discounts.Where(d => request.DiscountIds.Contains(d.Id)).OrderBy(d => d.Priority).ToList();
+                var requestedDiscountIds = request.DiscountIds.Distinct().ToList();
+                var selectedDiscounts = discounts.Where(d => requestedDiscountIds.Contains(d.Id)).OrderBy(d => d.Priority).ToList();
+                if (selectedDiscounts.Count != requestedDiscountIds.Count)
+                    return BadRequest("Uno o más descuentos no existen o no están activos");
+                if (selectedDiscounts.Any(discount => discount.DiscountType != DiscountType.Porcentaje))
+                    return BadRequest("El check-in solo admite descuentos porcentuales");
                 foreach (var d in selectedDiscounts)
                 {
-                    if (d.DiscountType == hotel_erp.Api.Database.Entities.DiscountType.Porcentaje)
-                        totalDiscountPercent += d.Value;
+                    totalDiscountPercent += d.Value;
                 }
+                if (totalDiscountPercent > 100m)
+                    return BadRequest("La suma de descuentos no puede superar 100 %");
                 taxResult = _taxService.ApplyDiscount(taxResult, totalDiscountPercent);
             }
 
@@ -224,7 +336,8 @@ namespace hotel_erp.Api.Controllers
                 GuestId = reservation.GuestId,
                 RoomId = request.RoomId,
                 OpeningDate = HondurasTime.Now,
-                Status = FolioStatus.Abierto
+                Status = FolioStatus.Abierto,
+                TotalAmount = taxResult.Total
             };
 
             folio.FolioItems.Add(new FolioItem
@@ -238,91 +351,26 @@ namespace hotel_erp.Api.Controllers
                 IsTouristTaxable = true
             });
 
-            await _folioRepo.AddAsync(folio);
+            reservation.Status = ReservationStatus.CheckIn;
+            reservation.Version++;
+            room.Status = RoomStatus.Ocupada;
+            _context.Folios.Add(folio);
 
-            // Validate CAI
-            var cai = await _caiRepo.GetActiveCAIAsync();
-            if (cai == null) return BadRequest("No hay un CAI activo");
-            if (cai.DueDate <= HondurasTime.Today)
-                return BadRequest("El CAI está vencido");
-            if (int.Parse(cai.CurrentCorrelative.Split('-').Last()) >= int.Parse(cai.FinalRange.Split('-').Last()))
-                return BadRequest("El CAI ha agotado su rango");
-
-            var correlative = await _invoiceRepo.GetNextCorrelativeAsync(cai.Id);
-            var guest = await _guestRepo.GetByIdAsync(reservation.GuestId);
-            var isIsvExempt = guest?.TaxpayerType == TaxpayerType.Exonerado && guest.IsIsvExempt;
-            var isTouristTaxExempt = guest?.TaxpayerType == TaxpayerType.Exonerado && guest.IsTouristTaxExempt;
-            if (isIsvExempt || isTouristTaxExempt)
-            {
-                if (string.IsNullOrWhiteSpace(guest?.ExonerationOrderNumber) || string.IsNullOrWhiteSpace(guest?.SefinExonerationCertificateNumber))
-                    return BadRequest("Cliente exonerado requiere O.C. Exenta y Constancia SEFIN");
-
-                taxResult = _taxService.CalculateFromNetAmount(taxResult.Subtotal, isIsvExempt, isTouristTaxExempt, totalDiscountPercent);
-            }
-
-            // Create invoice with SAR breakdown
-            var invoice = new Invoice
-            {
-                CAIId = cai.Id,
-                CAINumberSnapshot = cai.CAINumber,
-                AuthorizationRangeSnapshot = $"{cai.InitialRange} - {cai.FinalRange}",
-                AuthorizationDueDateSnapshot = DateTime.SpecifyKind(cai.DueDate.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc),
-                CorrelativeNumber = correlative,
-                CustomerId = null,
-                GuestId = reservation.GuestId,
-                RTNCliente = guest?.RTN ?? "C/F",
-                CustomerName = guest != null ? $"{guest.FirstName} {guest.LastName}" : "",
-                CustomerAddress = guest?.Origin ?? "",
-                SubTotal = taxResult.Subtotal,
-                ISVAmount = taxResult.ISV,
-                ISV15Amount = taxResult.ISV,
-                ISV18Amount = 0,
-                TouristTaxAmount = taxResult.TouristTax,
-                DiscountsAmount = taxResult.DiscountAmount,
-                TotalAmount = taxResult.Total,
-                TaxableAmount = taxResult.TaxableAmount,
-                ExemptAmount = taxResult.ExemptAmount,
-                ExoneratedAmount = taxResult.ExoneratedAmount,
-                TaxpayerType = guest?.TaxpayerType ?? TaxpayerType.ConsumidorFinal,
-                ExonerationOrderNumber = guest?.ExonerationOrderNumber,
-                SefinExonerationCertificateNumber = guest?.SefinExonerationCertificateNumber,
-                SagRegistryNumber = guest?.SagRegistryNumber,
-                IsIsvExempt = isIsvExempt,
-                IsTouristTaxExempt = isTouristTaxExempt,
-                InvoiceDate = HondurasTime.Now,
-                DocumentType = InvoiceDocumentType.Factura,
-                Status = InvoiceStatus.Pagada,
-                PaymentMethod = request.PaymentMethod ?? "Efectivo",
-                CashReceived = request.CashReceived,
-                CashChange = request.CashChange,
-                InvoiceItems = new List<InvoiceItem>
-                {
-                    new()
-                    {
-                        Description = $"{(room.RoomType?.Name ?? $"Hab. {room.RoomNumber}")}|Hospedaje x{nights} noche(s){(totalDiscountPercent > 0 ? $" (Desc. {totalDiscountPercent}%)" : "")}",
-                        Quantity = nights,
-                        UnitPrice = sellingPricePerNight,
-                        LineTotal = taxResult.Total,
-                        IsExempt = false,
-                        ISVRate = _taxService.IsvRate,
-                        IsTouristTaxable = true,
-                        DiscountPercentage = totalDiscountPercent
-                    }
-                }
-            };
-
-            await _invoiceRepo.AddAsync(invoice);
-            await _accountingService.CreateInvoiceEntryAsync(invoice);
-
-            folio.TotalAmount = taxResult.Total;
-            await _folioRepo.UpdateAsync(folio);
+            await _context.SaveChangesAsync();
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _auditService.LogAsync(
+                userId,
+                "CheckIn",
+                nameof(Reservation),
+                reservation.Id,
+                new { reservation.RoomId, reservation.CheckInDate, reservation.CheckOutDate, folio.Id, EstimatedTotal = folio.TotalAmount, reservation.Version });
+            await transaction.CommitAsync();
 
             return Ok(new
             {
                 message = "Check-in exitoso",
                 folioId = folio.Id,
-                invoiceId = invoice.Id,
-                correlative = invoice.CorrelativeNumber,
+                version = reservation.Version,
                 sellingPricePerNight,
                 nights,
                 subtotal = taxResult.Subtotal,
@@ -337,45 +385,88 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost("checkout/{id}")]
-        public async Task<ActionResult> CheckOut(Guid id)
+        [Authorize(Policy = PermissionNames.ManageReservations)]
+        public async Task<ActionResult> CheckOut(Guid id, [FromBody] CheckOutRequest request)
         {
-            var reservation = await _repo.GetByIdAsync(id);
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            await LockReservationAsync(id);
+
+            var reservation = await _context.Reservations
+                .Include(candidate => candidate.Room)
+                .Include(candidate => candidate.Folio)
+                .SingleOrDefaultAsync(candidate => candidate.Id == id);
             if (reservation == null) return NotFound("Reserva no encontrada");
-            if (reservation.Status != ReservationStatus.CheckIn)
-                return BadRequest("La reserva no está en estado Check-In");
+            if (reservation.Folio is null)
+                return Conflict("La reserva no tiene un folio de estancia");
 
-            var folio = await _folioRepo.GetByReservationAsync(id);
-            if (folio != null)
+            var settlementInvoice = await _context.Invoices
+                .SingleOrDefaultAsync(invoice => invoice.Id == request.InvoiceId);
+            if (settlementInvoice is null
+                || settlementInvoice.FolioId != reservation.Folio.Id
+                || settlementInvoice.DocumentType != InvoiceDocumentType.Factura)
+                return Conflict("La factura indicada no liquida el folio de esta reserva");
+
+            if (reservation.Status == ReservationStatus.CheckOut
+                && reservation.Folio.Status == FolioStatus.Cerrado)
             {
-                folio.ClosingDate = DateTime.UtcNow;
-                folio.Status = FolioStatus.Cerrado;
-                await _folioRepo.UpdateAsync(folio);
+                await transaction.CommitAsync();
+                return Ok(new { message = "El check-out ya estaba completado", invoiceId = settlementInvoice.Id });
             }
+            if (reservation.Status != ReservationStatus.CheckIn || reservation.Folio.Status != FolioStatus.Abierto)
+                return Conflict("La reserva y su folio no están abiertos para check-out");
 
-            // Free room
-            var room = await _roomRepo.GetByIdAsync(reservation.RoomId);
-            if (room != null)
-            {
-                room.Status = RoomStatus.Limpieza;
-                await _roomRepo.UpdateAsync(room);
-            }
-
+            reservation.Folio.ClosingDate = HondurasTime.Now;
+            reservation.Folio.Status = FolioStatus.Cerrado;
+            reservation.Room.Status = RoomStatus.Limpieza;
             reservation.Status = ReservationStatus.CheckOut;
-            await _repo.UpdateAsync(reservation);
+            reservation.Version++;
+            await _context.SaveChangesAsync();
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _auditService.LogAsync(
+                userId,
+                "CheckOut",
+                nameof(Reservation),
+                reservation.Id,
+                new { reservation.Folio.Id, InvoiceId = settlementInvoice.Id, settlementInvoice.CorrelativeNumber, reservation.RoomId, reservation.Folio.TotalAmount, reservation.Version },
+                settlementInvoice.CorrelativeNumber,
+                settlementInvoice.PaymentMethod);
+            await transaction.CommitAsync();
 
             return Ok(new
             {
-                message = "Check-out exitoso, habitación liberada"
+                message = "Check-out exitoso, habitación liberada",
+                invoiceId = settlementInvoice.Id
             });
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult> Delete(Guid id)
         {
-            await _repo.DeleteAsync(id);
-            return NoContent();
+            if (!await _context.Reservations.AnyAsync(candidate => candidate.Id == id))
+                return NotFound();
+
+            return BadRequest("Use la cancelación con motivo para preservar el historial de la reserva");
         }
+
+        private async Task LockReservationAsync(Guid id)
+        {
+            var lockKey = $"reservation:{id:N}";
+            await _context.Database.ExecuteSqlInterpolatedAsync(
+                $"SELECT pg_advisory_xact_lock(hashtext({lockKey}));");
+        }
+
+        private async Task LockRoomScheduleAsync(Guid id)
+        {
+            var lockKey = $"room-schedule:{id:N}";
+            await _context.Database.ExecuteSqlInterpolatedAsync(
+                $"SELECT pg_advisory_xact_lock(hashtext({lockKey}));");
+        }
+
+        private ConflictObjectResult VersionConflict(int currentVersion) => Conflict(new
+        {
+            message = "La reserva cambió desde que fue consultada; actualice los datos antes de continuar",
+            currentVersion
+        });
     }
 }
-
-

@@ -1,0 +1,3012 @@
+[
+  {
+    "archivo": ".claude/settings.local.json",
+    "bytes": 1229,
+    "sha256": "73d4faf752b368fbe5ed21d10a9712aafb99772a911fd157288f1a76bf558f62",
+    "generado": false,
+    "lineas": 30
+  },
+  {
+    "archivo": ".codex/hooks.json",
+    "bytes": 1270,
+    "sha256": "adb74814c523b4694dfa592de8b6a9893ddbc787975715c5d56a7644f2589f6a",
+    "generado": false,
+    "lineas": 31
+  },
+  {
+    "archivo": ".cursor/hooks.json",
+    "bytes": 421,
+    "sha256": "89a6de2e5d765c8118d8fed7238af74a8b1355ad2003fda1f80dcb8b403d8fe0",
+    "generado": false,
+    "lineas": 11
+  },
+  {
+    "archivo": ".gitignore",
+    "bytes": 81,
+    "sha256": "cad3e9fce9d08c557a63ba7749331840efff2180b6f70dfef46d4b1472a3680c",
+    "generado": false,
+    "lineas": 8
+  },
+  {
+    "archivo": "backend/hotel-erp.slnx",
+    "bytes": 121,
+    "sha256": "f9a8f78921b9ac5a295415f1089e81bc23073faedb4dc918f1ac501ff22e9b55",
+    "generado": false,
+    "lineas": 5
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/AccountingController.cs",
+    "bytes": 10642,
+    "sha256": "3f0896dd895d73e0a5a0c9e6d0e575918374dbd70d84628adb1bb57f2a26e462",
+    "generado": false,
+    "lineas": 270
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/AuditLogsController.cs",
+    "bytes": 6652,
+    "sha256": "7c49a5ad9d9bfdee2df935b7dd0cbe37c126da5ec5257458b47892c269543245",
+    "generado": false,
+    "lineas": 177
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/AuthController.cs",
+    "bytes": 3628,
+    "sha256": "7cff053a16dd2bbc70d1686c28e4f56b1cdc395aa9c10fc88c8779dbdfa0ca89",
+    "generado": false,
+    "lineas": 98
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/BackupController.cs",
+    "bytes": 2217,
+    "sha256": "147c504b85ed5aa167ebd441f488ded0cd76b50e3739af716c8082e490d35a82",
+    "generado": false,
+    "lineas": 68
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/CAIController.cs",
+    "bytes": 2517,
+    "sha256": "114304862a16b4306721787f5f4e94a5ab79a1627c1590ae33764b8f7c1e2b4a",
+    "generado": false,
+    "lineas": 76
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/CashRegistersController.cs",
+    "bytes": 4129,
+    "sha256": "4ddbb4d5ec283c2e62d96ea01a0e1bee8b99298b33c9a438eb1b1939b3708f75",
+    "generado": false,
+    "lineas": 102
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/CustomersController.cs",
+    "bytes": 5561,
+    "sha256": "b567478f8dbd63283f434fb4cbc62f094ba7fb9f73611a246f9e16209bb3531d",
+    "generado": false,
+    "lineas": 115
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/DashboardController.cs",
+    "bytes": 6775,
+    "sha256": "25dcbf0ed8e8f3aa177260e0b057de539091e3bae2b477d0ea0d79530dcf1548",
+    "generado": false,
+    "lineas": 151
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/DataExportController.cs",
+    "bytes": 9936,
+    "sha256": "178295254a106c83e86e7b6ee1d6fe5fc8acf12bf4ba29a6a9de8a6267cab303",
+    "generado": false,
+    "lineas": 233
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/DiscountsController.cs",
+    "bytes": 3244,
+    "sha256": "7d23d074e5bace894d1db7eb4acfe0ac9159492df66aa271e0cb5d4e2e9e2857",
+    "generado": false,
+    "lineas": 85
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/DocumentAuthorizationsController.cs",
+    "bytes": 6495,
+    "sha256": "5dec56ffea0cf0705bc1d2013af3e11fbcf4ad1875ea47d3b2178c60c80a700d",
+    "generado": false,
+    "lineas": 148
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/FoliosController.cs",
+    "bytes": 2848,
+    "sha256": "2035ddd298a93570b372722cd9b1c06becb26cafc2a7c3e14cd5abe067f387e9",
+    "generado": false,
+    "lineas": 80
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/GuestsController.cs",
+    "bytes": 8804,
+    "sha256": "03b5ef04097155a9ed48742454b613576ea8815cb719192db4d85ca24b274b48",
+    "generado": false,
+    "lineas": 172
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InventoryController.cs",
+    "bytes": 11087,
+    "sha256": "f9375285f529abdcc9639cb3809ae266b4103fb8fb801a691ea031b6eac105fb",
+    "generado": false,
+    "lineas": 251
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+    "bytes": 25210,
+    "sha256": "e28077a69a080d926d39e4cf2ed307600a5821834b0cb1443708f7a36a5c7223",
+    "generado": false,
+    "lineas": 502
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/PrintController.cs",
+    "bytes": 8693,
+    "sha256": "5d0937f74260c5e0d1f752a53c91c4d399fca1378b0605b7431080559b8588aa",
+    "generado": false,
+    "lineas": 201
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/PurchaseInvoicesController.cs",
+    "bytes": 4615,
+    "sha256": "2964108b1d928fe52cc495bf1de039629323b3722f72b0a777f805f05bda6a7d",
+    "generado": false,
+    "lineas": 113
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/ReportsController.cs",
+    "bytes": 15807,
+    "sha256": "5b32683eb8bfa6071a632147bee3684be1bea2f57ec0996c871ae60bbd1353a7",
+    "generado": false,
+    "lineas": 360
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/ReservationsController.cs",
+    "bytes": 16848,
+    "sha256": "4bd9778900cba72a3fa939fc3240c44e92971012b8b88ddfa631a80a45c2b62b",
+    "generado": false,
+    "lineas": 381
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/RolesController.cs",
+    "bytes": 3367,
+    "sha256": "0b5694c548e98143c070acb892fbaf0957ee29d8000ae9798dd50a15bb133df2",
+    "generado": false,
+    "lineas": 97
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/RoomTypesController.cs",
+    "bytes": 2634,
+    "sha256": "c97f6ccb2d6531c2c1c36c15b5a317dfd746b6f16b62d803baed25658f9c52a8",
+    "generado": false,
+    "lineas": 75
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/RoomsController.cs",
+    "bytes": 3250,
+    "sha256": "3cacb4bcf3770c29a92f867c3eb76c82c429a369670fa6e2fae3b7ed68c9eb84",
+    "generado": false,
+    "lineas": 85
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/SettingsController.cs",
+    "bytes": 3511,
+    "sha256": "65f22ee83f1485a282422e906220aca20e54cad942ed494543bcde02f1b1c000",
+    "generado": false,
+    "lineas": 67
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/SuppliersController.cs",
+    "bytes": 2950,
+    "sha256": "8187ae3d50a2cd823d002589d2170088418155083acdf57e20997ec29aedb50c",
+    "generado": false,
+    "lineas": 82
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/TaxConfigurationsController.cs",
+    "bytes": 2682,
+    "sha256": "1571a6410958743290eef00e05b332f8fc6d0db8444b00b197b5b60e718ec3f5",
+    "generado": false,
+    "lineas": 76
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/UsersController.cs",
+    "bytes": 8349,
+    "sha256": "91b5020f17648310a9f5d39a0a93363694ba428d4e10797666a6bd12841d5516",
+    "generado": false,
+    "lineas": 212
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Data/hotel.db",
+    "bytes": 1179648,
+    "sha256": "f058641ae98a64c60209fdfc9407ad3abecafc3dcc202e884249d43c7236348e",
+    "generado": false,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+    "bytes": 22188,
+    "sha256": "b022f154a2f6bb973d39bfd0301c76da774afb8e4e2076478d1002ee514bb068",
+    "generado": false,
+    "lineas": 527
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/AccountingEntities.cs",
+    "bytes": 1432,
+    "sha256": "364f9375fc91c71000c687e1f27acae0bfba11a3e6d6c48627df01cbd7401a9f",
+    "generado": false,
+    "lineas": 38
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/AuthEntities.cs",
+    "bytes": 3219,
+    "sha256": "2bb3f4df1ecbafa04a3379f7e66744079ac2fc700e7a23b99a64a9f588fba294",
+    "generado": false,
+    "lineas": 88
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/BackupLog.cs",
+    "bytes": 714,
+    "sha256": "4c46580c1b002c31f88a7a0dffe273b8fdb053e4e0248b51f1f195dd6ae4223e",
+    "generado": false,
+    "lineas": 19
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/BaseEntity.cs",
+    "bytes": 360,
+    "sha256": "b790e322f58d37b674a67708bd356186277ada884e2a94263e8cfc5aebc25e57",
+    "generado": false,
+    "lineas": 12
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/BusinessSettings.cs",
+    "bytes": 1645,
+    "sha256": "44041049f7ee8ceb602dadbb82717aff49354ade8ec1b13afc5e9837e96ecd2d",
+    "generado": false,
+    "lineas": 37
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/CashEntities.cs",
+    "bytes": 935,
+    "sha256": "f17782a17d44f28361cccc64c94d18c43f8a4aba3d0dc23baa6d3e7a617c29c0",
+    "generado": false,
+    "lineas": 27
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/CorrelativeLock.cs",
+    "bytes": 219,
+    "sha256": "c51f44713b14acbb40a3b7117c145f2cc76211fd2897dd96689198d56a709cc7",
+    "generado": false,
+    "lineas": 8
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/CustomerEntities.cs",
+    "bytes": 2422,
+    "sha256": "79f5b70ed333a483379c583dd9edcfa5fa205040fe25f094e1aa1d7560e0fe3a",
+    "generado": false,
+    "lineas": 54
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Discount.cs",
+    "bytes": 565,
+    "sha256": "d8a0ecf730302ae2a96dff915a3f16fca610c6804b5910d3bbeb7feac79349fe",
+    "generado": false,
+    "lineas": 17
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/AccountType.cs",
+    "bytes": 170,
+    "sha256": "e4c6a0db4b69a0c4ccc550805ad516be35c85405072ac1b11493c84560a906e0",
+    "generado": false,
+    "lineas": 12
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/BackupStatus.cs",
+    "bytes": 195,
+    "sha256": "983f548617c73c3913efd2639a9ebbc117275ee01c3420cb4927c686d9ca2339",
+    "generado": false,
+    "lineas": 12
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/CAIStatus.cs",
+    "bytes": 155,
+    "sha256": "5f1cd013f0eb26ab996575425647992e7cccda06bd736b5e15c3bb31a4aa7e25",
+    "generado": false,
+    "lineas": 11
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/DiscountType.cs",
+    "bytes": 126,
+    "sha256": "d5c5c3e24454ea706e2bc375ccea3b47c167013382c59053b0741b9db21af7b2",
+    "generado": false,
+    "lineas": 9
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/EntryType.cs",
+    "bytes": 132,
+    "sha256": "1c33170276fc4557d617b301826405c7f32a2a2635326a53692ac795e4833558",
+    "generado": false,
+    "lineas": 10
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/FolioStatus.cs",
+    "bytes": 143,
+    "sha256": "45d29e6d0b32cf503f9f9afbd3fa2706ad0439e48a0f3db540722f38b9221e7e",
+    "generado": false,
+    "lineas": 10
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/InvoiceDocumentType.cs",
+    "bytes": 186,
+    "sha256": "73eb23e42f551de3c5a4550dcb3d37573fb7234f0f0eecc4b7402f70cb6f824c",
+    "generado": false,
+    "lineas": 12
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/InvoiceStatus.cs",
+    "bytes": 138,
+    "sha256": "6c510055412c192351d95d6b9b063bdec4cec658d6b7e4fa722f1c0294d704c8",
+    "generado": false,
+    "lineas": 10
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/MovementType.cs",
+    "bytes": 304,
+    "sha256": "76ff218947904455d76dd05a9696da4d5c74958f9a63f27d2efe2b0996632546",
+    "generado": false,
+    "lineas": 21
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/PurchaseInvoiceStatus.cs",
+    "bytes": 148,
+    "sha256": "da1c9acb536d10d0beeba95ed470620e871ba56463ce384f0d6fdbd9f86cc6d8",
+    "generado": false,
+    "lineas": 10
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/ReservationStatus.cs",
+    "bytes": 185,
+    "sha256": "866e938fc8cbbcb6adea0bd461bfaf4559fb8650ed402c8a35ef808ee22310b1",
+    "generado": false,
+    "lineas": 12
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/RoomStatus.cs",
+    "bytes": 196,
+    "sha256": "5ad287d43546ab9d81c48c6f07e33b9c3d15f9cee845169c823c25ce72018c3d",
+    "generado": false,
+    "lineas": 13
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/Enums/TaxpayerType.cs",
+    "bytes": 148,
+    "sha256": "bd938341d79efabdf645ca1661df7a50c7e5b3144ef4d47ba5f241b23ac745a2",
+    "generado": false,
+    "lineas": 10
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/InvoiceEntities.cs",
+    "bytes": 4677,
+    "sha256": "1bb593fa42bae775e2534ff4cf477834efc7478dd23bd33cb8608f64399ef154",
+    "generado": false,
+    "lineas": 104
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/ProductEntities.cs",
+    "bytes": 1487,
+    "sha256": "01b8e829035a9b54f5c70c53e732b038cd5b58ed39eae9072a21cb47b70d1b10",
+    "generado": false,
+    "lineas": 42
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/ReservationEntities.cs",
+    "bytes": 1968,
+    "sha256": "0981dd03bffd541fa48a2528496973fd101591fe19775f70f86fa18624c97070",
+    "generado": false,
+    "lineas": 52
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/RoomEntities.cs",
+    "bytes": 911,
+    "sha256": "881bb14b9400cabfa1e5576eda3ebb831038e9f7fde40bf29d3422a68a524c8d",
+    "generado": false,
+    "lineas": 27
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/SupplierEntities.cs",
+    "bytes": 1886,
+    "sha256": "2a8be30f3a1510878510ee57b2e03273bd04f36754019299aa005e3a2c7d4c91",
+    "generado": false,
+    "lineas": 48
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/AccountingRepository.cs",
+    "bytes": 6023,
+    "sha256": "2265e5707bfd4785e46c1a1fa7363f1b45d0afbeab5c3a5ebd19c59ca4a98906",
+    "generado": false,
+    "lineas": 170
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CashRepository.cs",
+    "bytes": 2723,
+    "sha256": "3a06e3fc89e0e32e09255b71a45477f67526d36fe6a3e137c9187420b63a3cd8",
+    "generado": false,
+    "lineas": 39
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CustomerRepository.cs",
+    "bytes": 2616,
+    "sha256": "8728c5a63ec6dee4ab32a0720d51569aea3fb40ebcadc2f928c3821018335c1e",
+    "generado": false,
+    "lineas": 35
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/DiscountRepository.cs",
+    "bytes": 1189,
+    "sha256": "59863b0e32dd4327794c78168834f9b0742ab6cd33e41dcf365da9caa29decdb",
+    "generado": false,
+    "lineas": 20
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "bytes": 7582,
+    "sha256": "648ec3c1a2ab7b347ef17900979d942fda373ef4abf40f44e1cb9b4239793f05",
+    "generado": false,
+    "lineas": 125
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/PurchaseRepository.cs",
+    "bytes": 2975,
+    "sha256": "ae623e764b307017b0e18016c66b9b8dc3c265eb4c8bf2371ca63bbc6bc46da6",
+    "generado": false,
+    "lineas": 35
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/ReservationRepository.cs",
+    "bytes": 3380,
+    "sha256": "9651f9e479bd1de314bcfa5c428aee3dc8aa1698beaa5bf1c267a9a5911d0a6f",
+    "generado": false,
+    "lineas": 41
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoleRepository.cs",
+    "bytes": 3044,
+    "sha256": "bf7b6bd5fb79bf066b34e305c8cb24c4e8e3e0dcecf430fb2cb5079d344f7052",
+    "generado": false,
+    "lineas": 61
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoomRepository.cs",
+    "bytes": 3098,
+    "sha256": "9755a7b370daa1c0c892536618c9908d4e218460a6534850dd00091faf040946",
+    "generado": false,
+    "lineas": 51
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/SettingsRepository.cs",
+    "bytes": 2398,
+    "sha256": "cab5cc6e92fdc3f3c87c42f23cc87937f3040cf2e44cdcc975768b1e6be247c6",
+    "generado": false,
+    "lineas": 54
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/UserRepository.cs",
+    "bytes": 2817,
+    "sha256": "602ae7959d929f0398c3c0ed3ec8dad3f85ad25e9783123dfe1a4964914a19ea",
+    "generado": false,
+    "lineas": 91
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/AccountingDtos.cs",
+    "bytes": 3218,
+    "sha256": "c96d9d451afed8982c97d875a80106d6342d88624628779010b6a4ab31aad338",
+    "generado": false,
+    "lineas": 86
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/Auth/AuthDtos.cs",
+    "bytes": 3947,
+    "sha256": "90a78537e44cfb40789d0491ab60b06c8ac6d448289edb8f2a57ca4f13d8cae2",
+    "generado": false,
+    "lineas": 105
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/Cash/CashDtos.cs",
+    "bytes": 1780,
+    "sha256": "0793adda1835944efffffc6c72ec55dd725d4a82205ec1b6cec84b602752ba72",
+    "generado": false,
+    "lineas": 49
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/Customer/CustomerDtos.cs",
+    "bytes": 6216,
+    "sha256": "c3e944718f698bd763db224eaa66af5dd3de85501004096e38071df375325a4c",
+    "generado": false,
+    "lineas": 134
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/DashboardDtos.cs",
+    "bytes": 1919,
+    "sha256": "1e8d57f5a0d77f6adbf666483bd467a51bcf66a4c37249fdc6337348b0d76595",
+    "generado": false,
+    "lineas": 53
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/Discount/DiscountDtos.cs",
+    "bytes": 2078,
+    "sha256": "904c0eca3649f70ba540f72851820ed30208dbbb40736e77b1dc12be5df1e622",
+    "generado": false,
+    "lineas": 60
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/InventoryDtos.cs",
+    "bytes": 2275,
+    "sha256": "e0136b36f9ff7b280afde331434eafdf335bc5fc88e04fbb8be7c22333f802c9",
+    "generado": false,
+    "lineas": 70
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/Mappings/MappingProfile.cs",
+    "bytes": 6437,
+    "sha256": "73b4b2e84357a52a2fff1f5e639946ab1404155dae7f1f41ea6e45e35600077c",
+    "generado": false,
+    "lineas": 119
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/common/GuestStatsDto.cs",
+    "bytes": 285,
+    "sha256": "acb6db64dad2fdfc8b00b649fb9764707baf8012ec5c1511f902336323ab4554",
+    "generado": false,
+    "lineas": 11
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/common/HotelDtos.cs",
+    "bytes": 6193,
+    "sha256": "342ef1661139aefd55d1509b51fec68a9cb27109d590baed393373976003375d",
+    "generado": false,
+    "lineas": 155
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/common/InvoiceDtos.cs",
+    "bytes": 8532,
+    "sha256": "e4e0ce1e995cc3600ed16ffca1e166900a8e5eaa97edd02d5b0b647c793fffc0",
+    "generado": false,
+    "lineas": 194
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/common/NotEmptyGuidAttribute.cs",
+    "bytes": 300,
+    "sha256": "2c1dae37b5eb1bd0641ac60a78b21ebe93e83cf283d7852627871b8e6eb1476c",
+    "generado": false,
+    "lineas": 13
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/common/PurchaseDtos.cs",
+    "bytes": 2807,
+    "sha256": "327d87c89082a287e169aac21c5fb24f51e15b3c392f7c7ff33e2fb1f94a18c4",
+    "generado": false,
+    "lineas": 72
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/common/SettingsDtos.cs",
+    "bytes": 3345,
+    "sha256": "3b821cb09461867afbaedfecb7fc46cc76a7c8e4f4e67bcf4ba8bfa562b1a947",
+    "generado": false,
+    "lineas": 79
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.Designer.cs",
+    "bytes": 84013,
+    "sha256": "6a54098955bb0824af6598262f162d84d5459c6925e58860cf96e171ab2f3577",
+    "generado": false,
+    "lineas": 2310
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+    "bytes": 73155,
+    "sha256": "78e9559a3865fa7fb040b07c9e19d8528bda50ea18781c32f5a012a8d3fec661",
+    "generado": false,
+    "lineas": 1321
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/ApplicationDbContextModelSnapshot.cs",
+    "bytes": 83904,
+    "sha256": "36116fa25b8979f4101b14d654ed384c703f1178c36caa353e70211ced7c4357",
+    "generado": false,
+    "lineas": 2307
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "bytes": 17640,
+    "sha256": "d144304c90f94a6d7a1a399e94409545945783888a3cb8adca342c4837dc30c0",
+    "generado": false,
+    "lineas": 366
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Properties/launchSettings.json",
+    "bytes": 344,
+    "sha256": "f9f67504a69b312ff53b3d2227d6a00c9f88ce5ac0940f1ac774f6118d74a707",
+    "generado": false,
+    "lineas": 14
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AccountingService.cs",
+    "bytes": 6162,
+    "sha256": "f6e3275abeecbcdce725b774cbf28733a95b0e20e07fc1ea56ff5ab0edd1e6c6",
+    "generado": false,
+    "lineas": 162
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuditService.cs",
+    "bytes": 2138,
+    "sha256": "7f9ee4b8c0eed5ec5aac4e48a938398293b56bc313adf91b171720d18f3b2de7",
+    "generado": false,
+    "lineas": 54
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "bytes": 12423,
+    "sha256": "60051bdbfa30e7ea11bdb01e62289278f36ff7a4f61edea92e6e3974af751ee3",
+    "generado": false,
+    "lineas": 315
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/BackupHostedService.cs",
+    "bytes": 2078,
+    "sha256": "e3a8e9bd844099f2f92ce905c714ec1770b97042e6bccdd41fdfb4c483905aad",
+    "generado": false,
+    "lineas": 58
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/BackupOptions.cs",
+    "bytes": 429,
+    "sha256": "1e4c5ac2701687dec7c916c9562f96210234e8ab71cc164f44a6cde08ea06f8e",
+    "generado": false,
+    "lineas": 13
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "bytes": 6919,
+    "sha256": "c9ba8f498edc885c21b7cb09cf1255fa83756e77265349fa5edb83d320390637",
+    "generado": false,
+    "lineas": 162
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/EscPosService.cs",
+    "bytes": 18543,
+    "sha256": "433dc1c17965c843793ac8abf172d865508203c5729672f063018c253302df1c",
+    "generado": false,
+    "lineas": 431
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/FiscalAuthorizationService.cs",
+    "bytes": 2948,
+    "sha256": "8ecdf617a963127a9049fe2af7a572ceb6d2fbbb22f9926072bd5f6d1da0f49a",
+    "generado": false,
+    "lineas": 67
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/HondurasTime.cs",
+    "bytes": 382,
+    "sha256": "2ca951c575a4949b4e1ce3e07896d37403329ed303b1e773349dbb6ce09da12f",
+    "generado": false,
+    "lineas": 12
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/Interfaces/IAuthService.cs",
+    "bytes": 899,
+    "sha256": "03c02538cb25b49cd550081dca6837ab3352f3f8c68e368c17f95cad1b06b720",
+    "generado": false,
+    "lineas": 27
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/Interfaces/IRepositories.cs",
+    "bytes": 9197,
+    "sha256": "63215e1ba1e872d51b11d0d52a5c8712f6d9862805bc3bae937beae9c725840f",
+    "generado": false,
+    "lineas": 236
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/Interfaces/ISettingsRepository.cs",
+    "bytes": 247,
+    "sha256": "5ff6385335d804a055382c032c630bf58fec7a250401185d9e119ead13a5f826",
+    "generado": false,
+    "lineas": 11
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/PostgresCorrelativeLock.cs",
+    "bytes": 1624,
+    "sha256": "cc2c25728163b126e94ae626bf7aaa30e543062b153d643f88209e7040d149e9",
+    "generado": false,
+    "lineas": 41
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/RawPrinterHelper.cs",
+    "bytes": 7139,
+    "sha256": "5a1de96c1ca22402806e4e8e9c1c3de087813ce748c32033dd7b2d888e4a024d",
+    "generado": false,
+    "lineas": 179
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/TaxService.cs",
+    "bytes": 6048,
+    "sha256": "47a7f310205362c08e3646745b13972cc467e35b983ef3dc242d8d4ab9d6d949",
+    "generado": false,
+    "lineas": 149
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/appsettings.Development.json",
+    "bytes": 532,
+    "sha256": "119ebfeafadafe477fb604de4c79a7bf452db89e2bdf69c61df5e596a45a6f25",
+    "generado": false,
+    "lineas": 18
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/appsettings.json",
+    "bytes": 1108,
+    "sha256": "9b55d7c453be2891ddc31a1328d2e6a85d234f1ba5262bb637de57fae8fb37fc",
+    "generado": false,
+    "lineas": 49
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll",
+    "bytes": 12800,
+    "sha256": "44598fe82fbfc18975212ad505e902f8adb3ac1c2a3c3530be2f1d570fad8946",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/AutoMapper.dll",
+    "bytes": 263680,
+    "sha256": "20f2c40a3873028e496a956eb8007f653e4e1b089245910ac6d63b10c3421f7f",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BCrypt.Net-Next.dll",
+    "bytes": 23040,
+    "sha256": "115b9faff8b909a1a08b65b315058eb182c0c4c3a77c19fcd5f4da9da49d4a63",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/Microsoft.Build.Locator.dll",
+    "bytes": 34848,
+    "sha256": "286db396b2b8500aad8bc188e41a11cbbbcb3bffc5598b464c683c1c04c9bf60",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe",
+    "bytes": 458088,
+    "sha256": "290c7a60c566cad597c04711e73166e52108dc81fe8a1ee250b8bcbbf4bd5800",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe.config",
+    "bytes": 3505,
+    "sha256": "be2957866221dfe55d1caeb0cf7953e37284b3b8412bde72cf687ed1b05d7e1d",
+    "generado": true,
+    "lineas": 67
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/Microsoft.IO.Redist.dll",
+    "bytes": 131880,
+    "sha256": "2abba74a23e680ba613baad9d510428edd913e09f90509d248b85665a03f5014",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/Newtonsoft.Json.dll",
+    "bytes": 722304,
+    "sha256": "404844da53dab572bd8fcf085fdd7bfcf9653523f168be31086a499ef1d203d9",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/System.Buffers.dll",
+    "bytes": 23856,
+    "sha256": "3af1e07305bed0abe0cf32d9854e0a7f5f470216adee1b87d02350be09d31b35",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/System.Collections.Immutable.dll",
+    "bytes": 259360,
+    "sha256": "77d705fe51f224d77b25fc06ede39e2921f08b46a961a027d6ee49a4bb19c127",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/System.CommandLine.dll",
+    "bytes": 155680,
+    "sha256": "9bb860c2cbb3b4ae768e87f0ae6dd0fe75676da1242efd7c772f50454723e39d",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/System.Memory.dll",
+    "bytes": 145192,
+    "sha256": "b8fe216aff0f6d162f8eefe7be1712162b7d8199e20ce2e70ffac36c7ce20a4c",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/System.Numerics.Vectors.dll",
+    "bytes": 110344,
+    "sha256": "22c84be385fe8ba6d0e0138952748f28d781fce36078b5a7aed91a6104bcd99b",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/System.Runtime.CompilerServices.Unsafe.dll",
+    "bytes": 19224,
+    "sha256": "2d6f419d641682d8efc4a40e850d2e85de519d6823b93daf2aeee63206d4e32d",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/System.Threading.Tasks.Extensions.dll",
+    "bytes": 27944,
+    "sha256": "692c324c02a922f890aaf5948c54ec9758f5ab7019b8e8ab169c106ddd3231f4",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/cs/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "4398d7a61cdb21f347658ea6c359fcc6c60a93271416da122fc049a561e1a5b8",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/de/System.CommandLine.resources.dll",
+    "bytes": 18984,
+    "sha256": "e92e0c99fbf961de8eef358fd7500f48101b88fda41c8fa16cff9328f92e66dd",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/es/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "2881a3e89c45f73e43316f95e6ee50820e24b6c4f0dfa747905b309bbe6315ac",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/fr/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "c7ad731706ae14460d9d73743484aa1cf99c24916f7913167f1eab476537a2ef",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/it/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "69e61040a5c78f0ca6a8cc14262e43b537ed38e2fa79f45bd549f97eb706006d",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/ja/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "fd715c26e69d38025988c824c82775492da66712c5d50d0f6a390ae47cdfb881",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/ko/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "fb4bce92de4cfc69aa787656e46aeaad6a07c7927bda802583191418ea9bce68",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/pl/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "6b919bb42e933607d0be4e25ea87133d27030b248a527f89d3cc5e44b4d47921",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/pt-BR/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "c42621df554ca60d6d2b906629a2d4542ceec138e70afc3d54e3003597550803",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/ru/System.CommandLine.resources.dll",
+    "bytes": 19488,
+    "sha256": "b259e4629bee7f045a1aaa3798ae743e7798eec168618f72f95b2507448db16b",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/tr/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "0115f660c410b79df176772c8159f47ba8b0e316be7dbb8d8f355e0f728614f6",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/zh-Hans/System.CommandLine.resources.dll",
+    "bytes": 18984,
+    "sha256": "f4f951e177b0f6423372ee873f64366cea81c2f2c4f75f0a769fb668e64be483",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-net472/zh-Hant/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "be202e67817d8828ea77661c91e67dc5708cb979a3ce298e5364ff407cab2692",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/Microsoft.Build.Locator.dll",
+    "bytes": 50720,
+    "sha256": "fcc85336217be226f90a5ddfa55151dc84fcb2a76fe242f5274535c6b878aa30",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.deps.json",
+    "bytes": 6070,
+    "sha256": "e3ca2ea63b0d2f2dff21c11ab15a8dd58dd580b47fbaabc8e623236dab3da2f9",
+    "generado": true,
+    "lineas": 170
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll",
+    "bytes": 450320,
+    "sha256": "0759822b08ad9b94ce0976e08a16e9b9d26082f23981dffe81c0a6de8a6ea3b2",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.runtimeconfig.json",
+    "bytes": 356,
+    "sha256": "a3a6e9b22d117ece1eb833693c754e24350adb3e527def1e2e52074b63e81720",
+    "generado": true,
+    "lineas": 13
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/Newtonsoft.Json.dll",
+    "bytes": 722776,
+    "sha256": "22dd598354af159a0fc171197d161d2c698c24d82dc594fbab332a254622e479",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/System.Collections.Immutable.dll",
+    "bytes": 251160,
+    "sha256": "33d310036fec4d1a78f75c885ea091c0e054ad08d50c424cc8db8042544aab3c",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/System.CommandLine.dll",
+    "bytes": 151584,
+    "sha256": "a25affc775bcd2748afe731ea1375276fab76bc5791f642ff5052d73766404a4",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/cs/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "b8c186ae3578df09dac1ec5c22858c878715c4414941c78e37702826e668b3b0",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/de/System.CommandLine.resources.dll",
+    "bytes": 18984,
+    "sha256": "bff326512a54d81c47ea7096e54ec405655664edebb6f58d77e3eb53a01f5f8d",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/es/System.CommandLine.resources.dll",
+    "bytes": 18984,
+    "sha256": "1d2955bdb812d4bcc76c5ba46f70662b965b748c37cb9717877cfe99e8350bbd",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/fr/System.CommandLine.resources.dll",
+    "bytes": 18984,
+    "sha256": "fe53adde742442e1085a647b63b407deca78e6ec44aab224b7e6e953a65e937a",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/it/System.CommandLine.resources.dll",
+    "bytes": 18992,
+    "sha256": "0a4b913df4e43a18ce48b55ff1e2dce5f4371fd9889b7c563b3605f4922da6e6",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/ja/System.CommandLine.resources.dll",
+    "bytes": 18984,
+    "sha256": "85c768f66ca5c4fc1ad07cbd8b69f43e6c43d49418f235756b159345af668c0f",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/ko/System.CommandLine.resources.dll",
+    "bytes": 18984,
+    "sha256": "363cdc4fe9a35e9a4f933e173aa1a1de374938b9dd9ccdacdd1fd6ea2c305738",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/pl/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "383a9174a103136bb603e434dc79ff1fa58b61427f708c5d796018ec49692be3",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/pt-BR/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "010ffd4355b5d1c5a18385684545b65f48f0912371bd65515505d326bd5db602",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/ru/System.CommandLine.resources.dll",
+    "bytes": 19488,
+    "sha256": "15e8a9da46d636e4e7ba8f7e7db6954c7a81a9e21cfb07933446af861717aef3",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/tr/System.CommandLine.resources.dll",
+    "bytes": 18984,
+    "sha256": "62c19afe4edd861333916c9578a769f5c02c8f9c27a1194247422bd6077db534",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/zh-Hans/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "75090410c555765a0cf27feb29d5a6f6acc8a51b0de19611d1326a65eb25a7dd",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/BuildHost-netcore/zh-Hant/System.CommandLine.resources.dll",
+    "bytes": 18976,
+    "sha256": "c386bcab9894fc6664bad9dcdce19db7fc720249883d276af545e981816341fc",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Humanizer.dll",
+    "bytes": 355944,
+    "sha256": "d6853075547d7e303efd60354d911a2ff18edba582cda2fa59d91a2e5dcf9e98",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll",
+    "bytes": 52008,
+    "sha256": "56861b005b748d0bd7f4135f266fbc0e9527a72f67a136a327e924c8603c8b39",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.AspNetCore.OpenApi.dll",
+    "bytes": 193848,
+    "sha256": "5dfe38966c9828533d77a9592d7150c4e832d2458648ccd610c4cdf633a521ce",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.Build.Framework.dll",
+    "bytes": 269608,
+    "sha256": "1a7c784aefd2df26a77a4f8e8b46722da73b82578eca1e1cb6edee54e5bf6061",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.CodeAnalysis.CSharp.Workspaces.dll",
+    "bytes": 944904,
+    "sha256": "bf30fb9aafcd99c4a74b9d6733774abcbf82c4a836c5a94fae6d91c45523f085",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.CodeAnalysis.CSharp.dll",
+    "bytes": 6839608,
+    "sha256": "36f5ac8da30a6107f53a2ca6509b61e284c08eb59aa1b22956d4e200e4514aa5",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler.dll",
+    "bytes": 21256,
+    "sha256": "5092cc2cee3f241a2bf3abec35096b0669cb181720a3cf463cddf7f6a45c1a0b",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.CodeAnalysis.Workspaces.MSBuild.dll",
+    "bytes": 141576,
+    "sha256": "746a9474ed7f0f6a5102b88379c3312edc41eca664a8b3b7717ba31b1cede73f",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.CodeAnalysis.Workspaces.dll",
+    "bytes": 4230448,
+    "sha256": "79498055635572590009a4781a6e3ee1e2e70e3085b2ea3ce161820f809b0b2b",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.CodeAnalysis.dll",
+    "bytes": 3059000,
+    "sha256": "10f489db67b8ac7489e58d392166c928302ba5698506dd652311da5d89f0a0f8",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
+    "bytes": 34616,
+    "sha256": "c29df8f2db22e129bb6929130d98aa612b570a5ebab9842a11e809796cf03448",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.Design.dll",
+    "bytes": 631648,
+    "sha256": "d2d7e7cf28c056636ed2c143b2d35ae73f75b080940990123473ef0d7c7dbafd",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.Relational.dll",
+    "bytes": 2194744,
+    "sha256": "687f84616b0a58de7ba0c20d14b4fe38871d79161f2de5bb3f48d171c292a0db",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.dll",
+    "bytes": 2828600,
+    "sha256": "6750a0c56a1d557d7590728d4d7378f6e1ec65cb96e59489023cdc9fd139f6ca",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.Extensions.DependencyModel.dll",
+    "bytes": 84776,
+    "sha256": "8dadc004effa669d9caf231019413e469d58632eadb9dacf56aad07d8bac82a3",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.IdentityModel.Abstractions.dll",
+    "bytes": 19480,
+    "sha256": "badf2721849e69ba93f50d6878e93c9c305761f5b7a4ada4d77fe5f3bde06fb2",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.IdentityModel.JsonWebTokens.dll",
+    "bytes": 167936,
+    "sha256": "7370d5a4d49332870941404bbc20ac5f31ae6eaeaf0250494c9a3e0ffae81a34",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.IdentityModel.Logging.dll",
+    "bytes": 36864,
+    "sha256": "5ba32fcff58444102944487e74fd91bf804fd64e337e2fa5741b2c41e1937aa4",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll",
+    "bytes": 137144,
+    "sha256": "d1f7dbbb71cbf69f5242a74e43b632610ff5dca913f164d1dcf53b2f6e0046ac",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.IdentityModel.Protocols.dll",
+    "bytes": 40880,
+    "sha256": "7c8702a7f6c019d962faf4b8af2da751dc32af9b6be998688e774394fb5f8730",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.IdentityModel.Tokens.dll",
+    "bytes": 371752,
+    "sha256": "9aa9915bbf81e4c39750de3e803b4e11d0de0cf646234c1a3170c9cafb30e9b3",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.OpenApi.dll",
+    "bytes": 474656,
+    "sha256": "0ef9fae1ec5c1b88b2dbe5fe1e1017b9512eebae334ac5259c425de65138b31e",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.VisualStudio.SolutionPersistence.dll",
+    "bytes": 172072,
+    "sha256": "a1150f4a162d9c9992b6e99b2949e2de092017182264218b7b5666ceebbc16d4",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Microsoft.Win32.SystemEvents.dll",
+    "bytes": 27432,
+    "sha256": "2781f7269d44cff362f5d6f956dc38a7222806cd7c44645b457e29180d510a26",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Mono.TextTemplating.dll",
+    "bytes": 177664,
+    "sha256": "e9f742d672c8f567471974fcb7163f955d1e1f01060bb15d067ac220361d23cb",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Newtonsoft.Json.dll",
+    "bytes": 712464,
+    "sha256": "22c649f75fce5be7c7ccda8880473b634ef69ecf33f5d1ab8ad892caf47d5a07",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll",
+    "bytes": 679424,
+    "sha256": "94fcf66e8e953fdb02c40c72ca89821dd5eed5324d4c0f12a7219ea8cd3d5a5e",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Npgsql.dll",
+    "bytes": 1478656,
+    "sha256": "e2bcafe1660fe4543fe9dfcabed972ec8d32259e5ea8009462ce1de23c7034c2",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Serilog.AspNetCore.dll",
+    "bytes": 17920,
+    "sha256": "a550c57df7a04edbed00da036fc14be12acd0d425b7401855975fb628e3dbada",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Serilog.Extensions.Hosting.dll",
+    "bytes": 35840,
+    "sha256": "3e6d0284179ee0e1c197568fd79b58f869d15298fff8ecb8447322fe87d44f47",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Serilog.Extensions.Logging.dll",
+    "bytes": 28672,
+    "sha256": "80d3edbe3e3ac0b4c5bc764474220e7da11df8d285e0098f3dc1b65a734c8507",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Serilog.Formatting.Compact.dll",
+    "bytes": 9728,
+    "sha256": "319fbcefc2161dd50ccdd8d60b30edee48a09f794aedb28421a23f35ddd670d9",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Serilog.Settings.Configuration.dll",
+    "bytes": 70144,
+    "sha256": "ec8cfd1f8970a44e2aa3f7bcc71116ca2691b196564bff83e3e3ead0c1143b67",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Serilog.Sinks.Console.dll",
+    "bytes": 38400,
+    "sha256": "dc88002ddd9f5fd0ffec9a6568ef89954671f60f2c9161593ee78932538c1e3e",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Serilog.Sinks.Debug.dll",
+    "bytes": 7168,
+    "sha256": "df543d3df8bd00d72e5eb2b9b2a15e67a6e4d10c13834de4cedbf500b8793e01",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Serilog.Sinks.File.dll",
+    "bytes": 36864,
+    "sha256": "4f4282671c2ac68284b4dc99f7a76eac9cbd4e659978cef642cff9e6c01b676d",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/Serilog.dll",
+    "bytes": 161792,
+    "sha256": "9fbf7441a9bdc9459652dc66e18f008040651f14cb8d7a7bb806ac4a8b722d10",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/System.CodeDom.dll",
+    "bytes": 184944,
+    "sha256": "bfb75074ac26c7632bbe9ffc1063ceca9a56aae86ac4913481d6bba88c4c4a34",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/System.Composition.AttributedModel.dll",
+    "bytes": 20248,
+    "sha256": "d4f1ec85e742b77cda48f709210daaf34d8b4a7e1e540f353eff741dcc058128",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/System.Composition.Convention.dll",
+    "bytes": 54040,
+    "sha256": "be95f480449ab3236315beb321ce598a61382d64479ddf500e7434637345f474",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/System.Composition.Hosting.dll",
+    "bytes": 56072,
+    "sha256": "2c8f10923c3b60fd1b16d89f2661712a9be112e697990bedbd6fab9dbaabb1b6",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/System.Composition.Runtime.dll",
+    "bytes": 27424,
+    "sha256": "148012db7ddafc76d28bbeaa0baea3e2351e7bc195e9031d57f107989c2e0eaa",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/System.Composition.TypedParts.dll",
+    "bytes": 65816,
+    "sha256": "ebc942c358d997e41635c9a365db542a3fd2a05f301f602d5d6a8b0d5dd42071",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/System.Drawing.Common.dll",
+    "bytes": 422184,
+    "sha256": "d20b10d6289ac5e3cbbd4d46f798a555bcf2ef39c6380d80031d4590830e47bd",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/System.IdentityModel.Tokens.Jwt.dll",
+    "bytes": 91648,
+    "sha256": "26abb9f383208e3339518fda1d6259960730a45869b5121a150b630bc89a6a79",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/System.Private.Windows.Core.dll",
+    "bytes": 1226024,
+    "sha256": "1ff9a6436dafbb4418c9e147f8203fd2207601ee5bb71c384675a8c1ac4ff822",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/System.Private.Windows.GdiPlus.dll",
+    "bytes": 168784,
+    "sha256": "e46a1a693188c0c25a5d96dce5330433be693f86351df77b20e7f6118f5df5eb",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/appsettings.Development.json",
+    "bytes": 532,
+    "sha256": "119ebfeafadafe477fb604de4c79a7bf452db89e2bdf69c61df5e596a45a6f25",
+    "generado": true,
+    "lineas": 18
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/appsettings.json",
+    "bytes": 1108,
+    "sha256": "9b55d7c453be2891ddc31a1328d2e6a85d234f1ba5262bb637de57fae8fb37fc",
+    "generado": true,
+    "lineas": 49
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17680,
+    "sha256": "be261586e5f90c7ebdc8b5e12d41f2f493bb18f6b5a76fe1fab4a14a3d80314f",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 444168,
+    "sha256": "1b7a95334e0457ed334646cb62e1287b88e908e50a5ccdce60891613fff7295c",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17680,
+    "sha256": "5f5e0c469c1127ff80e4811e4c2e44727791ebff1abdd097f2bb36b9a7f350ee",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 41224,
+    "sha256": "c5e242fc938db3efdde8ff4457eb1c03f50abc63dfb3e6edd60188a0151849d8",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 40200,
+    "sha256": "b6f9770c7c83160b27d96e41486da99ed43deb71bbfb8d15bd70f25dc452c1ab",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17672,
+    "sha256": "6eb4c209143a8b977c61d9f30a1eb92d39a7b6a741102c221663f0e60fbc4427",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 474376,
+    "sha256": "74ee2d88897be211e89ad4cd11a145a973bd4af0e74877b5a64f8d227e0ba409",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17672,
+    "sha256": "212cfa8a51d5708b54de0f21acba6d3f8ec767c01ab6d985a950729cfd355ee9",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 42760,
+    "sha256": "96d639a66c6c8a182dc532b47f7abd7216bcd1d3ad2c3618777ed8890bfc7feb",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 41736,
+    "sha256": "cd62a1bfe99811c971bec1328a548dbc5f24e3bc9cd27f9715373c1e52abf32f",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17672,
+    "sha256": "a8db27c5eab7825e5d6b967d8e214f0136c12c3c8a91d344cefd2b3485ab3ead",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 463120,
+    "sha256": "719bc0f799e12704498649267e473166f91015b629f4116474091f8ee9253e4d",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17672,
+    "sha256": "7da0bd6a7d84a44c3f61e5ac9c51f1445fac66163a8cfcb156cfc0ba695dd21b",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 42248,
+    "sha256": "c5c863fa842c5dc4462dcd54e9a6b8c2531ae1cc1f1a5e8016f64126f77cb766",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 41272,
+    "sha256": "4c741b47fa2becf2f1283e96ec6f76d958f1defc2868d93c2c011cafcbc9f9f4",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17680,
+    "sha256": "a70609f91ad5c1d223f2f9dbff6e4ae7221a03a7ca59f9ae3bd894f1015c5344",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 475920,
+    "sha256": "463e22ba0fdfee0025d6fb00314a0a7cf8a47d6b6689d88e0429686025a8f53c",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17672,
+    "sha256": "5330e886183987a386636f26f7902f0aa0551fcaadb3d4adf5ed83311a0d3c68",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 43320,
+    "sha256": "ff1ee1395f15d8f13e9fd3113c3facda1e321c665d30765890034ee5bbbbc093",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 41736,
+    "sha256": "80f5a07838b046388fda788223279c1c6638eccf9610fe80a598bb17f3b20f22",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/hotel-erp.Api.deps.json",
+    "bytes": 46457,
+    "sha256": "b9c924baf9fafb3dab5c233bd4d15e3ce31100c003b9f7103696033af7498faf",
+    "generado": true,
+    "lineas": 1237
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/hotel-erp.Api.dll",
+    "bytes": 1314304,
+    "sha256": "20b0dfec7d1f3c62243d6cd807a9732d6811252a0046ce60ed8640d029d4ef99",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/hotel-erp.Api.exe",
+    "bytes": 162304,
+    "sha256": "6d62464cd8c3354e6d30de869d733c01507e90fa428f4cb992f9c8ccd394d643",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/hotel-erp.Api.pdb",
+    "bytes": 247040,
+    "sha256": "86708de94fe4bda36882d0f69a9d983f0f5eefd1cb62e8e56f0d99cb8ce03d85",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/hotel-erp.Api.runtimeconfig.json",
+    "bytes": 469,
+    "sha256": "a6de13a0197332e10778b009b28d59ebbc9a034816ea0505a22cfffdb8c0dbf8",
+    "generado": true,
+    "lineas": 19
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/hotel-erp.Api.staticwebassets.endpoints.json",
+    "bytes": 199449,
+    "sha256": "ef56f2b9bbb0288ada8151be2268528319f91357fe7284d08faf4e81212dff4e",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17672,
+    "sha256": "29791cba2bd4adee27fc945dbd7bc26d6a2db45d38cda68e5bfc39693a624d43",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 469768,
+    "sha256": "a853f3e433c9892150c47ad5bbedd46d3acb755bbc20ed58796b9e3e75aa9250",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17720,
+    "sha256": "d1967347cbc0e243d711f32f3444eaccf3c22682e44b4e052fcb89f7376297d2",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 42808,
+    "sha256": "6c4759807aeb547437adc3e77a4e24852753d07876f0056f65c7b6e3d3f6506d",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 41784,
+    "sha256": "321a24f5ac605314380585f4991db0d99bcac59ec976be896a589fe842fef7a0",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17672,
+    "sha256": "eab73a963bb4603272ed17d2ffecf701a64876e2e86b9e93960cb30495b67636",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 515848,
+    "sha256": "4d2baad888d7da2f20d528d27f6b56286961a6caa294a3d3927f834a3459f71d",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17672,
+    "sha256": "4cfbaa8cebde81d60f626b5cc0545d9081226460dc20dc2bea6a969b9414571f",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 45320,
+    "sha256": "021a4a339d89d06e2b300480416597a61d97cf1c787fd3c7024c849220387e43",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 44304,
+    "sha256": "f66432a517a834ca169317c170d32a610094c3ebc0c2b1f59d0087b33e2d36ad",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17680,
+    "sha256": "08814208264064105abccc96957c1e2ae073d4e7dd97ed745998f04b777273cb",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 475920,
+    "sha256": "6a2e477c2a8604157f2c9f8e3756a98ab07995c0e6fcfe22f2e7bf6679f30389",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17672,
+    "sha256": "d7054c0bf6bdca4013ccd75face70958b5dc0709f3a577e61f8c0e560bef6eb5",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 43280,
+    "sha256": "6f28e1cd4c7ce5311ddfb4de3b42966a555ee42aa41603332f88154f6a9b21c4",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 41744,
+    "sha256": "1033d3d5d10557f7070430be5643dc89620d84cbeac2112cfb8c4a1d1580845f",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17712,
+    "sha256": "49292bf397e478694f68d7cb186aefa8e6565faa7668e70d486c53cadb4abc9e",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 476432,
+    "sha256": "39b5e1471817790a31ec4038639188f7b89fd6713ea19c88472bdcf4fa56f795",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17672,
+    "sha256": "dd022150ad075152f44c90e75abcc6e4cc045b0b6b57eec997213a2ffe25e493",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 42760,
+    "sha256": "e2ee84f74b48dbb730809341b5279e521dbfd6844c013400777e0e1d02160c0f",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 41736,
+    "sha256": "f8779e45b1f699fe722898b1865377bedaf5a433c1aab6298af5b3edf067e88f",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17712,
+    "sha256": "ba6b4079d560af3176e48e8f46aa7f3305b43717b051fc7cd27a913ba93730a9",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 456456,
+    "sha256": "0188246fa239eadad25885093f21c20df4a775f794fc34468430729974a8c1ec",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17680,
+    "sha256": "3b38428fec1990fefde9dea01a913bc2709f81dad2c4b7a72c8cab8c8bcae1f6",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 42296,
+    "sha256": "53fa339d0151215cfdec187b2eaa73215f809b95ca86a8c882b0de82f6d48550",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 40720,
+    "sha256": "8ffdb0eff7c2de635a38f0093da5e95f52ca905ec2080cab4efac42585dd0143",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 18192,
+    "sha256": "3862e9990ea7d92eec34066e8730e5c84d454bf3a1abfd35623ae75d05cebf1d",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 617744,
+    "sha256": "d0b7b57bb90a4aed649f10c30fcdae5c9efb8280447287a76a3d64eb0db13e41",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17680,
+    "sha256": "6f83219312c32e3e6303fe58957e4350a4afd63efdee875f2277593bda6fcbb1",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 47888,
+    "sha256": "c248867e873c629a2214eed85a4fd9bd426b21404723468981daab77beef3c2f",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 49464,
+    "sha256": "5153d18368224e120d2415262c49302100bb76ef7aff8aa686300d4225766c67",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/runtimes/win/lib/net10.0/Microsoft.Win32.SystemEvents.dll",
+    "bytes": 80720,
+    "sha256": "018d65d103deea431806ea8a93e43986a65683aec683a0279ef76d56bdaa94bc",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17680,
+    "sha256": "f4d005d18148227a171a5689c122ecde11c22442644e698c5dba6810d26fe7dc",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 452360,
+    "sha256": "09ff456d47d79b6f1a7ee5512662a490afdaa05c60eb8190a7dcd76ae050dc0e",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17720,
+    "sha256": "bf1d4a66daeeb639aaacd54543dc67f9036452186444c9a34129c337b91a9123",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 41784,
+    "sha256": "b9023cb23fe7b1960b01c5c68bb34d2f258dc4f7463cec0868a0084c6e7dfa76",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 40240,
+    "sha256": "5fde98451be8b9d11efa9aa0783c64dcfba6c552f405d03b82a575ceff631027",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17680,
+    "sha256": "f091e36cd829445ae557248ef8ef7ca766428fe0f654bdcaf159be354eabc8f9",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 405776,
+    "sha256": "fe526a7cdfb9a06e2c679a67bc07f1f4f4f1afcb4ac2d176f38ea2fc4b11bfbe",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17672,
+    "sha256": "6ccabbefc428b2198ed03f54ac550cdeca22d53f5973c584cadce49acb19766e",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 40200,
+    "sha256": "61d2b8938866a2835fcae414bcc209cfc7efc3676563062d80deb865385e400b",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 37640,
+    "sha256": "2b8460e62d86c91cce2182c31b59dc3cef9cf8ac7face19ae0592516c3227897",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+    "bytes": 17720,
+    "sha256": "5d822240421b9abb5f853eeb15abe745048db7723e9dff116d968950d0bebf80",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll",
+    "bytes": 405304,
+    "sha256": "515e77ddebd633c7f79dfae31c8d5b343ed278832119357bdc3228c726c3e48d",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+    "bytes": 17672,
+    "sha256": "0613ec2f04506e99aff95608ad8c531e3fdffdea41ce24432edf05db8ef6a322",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+    "bytes": 40248,
+    "sha256": "2f99d0bc2ebbd1f6b838ef450b6f744b955ba99675f7980b5e11631274a366c9",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.resources.dll",
+    "bytes": 38152,
+    "sha256": "e1b882a624fc2fef8fc63a2dd0a61e19543f6c2974b0ae5f1a8e580c0a490aed",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/hotel-erp.Api.csproj",
+    "bytes": 1723,
+    "sha256": "9d62f3c10e47680be563d838a97577de101e6175d64ebebc961dcba8da61422f",
+    "generado": false,
+    "lineas": 33
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/hotel-erp.Api.csproj.lscache",
+    "bytes": 19131,
+    "sha256": "9e8067e8cf94dd56a93417ff2da86639e0f4a3c50fa82ddaf9ca85019803b1b9",
+    "generado": false,
+    "lineas": 477
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/hotel-erp.Api.http",
+    "bytes": 133,
+    "sha256": "2c92a2c149729dfadd2ab0425e7495e688be59e1f68cb42407060160ffb62158",
+    "generado": false,
+    "lineas": 6
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/logs/hotel-erp-20260515.log",
+    "bytes": 123733,
+    "sha256": "efa82bd78bf0205a4e641a547a773fdb3140475939bc90e9cd42b617786e5b8b",
+    "generado": false,
+    "lineas": 916
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/logs/hotel-erp-20260516.log",
+    "bytes": 177369,
+    "sha256": "b0e7a11dcfbb699a02be5a2f05512208116e53483dd0dd4d2ac0bdfab26934e7",
+    "generado": false,
+    "lineas": 1146
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/logs/hotel-erp-20260517.log",
+    "bytes": 15978,
+    "sha256": "839bb2f30e73f71c039a58ef92c065ab30f66c06fa2242c2ba83860923b0d056",
+    "generado": false,
+    "lineas": 142
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "bytes": 196,
+    "sha256": "f79c1ad9a9fc76110b3655f5bfb5ff4e3168e9addceff05b937c0796f0ec34eb",
+    "generado": true,
+    "lineas": 4
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/apphost.exe",
+    "bytes": 162304,
+    "sha256": "6d62464cd8c3354e6d30de869d733c01507e90fa428f4cb992f9c8ccd394d643",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-er.2EB76406.Up2Date",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.AssemblyInfo.cs",
+    "bytes": 991,
+    "sha256": "b03069a9e31de903f74c755561a33711d59990f1689d702d5a4bac9a4119e1b3",
+    "generado": true,
+    "lineas": 22
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.AssemblyInfoInputs.cache",
+    "bytes": 65,
+    "sha256": "d2935ad42d096b0931aed8713a04afb6cd5dee987c523ad2ce2a7114cedd6d50",
+    "generado": true,
+    "lineas": 1
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.GeneratedMSBuildEditorConfig.editorconfig",
+    "bytes": 1519,
+    "sha256": "9ef565aba21cb8efe13f8c9bb51a3689c6688680405b9df5a7a63c8445784441",
+    "generado": true,
+    "lineas": 32
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.GlobalUsings.g.cs",
+    "bytes": 625,
+    "sha256": "721da95e2f6f734b11a672ce509c68d617b641c6a979751ec6539e0a4c75a8cd",
+    "generado": true,
+    "lineas": 17
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.MvcApplicationPartsAssemblyInfo.cache",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.MvcApplicationPartsAssemblyInfo.cs",
+    "bytes": 566,
+    "sha256": "bdb4bf40e135101e6769920df4c266a5ac147d374895a8d193f054e9bda45abc",
+    "generado": true,
+    "lineas": 16
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.assets.cache",
+    "bytes": 52785,
+    "sha256": "ef7885ce0ed75e1792365e69ea6a91cacd4d63cbbb3c3bc3407f18e604b8e607",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.csproj.AssemblyReference.cache",
+    "bytes": 18360,
+    "sha256": "06b863634a1d1bd657dfe44b3ed951c17bbe2f835263ea837dc17afec5b67afc",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.csproj.CoreCompileInputs.cache",
+    "bytes": 65,
+    "sha256": "392569492fe43c1789eb9e9fc0643ec932b118e1c4437fdb64b62a604e949412",
+    "generado": true,
+    "lineas": 1
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.csproj.FileListAbsolute.txt",
+    "bytes": 23722,
+    "sha256": "49e81e284dfe699cddea1554215f79a2c1dec0925d17d6e4c8be9c81ea14c4a3",
+    "generado": true,
+    "lineas": 205
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.dll",
+    "bytes": 1314304,
+    "sha256": "20b0dfec7d1f3c62243d6cd807a9732d6811252a0046ce60ed8640d029d4ef99",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.genruntimeconfig.cache",
+    "bytes": 65,
+    "sha256": "83001d56d668ec21c3a3292db067c2bc76da9678e2d7b58a7ad72af97e77a903",
+    "generado": true,
+    "lineas": 1
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.pdb",
+    "bytes": 247040,
+    "sha256": "86708de94fe4bda36882d0f69a9d983f0f5eefd1cb62e8e56f0d99cb8ce03d85",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/ref/hotel-erp.Api.dll",
+    "bytes": 304128,
+    "sha256": "e9ef22169c31c3e655769fa250fbb0bd99cb41bbac5fe76ab325cb2d8635bac0",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/refint/hotel-erp.Api.dll",
+    "bytes": 304128,
+    "sha256": "e9ef22169c31c3e655769fa250fbb0bd99cb41bbac5fe76ab325cb2d8635bac0",
+    "generado": true,
+    "lineas": null
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json",
+    "bytes": 3825,
+    "sha256": "c0c42a27c14bc23d14f532380d2a50d893904e2e6a2a6a06cd8cdfdc5ebadecf",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/rjsmrazor.dswa.cache.json",
+    "bytes": 3825,
+    "sha256": "db6f20a239793ac637318b5067be79e542a3c42d417affaf8fc380afd94d886b",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/rpswa.dswa.cache.json",
+    "bytes": 43640,
+    "sha256": "c616e53c5d4672677faa4dea2954ecd26cff218df00e462be457af65ba98d16c",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/staticwebassets.build.endpoints.json",
+    "bytes": 199449,
+    "sha256": "ef56f2b9bbb0288ada8151be2268528319f91357fe7284d08faf4e81212dff4e",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/staticwebassets.build.json",
+    "bytes": 313863,
+    "sha256": "2646619378e36cf9d98b8732140ff11a476f5c604838434b89dd569fac0a631b",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/staticwebassets.build.json.cache",
+    "bytes": 44,
+    "sha256": "e25c3b735335a5e09bc623f4647482408c2c2a48b379a0a3491907529196a4cf",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/Debug/net10.0/swae.build.ex.cache",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/hotel-erp.Api.csproj.nuget.dgspec.json",
+    "bytes": 33162,
+    "sha256": "4d66a375778a90f27f8b8cc7e3bc9ef7490be7812d191a787eb0007b06013e0e",
+    "generado": true,
+    "lineas": 546
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/hotel-erp.Api.csproj.nuget.g.props",
+    "bytes": 2552,
+    "sha256": "2a93604afca57dadba4bbcaea595453c3f86fdd166d2f3badaae99a84446f58a",
+    "generado": true,
+    "lineas": 23
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/hotel-erp.Api.csproj.nuget.g.targets",
+    "bytes": 996,
+    "sha256": "f7f1fc707726dfb9e2f15466cf9e0bb20f979df6d4bb2dd495e4f8e0c6e5bb4f",
+    "generado": true,
+    "lineas": 7
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/project.assets.json",
+    "bytes": 215469,
+    "sha256": "e304af490233cc856453fa3e558fcb5040039eb721fa12ca2701125ae4f9b407",
+    "generado": true,
+    "lineas": 4081
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/obj/project.nuget.cache",
+    "bytes": 7628,
+    "sha256": "8526a5a52e0883486673221fc645aae1515ee2b0778376b63a0ffb961b1a066f",
+    "generado": true,
+    "lineas": 81
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/AuditLogsPage-D1RTrgnm.js",
+    "bytes": 11498,
+    "sha256": "e743f2a5b125cb102f72bf0a8cbee861ca8ab00115ed3bdf979b91873b001029",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/AuthorizationsPage-CLku9Y2A.js",
+    "bytes": 98890,
+    "sha256": "1c9b6fd25013edb3ae86203d8226577bc2d044499fddc9b68988509d7b572f8b",
+    "generado": true,
+    "lineas": 63
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/BackupsPage-DG4lz91l.js",
+    "bytes": 5718,
+    "sha256": "e12a89791ea0b683dba65852f84710e9a8a55706474fbbb135f69d732fe10a13",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/CashRegistersPage-DZGE5pDW.js",
+    "bytes": 10839,
+    "sha256": "921f81d45d9911f4614efaa37eac56fb7d07d6a4524ae3a55a42ddd5621f93c4",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/ChartOfAccountsPage-CmIf-9Qu.js",
+    "bytes": 9479,
+    "sha256": "d9adbd0a9834232d8923895e4a923610922bc050c8067b0a3398dc2734aac79f",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/CheckInPage-CTAiUZjm.js",
+    "bytes": 20348,
+    "sha256": "d63b390275150e17b2138cc6d4a809455fc73b9aa5111f803b35841b1a81052e",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/CheckOutPage-59pD0IyA.js",
+    "bytes": 22045,
+    "sha256": "45b3171fb68e67d1bcb56e19fdff157fd8ef89e9fb0b91210b31f7e2320765af",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/ConfirmDialog-D6XLa7Qm.js",
+    "bytes": 2064,
+    "sha256": "55229b9d659106c100782612215d1461466feb411af96512f72d8a34e6dd284f",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/CustomersPage-DptjBKnr.js",
+    "bytes": 13319,
+    "sha256": "ba7cfae7b5d9f887f49a8c455488a19da23ceca4ef3ebfbc91c098c8ba5c5dd2",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/DashboardPage-COTwlyms.js",
+    "bytes": 14585,
+    "sha256": "865761982bdbcb2d3950ded6e78d79ff3407b2591cb4033ed756c2d6fb4fd642",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/DiscountsPage-B4npr2iv.js",
+    "bytes": 9160,
+    "sha256": "f26e0b820f2022495ca4b8b5cc9b8dbc14599d19dd8e68d286dd400ea3ecd66f",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/FloorMapPage-kEotY2DI.js",
+    "bytes": 6695,
+    "sha256": "20e3d0eb57f9f90aab26b4a83f846c6a4061a38277b70a0a9615e207cae43fde",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/FoliosPage-C0I22gn8.js",
+    "bytes": 8658,
+    "sha256": "68578bad7c92f06fc646c13f0156bb82224110f33a4d5a4c6c1b9a57babfcdf9",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/GuestsPage-BS7gcNmz.js",
+    "bytes": 14521,
+    "sha256": "39285fe18364540dae8c799a15d6596e960c46903c622d310f6b570f1cfa074b",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/InlineAlert-CSWBb1vf.js",
+    "bytes": 2229,
+    "sha256": "920ea22cb0b1825cf7ab87dec782b8be613c2fbbad8e8726b9d0fe7e03219a24",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/InventoryPage-BhWK7uS2.js",
+    "bytes": 19737,
+    "sha256": "689e32f019d0097ff7075c18714424ee8bdd2231ad92c3e7ae1d35b13819d07b",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/InvoiceEditPage-DUDECBAo.js",
+    "bytes": 3735,
+    "sha256": "74c0ea8924de86d46af6537d6c747a48a9879ffeaed124c37c8f5bb0d59a04a0",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/InvoicesPage-D9Mxj7XH.js",
+    "bytes": 18672,
+    "sha256": "659605c7d7eab495d8130d063d560d3b54802f2828e9bc129d7268039d49fdbd",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/JournalEntriesPage-BKIOWifL.js",
+    "bytes": 19050,
+    "sha256": "cf7d7c2f27c277db40103b88d242be5f4255aad59b0787839757703fef2f1a46",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/LoginPage-BAr4W6Kr.js",
+    "bytes": 2720,
+    "sha256": "34b177a74ab4f367fd7d62949c934b1fbf332cb5f4f00976a58d46c2573bb636",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/NotFoundPage-Ct6guNON.js",
+    "bytes": 1172,
+    "sha256": "a1ca6b485daeffc4c38ca2094585c915d5a8724fcd455372963103d3fb1166b7",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/Pagination-BSpRAWSk.js",
+    "bytes": 2725,
+    "sha256": "8db285e6a233e8d40b593f286b5e6cc3b0ec8cb1f98b836f630c878bead42fc0",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/ReportsPage-D633jBsA.js",
+    "bytes": 18100,
+    "sha256": "396318d83ad493feb859c4ac11f12fc9e0008fa1c4815b1a2e7e0c37d943f821",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/ReservationsPage-CC7ccJaL.js",
+    "bytes": 4784,
+    "sha256": "815bc9686ab92f2dc074928c13c217a2d5cfe9fa70a7c0412cf1adfcc3b8d62a",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/RoomTypesPage-CGPSGbN9.js",
+    "bytes": 4834,
+    "sha256": "80f951dd7d47ca4bae92a5e351c577eddc9016ae29546aa60fd403772207bd18",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/RoomsPage-CQqqxc8s.js",
+    "bytes": 9578,
+    "sha256": "60cf88c2c2a57d5521bbb6428c9d77399cfb82aede6cd1f78fe5a6703063f90d",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/SettingsPage-BT-dxHQQ.js",
+    "bytes": 13614,
+    "sha256": "d77a8261ce7d132488f1a949d7b15d91d4ee121105ed2f724dcbec56916ad08e",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/TrialBalancePage-Bu3P3XF_.js",
+    "bytes": 3200,
+    "sha256": "dcd8ad6015d0dc4719405fd483934bd0f8a0f9596c1c5c99a4b9b32469d35d7b",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/UsersPage-QngSktwz.js",
+    "bytes": 19683,
+    "sha256": "8e0d85999e8a9c1ecb3bb7f026fe9dfc3ada75187307f72be1a0736266183677",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/axios-D3jkz0W1.js",
+    "bytes": 48423,
+    "sha256": "a1a0919073e41efd49242f8696407c900379554a75f2bf360a64fec42e3627a6",
+    "generado": true,
+    "lineas": 8
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/bed-C1N9JBhk.js",
+    "bytes": 228,
+    "sha256": "620da8cdcf7d6e7d1a4880a703a23860f47965297d125ee6fc4f8ff2e3d0af0f",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/button-CveRfCjN.js",
+    "bytes": 36811,
+    "sha256": "7803ea57259754b791dcbb3baee2a40892afe5913d1b72cc2fd96cab315047fc",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/download-CbeEPqPx.js",
+    "bytes": 221,
+    "sha256": "06edb121931e01e5251c5440bc1b3afaffebcdaaa15830eb6d64d965367c1917",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/eye-D8zCgJ5k.js",
+    "bytes": 622,
+    "sha256": "124cd497971c3de2cc7e1ea74fb5b425494297558913105df8371173773cb7a8",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/index-B6Hd3trZ.css",
+    "bytes": 60440,
+    "sha256": "e0979f338fdb5b02120a41215dbc77d9d766ee3a4afcf97f92efb63edeea626d",
+    "generado": true,
+    "lineas": 1
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/index-BRTzUCvB.js",
+    "bytes": 283561,
+    "sha256": "7a06a74dc48e3d5e724fc5025720a7f73da60adc35daef7ffaa9e5c383ba37a2",
+    "generado": true,
+    "lineas": 11
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/input-D0KlhooA.js",
+    "bytes": 572,
+    "sha256": "285fa90665e40bf04c149ea8bc3565b07f0969817eb1711e835d9970082cd10b",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/loader-circle-CI2UMXrr.js",
+    "bytes": 133,
+    "sha256": "bb33730a1e9e8734356876b614af1a9b0fc8aba3a2bdafa84f5fec06a7c4598b",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/pen-D0K2wSn4.js",
+    "bytes": 224,
+    "sha256": "6c99c2b28e81784dbc6c3cfd6383b2a12c8252ae5f57ed10c5f04f847cfec472",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/plus-DjwgmTYK.js",
+    "bytes": 142,
+    "sha256": "925576f5ac169c5d0b4075298eecb521d3ed94c277ed624f8403085989fa036f",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/printer-rTuQHO2H.js",
+    "bytes": 308,
+    "sha256": "24c46aed0285355f22e774a6347249133f993f6242c967a4a5716b02e92ffba6",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/refresh-cw-Ck9iEJn9.js",
+    "bytes": 310,
+    "sha256": "6ac0be9ee7731d8c364993a0ec171f1e91bcda059253c631f7d3d595670d748b",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/rotate-cw-DDLZ5XvS.js",
+    "bytes": 190,
+    "sha256": "e38c76a5378f30a3da4dc54a9a7f6b66ef224d53026f7f4f296b20abdf8368d5",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/trash-2-Bl9V0LkZ.js",
+    "bytes": 317,
+    "sha256": "2a19f6ce26938e33ace8299c4641b92ac2fc1fea5ba4e61578794bee9aec7890",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/assets/useTaxRates-BxAL7QTf.js",
+    "bytes": 594,
+    "sha256": "7b1215a07cc1ba8e06ab4b92385d5ed2538f84d03db331f800e1372a761bfd1b",
+    "generado": true,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/favicon.svg",
+    "bytes": 9522,
+    "sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+    "generado": false,
+    "lineas": 0
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/icons.svg",
+    "bytes": 5031,
+    "sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+    "generado": false,
+    "lineas": 24
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/index.html",
+    "bytes": 598,
+    "sha256": "a1c798393c0b6f12845a41964d0e07566e9a8b89aaeb7bc5feb96f91a322181c",
+    "generado": false,
+    "lineas": 16
+  },
+  {
+    "archivo": "docker/backend/Dockerfile",
+    "bytes": 809,
+    "sha256": "2caa96b36e9955ecc624a65ae7650ba6e5154fff2bcd21024e14c06b04ed757b",
+    "generado": false,
+    "lineas": 23
+  },
+  {
+    "archivo": "docker/docker-compose.yml",
+    "bytes": 1749,
+    "sha256": "53c0922abcc5e6ad23bf3f176b7aef6b0664b4cec8f045837c2ae67bc196a8f2",
+    "generado": false,
+    "lineas": 67
+  },
+  {
+    "archivo": "docker/frontend/Dockerfile",
+    "bytes": 356,
+    "sha256": "359a5e57bc04a7a6b46c9067ac564544e11b3f47c54df04e7aa4454259ae9cf8",
+    "generado": false,
+    "lineas": 13
+  },
+  {
+    "archivo": "docker/nginx/nginx.conf",
+    "bytes": 660,
+    "sha256": "ade4303c605ac5e0cf6eb2d0e4e0617bafd9bee4aea63e8971d4eb52c8599885",
+    "generado": false,
+    "lineas": 29
+  },
+  {
+    "archivo": "docs/DEVELOPMENT_ROADMAP.md",
+    "bytes": 9695,
+    "sha256": "3efcf6ff8f4c3f8d3d5d88a2cd93c877d0aeb7420ffca5208283835828e9df26",
+    "generado": false,
+    "lineas": 189
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "bytes": 14433,
+    "sha256": "00a95f78c2dbcba8d6d191bc178da11da9ebc034915a0c272a51180aa2446601",
+    "generado": false,
+    "lineas": 324
+  },
+  {
+    "archivo": "docs/auditoria/Auditoria_Backend_2026-08-23.md",
+    "bytes": 4103,
+    "sha256": "d159f11268272748926711e0f10068df6944dc892b0fe3cd64ab5ba7803bff5b",
+    "generado": false,
+    "lineas": 68
+  },
+  {
+    "archivo": "docs/auditoria/Auditoria_Frontend_2026-08-23.md",
+    "bytes": 4097,
+    "sha256": "b4016daf74b03f835274a69d1f54605511e265c8879b01f263a59eec3303c26c",
+    "generado": false,
+    "lineas": 57
+  },
+  {
+    "archivo": "docs/auditoria/Resumen_Auditoria_2026-08-23.md",
+    "bytes": 2331,
+    "sha256": "2baaf7993381cc22475bc598528967e3e282579eac5e9f5cfb0aef33bfb66159",
+    "generado": false,
+    "lineas": 29
+  },
+  {
+    "archivo": "frontend/.gitignore",
+    "bytes": 253,
+    "sha256": "fe718e7babb14f3cbad2d97f08889b9ce5215ed3fe0e43b2b8cfbfb3b9b844e8",
+    "generado": false,
+    "lineas": 24
+  },
+  {
+    "archivo": "frontend/README.md",
+    "bytes": 2425,
+    "sha256": "8dc9e0ee2281acb3324624fbe6eb7e1377cc626f616ea4dc90e3a90ae094374d",
+    "generado": false,
+    "lineas": 73
+  },
+  {
+    "archivo": "frontend/eslint.config.js",
+    "bytes": 591,
+    "sha256": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+    "generado": false,
+    "lineas": 22
+  },
+  {
+    "archivo": "frontend/index.html",
+    "bytes": 423,
+    "sha256": "f8c443170c3229209dd68744ef12a447779bda539835862786727b3f0a639fb1",
+    "generado": false,
+    "lineas": 14
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "bytes": 122775,
+    "sha256": "910ac912dc1a5c60f804d6bace274b530da6c295da06bc2823f35cc0e431d64f",
+    "generado": false,
+    "lineas": 3501
+  },
+  {
+    "archivo": "frontend/package.json",
+    "bytes": 1120,
+    "sha256": "a1122b333b00654c3c4826265176d7ecc6f21824ae0b2aa1fc1d2b02c55336b2",
+    "generado": false,
+    "lineas": 43
+  },
+  {
+    "archivo": "frontend/pnpm-lock.yaml",
+    "bytes": 80396,
+    "sha256": "252cdc4e623f7f5b2a1392e210473478ed423d53bc6c978fdb0cedbbcb4f7411",
+    "generado": false,
+    "lineas": 2446
+  },
+  {
+    "archivo": "frontend/public/favicon.svg",
+    "bytes": 9522,
+    "sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+    "generado": false,
+    "lineas": 0
+  },
+  {
+    "archivo": "frontend/public/icons.svg",
+    "bytes": 5031,
+    "sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+    "generado": false,
+    "lineas": 24
+  },
+  {
+    "archivo": "frontend/src/App.tsx",
+    "bytes": 7418,
+    "sha256": "4adf7bcd97c2c55b09992b8efa4a2cf7d4d906a2da7f67be4be21a6e31948416",
+    "generado": false,
+    "lineas": 107
+  },
+  {
+    "archivo": "frontend/src/assets/hero.png",
+    "bytes": 13057,
+    "sha256": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c",
+    "generado": false,
+    "lineas": null
+  },
+  {
+    "archivo": "frontend/src/assets/react.svg",
+    "bytes": 4126,
+    "sha256": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+    "generado": false,
+    "lineas": 0
+  },
+  {
+    "archivo": "frontend/src/assets/vite.svg",
+    "bytes": 8709,
+    "sha256": "5be21acd42eb7b896e517f4e0f0f11eb5c5d9e54fbbcebe9453f033008fcca6f",
+    "generado": false,
+    "lineas": 1
+  },
+  {
+    "archivo": "frontend/src/components/layout/AppLayout.tsx",
+    "bytes": 2864,
+    "sha256": "198b1cfe2e98385838e1ee99823d163cef5a284de6a27eb9b39c62b5c77a077f",
+    "generado": false,
+    "lineas": 72
+  },
+  {
+    "archivo": "frontend/src/components/layout/Breadcrumbs.tsx",
+    "bytes": 2220,
+    "sha256": "517739e27fc29da50e85f47f782cb31ff2bf3cb485ea7ea4c359cec17a304e2b",
+    "generado": false,
+    "lineas": 67
+  },
+  {
+    "archivo": "frontend/src/components/layout/CommandPalette.tsx",
+    "bytes": 6946,
+    "sha256": "f61e7c6f29cc832e22351cdb38b823b76827d52cc03f1984540cb35c6f201ca6",
+    "generado": false,
+    "lineas": 156
+  },
+  {
+    "archivo": "frontend/src/components/layout/ProtectedRoute.tsx",
+    "bytes": 2367,
+    "sha256": "63876f2346457be7839d1688cb8f706a2bd284046eac2a7ead884cfa15ff203b",
+    "generado": false,
+    "lineas": 60
+  },
+  {
+    "archivo": "frontend/src/components/layout/Sidebar.tsx",
+    "bytes": 9035,
+    "sha256": "66010ca5bd871abdb2a07d171a3ad639b55c80769f6159fea9fd25aa024a93ba",
+    "generado": false,
+    "lineas": 244
+  },
+  {
+    "archivo": "frontend/src/components/ui/ConfirmDialog.tsx",
+    "bytes": 3065,
+    "sha256": "616cdf8d19e48b0cb1b19db7401f029d7f253962901dfa11ca6d75cce39a7a51",
+    "generado": false,
+    "lineas": 103
+  },
+  {
+    "archivo": "frontend/src/components/ui/InlineAlert.tsx",
+    "bytes": 2202,
+    "sha256": "c7b3800c85a4d2dd568d1d8382ae6119168f82a48f5f5652aa5fc7b045e3f739",
+    "generado": false,
+    "lineas": 69
+  },
+  {
+    "archivo": "frontend/src/components/ui/Pagination.tsx",
+    "bytes": 4436,
+    "sha256": "a22fe63ee8ce533d80f6cd03c390f28afac73384f108d1a756452012d9f19dcc",
+    "generado": false,
+    "lineas": 138
+  },
+  {
+    "archivo": "frontend/src/components/ui/button.tsx",
+    "bytes": 1495,
+    "sha256": "391e5a18c3d3445b0b08dd64c793502798b284e6dd1e2a954f5f4c151a64534d",
+    "generado": false,
+    "lineas": 43
+  },
+  {
+    "archivo": "frontend/src/components/ui/input.tsx",
+    "bytes": 821,
+    "sha256": "a386fb60b99b653800d3c0ec10ef7d29b8b01ef9d9da8a13a81d468fb85a8257",
+    "generado": false,
+    "lineas": 23
+  },
+  {
+    "archivo": "frontend/src/hooks/useTaxRates.ts",
+    "bytes": 906,
+    "sha256": "93fdf9ca11c08b26d46ea7abbf0a69450683c1623abfc4993680e2c6697dff7b",
+    "generado": false,
+    "lineas": 29
+  },
+  {
+    "archivo": "frontend/src/index.css",
+    "bytes": 2826,
+    "sha256": "2880ca6360249f4678c95d39ee1bcfc181c419486a16f11a91f32b211c755104",
+    "generado": false,
+    "lineas": 92
+  },
+  {
+    "archivo": "frontend/src/lib/axios.ts",
+    "bytes": 2691,
+    "sha256": "f52ff4b2b6eb78a48935738f5cda314ccffab292e55a463e65b98723ff1979fa",
+    "generado": false,
+    "lineas": 98
+  },
+  {
+    "archivo": "frontend/src/lib/utils.ts",
+    "bytes": 166,
+    "sha256": "51bbf14cd1f84f49aab2e0dbee420137015d56b6677bb439e83a908cd292cce1",
+    "generado": false,
+    "lineas": 6
+  },
+  {
+    "archivo": "frontend/src/main.tsx",
+    "bytes": 226,
+    "sha256": "c89383baab814e1388ba5d9aa211b237ba9a35bf0a07ef3e73364a7fff84361b",
+    "generado": false,
+    "lineas": 10
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/ChartOfAccountsPage.tsx",
+    "bytes": 15669,
+    "sha256": "8fed09af2afe9edaee1166d15833e333d27d671490d52814d5139165caa3b172",
+    "generado": false,
+    "lineas": 383
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "bytes": 32368,
+    "sha256": "6b4fe167188fa5811676d3268aefdc010fdeb4b5cfc3f48c67b6daf675a46bbe",
+    "generado": false,
+    "lineas": 723
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/TrialBalancePage.tsx",
+    "bytes": 7016,
+    "sha256": "cb91ef70bc4a2c7ab9446ee1759ffccee713ca98e95554bc7750517a5f730e50",
+    "generado": false,
+    "lineas": 140
+  },
+  {
+    "archivo": "frontend/src/pages/admin/AuditLogsPage.tsx",
+    "bytes": 16257,
+    "sha256": "faf013f814b5ae34f55531d62e8a2ce2ebd724d56920787d10d74ef1fd56bf54",
+    "generado": false,
+    "lineas": 404
+  },
+  {
+    "archivo": "frontend/src/pages/auth/LoginPage.tsx",
+    "bytes": 3900,
+    "sha256": "fc4ef21752ba52caa4db5ef9e8a5b1d6a821bfb9887bbac6d9a586ee57d1f71c",
+    "generado": false,
+    "lineas": 107
+  },
+  {
+    "archivo": "frontend/src/pages/backups/BackupsPage.tsx",
+    "bytes": 7554,
+    "sha256": "711d4c8b4043fd848e0682c8857c2bafcbccdfbf78d59bd0a57e76a87116eda6",
+    "generado": false,
+    "lineas": 184
+  },
+  {
+    "archivo": "frontend/src/pages/cash/CashRegistersPage.tsx",
+    "bytes": 15916,
+    "sha256": "eda0493e2a4697d025d3731cf0ca088d85e3b74bcf55a1b0ed452434ade738a5",
+    "generado": false,
+    "lineas": 376
+  },
+  {
+    "archivo": "frontend/src/pages/common/NotFoundPage.tsx",
+    "bytes": 1264,
+    "sha256": "7a82c25775467753a1f94be0646d7fd5e65b176083b9d3a6fdd87c88c68a0984",
+    "generado": false,
+    "lineas": 32
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "bytes": 19460,
+    "sha256": "f64ddf89a64d5f9d4b969f53b6cf53761a8a639dceddedb61dbffa47d4b02618",
+    "generado": false,
+    "lineas": 476
+  },
+  {
+    "archivo": "frontend/src/pages/dashboard/DashboardPage.tsx",
+    "bytes": 18415,
+    "sha256": "fabbfe218968aa681f452831c6612712181fced0e41ffbdc624caa4446804167",
+    "generado": false,
+    "lineas": 405
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "bytes": 13091,
+    "sha256": "6a2537d9d8cc227429c2a930fd407b22515ebacaad3e98d7554618a046a7d03a",
+    "generado": false,
+    "lineas": 342
+  },
+  {
+    "archivo": "frontend/src/pages/folios/FoliosPage.tsx",
+    "bytes": 10182,
+    "sha256": "117da02b4164f634b07756f927f975637a7905ab99dd7025fe6f3f657e79ee0b",
+    "generado": false,
+    "lineas": 176
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "bytes": 20664,
+    "sha256": "8d5dccccdbf59e461d675ba21f46cfda15bd816b7d39a5db0ade0613fbaf3e21",
+    "generado": false,
+    "lineas": 514
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "bytes": 30964,
+    "sha256": "1bdd445c392c3be52ae8175e8055a7ee7d952f2a1113168e012982ff08d0de85",
+    "generado": false,
+    "lineas": 728
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/AuthorizationsPage.tsx",
+    "bytes": 11044,
+    "sha256": "67550a54d63d54e026738fb9bfb7a202f0460286c0b0c5835fc382c0ce73e03e",
+    "generado": false,
+    "lineas": 235
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoiceEditPage.tsx",
+    "bytes": 5322,
+    "sha256": "dc3544887c87fa36c2c3c8cc8ae98da920293cddc69478e80ca31f8f0c30f888",
+    "generado": false,
+    "lineas": 108
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "bytes": 32922,
+    "sha256": "38c990add8fd11c12a53afb0fad5de069f6aa6c78386be3089b98e17c466d67a",
+    "generado": false,
+    "lineas": 773
+  },
+  {
+    "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+    "bytes": 31061,
+    "sha256": "4e5b15835faf4365718cea683e12e149c0756c98d5475611f1e5e01290318a42",
+    "generado": false,
+    "lineas": 636
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckInPage.tsx",
+    "bytes": 9204,
+    "sha256": "3445ff3481de2a42d2a4b94fc1cebbce380882b58eed051d0e63fa5bd0c9867d",
+    "generado": false,
+    "lineas": 193
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "bytes": 35621,
+    "sha256": "a5446480594fe3ba10f050199887a27cd7d7b26988d291a30a00b2c8595a3d76",
+    "generado": false,
+    "lineas": 781
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/ReservationsPage.tsx",
+    "bytes": 6198,
+    "sha256": "5ba5395066cdc7dbbe6c13c7da4f4b3a58f124c3ea7bb339a7069cc3d454d946",
+    "generado": false,
+    "lineas": 135
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/FloorMapPage.tsx",
+    "bytes": 8914,
+    "sha256": "9eb37eeef3c98b03706283d5b35702f5651d5e4806c33658b48fe143cdcd862a",
+    "generado": false,
+    "lineas": 212
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomTypesPage.tsx",
+    "bytes": 7294,
+    "sha256": "c51a9ec6a8d00475c67b69f2fe0bb9eae8aa7a72436942cd79f1b488208efb1c",
+    "generado": false,
+    "lineas": 156
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomsPage.tsx",
+    "bytes": 13951,
+    "sha256": "101e2e074116196e41f56a1eeb4c4eacc32edf75882be190a7a1040cfca8a47d",
+    "generado": false,
+    "lineas": 351
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "bytes": 18123,
+    "sha256": "b9f9f6d6531c19a8bc98d2064fa56da1723ad3143788d08463ad73857410bf46",
+    "generado": false,
+    "lineas": 339
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "bytes": 29716,
+    "sha256": "a7cec82012c76409a0e0ffd49da0d85dbd172d7a4cc552f603353b0bd0b82886",
+    "generado": false,
+    "lineas": 703
+  },
+  {
+    "archivo": "frontend/src/store/authStore.ts",
+    "bytes": 3321,
+    "sha256": "77b1983241aac31f7bd584e8cbd5c36d29c4de3487dae8628000525175060ca5",
+    "generado": false,
+    "lineas": 107
+  },
+  {
+    "archivo": "frontend/src/store/uiStore.ts",
+    "bytes": 1219,
+    "sha256": "a42251c2872b9a50a8a0908eef9ef2c059db84446ae729d839f439442c4fbc25",
+    "generado": false,
+    "lineas": 47
+  },
+  {
+    "archivo": "frontend/src/types/index.ts",
+    "bytes": 9071,
+    "sha256": "a02d1d8195a129a0df97d466df2580184c2e977ccf13a9998e58aab62cd1f526",
+    "generado": false,
+    "lineas": 457
+  },
+  {
+    "archivo": "frontend/tsconfig.app.json",
+    "bytes": 690,
+    "sha256": "c9692aba759dfb4d840f67d5aa99199898a5eb216006ab3a2a63e3aea2afcb99",
+    "generado": false,
+    "lineas": 30
+  },
+  {
+    "archivo": "frontend/tsconfig.json",
+    "bytes": 119,
+    "sha256": "770b4140bbb581e2dfd9ea9946ffc9c75a1d86ba7d2db5f77c83e37cbdf9d808",
+    "generado": false,
+    "lineas": 7
+  },
+  {
+    "archivo": "frontend/tsconfig.node.json",
+    "bytes": 591,
+    "sha256": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242",
+    "generado": false,
+    "lineas": 24
+  },
+  {
+    "archivo": "frontend/vite.config.ts",
+    "bytes": 647,
+    "sha256": "2c503eddf86f8f9fe4c96aed3688f4d51c1dc4597198406fe64c2391518b9a03",
+    "generado": false,
+    "lineas": 30
+  }
+]

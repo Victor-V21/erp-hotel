@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import api from '@/lib/axios'
-import type { Room, RoomType } from '@/types'
+import type { Room } from '@/types'
 import { Bed, BedDouble, Users, X, Loader2, RotateCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { InlineAlert } from '@/components/ui/InlineAlert'
@@ -8,7 +8,6 @@ import { InlineAlert } from '@/components/ui/InlineAlert'
 const statusColors: Record<string, string> = {
   Libre: '#22c55e',
   Ocupada: '#ef4444',
-  Reservada: '#eab308',
   Mantenimiento: '#6b7280',
 }
 
@@ -20,32 +19,28 @@ const roomTypeIcons: Record<string, typeof Bed> = {
 
 export default function FloorMapPage() {
   const [rooms, setRooms] = useState<Room[]>([])
-  const [roomTypes, setRoomTypes] = useState<RoomType[]>([])
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    load()
-  }, [])
-
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true)
     setError(null)
     try {
-      const [r, rt] = await Promise.all([
-        api.get<Room[]>('/rooms'),
-        api.get<RoomType[]>('/room-types'),
-      ])
+      const r = await api.get<Room[]>('/rooms')
       setRooms(r.data)
-      setRoomTypes(rt.data)
     } catch (err) {
       console.error('Error al cargar mapa de habitaciones', err)
       setError('No fue posible cargar el mapa de habitaciones. Verifique su conexión al servidor.')
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void load(), 0)
+    return () => window.clearTimeout(timer)
+  }, [load])
 
   const floors = rooms.reduce<Record<number, Room[]>>((acc, room) => {
     if (!acc[room.floor]) acc[room.floor] = []
@@ -209,4 +204,3 @@ export default function FloorMapPage() {
     </div>
   )
 }
-

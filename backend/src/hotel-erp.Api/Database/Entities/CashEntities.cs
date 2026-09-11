@@ -21,7 +21,9 @@ namespace hotel_erp.Api.Database.Entities
         public DateTime MovementDate { get; set; } = DateTime.UtcNow;
         public decimal BalanceAfter { get; set; }
         public Guid? ReferenceId { get; set; }
+        public decimal? ExpectedAmount { get; set; }
+        public decimal? CountedAmount { get; set; }
+        public decimal? Difference { get; set; }
+        public string? Notes { get; set; }
     }
 }
-
-

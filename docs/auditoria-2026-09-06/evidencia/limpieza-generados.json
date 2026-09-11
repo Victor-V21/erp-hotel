@@ -1,0 +1,19 @@
+{
+  "restaurados_al_hash_inicial": [
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.MvcApplicationPartsAssemblyInfo.cs",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.csproj.CoreCompileInputs.cache",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.csproj.FileListAbsolute.txt",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.dll",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.genruntimeconfig.cache",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.pdb",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/ref/hotel-erp.Api.dll",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/refint/hotel-erp.Api.dll",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/rjsmrazor.dswa.cache.json",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/rpswa.dswa.cache.json",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/staticwebassets.build.endpoints.json",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/staticwebassets.build.json",
+    "backend/src/hotel-erp.Api/obj/Debug/net10.0/staticwebassets.build.json.cache"
+  ],
+  "politica": "Solo archivos obj modificados por build de auditor\u00eda cuyo hash inicial coincid\u00eda exactamente con HEAD. No se tocaron cambios preexistentes."
+}

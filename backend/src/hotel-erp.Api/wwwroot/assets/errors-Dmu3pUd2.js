@@ -1,0 +1,1 @@
+import{A as e}from"./index-BFuFESNH.js";function t(t,n){if(!e.isAxiosError(t))return t instanceof Error&&t.message?t.message:n;let r=t.response?.data;if(typeof r==`string`&&r.trim())return r;if(r&&typeof r==`object`){for(let e of[r.detail,r.message,r.title])if(typeof e==`string`&&e.trim())return e}return n}export{t};

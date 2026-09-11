@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '@/lib/axios'
 import { useAuthStore } from '@/store/authStore'
@@ -17,8 +17,6 @@ import {
   BedDouble,
   Bed,
   ArrowRight,
-  TrendingUp,
-  Loader2,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { InlineAlert } from '@/components/ui/InlineAlert'
@@ -32,16 +30,13 @@ const severityClasses: Record<string, string> = {
 export default function DashboardPage() {
   const user = useAuthStore((s) => s.user)
   const hasRole = useAuthStore((s) => s.hasRole)
+  const hasPermission = useAuthStore((s) => s.hasPermission)
   const navigate = useNavigate()
   const [summary, setSummary] = useState<DashboardSummary | null>(null)
   const [loading, setLoading] = useState(true)
   const [alertError, setAlertError] = useState<string | null>(null)
 
-  useEffect(() => {
-    load()
-  }, [])
-
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true)
     setAlertError(null)
     try {
@@ -52,11 +47,19 @@ export default function DashboardPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
-  const isRecepcionista = hasRole(['Recepcion', 'Recepcionista'])
-  const isContador = hasRole(['Contador', 'Contabilidad'])
+  useEffect(() => {
+    const timer = window.setTimeout(() => void load(), 0)
+    return () => window.clearTimeout(timer)
+  }, [load])
+
+  const isReception = hasRole('Recepcion')
+  const isCashier = hasRole('Caja')
+  const isAccountant = hasRole('Contador')
   const isAdmin = hasRole('Admin')
+  const canManageReservations = hasPermission('manage_reservations')
+  const canManageCash = hasPermission('manage_cash')
 
   const totalRooms = (summary?.occupiedRooms ?? 0) + (summary?.freeRooms ?? 0)
   const occupancyPercent = totalRooms > 0 ? Math.round(((summary?.occupiedRooms ?? 0) / totalRooms) * 100) : 0
@@ -71,7 +74,7 @@ export default function DashboardPage() {
               Bienvenido, {user?.firstName} {user?.lastName}
             </h1>
             <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#C69C4B]/15 text-[#C69C4B] border border-[#C69C4B]/30">
-              {isAdmin ? 'Administrador' : isRecepcionista ? 'Recepción' : isContador ? 'Contabilidad' : 'Colaborador'}
+              {isAdmin ? 'Administrador' : isReception ? 'Recepción' : isCashier ? 'Caja' : isAccountant ? 'Contabilidad' : 'Colaborador'}
             </span>
           </div>
           <p className="text-sm text-muted-foreground mt-0.5">
@@ -90,6 +93,8 @@ export default function DashboardPage() {
 
       {/* Quick Action Shortcuts for Reception & Operations */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        {canManageReservations && (
+          <>
         <button
           onClick={() => navigate('/checkin')}
           className="p-3.5 rounded-xl border border-border bg-card hover:bg-accent/50 transition-all flex flex-col items-center text-center gap-2 group cursor-pointer shadow-2xs hover:border-[#C69C4B]/40"
@@ -141,19 +146,23 @@ export default function DashboardPage() {
             <p className="text-[11px] text-muted-foreground">Calendario y agenda</p>
           </div>
         </button>
+          </>
+        )}
 
-        <button
-          onClick={() => navigate('/cash')}
-          className="p-3.5 rounded-xl border border-border bg-card hover:bg-accent/50 transition-all flex flex-col items-center text-center gap-2 group cursor-pointer shadow-2xs hover:border-[#C69C4B]/40 col-span-2 sm:col-span-1"
-        >
-          <div className="p-2.5 rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400 group-hover:scale-105 transition-transform">
-            <DollarSign size={20} />
-          </div>
-          <div>
-            <p className="text-xs font-bold text-foreground">Caja y Arqueos</p>
-            <p className="text-[11px] text-muted-foreground">Movimientos de turno</p>
-          </div>
-        </button>
+        {canManageCash && (
+          <button
+            onClick={() => navigate('/cash')}
+            className="p-3.5 rounded-xl border border-border bg-card hover:bg-accent/50 transition-all flex flex-col items-center text-center gap-2 group cursor-pointer shadow-2xs hover:border-[#C69C4B]/40 col-span-2 sm:col-span-1"
+          >
+            <div className="p-2.5 rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400 group-hover:scale-105 transition-transform">
+              <DollarSign size={20} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-foreground">Caja y Arqueos</p>
+              <p className="text-[11px] text-muted-foreground">Movimientos de turno</p>
+            </div>
+          </button>
+        )}
       </div>
 
       {/* KPI Cards */}
@@ -353,21 +362,25 @@ export default function DashboardPage() {
                 <p className="text-2xl font-bold text-[#C69C4B]">
                   L {summary.cash.balance.toFixed(2)}
                 </p>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => navigate('/cash')}
-                  className="w-full mt-2 text-xs"
-                >
-                  Ir al Arqueo de Caja
-                </Button>
+                {canManageCash && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => navigate('/cash')}
+                    className="w-full mt-2 text-xs"
+                  >
+                    Ir al Arqueo de Caja
+                  </Button>
+                )}
               </div>
             ) : (
               <div className="p-4 rounded-lg bg-muted/20 border border-border text-center space-y-2">
                 <p className="text-xs text-muted-foreground">No hay caja abierta actualmente.</p>
-                <Button size="sm" onClick={() => navigate('/cash')} className="text-xs">
-                  Abrir Caja
-                </Button>
+                {canManageCash && (
+                  <Button size="sm" onClick={() => navigate('/cash')} className="text-xs">
+                    Abrir Caja
+                  </Button>
+                )}
               </div>
             )}
           </section>
@@ -402,4 +415,3 @@ export default function DashboardPage() {
     </div>
   )
 }
-

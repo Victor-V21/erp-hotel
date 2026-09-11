@@ -8,6 +8,7 @@ interface ConfirmDialogProps {
   description: string | React.ReactNode
   confirmText?: string
   cancelText?: string
+  confirmDisabled?: boolean
   variant?: 'destructive' | 'default'
   onConfirm: () => Promise<void> | void
   onCancel: () => void
@@ -19,6 +20,7 @@ export function ConfirmDialog({
   description,
   confirmText = 'Confirmar',
   cancelText = 'Cancelar',
+  confirmDisabled = false,
   variant = 'destructive',
   onConfirm,
   onCancel,
@@ -90,7 +92,7 @@ export function ConfirmDialog({
             type="button"
             variant={variant === 'destructive' ? 'destructive' : 'default'}
             onClick={handleConfirm}
-            disabled={loading}
+            disabled={loading || confirmDisabled}
             className="cursor-pointer"
           >
             {loading && <Loader2 size={16} className="animate-spin mr-1.5" />}

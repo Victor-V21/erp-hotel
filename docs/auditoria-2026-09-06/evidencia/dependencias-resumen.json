@@ -1,0 +1,109 @@
+[
+  {
+    "paquete": "@babel/core",
+    "gravedad_scanner": "low",
+    "lock": "7.29.0",
+    "instalado": null,
+    "avisos": [
+      "https://github.com/advisories/GHSA-4x5r-pxfx-6jf8"
+    ]
+  },
+  {
+    "paquete": "axios",
+    "gravedad_scanner": "high",
+    "lock": "1.16.1",
+    "instalado": "1.19.0",
+    "avisos": [
+      "https://github.com/advisories/GHSA-hcpx-6fm6-wx23",
+      "https://github.com/advisories/GHSA-xj6q-8x83-jv6g",
+      "https://github.com/advisories/GHSA-mmx7-hfxf-jppx",
+      "https://github.com/advisories/GHSA-pmv8-rq9r-6j72",
+      "https://github.com/advisories/GHSA-mwf2-3pr3-8698",
+      "https://github.com/advisories/GHSA-gcfj-64vw-6mp9",
+      "https://github.com/advisories/GHSA-7q8q-rj6j-mhjq",
+      "https://github.com/advisories/GHSA-jqh4-m9w3-8hp9",
+      "https://github.com/advisories/GHSA-f4gw-2p7v-4548",
+      "https://github.com/advisories/GHSA-42h9-826w-cgv3"
+    ]
+  },
+  {
+    "paquete": "brace-expansion",
+    "gravedad_scanner": "high",
+    "lock": "5.0.6",
+    "instalado": null,
+    "avisos": [
+      "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+      "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+      "https://github.com/advisories/GHSA-rgw5-rvv9-x895"
+    ]
+  },
+  {
+    "paquete": "browserslist",
+    "gravedad_scanner": "high",
+    "lock": "4.28.2",
+    "instalado": null,
+    "avisos": [
+      "https://github.com/advisories/GHSA-c83g-rgw3-j3cx",
+      "https://github.com/advisories/GHSA-73wf-gq98-2v4g"
+    ]
+  },
+  {
+    "paquete": "form-data",
+    "gravedad_scanner": "high",
+    "lock": "4.0.5",
+    "instalado": null,
+    "avisos": [
+      "https://github.com/advisories/GHSA-hmw2-7cc7-3qxx"
+    ]
+  },
+  {
+    "paquete": "nanoid",
+    "gravedad_scanner": "high",
+    "lock": "3.3.12",
+    "instalado": null,
+    "avisos": [
+      "https://github.com/advisories/GHSA-28wg-ghj8-5hjv",
+      "https://github.com/advisories/GHSA-2v37-7h3g-55p8"
+    ]
+  },
+  {
+    "paquete": "postcss",
+    "gravedad_scanner": "high",
+    "lock": "8.5.14",
+    "instalado": null,
+    "avisos": [
+      "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
+      "https://github.com/advisories/GHSA-r28c-9q8g-f849"
+    ]
+  },
+  {
+    "paquete": "react-router",
+    "gravedad_scanner": "high",
+    "lock": "7.15.1",
+    "instalado": null,
+    "avisos": [
+      "https://github.com/advisories/GHSA-wrjc-x8rr-h8h6",
+      "https://github.com/advisories/GHSA-h8fp-f39c-q6mh",
+      "https://github.com/advisories/GHSA-337j-9hxr-rhxg",
+      "https://github.com/advisories/GHSA-chx6-hx7r-mcp5",
+      "https://github.com/advisories/GHSA-qwww-vcr4-c8h2"
+    ]
+  },
+  {
+    "paquete": "react-router-dom",
+    "gravedad_scanner": "moderate",
+    "lock": "7.15.1",
+    "instalado": "7.18.2",
+    "avisos": []
+  },
+  {
+    "paquete": "vite",
+    "gravedad_scanner": "high",
+    "lock": "8.0.13",
+    "instalado": "8.2.1",
+    "avisos": [
+      "https://github.com/advisories/GHSA-v6wh-96g9-6wx3",
+      "https://github.com/advisories/GHSA-fx2h-pf6j-xcff"
+    ]
+  }
+]

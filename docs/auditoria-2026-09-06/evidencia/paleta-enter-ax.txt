@@ -1,0 +1,3 @@
+Browser tab: 1, Title: "Hotel Maya Central — Sistema de Gestión Hotelera y Facturación SAR", URL: "http://127.0.0.1:5179/dashboard".
+There has been no change in the accessibility tree.
+The focused UI element is 113 text field (settable) facturas

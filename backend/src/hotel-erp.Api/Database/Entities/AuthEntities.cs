@@ -10,6 +10,8 @@ namespace hotel_erp.Api.Database.Entities
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
+        public bool MustChangePassword { get; set; }
+        public int SecurityVersion { get; set; } = 1;
         public DateTime? LastLogin { get; set; }
         public int FailedLoginAttempts { get; set; }
         public DateTime? LockoutEnd { get; set; }
@@ -23,6 +25,8 @@ namespace hotel_erp.Api.Database.Entities
     public class Role : BaseEntity
     {
         public string Name { get; set; } = string.Empty;
+        public string NormalizedName { get; set; } = string.Empty;
+        public string? SystemKey { get; set; }
         public string? Description { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
@@ -84,5 +88,4 @@ namespace hotel_erp.Api.Database.Entities
         public DateTime HondurasTimestamp { get; set; } = DateTime.UtcNow.AddHours(-6);
     }
 }
-
 

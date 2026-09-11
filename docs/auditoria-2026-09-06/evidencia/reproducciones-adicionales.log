@@ -1,0 +1,14 @@
+T31 integridad bitácora propia {"status": 200, "body": {"isValid": false, "totalRecordsVerified": 0, "verifiedAt": "2026-09-07T05:44:28.6646075Z", "errorMessage": "Firma de integridad manipulada o corrupta en el registro 01a07a5c-ead2-7a55-9dd0-1c4f2bd54734", "brokenLogId": "01a07a5c-ead2-7a55-9dd0-1c4f2bd54734"}, "ms": 46.29}
+T32 redondeo subtotal 0.03 con dos impuestos {"status": 500, "body": "", "ms": 39.84}
+T33 factura guardada sin asiento "Redondeo confirmado|0.03|0.00|0.00|0.04"
+T34 líneas DTO vacías frente a persistencia {"items_api": [], "items_bd": "11", "folios_items_api": [], "folios_items_bd": "1"}
+T35 autorización persistida aunque devuelve 500 {"cantidad_bd": "1", "listar": {"status": 500, "body": "", "ms": 54.97}}
+T36 checkin sobrecapacidad y efectivo insuficiente {"status": 200, "body": {"message": "Check-in exitoso", "folioId": "01a07a65-86a4-770c-9b89-9734be1b1756", "invoiceId": "01a07a65-86b9-7f80-b940-4a2dc5993b2a", "correlative": "001-001-01-00000011", "sellingPricePerNight": 1190, "nights": 1, "subtotal": 1000, "isv": 150.0, "isvRate": 0.15, "touristTax": 40.0, "touristTaxRate": 0.04, "discountPercent": 0, "discountAmount": 0, "total": 1190}, "ms": 109.95}
+T37 snapshot ausente en factura checkin "Prueba Auditoria|Pagada|Efectivo|1|500|1190|t"
+T38 checkout con consumo sin facturar {"respuesta": {"status": 200, "body": {"message": "Check-out exitoso, habitación liberada"}, "ms": 66.0}, "folio_bd": "1305.00|Cerrado", "n_facturas_huesped": "1"}
+T39 repetir checkin después de checkout {"status": 500, "body": "", "ms": 26.14}
+T40 carrera inventario pierde actualización {"respuestas": [{"status": 200, "body": {"id": "01a07a65-89dc-7eba-96dd-adb474b2ce60", "productId": "01a07a65-8888-7b72-bf19-4db470358a2c", "productName": "Concurrencia ficticia", "movementType": "Salida", "quantity": 7, "movementDate": "2026-09-07T05:44:29.908531", "unitPrice": null, "totalValue": null, "newStock": 3, "referenceId": null, "userName": "Administrador Sistema"}, "ms": 1816.56}, {"status": 200, "body": {"id": "01a07a65-89db-720c-88ef-2606037865e2", "productId": "01a07a65-8888-7b72-bf19-4db470358a2c", "productName": "Concurrencia ficticia", "movementType": "Salida", "quantity": 7, "movementDate": "2026-09-07T05:44:29.91093", "uni
+T41 recepción descarga respaldo completo {"status": 200}
+T42 escalación recepción a Admin cambiando nombres de roles {"renombrar_admin": {"status": 204, "body": "", "ms": 149.61}, "renombrar_propio": {"status": 204, "body": "", "ms": 18.96}, "roles_nuevos": ["Admin"], "endpoint_admin": 200}
+T43 salud sin consulta DB 200
+FIN ADICIONALES

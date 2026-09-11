@@ -17,11 +17,9 @@ namespace hotel_erp.Api.Services.Interfaces
     public interface IJwtService
     {
         Task<AuthResponse> GenerateTokensAsync(Guid userId);
-        Task<Guid?> ValidateRefreshTokenAsync(string refreshToken);
-        Task RevokeRefreshTokenAsync(string refreshToken);
+        Task<Guid?> ConsumeRefreshTokenAsync(string refreshToken);
         Task RevokeAllRefreshTokensAsync(Guid userId);
     }
 }
-
 
 

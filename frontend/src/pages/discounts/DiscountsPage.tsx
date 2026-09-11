@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import api from '@/lib/axios'
 import type { Discount } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -27,18 +27,19 @@ export default function DiscountsPage() {
   const [deleteTarget, setDeleteTarget] = useState<Discount | null>(null)
   const [alertInfo, setAlertInfo] = useState<{ variant: 'error' | 'success'; message: string } | null>(null)
 
-  useEffect(() => {
-    load()
-  }, [])
-
-  const load = async () => {
+  const load = useCallback(async () => {
     try {
       const { data } = await api.get<Discount[]>('/discounts')
       setDiscounts(data)
     } catch {
       setAlertInfo({ variant: 'error', message: 'Error al cargar el catálogo de descuentos.' })
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void load(), 0)
+    return () => window.clearTimeout(timer)
+  }, [load])
 
   const save = async () => {
     if (!form.name.trim()) {
@@ -339,4 +340,3 @@ export default function DiscountsPage() {
     </div>
   )
 }
-

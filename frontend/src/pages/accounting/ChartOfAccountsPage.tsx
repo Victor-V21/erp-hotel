@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import api from '@/lib/axios'
+import { getApiErrorMessage } from '@/lib/errors'
 import type { AccountingAccount, CreateAccountRequest } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -140,7 +141,8 @@ export default function ChartOfAccountsPage() {
   }, [])
 
   useEffect(() => {
-    load()
+    const timer = window.setTimeout(() => void load(), 0)
+    return () => window.clearTimeout(timer)
   }, [load])
 
   const save = async () => {
@@ -154,8 +156,8 @@ export default function ChartOfAccountsPage() {
       setForm({ accountNumber: '', accountName: '', accountType: 'Activo' })
       setAlertInfo({ variant: 'success', message: `Cuenta ${form.accountNumber} creada con éxito.` })
       load()
-    } catch (e: any) {
-      setAlertInfo({ variant: 'error', message: e.response?.data?.message || 'Error al crear la cuenta contable.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al crear la cuenta contable.') })
     }
   }
 
@@ -186,6 +188,8 @@ export default function ChartOfAccountsPage() {
     } catch {
       setAlertInfo({ variant: 'error', message: 'Error al eliminar la cuenta (verifique si posee subcuentas o asientos).' })
     }
+  }
+
   const filterAccounts = (accs: AccountingAccount[], term: string): AccountingAccount[] => {
     if (!term) return accs
     const lowerTerm = term.toLowerCase()
@@ -380,4 +384,3 @@ export default function ChartOfAccountsPage() {
     </div>
   )
 }
-

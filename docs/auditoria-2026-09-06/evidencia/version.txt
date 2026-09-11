@@ -1,0 +1,18 @@
+8e5bf6c603fb16519ef7652b0dbb610ac7e1c9de
+2026-08-23 12:09:02 -0600
+feat: implement core backend architecture and initial frontend modules for hotel ERP system
+
+Estado inicial:
+ M backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.AssemblyInfo.cs
+ M backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.AssemblyInfoInputs.cache
+ M backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.GeneratedMSBuildEditorConfig.editorconfig
+ M backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.assets.cache
+ M backend/src/hotel-erp.Api/obj/Debug/net10.0/hotel-erp.Api.csproj.AssemblyReference.cache
+ M backend/src/hotel-erp.Api/obj/hotel-erp.Api.csproj.nuget.dgspec.json
+ M backend/src/hotel-erp.Api/obj/hotel-erp.Api.csproj.nuget.g.props
+ M backend/src/hotel-erp.Api/obj/hotel-erp.Api.csproj.nuget.g.targets
+ M backend/src/hotel-erp.Api/obj/project.assets.json
+ M backend/src/hotel-erp.Api/obj/project.nuget.cache
+?? docs/auditoria-2026-09-06/
+
+Hora UTC: 2026-09-07T05:22:19.949835+00:00

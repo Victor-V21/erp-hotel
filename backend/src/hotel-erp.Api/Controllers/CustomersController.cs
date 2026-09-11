@@ -1,5 +1,6 @@
 using hotel_erp.Api.Dtos.Customer;
 using AutoMapper;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Database.Entities;
@@ -41,6 +42,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult<CustomerDto>> Create([FromBody] CreateCustomerRequest request)
         {
             if (!string.IsNullOrEmpty(request.RTN))
@@ -74,6 +76,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult> Update(Guid id, [FromBody] UpdateCustomerRequest request)
         {
             var entity = await _repo.GetByIdAsync(id);
@@ -99,6 +102,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult> Delete(Guid id)
         {
             var invoices = await _invoiceRepo.GetByCustomerAsync(id);
@@ -110,6 +114,5 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
-
 
 

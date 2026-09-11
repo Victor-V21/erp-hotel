@@ -9,6 +9,9 @@ namespace hotel_erp.Api.Dtos.Cash
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public bool IsActive { get; set; }
+        public bool IsOpen { get; set; }
+        public decimal CurrentBalance { get; set; }
+        public DateTime? LastMovementDate { get; set; }
     }
 
     public record CreateCashRegisterRequest(
@@ -16,14 +19,21 @@ namespace hotel_erp.Api.Dtos.Cash
         [StringLength(250)] string? Description);
 
     public record OpenCashRegisterRequest(
-        [NotEmptyGuid] Guid CashRegisterId,
         [Range(0, 999999.99)] decimal InitialAmount);
 
     public record CloseCashRegisterRequest(
-        [NotEmptyGuid] Guid CashRegisterId,
-        [Range(0, 999999.99)] decimal ExpectedAmount,
         [Range(0, 999999.99)] decimal CountedAmount,
         [StringLength(500)] string? Notes);
+
+    public record CashRegisterOperationDto
+    {
+        public Guid MovementId { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public decimal CurrentBalance { get; set; }
+        public decimal? ExpectedAmount { get; set; }
+        public decimal? CountedAmount { get; set; }
+        public decimal? Difference { get; set; }
+    }
     public record CashMovementDto
     {
         public Guid Id { get; set; }
@@ -36,6 +46,11 @@ namespace hotel_erp.Api.Dtos.Cash
         public string? Description { get; set; }
         public DateTime MovementDate { get; set; }
         public decimal BalanceAfter { get; set; }
+        public Guid? ReferenceId { get; set; }
+        public decimal? ExpectedAmount { get; set; }
+        public decimal? CountedAmount { get; set; }
+        public decimal? Difference { get; set; }
+        public string? Notes { get; set; }
     }
 
     public record CreateCashMovementRequest(
@@ -45,5 +60,3 @@ namespace hotel_erp.Api.Dtos.Cash
         [StringLength(250)] string? Description,
         Guid? ReferenceId);
 }
-
-

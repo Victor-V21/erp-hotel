@@ -2,4 +2,8 @@
   <Folder Name="/src/">
     <Project Path="src/hotel-erp.Api/hotel-erp.Api.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/hotel-erp.IntegrationTests/hotel-erp.IntegrationTests.csproj" />
+    <Project Path="tests/hotel-erp.UnitTests/hotel-erp.UnitTests.csproj" />
+  </Folder>
 </Solution>

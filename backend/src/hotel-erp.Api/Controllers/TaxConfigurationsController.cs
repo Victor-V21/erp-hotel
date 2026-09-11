@@ -1,4 +1,5 @@
 using AutoMapper;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Database;
 using hotel_erp.Api.Database.Entities;
@@ -30,6 +31,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PermissionNames.ManageTaxes)]
         public async Task<ActionResult<TaxConfigurationDto>> Create([FromBody] CreateTaxConfigurationRequest request)
         {
             var existing = await _context.TaxConfigurations.FirstOrDefaultAsync(t => t.Name == request.Name);
@@ -48,6 +50,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = PermissionNames.ManageTaxes)]
         public async Task<ActionResult> Update(Guid id, [FromBody] CreateTaxConfigurationRequest request)
         {
             var tax = await _context.TaxConfigurations.FindAsync(id);
@@ -62,6 +65,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionNames.ManageTaxes)]
         public async Task<ActionResult> Delete(Guid id)
         {
             var tax = await _context.TaxConfigurations.FindAsync(id);
@@ -73,4 +77,3 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
-

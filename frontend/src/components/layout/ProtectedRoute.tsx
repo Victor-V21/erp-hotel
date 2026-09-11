@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
 import { ShieldAlert, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -8,13 +8,23 @@ interface Props {
   children: ReactNode
   allowedRoles?: string[]
   requiredPermission?: string | string[]
+  allowPasswordChange?: boolean
 }
 
-export default function ProtectedRoute({ children, allowedRoles, requiredPermission }: Props) {
-  const { isAuthenticated, hasRole, hasPermission } = useAuthStore()
+export default function ProtectedRoute({ children, allowedRoles, requiredPermission, allowPasswordChange = false }: Props) {
+  const { isAuthenticated, user, hasRole, hasPermission } = useAuthStore()
+  const location = useLocation()
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />
+  }
+
+  if (user?.mustChangePassword && !allowPasswordChange) {
+    return <Navigate to="/change-password" replace />
+  }
+
+  if (!user?.mustChangePassword && allowPasswordChange) {
+    return <Navigate to="/dashboard" replace />
   }
 
   if (allowedRoles && allowedRoles.length > 0 && !hasRole(allowedRoles)) {
@@ -57,4 +67,3 @@ export default function ProtectedRoute({ children, allowedRoles, requiredPermiss
 
   return <>{children}</>
 }
-

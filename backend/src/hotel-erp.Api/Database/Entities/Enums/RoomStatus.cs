@@ -6,8 +6,6 @@ namespace hotel_erp.Api.Database.Entities
         Ocupada,
         Limpieza,
         Mantenimiento,
-        Reservada,
         Bloqueada
     }
 }
-

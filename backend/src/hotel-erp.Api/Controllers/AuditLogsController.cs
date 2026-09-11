@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using hotel_erp.Api.Database;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Database.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,7 @@ namespace hotel_erp.Api.Controllers
 
     [ApiController]
     [Route("api/audit-logs")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = PermissionNames.ViewAudit)]
     public class AuditLogsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

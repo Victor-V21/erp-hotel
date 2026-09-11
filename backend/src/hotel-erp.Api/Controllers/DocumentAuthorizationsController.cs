@@ -1,7 +1,9 @@
 using AutoMapper;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Database.Entities;
+using hotel_erp.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,13 +16,16 @@ namespace hotel_erp.Api.Controllers
     {
         private readonly IDocumentAuthorizationRepository _repo;
         private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _env;
+        private readonly AuthorizationAttachmentStore _attachmentStore;
 
-        public DocumentAuthorizationsController(IDocumentAuthorizationRepository repo, IMapper mapper, IWebHostEnvironment env)
+        public DocumentAuthorizationsController(
+            IDocumentAuthorizationRepository repo,
+            IMapper mapper,
+            AuthorizationAttachmentStore attachmentStore)
         {
             _repo = repo;
             _mapper = mapper;
-            _env = env;
+            _attachmentStore = attachmentStore;
         }
 
         [HttpGet]
@@ -47,6 +52,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PermissionNames.ManageTaxes)]
         public async Task<ActionResult<DocumentAuthorizationDto>> Create([FromBody] CreateDocumentAuthorizationRequest request)
         {
             if (!Enum.TryParse<InvoiceDocumentType>(request.DocumentType, out var type)
@@ -73,6 +79,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionNames.ManageTaxes)]
         public async Task<ActionResult> Delete(Guid id)
         {
             await _repo.DeleteAsync(id);
@@ -80,8 +87,12 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost("with-file")]
+        [Authorize(Policy = PermissionNames.ManageTaxes)]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult<DocumentAuthorizationDto>> CreateWithFile([FromForm] CreateDocumentAuthorizationRequest request, IFormFile? file)
+        public async Task<ActionResult<DocumentAuthorizationDto>> CreateWithFile(
+            [FromForm] CreateDocumentAuthorizationRequest request,
+            IFormFile? file,
+            CancellationToken cancellationToken)
         {
             if (!Enum.TryParse<InvoiceDocumentType>(request.DocumentType, out var type)
                 || type is not (InvoiceDocumentType.Factura or InvoiceDocumentType.NotaCredito or InvoiceDocumentType.NotaDebito))
@@ -92,6 +103,7 @@ namespace hotel_erp.Api.Controllers
 
             var authorization = new DocumentAuthorization
             {
+                Id = Guid.NewGuid(),
                 DocumentType = type,
                 CAINumber = request.CAINumber,
                 IssueDate = request.IssueDate,
@@ -102,47 +114,53 @@ namespace hotel_erp.Api.Controllers
                 Status = CAIStatus.Activo
             };
 
-            if (file != null && file.Length > 0)
+            if (file is not null)
             {
-                var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
-                if (ext != ".pdf" || (file.ContentType != "application/pdf" && file.ContentType != "application/octet-stream"))
-                    return BadRequest("Solo se permiten archivos PDF");
-
-                var uploadDir = Path.Combine(_env.ContentRootPath, "Uploads", "authorizations");
-                Directory.CreateDirectory(uploadDir);
-
-                var fileName = $"autorizacion_{request.CAINumber}_{DateTime.UtcNow:yyyyMMddHHmmss}.pdf";
-                var filePath = Path.Combine(uploadDir, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                try
                 {
-                    await file.CopyToAsync(stream);
+                    authorization.AttachmentPath = await _attachmentStore.SavePdfAsync(
+                        authorization.Id,
+                        file,
+                        cancellationToken);
                 }
-
-                authorization.AttachmentPath = filePath;
+                catch (AttachmentValidationException exception)
+                {
+                    return Problem(
+                        type: "https://httpstatuses.com/400",
+                        title: "Adjunto rechazado",
+                        statusCode: StatusCodes.Status400BadRequest,
+                        detail: exception.Message);
+                }
             }
 
-            await _repo.AddAsync(authorization);
+            try
+            {
+                await _repo.AddAsync(authorization);
+            }
+            catch
+            {
+                _attachmentStore.DeleteIfExists(authorization.AttachmentPath);
+                throw;
+            }
             return CreatedAtAction(nameof(GetById), new { id = authorization.Id }, _mapper.Map<DocumentAuthorizationDto>(authorization));
         }
 
         [HttpGet("{id}/file")]
+        [Authorize(Policy = PermissionNames.ManageTaxes)]
         public async Task<ActionResult> GetFile(Guid id)
         {
             var authorization = await _repo.GetByIdAsync(id);
             if (authorization == null) return NotFound();
-            if (string.IsNullOrEmpty(authorization.AttachmentPath) || !System.IO.File.Exists(authorization.AttachmentPath))
-                return NotFound("No hay archivo adjunto para esta autorización");
+            var stream = _attachmentStore.OpenPdf(authorization.AttachmentPath);
+            if (stream is null) return NotFound("No hay un PDF válido para esta autorización");
 
-            var ext = Path.GetExtension(authorization.AttachmentPath).ToLowerInvariant();
-            var contentType = ext switch
-            {
-                ".pdf" => "application/pdf",
-                _ => "application/octet-stream"
-            };
-
-            return PhysicalFile(authorization.AttachmentPath, contentType, $"autorizacion_{authorization.CAINumber}.pdf");
+            Response.Headers.CacheControl = "no-store";
+            Response.Headers.XContentTypeOptions = "nosniff";
+            return File(
+                stream,
+                "application/pdf",
+                $"autorizacion-fiscal-{authorization.Id:N}.pdf",
+                enableRangeProcessing: false);
         }
     }
 }
-

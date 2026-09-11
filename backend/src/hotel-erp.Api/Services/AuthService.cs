@@ -12,6 +12,7 @@ using hotel_erp.Api.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using hotel_erp.Api.Authorization;
 
 namespace hotel_erp.Api.Services
 {
@@ -44,10 +45,10 @@ namespace hotel_erp.Api.Services
                 return new AuthResponse { Success = false, Message = "Credenciales inválidas" };
 
             if (user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.UtcNow)
-                return new AuthResponse { Success = false, Message = $"Cuenta bloqueada hasta {user.LockoutEnd:HH:mm}" };
+                return new AuthResponse { Success = false, Message = "Credenciales inválidas" };
 
             if (!user.IsActive)
-                return new AuthResponse { Success = false, Message = "Cuenta desactivada" };
+                return new AuthResponse { Success = false, Message = "Credenciales inválidas" };
 
             if (!IsValidPassword(request.Password, user.PasswordHash))
             {
@@ -59,6 +60,7 @@ namespace hotel_erp.Api.Services
             }
 
             user.FailedLoginAttempts = 0;
+            user.LockoutEnd = null;
             user.LastLogin = DateTime.UtcNow;
             await _userRepository.UpdateAsync(user);
 
@@ -97,33 +99,54 @@ namespace hotel_erp.Api.Services
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                IsActive = true
+                IsActive = true,
+                MustChangePassword = true
             };
 
             await _userRepository.AddAsync(user);
 
             var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "Recepcion");
+            defaultRole ??= await _context.Roles.FirstOrDefaultAsync(r => r.SystemKey == SystemRoleKeys.Reception);
             if (defaultRole != null)
             {
                 await _context.UserRoles.AddAsync(new UserRole { UserId = user.Id, RoleId = defaultRole.Id });
                 await _context.SaveChangesAsync();
             }
 
-            return await _jwtService.GenerateTokensAsync(user.Id);
+            var roles = await _userRepository.GetUserRolesAsync(user.Id);
+            var permissions = await _userRepository.GetUserPermissionsAsync(user.Id);
+            var userDto = _mapper.Map<UserDto>(user);
+            userDto.Roles = roles.Select(role => role.Name).ToList();
+            userDto.Permissions = permissions.Select(permission => permission.Name).ToList();
+            return new AuthResponse
+            {
+                Success = true,
+                User = userDto,
+                Message = "Usuario registrado"
+            };
         }
 
         public async Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request)
         {
-            var userId = await _jwtService.ValidateRefreshTokenAsync(request.RefreshToken);
+            if (string.IsNullOrWhiteSpace(request.RefreshToken))
+                return new AuthResponse { Success = false, Message = "Token inválido o expirado" };
+
+            var userId = await _jwtService.ConsumeRefreshTokenAsync(request.RefreshToken);
             if (userId == null)
                 return new AuthResponse { Success = false, Message = "Token inválido o expirado" };
 
-            await _jwtService.RevokeRefreshTokenAsync(request.RefreshToken);
             return await _jwtService.GenerateTokensAsync(userId.Value);
         }
 
         public async Task LogoutAsync(Guid userId)
         {
+            var user = await _context.Users.FirstOrDefaultAsync(candidate => candidate.Id == userId);
+            if (user is not null)
+            {
+                user.SecurityVersion++;
+                await _context.SaveChangesAsync();
+            }
+
             await _jwtService.RevokeAllRefreshTokensAsync(userId);
         }
 
@@ -135,7 +158,12 @@ namespace hotel_erp.Api.Services
             if (!BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.PasswordHash))
                 throw new UnauthorizedAccessException("Contraseña actual incorrecta");
 
+            if (BCrypt.Net.BCrypt.Verify(request.NewPassword, user.PasswordHash))
+                throw new InvalidOperationException("La contraseña nueva debe ser diferente de la contraseña actual");
+
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+            user.MustChangePassword = false;
+            user.SecurityVersion++;
             await _userRepository.UpdateAsync(user);
             await _jwtService.RevokeAllRefreshTokensAsync(userId);
         }
@@ -173,6 +201,8 @@ namespace hotel_erp.Api.Services
                 throw new UnauthorizedAccessException("Token inválido o expirado");
 
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+            user.MustChangePassword = false;
+            user.SecurityVersion++;
             resetToken.IsRevoked = true;
             resetToken.RevokedAt = DateTime.UtcNow;
             await _userRepository.UpdateAsync(user);
@@ -199,8 +229,8 @@ namespace hotel_erp.Api.Services
         public async Task<AuthResponse> GenerateTokensAsync(Guid userId)
         {
             var user = await _userRepository.GetByIdAsync(userId);
-            if (user == null)
-                return new AuthResponse { Success = false, Message = "Usuario no encontrado" };
+            if (user == null || !user.IsActive || user.IsDeleted)
+                return new AuthResponse { Success = false, Message = "Usuario no disponible" };
 
             var jwtSettings = _configuration.GetSection("Jwt");
             var secretKey = jwtSettings["SecretKey"]!;
@@ -214,11 +244,13 @@ namespace hotel_erp.Api.Services
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new(ClaimTypes.Name, user.Username),
                 new(ClaimTypes.Email, user.Email),
-                new("fullName", $"{user.FirstName} {user.LastName}")
+                new("fullName", $"{user.FirstName} {user.LastName}"),
+                new(SecurityClaimTypes.SecurityVersion, user.SecurityVersion.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+                new(SecurityClaimTypes.MustChangePassword, user.MustChangePassword.ToString())
             };
 
             claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r.Name)));
-            claims.AddRange(permissions.Select(p => new Claim("permission", p.Name)));
+            claims.AddRange(permissions.Select(p => new Claim(SecurityClaimTypes.Permission, p.Name)));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -261,24 +293,39 @@ namespace hotel_erp.Api.Services
             };
         }
 
-        public async Task<Guid?> ValidateRefreshTokenAsync(string refreshToken)
+        public async Task<Guid?> ConsumeRefreshTokenAsync(string refreshToken)
         {
             var tokenHash = HashToken(refreshToken);
             var token = await _context.RefreshTokens
-                .FirstOrDefaultAsync(rt => rt.Token == tokenHash && !rt.IsRevoked && rt.ExpiresAt > DateTime.UtcNow);
+                .Include(refreshTokenEntity => refreshTokenEntity.User)
+                .FirstOrDefaultAsync(refreshTokenEntity => refreshTokenEntity.Token == tokenHash);
 
-            return token?.UserId;
-        }
+            if (token is null
+                || token.ExpiresAt <= DateTime.UtcNow
+                || !token.User.IsActive
+                || token.User.IsDeleted)
+                return null;
 
-        public async Task RevokeRefreshTokenAsync(string refreshToken)
-        {
-            var tokenHash = HashToken(refreshToken);
-            var token = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == tokenHash);
-            if (token == null) return;
+            if (token.IsRevoked)
+            {
+                await RevokeTokenFamilyAsync(token.User);
+                return null;
+            }
 
-            token.IsRevoked = true;
-            token.RevokedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+            var consumedAt = DateTime.UtcNow;
+            var affected = await _context.RefreshTokens
+                .Where(refreshTokenEntity => refreshTokenEntity.Id == token.Id && !refreshTokenEntity.IsRevoked)
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(refreshTokenEntity => refreshTokenEntity.IsRevoked, true)
+                    .SetProperty(refreshTokenEntity => refreshTokenEntity.RevokedAt, consumedAt));
+
+            if (affected == 0)
+            {
+                await RevokeTokenFamilyAsync(token.User);
+                return null;
+            }
+
+            return token.UserId;
         }
 
         public async Task RevokeAllRefreshTokensAsync(Guid userId)
@@ -298,18 +345,29 @@ namespace hotel_erp.Api.Services
             await _context.SaveChangesAsync();
         }
 
+        private async Task RevokeTokenFamilyAsync(User user)
+        {
+            user.SecurityVersion++;
+            await _context.RefreshTokens
+                .Where(refreshTokenEntity => refreshTokenEntity.UserId == user.Id && !refreshTokenEntity.IsRevoked)
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(refreshTokenEntity => refreshTokenEntity.IsRevoked, true)
+                    .SetProperty(refreshTokenEntity => refreshTokenEntity.RevokedAt, DateTime.UtcNow));
+            await _context.SaveChangesAsync();
+        }
+
         private static string GenerateRefreshToken()
         {
             var randomNumber = new byte[64];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
+            return Convert.ToBase64String(randomNumber)
+                .TrimEnd('=')
+                .Replace('+', '-')
+                .Replace('/', '_');
         }
 
         private static string HashToken(string token)
             => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(token)));
     }
 }
-
-
-

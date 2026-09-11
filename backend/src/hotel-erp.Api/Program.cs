@@ -1,11 +1,18 @@
 using System.Text;
 using System.Reflection;
+using System.Security.Claims;
+using System.Globalization;
+using System.Threading.RateLimiting;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Database;
 using hotel_erp.Api.Database.Entities;
 using hotel_erp.Api.Database.Repositories;
 using hotel_erp.Api.Services;
 using hotel_erp.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -24,11 +31,44 @@ builder.Host.UseSerilog();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 // DbContext - PostgreSQL
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException(
+        "Configure ConnectionStrings__DefaultConnection fuera del repositorio antes de iniciar la API.");
+}
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
+        connectionString,
         b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+var databaseStartupOptions = builder.Configuration
+    .GetSection(DatabaseStartupOptions.SectionName)
+    .Get<DatabaseStartupOptions>() ?? new DatabaseStartupOptions();
+databaseStartupOptions.Validate(builder.Environment);
+builder.Services.AddSingleton(databaseStartupOptions);
 builder.Services.Configure<BackupOptions>(builder.Configuration.GetSection("Backup"));
+
+var authenticationSessionOptions = builder.Configuration
+    .GetSection(AuthenticationSessionOptions.SectionName)
+    .Get<AuthenticationSessionOptions>() ?? new AuthenticationSessionOptions();
+authenticationSessionOptions.Validate(builder.Environment);
+builder.Services.AddSingleton(authenticationSessionOptions);
+builder.Services.AddSingleton(new AuthenticationSessionCookies(
+    authenticationSessionOptions,
+    builder.Configuration));
+
+var authorizationAttachmentOptions = builder.Configuration
+    .GetSection(AuthorizationAttachmentOptions.SectionName)
+    .Get<AuthorizationAttachmentOptions>() ?? new AuthorizationAttachmentOptions();
+authorizationAttachmentOptions.Validate();
+builder.Services.AddSingleton(authorizationAttachmentOptions);
+builder.Services.AddSingleton<AuthorizationAttachmentStore>();
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = checked(
+        authorizationAttachmentOptions.MaximumSizeBytes + 1024 * 1024);
+});
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -60,6 +100,8 @@ builder.Services.AddScoped<IPurchaseInvoiceRepository, PurchaseInvoiceRepository
 builder.Services.AddScoped<EscPosService>();
 builder.Services.AddScoped<IAccountingService, AccountingService>();
 builder.Services.AddScoped<IFiscalAuthorizationService, FiscalAuthorizationService>();
+builder.Services.AddScoped<FiscalProfileService>();
+builder.Services.AddScoped<IdempotencyService>();
 builder.Services.AddScoped<DatabaseBackupService>();
 builder.Services.AddHostedService<BackupHostedService>();
 
@@ -71,10 +113,75 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
     });
 builder.Services.AddOpenApi();
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        context.ProblemDetails.Instance = context.HttpContext.Request.Path;
+        context.ProblemDetails.Extensions["traceId"] = context.HttpContext.TraceIdentifier;
+    };
+});
+
+var authenticationRateLimits = builder.Configuration
+    .GetSection(AuthenticationRateLimitOptions.SectionName)
+    .Get<AuthenticationRateLimitOptions>() ?? new AuthenticationRateLimitOptions();
+authenticationRateLimits.Validate();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.OnRejected = async (context, cancellationToken) =>
+    {
+        var problem = new ProblemDetails
+        {
+            Type = "https://httpstatuses.com/429",
+            Title = "Demasiadas solicitudes",
+            Status = StatusCodes.Status429TooManyRequests,
+            Detail = "Espere antes de volver a intentar esta operación.",
+            Instance = context.HttpContext.Request.Path
+        };
+        problem.Extensions["traceId"] = context.HttpContext.TraceIdentifier;
+
+        if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+        {
+            var retryAfterSeconds = Math.Max(1, (int)Math.Ceiling(retryAfter.TotalSeconds));
+            context.HttpContext.Response.Headers.RetryAfter =
+                retryAfterSeconds.ToString(CultureInfo.InvariantCulture);
+            problem.Extensions["retryAfterSeconds"] = retryAfterSeconds;
+        }
+
+        await context.HttpContext.Response.WriteAsJsonAsync(
+            problem,
+            options: null,
+            contentType: "application/problem+json",
+            cancellationToken);
+    };
+
+    options.AddPolicy(AuthenticationRateLimitPolicyNames.Login, context =>
+        CreateFixedWindowPartition(
+            GetRateLimitClientKey(context),
+            authenticationRateLimits.LoginPermitLimit,
+            authenticationRateLimits.LoginWindowSeconds));
+    options.AddPolicy(AuthenticationRateLimitPolicyNames.Refresh, context =>
+        CreateFixedWindowPartition(
+            GetRateLimitClientKey(context),
+            authenticationRateLimits.RefreshPermitLimit,
+            authenticationRateLimits.RefreshWindowSeconds));
+    options.AddPolicy(AuthenticationRateLimitPolicyNames.ChangePassword, context =>
+        CreateFixedWindowPartition(
+            GetRateLimitClientKey(context),
+            authenticationRateLimits.ChangePasswordPermitLimit,
+            authenticationRateLimits.ChangePasswordWindowSeconds));
+});
 
 // JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var secretKey = jwtSettings["SecretKey"]!;
+var secretKey = jwtSettings["SecretKey"];
+if (string.IsNullOrWhiteSpace(secretKey) || Encoding.UTF8.GetByteCount(secretKey) < 32)
+{
+    throw new InvalidOperationException(
+        "Configure Jwt__SecretKey con un secreto de al menos 32 bytes fuera del repositorio.");
+}
 
 builder.Services.AddAuthentication(options =>
 {
@@ -92,7 +199,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
-        ClockSkew = TimeSpan.FromMinutes(5)
+        ClockSkew = TimeSpan.FromSeconds(30)
     };
 
     options.Events = new JwtBearerEvents
@@ -106,25 +213,45 @@ builder.Services.AddAuthentication(options =>
                 context.Token = accessToken;
             }
             return Task.CompletedTask;
+        },
+        OnTokenValidated = async context =>
+        {
+            var userIdValue = context.Principal?.FindFirstValue(ClaimTypes.NameIdentifier);
+            var securityVersionValue = context.Principal?.FindFirstValue(SecurityClaimTypes.SecurityVersion);
+            if (!Guid.TryParse(userIdValue, out var userId)
+                || !int.TryParse(securityVersionValue, out var securityVersion))
+            {
+                context.Fail("Token sin versión de seguridad válida.");
+                return;
+            }
+
+            var database = context.HttpContext.RequestServices.GetRequiredService<ApplicationDbContext>();
+            var userState = await database.Users
+                .AsNoTracking()
+                .Where(user => user.Id == userId)
+                .Select(user => new { user.IsActive, user.IsDeleted, user.SecurityVersion })
+                .SingleOrDefaultAsync(context.HttpContext.RequestAborted);
+
+            if (userState is null
+                || !userState.IsActive
+                || userState.IsDeleted
+                || userState.SecurityVersion != securityVersion)
+            {
+                context.Fail("La sesión fue revocada.");
+            }
         }
     };
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddHotelAuthorization();
 
 // CORS
+var corsOrigins = GetValidatedCorsOrigins(builder.Configuration);
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
-
     options.AddPolicy("Frontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000", "http://localhost:80")
+        policy.WithOrigins(corsOrigins)
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials();
@@ -136,14 +263,17 @@ builder.Services.AddSignalR();
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseCors("AllowAll");
 }
-else
+
+app.UseCors("Frontend");
+
+if (!app.Environment.IsDevelopment())
 {
-    app.UseCors("Frontend");
     app.UseHttpsRedirection();
 }
 
@@ -151,11 +281,45 @@ app.UseSerilogRequestLogging();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseAuthentication();
+app.UseRateLimiter();
+app.Use(async (context, next) =>
+{
+    var mustChangePassword = bool.TryParse(
+        context.User.FindFirstValue(SecurityClaimTypes.MustChangePassword),
+        out var required) && required;
+    var passwordChangeAllowedPaths = new[]
+    {
+        new PathString("/api/auth/change-password"),
+        new PathString("/api/auth/logout"),
+        new PathString("/api/auth/me")
+    };
+    var canContinueBeforePasswordChange = passwordChangeAllowedPaths
+        .Any(path => context.Request.Path.Equals(path));
+
+    if (context.User.Identity?.IsAuthenticated == true
+        && mustChangePassword
+        && !canContinueBeforePasswordChange)
+    {
+        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+        context.Response.Headers.CacheControl = "no-store";
+        await context.Response.WriteAsJsonAsync(new
+        {
+            type = "https://httpstatuses.com/403",
+            title = "Cambio de contraseña requerido",
+            status = StatusCodes.Status403Forbidden,
+            detail = "Cambie la contraseña inicial antes de utilizar el sistema."
+        }, context.RequestAborted);
+        return;
+    }
+
+    await next();
+});
 app.UseAuthorization();
 app.MapControllers();
 
 // Health check
-app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));
+app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }))
+    .AllowAnonymous();
 
 if (!app.Environment.IsDevelopment() && !string.IsNullOrWhiteSpace(app.Environment.WebRootPath) && Directory.Exists(app.Environment.WebRootPath))
 {
@@ -180,14 +344,28 @@ try
     // Ensure required directories exist
     var dataDir = Path.Combine(app.Environment.ContentRootPath, "Data");
     Directory.CreateDirectory(dataDir);
-    Directory.CreateDirectory(Path.Combine(app.Environment.ContentRootPath, "Uploads", "authorizations"));
 
     // Apply pending migrations on startup
     using (var scope = app.Services.CreateScope())
     {
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        context.Database.Migrate();
-        Log.Information("Migrations applied successfully");
+        if (databaseStartupOptions.ApplyMigrationsOnStartup)
+        {
+            context.Database.Migrate();
+            Log.Information("Migrations applied successfully");
+        }
+        else
+        {
+            var pendingMigrations = context.Database.GetPendingMigrations().ToArray();
+            if (pendingMigrations.Length > 0)
+            {
+                throw new InvalidOperationException(
+                    $"La base tiene {pendingMigrations.Length} migración(es) pendiente(s). " +
+                    "Ejecútelas con la credencial de migración antes de iniciar la API.");
+            }
+
+            Log.Information("Database schema version verified; runtime migrations are disabled");
+        }
 
         // Seed Chart of Accounts
         if (!context.AccountingAccounts.Any())
@@ -216,6 +394,7 @@ try
                 new() { AccountNumber = "2102", AccountName = "Tasa turística por pagar", AccountType = AccountType.Pasivo, IsActive = true },
                 new() { AccountNumber = "2103", AccountName = "Proveedores", AccountType = AccountType.Pasivo, IsActive = true },
                 new() { AccountNumber = "2104", AccountName = "Cuentas por pagar", AccountType = AccountType.Pasivo, IsActive = true },
+                new() { AccountNumber = "2105", AccountName = "Saldos a favor de clientes", AccountType = AccountType.Pasivo, IsActive = true },
                 new() { AccountNumber = "22", AccountName = "Pasivo Largo Plazo", AccountType = AccountType.Pasivo, IsActive = true },
                 new() { AccountNumber = "2201", AccountName = "Préstamos bancarios", AccountType = AccountType.Pasivo, IsActive = true },
                 // Patrimonio (3)
@@ -255,7 +434,7 @@ try
                 { "13", "1" },
                 { "1301", "13" },
                 { "21", "2" },
-                { "2101", "21" }, { "2102", "21" }, { "2103", "21" }, { "2104", "21" },
+                { "2101", "21" }, { "2102", "21" }, { "2103", "21" }, { "2104", "21" }, { "2105", "21" },
                 { "22", "2" },
                 { "2201", "22" },
                 { "3101", "3" }, { "3102", "3" }, { "3103", "3" },
@@ -276,81 +455,14 @@ try
             Log.Information("Chart of Accounts seeded: {Count} accounts", accounts.Count);
         }
 
-        if (!context.Roles.Any())
-        {
-            var adminRole = new Role { Name = "Admin", Description = "Administrador del sistema" };
-            var recepcionRole = new Role { Name = "Recepcion", Description = "Personal de recepción" };
-            context.Roles.AddRange(adminRole, recepcionRole);
-            context.SaveChanges();
-
-            var permissions = new List<Permission>
-            {
-                new() { Name = "manage_users", Description = "Gestionar usuarios" },
-                new() { Name = "manage_roles", Description = "Gestionar roles" },
-                new() { Name = "manage_settings", Description = "Gestionar configuración" },
-                new() { Name = "view_reports", Description = "Ver reportes" },
-                new() { Name = "create_invoices", Description = "Crear facturas" },
-                new() { Name = "manage_reservations", Description = "Gestionar reservaciones" }
-            };
-            context.Permissions.AddRange(permissions);
-            context.SaveChanges();
-
-            foreach (var permission in permissions)
-            {
-                context.RolePermissions.Add(new RolePermission
-                {
-                    RoleId = adminRole.Id,
-                    PermissionId = permission.Id
-                });
-            }
-            context.SaveChanges();
-
-            var adminUser = new User
-            {
-                Username = "admin",
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
-                Email = "admin@hotelerp.com",
-                FirstName = "Administrador",
-                LastName = "Sistema",
-                IsActive = true
-            };
-            context.Users.Add(adminUser);
-            context.SaveChanges();
-
-            context.UserRoles.Add(new UserRole
-            {
-                UserId = adminUser.Id,
-                RoleId = adminRole.Id
-            });
-            context.SaveChanges();
-
-            Log.Information("Admin user, roles, and permissions seeded");
-        }
+        await SecurityCatalogSeeder.SeedAsync(context, builder.Configuration, app.Logger);
+        Log.Information("Security roles and permissions synchronized");
 
         if (!context.BusinessSettings.Any())
         {
-            context.BusinessSettings.Add(new BusinessSettings
-            {
-                BusinessName = "Hotel Maya Central",
-                RTN = "08019012345678",
-                Address = "Santa Rosa de Copán, Honduras",
-                Phone = "9999-0000",
-                Email = "info@hotelmayacentral.com",
-                IsvRate = 0.15m,
-                TouristTaxRate = 0.04m
-            });
+            context.BusinessSettings.Add(new BusinessSettings());
             context.SaveChanges();
-            Log.Information("Business settings seeded");
-        }
-
-        if (!context.TaxConfigurations.Any())
-        {
-            context.TaxConfigurations.AddRange(
-                new TaxConfiguration { Name = "ISV 15%", Rate = 0.15m, IsActive = true, ApplicableTo = "General" },
-                new TaxConfiguration { Name = "Impuesto Turístico 4%", Rate = 0.04m, IsActive = true, ApplicableTo = "Hospedaje" }
-            );
-            context.SaveChanges();
-            Log.Information("Tax configurations seeded");
+            Log.Warning("Se creó un perfil fiscal vacío en estado Borrador; la emisión permanece bloqueada hasta su aprobación.");
         }
     }
 
@@ -359,8 +471,74 @@ try
 catch (Exception ex)
 {
     Log.Fatal(ex, "Application terminated unexpectedly");
+    throw;
 }
 finally
 {
     Log.CloseAndFlush();
 }
+
+static string GetRateLimitClientKey(HttpContext context)
+{
+    var authenticatedUserId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    if (!string.IsNullOrWhiteSpace(authenticatedUserId))
+    {
+        return $"user:{authenticatedUserId}";
+    }
+
+    var remoteIpAddress = context.Connection.RemoteIpAddress;
+    if (remoteIpAddress?.IsIPv4MappedToIPv6 == true)
+    {
+        remoteIpAddress = remoteIpAddress.MapToIPv4();
+    }
+
+    return $"ip:{remoteIpAddress?.ToString() ?? "unknown"}";
+}
+
+static string[] GetValidatedCorsOrigins(IConfiguration configuration)
+{
+    var origins = (configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [])
+        .Where(origin => !string.IsNullOrWhiteSpace(origin))
+        .Select(origin => origin.Trim().TrimEnd('/'))
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .ToArray();
+
+    if (origins.Length == 0)
+    {
+        throw new InvalidOperationException("Configure al menos un origen en Cors__AllowedOrigins.");
+    }
+
+    foreach (var origin in origins)
+    {
+        if (origin.Contains('*', StringComparison.Ordinal)
+            || !Uri.TryCreate(origin, UriKind.Absolute, out var uri)
+            || uri.Scheme is not ("http" or "https")
+            || !string.IsNullOrEmpty(uri.UserInfo)
+            || !string.IsNullOrEmpty(uri.Query)
+            || !string.IsNullOrEmpty(uri.Fragment)
+            || uri.AbsolutePath != "/")
+        {
+            throw new InvalidOperationException(
+                $"El origen CORS '{origin}' no es un origen HTTP/HTTPS válido sin ruta, comodín ni credenciales.");
+        }
+    }
+
+    return origins;
+}
+
+static RateLimitPartition<string> CreateFixedWindowPartition(
+    string partitionKey,
+    int permitLimit,
+    int windowSeconds)
+    => RateLimitPartition.GetFixedWindowLimiter(
+        partitionKey,
+        _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = permitLimit,
+            Window = TimeSpan.FromSeconds(windowSeconds),
+            QueueLimit = 0,
+            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+            AutoReplenishment = true
+        });
+
+public partial class Program;

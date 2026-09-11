@@ -15,7 +15,9 @@ namespace hotel_erp.Api.Services
     {
         public static async Task<T> ExecuteAsync<T>(ApplicationDbContext context, string lockName, Func<Task<T>> action, CancellationToken cancellationToken = default)
         {
-            await using var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+            await using var ownedTransaction = context.Database.CurrentTransaction is null
+                ? await context.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken)
+                : null;
 
             // PostgreSQL Transaction Advisory Lock ensures single-worker execution per lockName across all nodes/threads
             await context.Database.ExecuteSqlInterpolatedAsync($"SELECT pg_advisory_xact_lock(hashtext({lockName}));", cancellationToken);
@@ -28,12 +30,14 @@ namespace hotel_erp.Api.Services
             try
             {
                 var result = await action();
-                await transaction.CommitAsync(cancellationToken);
+                if (ownedTransaction is not null)
+                    await ownedTransaction.CommitAsync(cancellationToken);
                 return result;
             }
             catch (CorrelativeStateException)
             {
-                await transaction.CommitAsync(cancellationToken);
+                if (ownedTransaction is not null)
+                    await ownedTransaction.CommitAsync(cancellationToken);
                 throw;
             }
         }

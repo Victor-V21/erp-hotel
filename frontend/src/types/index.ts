@@ -5,6 +5,7 @@ export interface User {
   firstName: string
   lastName: string
   isActive: boolean
+  mustChangePassword: boolean
   roles: string[]
   permissions: string[]
 }
@@ -13,7 +14,6 @@ export interface AuthResponse {
   success: boolean
   message?: string
   accessToken?: string
-  refreshToken?: string
   expiresAt?: string
   user?: User
 }
@@ -65,6 +65,7 @@ export interface Reservation {
   advancePayment: number
   status: string
   notes?: string
+  version: number
 }
 
 export interface Guest {
@@ -157,6 +158,8 @@ export interface Invoice {
   id: string
   caiId: string
   documentAuthorizationId?: string
+  guestId?: string
+  folioId?: string
   caiNumber: string
   caiNumberSnapshot?: string
   authorizationRangeSnapshot?: string
@@ -173,7 +176,13 @@ export interface Invoice {
   isv18Amount: number
   touristTaxAmount: number
   discountsAmount: number
+  appliedDiscountId?: string
+  appliedDiscountNameSnapshot?: string
+  appliedDiscountPercentageSnapshot?: number
   totalAmount: number
+  paidAmount: number
+  creditedAmount: number
+  balanceDue: number
   taxableAmount: number
   exemptAmount: number
   exoneratedAmount: number
@@ -188,10 +197,16 @@ export interface Invoice {
   reason?: string
   documentType: string
   status: string
+  paymentMethod?: string
+  cashReceived?: number
+  cashChange?: number
   items: InvoiceItem[]
 }
 
 export interface InvoiceItem {
+  id?: string
+  originalInvoiceItemId?: string
+  folioItemId?: string
   description: string
   quantity: number
   unitPrice: number
@@ -207,6 +222,102 @@ export interface CashRegister {
   name: string
   description?: string
   isActive: boolean
+  isOpen: boolean
+  currentBalance: number
+  lastMovementDate?: string | null
+}
+
+export interface PaymentApplication {
+  id: string
+  invoiceId: string
+  correlativeNumber: string
+  amount: number
+}
+
+export interface RefundApplication {
+  id: string
+  creditNoteId: string
+  creditNoteCorrelativeNumber: string
+  amount: number
+}
+
+export interface Refund {
+  id: string
+  refundNumber: string
+  paymentId: string
+  paymentNumber: string
+  recordedByUserId: string
+  recordedByUserName: string
+  method: 'Efectivo' | 'Tarjeta' | 'Transferencia'
+  currency: 'HNL'
+  amount: number
+  externalReference?: string | null
+  reason: string
+  refundDate: string
+  status: 'Confirmado' | 'Anulado'
+  cashRegisterId?: string | null
+  cashRegisterName?: string | null
+  accountingEntryId?: string | null
+  applications: RefundApplication[]
+}
+
+export interface Payment {
+  id: string
+  paymentNumber: string
+  recordedByUserId: string
+  recordedByUserName: string
+  method: 'Efectivo' | 'Tarjeta' | 'Transferencia'
+  currency: 'HNL'
+  amount: number
+  cashReceived?: number | null
+  cashChange?: number | null
+  externalReference?: string | null
+  paymentDate: string
+  status: 'Confirmado' | 'Anulado' | 'ParcialmenteReembolsado' | 'Reembolsado'
+  cashRegisterId?: string | null
+  cashRegisterName?: string | null
+  accountingEntryId?: string | null
+  refundedAmount: number
+  cardSettledAmount: number
+  applications: PaymentApplication[]
+  refunds: Refund[]
+}
+
+export interface EligibleCardPayment {
+  id: string
+  paymentNumber: string
+  paymentDate: string
+  externalReference: string
+  amount: number
+  refundedAmount: number
+  settledAmount: number
+  availableAmount: number
+}
+
+export interface CardSettlementApplication {
+  id: string
+  paymentId: string
+  paymentNumber: string
+  paymentDate: string
+  paymentReference: string
+  amount: number
+}
+
+export interface CardSettlement {
+  id: string
+  settlementNumber: string
+  recordedByUserId: string
+  recordedByUserName: string
+  currency: 'HNL'
+  grossAmount: number
+  bankDepositAmount: number
+  commissionAmount: number
+  withholdingAmount: number
+  externalReference: string
+  settlementDate: string
+  status: 'Confirmado' | 'Anulado'
+  accountingEntryId?: string | null
+  applications: CardSettlementApplication[]
 }
 
 export interface CashMovement {
@@ -220,6 +331,11 @@ export interface CashMovement {
   description?: string
   movementDate: string
   balanceAfter: number
+  referenceId?: string | null
+  expectedAmount?: number | null
+  countedAmount?: number | null
+  difference?: number | null
+  notes?: string | null
 }
 
 export interface DocumentAuthorization {
@@ -233,7 +349,7 @@ export interface DocumentAuthorization {
   currentCorrelative: string
   status: string
   isExpiringSoon: boolean
-  attachmentPath?: string
+  hasAttachment: boolean
 }
 
 export interface BusinessSettings {
@@ -246,6 +362,16 @@ export interface BusinessSettings {
   footer: string
   isvRate: number
   touristTaxRate: number
+  fiscalProfileStatus: 'Borrador' | 'Aprobado' | 'Retirado'
+  fiscalProfileVersion: number
+  fiscalValidFrom?: string
+  fiscalValidUntil?: string
+  fiscalApprovedAt?: string
+  fiscalApprovedByUserId?: string
+  fiscalApprovalNote?: string
+  fiscalRetiredAt?: string
+  fiscalRetiredByUserId?: string
+  fiscalRetirementReason?: string
   printPrinterName?: string
   printWidth: number
   printLogoHeight: number
@@ -454,4 +580,3 @@ export interface UpdateUserRequest {
   isActive?: boolean
   roles?: string[]
 }
-

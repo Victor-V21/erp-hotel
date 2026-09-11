@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import api from '@/lib/axios'
+import { getApiErrorMessage } from '@/lib/errors'
 import type { Category, InventoryMovement, Product } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { InlineAlert } from '@/components/ui/InlineAlert'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { Pagination } from '@/components/ui/Pagination'
-import { Boxes, Plus, Search, Edit2, Trash2, ArrowUpRight, ArrowDownLeft, RefreshCw, Loader2, AlertTriangle, X } from 'lucide-react'
+import { Boxes, Search, Edit2, Trash2, RefreshCw, Loader2, AlertTriangle } from 'lucide-react'
 
 const movementTypes = ['Entrada', 'Salida', 'Ajuste', 'Compra', 'Venta']
 
@@ -75,7 +76,8 @@ export default function InventoryPage() {
   }, [])
 
   useEffect(() => {
-    loadAll()
+    const timer = window.setTimeout(() => void loadAll(), 0)
+    return () => window.clearTimeout(timer)
   }, [loadAll])
 
   const filteredProducts = useMemo(() => {
@@ -106,8 +108,8 @@ export default function InventoryPage() {
       setCategoryForm(categoryDefault)
       setEditingCategoryId(null)
       loadAll()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'Error al guardar la categoría.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al guardar la categoría.') })
     } finally {
       setActionLoading(false)
     }
@@ -127,8 +129,8 @@ export default function InventoryPage() {
       setAlertInfo({ variant: 'success', message: 'Categoría eliminada.' })
       setDeleteCategoryTarget(null)
       loadAll()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'No se puede eliminar una categoría con productos asignados.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'No se puede eliminar una categoría con productos asignados.') })
     } finally {
       setActionLoading(false)
     }
@@ -155,8 +157,8 @@ export default function InventoryPage() {
       setProductForm(productDefault)
       setEditingProductId(null)
       loadAll()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'Error al guardar el producto.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al guardar el producto.') })
     } finally {
       setActionLoading(false)
     }
@@ -185,8 +187,8 @@ export default function InventoryPage() {
       setAlertInfo({ variant: 'success', message: 'Producto eliminado del inventario.' })
       setDeleteProductTarget(null)
       loadAll()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'No se puede eliminar un producto con movimientos registrados.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'No se puede eliminar un producto con movimientos registrados.') })
     } finally {
       setActionLoading(false)
     }
@@ -208,8 +210,8 @@ export default function InventoryPage() {
       setMovementForm(movementDefault)
       setAlertInfo({ variant: 'success', message: 'Movimiento de inventario registrado correctamente.' })
       loadAll()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'Error al registrar movimiento.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al registrar movimiento.') })
     } finally {
       setActionLoading(false)
     }

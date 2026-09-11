@@ -1,4 +1,5 @@
 using AutoMapper;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Services;
@@ -10,7 +11,7 @@ namespace hotel_erp.Api.Controllers
 {
     [ApiController]
     [Route("api/purchase-invoices")]
-    [Authorize]
+    [Authorize(Policy = PermissionNames.ManageAccounting)]
     public class PurchaseInvoicesController : ControllerBase
     {
         private readonly IPurchaseInvoiceRepository _repo;
@@ -110,4 +111,3 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
-

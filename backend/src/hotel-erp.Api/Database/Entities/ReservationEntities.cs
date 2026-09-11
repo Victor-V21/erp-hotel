@@ -14,6 +14,7 @@ namespace hotel_erp.Api.Database.Entities
         public decimal AdvancePayment { get; set; }
         public ReservationStatus Status { get; set; } = ReservationStatus.Pendiente;
         public string? Notes { get; set; }
+        public int Version { get; set; } = 1;
 
         public Folio? Folio { get; set; }
     }
@@ -32,6 +33,7 @@ namespace hotel_erp.Api.Database.Entities
         public FolioStatus Status { get; set; } = FolioStatus.Abierto;
 
         public ICollection<FolioItem> FolioItems { get; set; } = new List<FolioItem>();
+        public Invoice? SettlementInvoice { get; set; }
     }
 
     public class FolioItem : BaseEntity
@@ -46,7 +48,7 @@ namespace hotel_erp.Api.Database.Entities
         public decimal ISVRate { get; set; } = 0.15m;
         public bool IsTouristTaxable { get; set; }
         public decimal DiscountPercentage { get; set; }
+
+        public InvoiceItem? InvoiceItem { get; set; }
     }
 }
-
-

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import api from '@/lib/axios'
-import type { Folio, FolioItem } from '@/types'
+import type { Folio } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { InlineAlert } from '@/components/ui/InlineAlert'
@@ -12,23 +12,26 @@ export default function FoliosPage() {
   const [newItem, setNewItem] = useState({ description: '', quantity: 1, unitPrice: 0, isExempt: false, isvRate: 0.15, isTouristTaxable: false, discountPercentage: 0 })
   const [alertInfo, setAlertInfo] = useState<{ variant: 'error' | 'success' | 'info'; message: string } | null>(null)
 
-  useEffect(() => { load() }, [])
-
-  const load = async () => {
+  const load = useCallback(async () => {
     try {
       const { data } = await api.get<Folio[]>('/folios')
       setFolios(data)
-    } catch (err) {
+    } catch {
       setAlertInfo({ variant: 'error', message: 'Error al cargar folios' })
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void load(), 0)
+    return () => window.clearTimeout(timer)
+  }, [load])
 
   const viewFolio = async (id: string) => {
     try {
       const { data } = await api.get<Folio>(`/folios/${id}`)
       setSelectedFolio(data)
       setShowAddItem(false)
-    } catch (err) {
+    } catch {
       setAlertInfo({ variant: 'error', message: 'Error al cargar folio' })
     }
   }
@@ -42,7 +45,7 @@ export default function FoliosPage() {
       setShowAddItem(false)
       setNewItem({ description: '', quantity: 1, unitPrice: 0, isExempt: false, isvRate: 0.15, isTouristTaxable: false, discountPercentage: 0 })
       viewFolio(selectedFolio.id)
-    } catch (err) {
+    } catch {
       setAlertInfo({ variant: 'error', message: 'Error al agregar item al folio' })
     }
   }

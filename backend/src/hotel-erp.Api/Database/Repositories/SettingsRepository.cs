@@ -10,11 +10,17 @@ namespace hotel_erp.Api.Database.Repositories
         public BusinessSettingsRepository(ApplicationDbContext context) => _context = context;
 
         public async Task<BusinessSettings?> GetAsync()
-            => await _context.BusinessSettings.FirstOrDefaultAsync();
+            => await _context.BusinessSettings
+                .OrderBy(settings => settings.CreatedAt)
+                .ThenBy(settings => settings.Id)
+                .FirstOrDefaultAsync();
 
         public async Task UpdateAsync(BusinessSettings settings)
         {
-            var existing = await _context.BusinessSettings.FirstOrDefaultAsync();
+            var existing = await _context.BusinessSettings
+                .OrderBy(candidate => candidate.CreatedAt)
+                .ThenBy(candidate => candidate.Id)
+                .FirstOrDefaultAsync();
             if (existing != null)
             {
                 existing.BusinessName = settings.BusinessName;
@@ -26,6 +32,16 @@ namespace hotel_erp.Api.Database.Repositories
                 existing.Footer = settings.Footer;
                 existing.IsvRate = settings.IsvRate;
                 existing.TouristTaxRate = settings.TouristTaxRate;
+                existing.FiscalProfileStatus = settings.FiscalProfileStatus;
+                existing.FiscalProfileVersion = settings.FiscalProfileVersion;
+                existing.FiscalValidFrom = settings.FiscalValidFrom;
+                existing.FiscalValidUntil = settings.FiscalValidUntil;
+                existing.FiscalApprovedAt = settings.FiscalApprovedAt;
+                existing.FiscalApprovedByUserId = settings.FiscalApprovedByUserId;
+                existing.FiscalApprovalNote = settings.FiscalApprovalNote;
+                existing.FiscalRetiredAt = settings.FiscalRetiredAt;
+                existing.FiscalRetiredByUserId = settings.FiscalRetiredByUserId;
+                existing.FiscalRetirementReason = settings.FiscalRetirementReason;
                 existing.PrintPrinterName = settings.PrintPrinterName;
                 existing.PrintWidth = settings.PrintWidth;
                 existing.PrintLogoHeight = settings.PrintLogoHeight;
@@ -51,4 +67,3 @@ namespace hotel_erp.Api.Database.Repositories
         }
     }
 }
-

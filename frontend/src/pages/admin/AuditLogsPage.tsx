@@ -8,16 +8,13 @@ import {
   ShieldCheck,
   Search,
   RefreshCw,
-  Clock,
   User,
-  Activity,
   FileCode,
   CheckCircle2,
   AlertTriangle,
   Loader2,
   X,
   Hash,
-  Filter,
 } from 'lucide-react'
 
 interface AuditLog {
@@ -72,7 +69,8 @@ export default function AuditLogsPage() {
   }, [])
 
   useEffect(() => {
-    loadLogs()
+    const timer = window.setTimeout(() => void loadLogs(), 0)
+    return () => window.clearTimeout(timer)
   }, [loadLogs])
 
   const verifyIntegrity = async () => {

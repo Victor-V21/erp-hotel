@@ -1,4 +1,5 @@
 using AutoMapper;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Dtos.Common;
 using hotel_erp.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -41,6 +42,7 @@ namespace hotel_erp.Api.Controllers
             => Ok(_mapper.Map<IEnumerable<RoomDto>>(await _repo.GetByStatusAsync(status)));
 
         [HttpPost]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult<RoomDto>> Create([FromBody] CreateRoomRequest request)
         {
             var existing = await _repo.GetByRoomNumberAsync(request.RoomNumber);
@@ -58,6 +60,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult> Update(Guid id, [FromBody] UpdateRoomRequest request)
         {
             var room = await _repo.GetByIdAsync(id);
@@ -74,6 +77,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionNames.ManageReservations)]
         public async Task<ActionResult> Delete(Guid id)
         {
             await _repo.DeleteAsync(id);
@@ -81,5 +85,4 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
-
 

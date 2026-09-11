@@ -16,6 +16,7 @@ const routeLabels: Record<string, string> = {
   edit: 'Edición',
   authorizations: 'Autorizaciones CAI',
   cash: 'Caja & Turnos',
+  'card-settlements': 'Liquidaciones de tarjeta',
   inventory: 'Inventario',
   reports: 'Reportes Financieros',
   accounting: 'Contabilidad',

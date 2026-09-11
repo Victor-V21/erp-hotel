@@ -16,6 +16,7 @@ namespace hotel_erp.Api.Database.Repositories
         public async Task<User?> GetByIdAsync(Guid id)
         {
             return await _context.Users
+                .AsSplitQuery()
                 .Include(u => u.UserRoles)
                     .ThenInclude(ur => ur.Role)
                         .ThenInclude(r => r.RolePermissions)
@@ -72,7 +73,7 @@ namespace hotel_erp.Api.Database.Repositories
         public async Task<IEnumerable<Role>> GetUserRolesAsync(Guid userId)
         {
             return await _context.UserRoles
-                .Where(ur => ur.UserId == userId)
+                .Where(ur => ur.UserId == userId && !ur.Role.IsDeleted)
                 .Select(ur => ur.Role)
                 .ToListAsync();
         }
@@ -80,12 +81,12 @@ namespace hotel_erp.Api.Database.Repositories
         public async Task<IEnumerable<Permission>> GetUserPermissionsAsync(Guid userId)
         {
             return await _context.UserRoles
-                .Where(ur => ur.UserId == userId)
+                .Where(ur => ur.UserId == userId && !ur.Role.IsDeleted)
                 .SelectMany(ur => ur.Role.RolePermissions)
+                .Where(rp => !rp.Permission.IsDeleted)
                 .Select(rp => rp.Permission)
                 .Distinct()
                 .ToListAsync();
         }
     }
 }
-

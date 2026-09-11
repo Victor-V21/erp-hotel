@@ -1,0 +1,953 @@
+[
+  {
+    "prueba": "T01 credenciales iniciales",
+    "observado": {
+      "status": 200,
+      "rol": [
+        "Admin"
+      ]
+    }
+  },
+  {
+    "prueba": "T02 endpoints protegidos anónimos",
+    "observado": {
+      "status": 401,
+      "body": "",
+      "ms": 31.48
+    }
+  },
+  {
+    "prueba": "T03 checkin sin CAI deja estado parcial",
+    "observado": {
+      "respuesta": {
+        "status": 400,
+        "body": "No hay un CAI activo",
+        "ms": 473.12
+      },
+      "reserva": {
+        "id": "01a07a5c-f02b-75c2-8b43-0b1e3f6c03cb",
+        "guestId": "01a07a5c-ecc2-789b-9a24-799b4ad42122",
+        "guestName": "Prueba Auditoria",
+        "roomId": "01a07a5c-ee64-7d42-a76f-d1e6b047ef70",
+        "roomNumber": "AUDIT-101",
+        "checkInDate": "2026-10-10",
+        "checkOutDate": "2026-10-11",
+        "adults": 1,
+        "children": 0,
+        "paymentMethod": null,
+        "advancePayment": 100,
+        "status": "CheckIn",
+        "notes": null
+      },
+      "folios": [
+        {
+          "id": "01a07a5c-f1a3-75d4-8b54-511a0618a10f",
+          "reservationId": "01a07a5c-f02b-75c2-8b43-0b1e3f6c03cb",
+          "guestId": "01a07a5c-ecc2-789b-9a24-799b4ad42122",
+          "guestName": "Prueba Auditoria",
+          "roomId": "01a07a5c-ee64-7d42-a76f-d1e6b047ef70",
+          "roomNumber": null,
+          "openingDate": "2026-09-06T23:35:06.64536",
+          "closingDate": null,
+          "totalAmount": 0,
+          "status": "Abierto",
+          "items": []
+        }
+      ]
+    }
+  },
+  {
+    "prueba": "T04 disponibilidad futura no solapada",
+    "observado": {
+      "status": 200,
+      "body": [],
+      "ms": 56.56
+    }
+  },
+  {
+    "prueba": "T05 cancelación de estadía en curso",
+    "observado": {
+      "status": 200,
+      "body": {
+        "message": "Reserva cancelada"
+      },
+      "ms": 108.36
+    }
+  },
+  {
+    "prueba": "T06 confirmación de cancelada",
+    "observado": {
+      "status": 200,
+      "body": {
+        "message": "Reserva confirmada"
+      },
+      "ms": 40.53
+    }
+  },
+  {
+    "prueba": "T07 actualizar solo salida anterior a entrada",
+    "observado": {
+      "status": 204,
+      "body": "",
+      "ms": 216.2
+    }
+  },
+  {
+    "prueba": "T08 primer correlativo omite inicio",
+    "observado": {
+      "inicial": "001-001-01-00000001",
+      "emitido": "001-001-01-00000002"
+    }
+  },
+  {
+    "prueba": "T09 nota crédito suma ingresos y calcula ISV desde LineTotal cliente",
+    "observado": {
+      "nota": {
+        "id": "01a07a5c-f9ad-7031-a842-29de9f216e8e",
+        "caiId": "01a07a5c-f51a-7d20-b2d7-d4f8133a70ee",
+        "documentAuthorizationId": null,
+        "caiNumber": "AUDIT-CAI-00000001",
+        "caiNumberSnapshot": "AUDIT-CAI-00000001",
+        "authorizationRangeSnapshot": "001-001-01-00000001 - 001-001-01-00001000",
+        "authorizationDueDateSnapshot": "2027-12-31T23:59:59.9999999Z",
+        "correlativeNumber": "001-001-01-00000003",
+        "invoiceDate": "2026-09-06T23:35:08.7167522Z",
+        "customerId": null,
+        "customerName": "Auditoria sintética",
+        "rtnCliente": null,
+        "customerAddress": null,
+        "subTotal": 100,
+        "isvAmount": 0.0,
+        "isV15Amount": 0.0,
+        "isV18Amount": 0,
+        "touristTaxAmount": 0,
+        "discountsAmount": 0,
+        "totalAmount": 100.0,
+        "taxableAmount": 0,
+        "exemptAmount": 0,
+        "exoneratedAmount": 0,
+        "taxpayerType": "ConsumidorFinal",
+        "exonerationOrderNumber": null,
+        "sefinExonerationCertificateNumber": null,
+        "sagRegistryNumber": null,
+        "isIsvExempt": false,
+        "isTouristTaxExempt": false,
+        "originalInvoiceId": "01a07a5c-f679-7b10-b6e8-c93be04bd82b",
+        "originalCorrelativeNumber": "001-001-01-00000002",
+        "reason": "Devolución ficticia total",
+        "documentType": "NotaCredito",
+        "status": "Emitida",
+        "items": []
+      },
+      "asientos": [
+        {
+          "id": "01a07a5c-f7fb-79ed-9766-3221139a916d",
+          "transactionDate": "2026-09-07",
+          "description": "Factura 001-001-01-00000002",
+          "entryType": "Diario",
+          "referenceId": "01a07a5c-f679-7b10-b6e8-c93be04bd82b",
+          "totalDebit": 115.0,
+          "totalCredit": 115.0,
+          "items": [
+            {
+              "id": "01a07a5c-f826-74b0-9f17-e98e43cd731b",
+              "accountId": "01a07a58-6900-75ad-8d3b-ec7a5ddc6187",
+              "accountNumber": "1101",
+              "accountName": "Caja",
+              "debit": 115.0,
+              "credit": 0,
+              "description": "Cobro factura 001-001-01-00000002"
+            },
+            {
+              "id": "01a07a5c-f843-71a9-bf33-ad78a9aa029b",
+              "accountId": "01a07a58-6902-7bad-b8d5-9acad4b47e0f",
+              "accountNumber": "4101",
+              "accountName": "Ingresos por hospedaje",
+              "debit": 0,
+              "credit": 100,
+              "description": "Ingreso neto por hospedaje"
+            },
+            {
+              "id": "01a07a5c-f843-7c0a-b827-cd03f263a58f",
+              "accountId": "01a07a58-6901-789a-a8ba-34412658d42f",
+              "accountNumber": "2101",
+              "accountName": "ISV por pagar",
+              "debit": 0,
+              "credit": 15.0,
+              "description": "ISV por pagar"
+            }
+          ]
+        },
+        {
+          "id": "01a07a5c-f9c6-7c6f-9521-9aa43ebd9132",
+          "transactionDate": "2026-09-06",
+          "description": "Factura 001-001-01-00000003",
+          "entryType": "Diario",
+          "referenceId": "01a07a5c-f9ad-7031-a842-29de9f216e8e",
+          "totalDebit": 100.0,
+          "totalCredit": 100,
+          "items": [
+            {
+              "id": "01a07a5c-f9c6-7b30-8ded-c43947c8ade9",
+              "accountId": "01a07a58-6900-75ad-8d3b-ec7a5ddc6187",
+              "accountNumber": "1101",
+              "accountName": "Caja",
+              "debit": 100.0,
+              "credit": 0,
+              "description": "Cobro factura 001-001-01-00000003"
+            },
+            {
+              "id": "01a07a5c-f9c7-7fee-8848-a112ef3246c8",
+              "accountId": "01a07a58-6902-7bad-b8d5-9acad4b47e0f",
+              "accountNumber": "4101",
+              "accountName": "Ingresos por hospedaje",
+              "debit": 0,
+              "credit": 100,
+              "description": "Ingreso neto por hospedaje"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "prueba": "T10 resumen fiscal suma original y nota",
+    "observado": {
+      "status": 200,
+      "body": {
+        "from": "2026-01-01T00:00:00",
+        "to": "2027-12-31T00:00:00",
+        "salesTaxed15": 100,
+        "salesTaxed18": 0,
+        "salesExempt": 0,
+        "isvCollected15": 15.0,
+        "isvCollected18": 0,
+        "isvOnPurchases": 0,
+        "netIsvToPay": 15.0,
+        "touristTaxCollected": 0
+      },
+      "ms": 162.71
+    }
+  },
+  {
+    "prueba": "T11 nota fiscal editable y hash/asiento desactualizados",
+    "observado": {
+      "respuesta": {
+        "status": 200,
+        "body": {
+          "id": "01a07a5c-f9ad-7031-a842-29de9f216e8e",
+          "caiId": "01a07a5c-f51a-7d20-b2d7-d4f8133a70ee",
+          "documentAuthorizationId": null,
+          "caiNumber": "AUDIT-CAI-00000001",
+          "caiNumberSnapshot": "AUDIT-CAI-00000001",
+          "authorizationRangeSnapshot": "001-001-01-00000001 - 001-001-01-00001000",
+          "authorizationDueDateSnapshot": "2027-12-31T23:59:59.999999",
+          "correlativeNumber": "001-001-01-00000003",
+          "invoiceDate": "2026-09-06T23:35:08.716752",
+          "customerId": null,
+          "customerName": "Nota modificada",
+          "rtnCliente": null,
+          "customerAddress": null,
+          "subTotal": 25,
+          "isvAmount": 3.75,
+          "isV15Amount": 0.0,
+          "isV18Amount": 0,
+          "touristTaxAmount": 0,
+          "discountsAmount": 0,
+          "totalAmount": 28.75,
+          "taxableAmount": 0,
+          "exemptAmount": 0,
+          "exoneratedAmount": 0,
+          "taxpayerType": "ConsumidorFinal",
+          "exonerationOrderNumber": null,
+          "sefinExonerationCertificateNumber": null,
+          "sagRegistryNumber": null,
+          "isIsvExempt": false,
+          "isTouristTaxExempt": false,
+          "originalInvoiceId": "01a07a5c-f679-7b10-b6e8-c93be04bd82b",
+          "originalCorrelativeNumber": "001-001-01-00000002",
+          "reason": "Devolución ficticia total",
+          "documentType": "NotaCredito",
+          "status": "Emitida",
+          "items": []
+        },
+        "ms": 236.07
+      },
+      "hash_igual": true,
+      "asiento": {
+        "id": "01a07a5c-f9c6-7c6f-9521-9aa43ebd9132",
+        "transactionDate": "2026-09-06",
+        "description": "Factura 001-001-01-00000003",
+        "entryType": "Diario",
+        "referenceId": "01a07a5c-f9ad-7031-a842-29de9f216e8e",
+        "totalDebit": 100.0,
+        "totalCredit": 100,
+        "items": [
+          {
+            "id": "01a07a5c-f9c6-7b30-8ded-c43947c8ade9",
+            "accountId": "01a07a58-6900-75ad-8d3b-ec7a5ddc6187",
+            "accountNumber": "1101",
+            "accountName": "Caja",
+            "debit": 100.0,
+            "credit": 0,
+            "description": "Cobro factura 001-001-01-00000003"
+          },
+          {
+            "id": "01a07a5c-f9c7-7fee-8848-a112ef3246c8",
+            "accountId": "01a07a58-6902-7bad-b8d5-9acad4b47e0f",
+            "accountNumber": "4101",
+            "accountName": "Ingresos por hospedaje",
+            "debit": 0,
+            "credit": 100,
+            "description": "Ingreso neto por hospedaje"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "prueba": "T12 línea negativa permitida",
+    "observado": {
+      "status": 201,
+      "body": {
+        "id": "01a07a5c-fc8e-77c8-8353-80eaaf3bc146",
+        "caiId": "01a07a5c-f51a-7d20-b2d7-d4f8133a70ee",
+        "documentAuthorizationId": null,
+        "caiNumber": "AUDIT-CAI-00000001",
+        "caiNumberSnapshot": "AUDIT-CAI-00000001",
+        "authorizationRangeSnapshot": "001-001-01-00000001 - 001-001-01-00001000",
+        "authorizationDueDateSnapshot": "2027-12-31T23:59:59.9999999Z",
+        "correlativeNumber": "001-001-01-00000004",
+        "invoiceDate": "2026-09-07T05:35:09.4389454Z",
+        "customerId": null,
+        "customerName": "Negativo ficticio",
+        "rtnCliente": null,
+        "customerAddress": null,
+        "subTotal": -100,
+        "isvAmount": 0,
+        "isV15Amount": 0,
+        "isV18Amount": 0,
+        "touristTaxAmount": 0,
+        "discountsAmount": 0,
+        "totalAmount": -100,
+        "taxableAmount": -100,
+        "exemptAmount": 0,
+        "exoneratedAmount": 0,
+        "taxpayerType": "ConsumidorFinal",
+        "exonerationOrderNumber": null,
+        "sefinExonerationCertificateNumber": null,
+        "sagRegistryNumber": null,
+        "isIsvExempt": false,
+        "isTouristTaxExempt": false,
+        "originalInvoiceId": null,
+        "originalCorrelativeNumber": null,
+        "reason": null,
+        "documentType": "Factura",
+        "status": "Emitida",
+        "items": []
+      },
+      "ms": 113.34
+    }
+  },
+  {
+    "prueba": "T13 desglose tasa 18 equivocado",
+    "observado": {
+      "status": 201,
+      "body": {
+        "id": "01a07a5c-fcd7-7db0-8f8c-1513fcbade3d",
+        "caiId": "01a07a5c-f51a-7d20-b2d7-d4f8133a70ee",
+        "documentAuthorizationId": null,
+        "caiNumber": "AUDIT-CAI-00000001",
+        "caiNumberSnapshot": "AUDIT-CAI-00000001",
+        "authorizationRangeSnapshot": "001-001-01-00000001 - 001-001-01-00001000",
+        "authorizationDueDateSnapshot": "2027-12-31T23:59:59.9999999Z",
+        "correlativeNumber": "001-001-01-00000005",
+        "invoiceDate": "2026-09-07T05:35:09.5271027Z",
+        "customerId": null,
+        "customerName": "Tasa 18 ficticia",
+        "rtnCliente": null,
+        "customerAddress": null,
+        "subTotal": 100,
+        "isvAmount": 18.0,
+        "isV15Amount": 18.0,
+        "isV18Amount": 0,
+        "touristTaxAmount": 0,
+        "discountsAmount": 0,
+        "totalAmount": 118.0,
+        "taxableAmount": 100,
+        "exemptAmount": 0,
+        "exoneratedAmount": 0,
+        "taxpayerType": "ConsumidorFinal",
+        "exonerationOrderNumber": null,
+        "sefinExonerationCertificateNumber": null,
+        "sagRegistryNumber": null,
+        "isIsvExempt": false,
+        "isTouristTaxExempt": false,
+        "originalInvoiceId": null,
+        "originalCorrelativeNumber": null,
+        "reason": null,
+        "documentType": "Factura",
+        "status": "Emitida",
+        "items": []
+      },
+      "ms": 121.78
+    }
+  },
+  {
+    "prueba": "T14 base exenta mal clasificada",
+    "observado": {
+      "status": 201,
+      "body": {
+        "id": "01a07a5c-fd52-78e7-8f8b-65f38e8029ce",
+        "caiId": "01a07a5c-f51a-7d20-b2d7-d4f8133a70ee",
+        "documentAuthorizationId": null,
+        "caiNumber": "AUDIT-CAI-00000001",
+        "caiNumberSnapshot": "AUDIT-CAI-00000001",
+        "authorizationRangeSnapshot": "001-001-01-00000001 - 001-001-01-00001000",
+        "authorizationDueDateSnapshot": "2027-12-31T23:59:59.9999999Z",
+        "correlativeNumber": "001-001-01-00000006",
+        "invoiceDate": "2026-09-07T05:35:09.6497924Z",
+        "customerId": null,
+        "customerName": "Exenta ficticia",
+        "rtnCliente": null,
+        "customerAddress": null,
+        "subTotal": 100,
+        "isvAmount": 0,
+        "isV15Amount": 0,
+        "isV18Amount": 0,
+        "touristTaxAmount": 0,
+        "discountsAmount": 0,
+        "totalAmount": 100,
+        "taxableAmount": 100,
+        "exemptAmount": 0,
+        "exoneratedAmount": 0,
+        "taxpayerType": "ConsumidorFinal",
+        "exonerationOrderNumber": null,
+        "sefinExonerationCertificateNumber": null,
+        "sagRegistryNumber": null,
+        "isIsvExempt": false,
+        "isTouristTaxExempt": false,
+        "originalInvoiceId": null,
+        "originalCorrelativeNumber": null,
+        "reason": null,
+        "documentType": "Factura",
+        "status": "Emitida",
+        "items": []
+      },
+      "ms": 59.26
+    }
+  },
+  {
+    "prueba": "T15 redondeo rompe asiento tras guardar factura",
+    "observado": {
+      "respuesta": {
+        "status": 201,
+        "body": {
+          "id": "01a07a5c-fd9c-74a6-80aa-1af063085031",
+          "caiId": "01a07a5c-f51a-7d20-b2d7-d4f8133a70ee",
+          "documentAuthorizationId": null,
+          "caiNumber": "AUDIT-CAI-00000001",
+          "caiNumberSnapshot": "AUDIT-CAI-00000001",
+          "authorizationRangeSnapshot": "001-001-01-00000001 - 001-001-01-00001000",
+          "authorizationDueDateSnapshot": "2027-12-31T23:59:59.9999999Z",
+          "correlativeNumber": "001-001-01-00000007",
+          "invoiceDate": "2026-09-07T05:35:09.723648Z",
+          "customerId": null,
+          "customerName": "Redondeo ficticio",
+          "rtnCliente": null,
+          "customerAddress": null,
+          "subTotal": 0.06,
+          "isvAmount": 0.01,
+          "isV15Amount": 0.01,
+          "isV18Amount": 0,
+          "touristTaxAmount": 0,
+          "discountsAmount": 0.0,
+          "totalAmount": 0.07,
+          "taxableAmount": 0.06,
+          "exemptAmount": 0,
+          "exoneratedAmount": 0,
+          "taxpayerType": "ConsumidorFinal",
+          "exonerationOrderNumber": null,
+          "sefinExonerationCertificateNumber": null,
+          "sagRegistryNumber": null,
+          "isIsvExempt": false,
+          "isTouristTaxExempt": false,
+          "originalInvoiceId": null,
+          "originalCorrelativeNumber": null,
+          "reason": null,
+          "documentType": "Factura",
+          "status": "Emitida",
+          "items": []
+        },
+        "ms": 57.23
+      },
+      "facturas_antes": "5",
+      "facturas_despues": "6",
+      "sin_asiento": ""
+    }
+  },
+  {
+    "prueba": "T16 nota directa sin original ni motivo",
+    "observado": {
+      "status": 201,
+      "body": {
+        "id": "01a07a5c-fe0c-7ad0-859f-cb90cdc625d4",
+        "caiId": "01a07a5c-f51a-7d20-b2d7-d4f8133a70ee",
+        "documentAuthorizationId": null,
+        "caiNumber": "AUDIT-CAI-00000001",
+        "caiNumberSnapshot": "AUDIT-CAI-00000001",
+        "authorizationRangeSnapshot": "001-001-01-00000001 - 001-001-01-00001000",
+        "authorizationDueDateSnapshot": "2027-12-31T23:59:59.9999999Z",
+        "correlativeNumber": "001-001-01-00000008",
+        "invoiceDate": "2026-09-07T05:35:09.8359565Z",
+        "customerId": null,
+        "customerName": "Nota sin origen",
+        "rtnCliente": null,
+        "customerAddress": null,
+        "subTotal": 100,
+        "isvAmount": 15.0,
+        "isV15Amount": 15.0,
+        "isV18Amount": 0,
+        "touristTaxAmount": 0,
+        "discountsAmount": 0,
+        "totalAmount": 115.0,
+        "taxableAmount": 100,
+        "exemptAmount": 0,
+        "exoneratedAmount": 0,
+        "taxpayerType": "ConsumidorFinal",
+        "exonerationOrderNumber": null,
+        "sefinExonerationCertificateNumber": null,
+        "sagRegistryNumber": null,
+        "isIsvExempt": false,
+        "isTouristTaxExempt": false,
+        "originalInvoiceId": null,
+        "originalCorrelativeNumber": null,
+        "reason": null,
+        "documentType": "NotaCredito",
+        "status": "Emitida",
+        "items": []
+      },
+      "ms": 63.37
+    }
+  },
+  {
+    "prueba": "T17 autorización DTO DateOnly DateTime",
+    "observado": {
+      "status": 500,
+      "body": "",
+      "ms": 136.62
+    }
+  },
+  {
+    "prueba": "T18 pago compra sin asiento de pago",
+    "observado": {
+      "respuesta": {
+        "status": 204,
+        "body": "",
+        "ms": 113.01
+      },
+      "asientos_referencia": "1"
+    }
+  },
+  {
+    "prueba": "T19 duplicidad compra mismo proveedor",
+    "observado": {
+      "status": 201,
+      "body": {
+        "id": "01a07a5d-00bc-78c5-8f13-5f81044e66cb",
+        "invoiceNumber": "AUDIT-COMPRA-1",
+        "supplierId": "01a07a5c-fee1-7e52-bc9a-feee3223ae9a",
+        "supplierName": "Proveedor ficticio",
+        "invoiceDate": "2026-09-06T12:00:00Z",
+        "caiNumber": null,
+        "supplierRTN": "00000000000001",
+        "subTotal": 100,
+        "isvAmount": 15.0,
+        "isV15Amount": 15.0,
+        "isV18Amount": 0,
+        "totalAmount": 115.0,
+        "status": "Pendiente",
+        "notes": null,
+        "items": []
+      },
+      "ms": 36.75
+    }
+  },
+  {
+    "prueba": "T20 eliminar compra desincroniza saldos",
+    "observado": {
+      "respuesta": {
+        "status": 204,
+        "body": "",
+        "ms": 81.45
+      },
+      "totales_catalogo": [
+        {
+          "id": "01a07a58-6902-7619-9331-63932682047f",
+          "accountNumber": "2103",
+          "accountName": "Proveedores",
+          "accountType": "Pasivo",
+          "parentAccountId": "01a07a58-6901-7f03-b97f-08870a6609bf",
+          "isActive": true,
+          "balance": 230.0,
+          "children": []
+        }
+      ],
+      "balance_comprobacion": [
+        {
+          "accountId": "01a07a58-6902-7619-9331-63932682047f",
+          "accountNumber": "2103",
+          "accountName": "Proveedores",
+          "accountType": "Pasivo",
+          "previousBalance": 0,
+          "debit": 0,
+          "credit": 115.0,
+          "balance": 115.0
+        }
+      ]
+    }
+  },
+  {
+    "prueba": "T21 borrar proveedor oculta compras",
+    "observado": {
+      "respuesta": {
+        "status": 204,
+        "body": "",
+        "ms": 37.16
+      },
+      "compras_visibles": []
+    }
+  },
+  {
+    "prueba": "T22 cierre confía esperado del cliente",
+    "observado": {
+      "status": 200,
+      "body": {
+        "message": "Caja cerrada exitosamente",
+        "expectedAmount": 1,
+        "countedAmount": 1,
+        "difference": 0
+      },
+      "ms": 71.91
+    }
+  },
+  {
+    "prueba": "T23 ventas no registradas en caja",
+    "observado": {
+      "movimientos": "Apertura|1\nCierre|1"
+    }
+  },
+  {
+    "prueba": "T24 editar stock negativo sin kardex",
+    "observado": {
+      "respuesta": {
+        "status": 204,
+        "body": "",
+        "ms": 62.07
+      },
+      "movimientos": []
+    }
+  },
+  {
+    "prueba": "T25 permisos recepción",
+    "observado": {
+      "roles": [
+        "Recepcion"
+      ],
+      "crear_cuenta": {
+        "status": 201,
+        "body": {
+          "id": "01a07a5d-094c-7204-9a30-f2c7255ef4bb",
+          "accountNumber": "9999",
+          "accountName": "Cambio no autorizado",
+          "accountType": "Activo",
+          "parentAccountId": null,
+          "isActive": true,
+          "balance": 0,
+          "children": []
+        },
+        "ms": 49.6
+      },
+      "usuarios": 200,
+      "exportar_huespedes": 200,
+      "respaldo": 200
+    }
+  },
+  {
+    "prueba": "T26 token sigue válido tras desactivar usuario",
+    "observado": 200
+  },
+  {
+    "prueba": "T27 impresión Linux",
+    "observado": {
+      "status": 500,
+      "body": "",
+      "ms": 8.46
+    }
+  },
+  {
+    "prueba": "T28 correlativo con contexto EF precargado",
+    "observado": [
+      {
+        "status": 500,
+        "body": "",
+        "ms": 1862.2
+      },
+      {
+        "status": 201,
+        "body": {
+          "id": "01a07a5d-1caa-7b95-a2fc-c74b344a54c4",
+          "caiId": "01a07a5c-f51a-7d20-b2d7-d4f8133a70ee",
+          "documentAuthorizationId": null,
+          "caiNumber": "AUDIT-CAI-00000001",
+          "caiNumberSnapshot": "AUDIT-CAI-00000001",
+          "authorizationRangeSnapshot": "001-001-01-00000001 - 001-001-01-00001000",
+          "authorizationDueDateSnapshot": "2027-12-31T23:59:59.9999999Z",
+          "correlativeNumber": "001-001-01-00000009",
+          "invoiceDate": "2026-09-07T05:35:17.6543364Z",
+          "customerId": null,
+          "customerName": "Carrera ficticia",
+          "rtnCliente": null,
+          "customerAddress": null,
+          "subTotal": 100,
+          "isvAmount": 15.0,
+          "isV15Amount": 15.0,
+          "isV18Amount": 0,
+          "touristTaxAmount": 0,
+          "discountsAmount": 0,
+          "totalAmount": 115.0,
+          "taxableAmount": 100,
+          "exemptAmount": 0,
+          "exoneratedAmount": 0,
+          "taxpayerType": "ConsumidorFinal",
+          "exonerationOrderNumber": null,
+          "sefinExonerationCertificateNumber": null,
+          "sagRegistryNumber": null,
+          "isIsvExempt": false,
+          "isTouristTaxExempt": false,
+          "originalInvoiceId": null,
+          "originalCorrelativeNumber": null,
+          "reason": null,
+          "documentType": "Factura",
+          "status": "Emitida",
+          "items": []
+        },
+        "ms": 1842.51
+      }
+    ]
+  },
+  {
+    "prueba": "T29 consultas de estado enum",
+    "observado": {
+      "habitaciones": {
+        "status": 200,
+        "body": [
+          {
+            "id": "01a07a5c-ee64-7d42-a76f-d1e6b047ef70",
+            "roomNumber": "AUDIT-101",
+            "floor": 1,
+            "roomTypeId": "01a07a5c-edc0-7aaf-931e-bcedd334f4c4",
+            "roomTypeName": "AUDIT Sencilla",
+            "status": "Libre",
+            "observations": null,
+            "pricePerNight": 1190,
+            "capacity": 2
+          }
+        ],
+        "ms": 39.44
+      },
+      "reservas": {
+        "status": 200,
+        "body": [
+          {
+            "id": "01a07a5c-f02b-75c2-8b43-0b1e3f6c03cb",
+            "guestId": "01a07a5c-ecc2-789b-9a24-799b4ad42122",
+            "guestName": "Prueba Auditoria",
+            "roomId": "01a07a5c-ee64-7d42-a76f-d1e6b047ef70",
+            "roomNumber": "AUDIT-101",
+            "checkInDate": "2026-10-10",
+            "checkOutDate": "2026-10-01",
+            "adults": 1,
+            "children": 0,
+            "paymentMethod": null,
+            "advancePayment": 100,
+            "status": "Confirmada",
+            "notes": null
+          }
+        ],
+        "ms": 58.84
+      }
+    }
+  },
+  {
+    "prueba": "T30 historial de auditoría cubre pocas operaciones",
+    "observado": "CreateCreditNote|1\nCreateInvoice|7\nLogin|2\nUpdateInvoice|1"
+  },
+  {
+    "prueba": "T31 integridad bitácora propia",
+    "observado": {
+      "status": 200,
+      "body": {
+        "isValid": false,
+        "totalRecordsVerified": 0,
+        "verifiedAt": "2026-09-07T05:44:28.6646075Z",
+        "errorMessage": "Firma de integridad manipulada o corrupta en el registro 01a07a5c-ead2-7a55-9dd0-1c4f2bd54734",
+        "brokenLogId": "01a07a5c-ead2-7a55-9dd0-1c4f2bd54734"
+      },
+      "ms": 46.29
+    }
+  },
+  {
+    "prueba": "T32 redondeo subtotal 0.03 con dos impuestos",
+    "observado": {
+      "status": 500,
+      "body": "",
+      "ms": 39.84
+    }
+  },
+  {
+    "prueba": "T33 factura guardada sin asiento",
+    "observado": "Redondeo confirmado|0.03|0.00|0.00|0.04"
+  },
+  {
+    "prueba": "T34 líneas DTO vacías frente a persistencia",
+    "observado": {
+      "items_api": [],
+      "items_bd": "11",
+      "folios_items_api": [],
+      "folios_items_bd": "1"
+    }
+  },
+  {
+    "prueba": "T35 autorización persistida aunque devuelve 500",
+    "observado": {
+      "cantidad_bd": "1",
+      "listar": {
+        "status": 500,
+        "body": "",
+        "ms": 54.97
+      }
+    }
+  },
+  {
+    "prueba": "T36 checkin sobrecapacidad y efectivo insuficiente",
+    "observado": {
+      "status": 200,
+      "body": {
+        "message": "Check-in exitoso",
+        "folioId": "01a07a65-86a4-770c-9b89-9734be1b1756",
+        "invoiceId": "01a07a65-86b9-7f80-b940-4a2dc5993b2a",
+        "correlative": "001-001-01-00000011",
+        "sellingPricePerNight": 1190,
+        "nights": 1,
+        "subtotal": 1000,
+        "isv": 150.0,
+        "isvRate": 0.15,
+        "touristTax": 40.0,
+        "touristTaxRate": 0.04,
+        "discountPercent": 0,
+        "discountAmount": 0,
+        "total": 1190
+      },
+      "ms": 109.95
+    }
+  },
+  {
+    "prueba": "T37 snapshot ausente en factura checkin",
+    "observado": "Prueba Auditoria|Pagada|Efectivo|1|500|1190|t"
+  },
+  {
+    "prueba": "T38 checkout con consumo sin facturar",
+    "observado": {
+      "respuesta": {
+        "status": 200,
+        "body": {
+          "message": "Check-out exitoso, habitación liberada"
+        },
+        "ms": 66.0
+      },
+      "folio_bd": "1305.00|Cerrado",
+      "n_facturas_huesped": "1"
+    }
+  },
+  {
+    "prueba": "T39 repetir checkin después de checkout",
+    "observado": {
+      "status": 500,
+      "body": "",
+      "ms": 26.14
+    }
+  },
+  {
+    "prueba": "T40 carrera inventario pierde actualización",
+    "observado": {
+      "respuestas": [
+        {
+          "status": 200,
+          "body": {
+            "id": "01a07a65-89dc-7eba-96dd-adb474b2ce60",
+            "productId": "01a07a65-8888-7b72-bf19-4db470358a2c",
+            "productName": "Concurrencia ficticia",
+            "movementType": "Salida",
+            "quantity": 7,
+            "movementDate": "2026-09-07T05:44:29.908531",
+            "unitPrice": null,
+            "totalValue": null,
+            "newStock": 3,
+            "referenceId": null,
+            "userName": "Administrador Sistema"
+          },
+          "ms": 1816.56
+        },
+        {
+          "status": 200,
+          "body": {
+            "id": "01a07a65-89db-720c-88ef-2606037865e2",
+            "productId": "01a07a65-8888-7b72-bf19-4db470358a2c",
+            "productName": "Concurrencia ficticia",
+            "movementType": "Salida",
+            "quantity": 7,
+            "movementDate": "2026-09-07T05:44:29.91093",
+            "unitPrice": null,
+            "totalValue": null,
+            "newStock": 3,
+            "referenceId": null,
+            "userName": "Administrador Sistema"
+          },
+          "ms": 1815.71
+        }
+      ],
+      "stock_bd": "3",
+      "salidas_bd": "14"
+    }
+  },
+  {
+    "prueba": "T41 recepción descarga respaldo completo",
+    "observado": {
+      "status": 200
+    }
+  },
+  {
+    "prueba": "T42 escalación recepción a Admin cambiando nombres de roles",
+    "observado": {
+      "renombrar_admin": {
+        "status": 204,
+        "body": "",
+        "ms": 149.61
+      },
+      "renombrar_propio": {
+        "status": 204,
+        "body": "",
+        "ms": 18.96
+      },
+      "roles_nuevos": [
+        "Admin"
+      ],
+      "endpoint_admin": 200
+    }
+  },
+  {
+    "prueba": "T43 salud sin consulta DB",
+    "observado": 200
+  }
+]

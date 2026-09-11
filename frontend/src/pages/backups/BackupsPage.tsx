@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import api from '@/lib/axios'
 import type { BackupLog } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Download, RotateCw, Loader2, Database } from 'lucide-react'
 import { InlineAlert } from '@/components/ui/InlineAlert'
+import { getApiErrorMessage } from '@/lib/errors'
 
 export default function BackupsPage() {
   const [logs, setLogs] = useState<BackupLog[]>([])
@@ -12,23 +13,24 @@ export default function BackupsPage() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
 
-  useEffect(() => {
-    loadLogs()
-  }, [])
-
-  const loadLogs = async () => {
+  const loadLogs = useCallback(async () => {
     setFetching(true)
     setError(null)
     try {
       const { data } = await api.get<BackupLog[]>('/backup/logs')
       setLogs(data)
-    } catch (e: any) {
-      console.error('Error cargando historial de respaldos', e)
-      setError(e.response?.data?.message || 'No fue posible cargar el historial de respaldos.')
+    } catch (error: unknown) {
+      console.error('Error cargando historial de respaldos', error)
+      setError(getApiErrorMessage(error, 'No fue posible cargar el historial de respaldos.'))
     } finally {
       setFetching(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void loadLogs(), 0)
+    return () => window.clearTimeout(timer)
+  }, [loadLogs])
 
   const createBackup = async () => {
     setLoading(true)
@@ -52,8 +54,8 @@ export default function BackupsPage() {
       window.URL.revokeObjectURL(url)
       setSuccess(`Respaldo "${fileName}" generado y descargado exitosamente.`)
       loadLogs()
-    } catch (e: any) {
-      setError(e.response?.data?.message || e.message || 'Error al crear el respaldo de base de datos.')
+    } catch (error: unknown) {
+      setError(getApiErrorMessage(error, 'Error al crear el respaldo de base de datos.'))
     } finally {
       setLoading(false)
     }
@@ -181,4 +183,3 @@ export default function BackupsPage() {
     </div>
   )
 }
-

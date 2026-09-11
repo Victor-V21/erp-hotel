@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import api from '@/lib/axios'
+import { getApiErrorMessage } from '@/lib/errors'
 import type { User, Role, CreateUserRequest, UpdateUserRequest } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -23,10 +24,12 @@ import {
 const roleBadgeColors: Record<string, string> = {
   Admin: 'bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800',
   Recepcion: 'bg-blue-100 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-800',
-  Recepcionista: 'bg-blue-100 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-800',
+  Caja: 'bg-cyan-100 dark:bg-cyan-950/40 text-cyan-800 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-800',
   Contador: 'bg-emerald-100 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800',
-  Contabilidad: 'bg-emerald-100 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800',
 }
+
+const isStrongPassword = (value: string) =>
+  value.length >= 12 && /[A-Z]/.test(value) && /[a-z]/.test(value) && /\d/.test(value)
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([])
@@ -81,7 +84,8 @@ export default function UsersPage() {
   }, [])
 
   useEffect(() => {
-    loadData()
+    const timer = window.setTimeout(() => void loadData(), 0)
+    return () => window.clearTimeout(timer)
   }, [loadData])
 
   // Handle Create User
@@ -91,8 +95,8 @@ export default function UsersPage() {
       setAlertInfo({ variant: 'error', message: 'Todos los campos obligatorios deben ser completados.' })
       return
     }
-    if (createForm.password.length < 6) {
-      setAlertInfo({ variant: 'error', message: 'La contraseña debe tener al menos 6 caracteres.' })
+    if (!isStrongPassword(createForm.password)) {
+      setAlertInfo({ variant: 'error', message: 'La contraseña debe tener al menos 12 caracteres, mayúscula, minúscula y número.' })
       return
     }
 
@@ -110,8 +114,8 @@ export default function UsersPage() {
         roles: ['Recepcion'],
       })
       loadData()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'Error al crear el nuevo usuario.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al crear el nuevo usuario.') })
     } finally {
       setActionLoading(false)
     }
@@ -139,8 +143,8 @@ export default function UsersPage() {
       setAlertInfo({ variant: 'success', message: `Datos del usuario @${editingUser.username} actualizados correctamente.` })
       setEditingUser(null)
       loadData()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'Error al actualizar el usuario.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al actualizar el usuario.') })
     } finally {
       setActionLoading(false)
     }
@@ -150,8 +154,8 @@ export default function UsersPage() {
   const handleResetPasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!resettingUser) return
-    if (!newPassword || newPassword.length < 6) {
-      setAlertInfo({ variant: 'error', message: 'La nueva contraseña debe tener un mínimo de 6 caracteres.' })
+    if (!isStrongPassword(newPassword)) {
+      setAlertInfo({ variant: 'error', message: 'La nueva contraseña debe tener al menos 12 caracteres, mayúscula, minúscula y número.' })
       return
     }
 
@@ -161,8 +165,8 @@ export default function UsersPage() {
       setAlertInfo({ variant: 'success', message: `Contraseña restablecida exitosamente para @${resettingUser.username}.` })
       setResettingUser(null)
       setNewPassword('')
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'Error al restablecer la contraseña.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al restablecer la contraseña.') })
     } finally {
       setActionLoading(false)
     }
@@ -176,8 +180,8 @@ export default function UsersPage() {
       setAlertInfo({ variant: 'success', message: `Usuario @${deactivateTarget.username} desactivado del sistema.` })
       setDeactivateTarget(null)
       loadData()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'Error al desactivar el usuario.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al desactivar el usuario.') })
     }
   }
 
@@ -460,12 +464,13 @@ export default function UsersPage() {
 
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Contraseña Inicial * (mínimo 6 caracteres)
+                  Contraseña Inicial * (12 caracteres, mayúscula, minúscula y número)
                 </label>
                 <div className="relative mt-1">
                   <Input
                     type={showPassword ? 'text' : 'password'}
                     required
+                    minLength={12}
                     value={createForm.password}
                     onChange={(e) => setCreateForm({ ...createForm, password: e.target.value })}
                     placeholder="••••••••"
@@ -652,12 +657,13 @@ export default function UsersPage() {
             <form onSubmit={handleResetPasswordSubmit} className="space-y-3.5">
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Nueva Contraseña * (mínimo 6 caracteres)
+                  Nueva Contraseña * (12 caracteres, mayúscula, minúscula y número)
                 </label>
                 <div className="relative mt-1">
                   <Input
                     type={showResetPassword ? 'text' : 'password'}
                     required
+                    minLength={12}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="••••••••"

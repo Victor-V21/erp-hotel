@@ -1,0 +1,4347 @@
+[
+  {
+    "archivo": ".claude/settings.local.json",
+    "linea": 10,
+    "categoria": "ejecucion_procesos"
+  },
+  {
+    "archivo": ".claude/settings.local.json",
+    "linea": 22,
+    "categoria": "ejecucion_procesos"
+  },
+  {
+    "archivo": ".cursor/hooks.json",
+    "linea": 6,
+    "categoria": "ejecucion_procesos"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/AuthController.cs",
+    "linea": 46,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/AuthController.cs",
+    "linea": 48,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InventoryController.cs",
+    "linea": 36,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InventoryController.cs",
+    "linea": 47,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InventoryController.cs",
+    "linea": 57,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InventoryController.cs",
+    "linea": 106,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InventoryController.cs",
+    "linea": 125,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InventoryController.cs",
+    "linea": 135,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InventoryController.cs",
+    "linea": 207,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+    "linea": 153,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+    "linea": 283,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/InvoicesController.cs",
+    "linea": 384,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/PrintController.cs",
+    "linea": 74,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/PrintController.cs",
+    "linea": 92,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/PrintController.cs",
+    "linea": 191,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/TaxConfigurationsController.cs",
+    "linea": 46,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/TaxConfigurationsController.cs",
+    "linea": 60,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/TaxConfigurationsController.cs",
+    "linea": 71,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/UsersController.cs",
+    "linea": 72,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/UsersController.cs",
+    "linea": 93,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/UsersController.cs",
+    "linea": 142,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/UsersController.cs",
+    "linea": 143,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/UsersController.cs",
+    "linea": 156,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/UsersController.cs",
+    "linea": 161,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/UsersController.cs",
+    "linea": 181,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/UsersController.cs",
+    "linea": 202,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Controllers/UsersController.cs",
+    "linea": 203,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+    "linea": 16,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+    "linea": 100,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+    "linea": 101,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+    "linea": 103,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+    "linea": 107,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+    "linea": 427,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+    "linea": 430,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+    "linea": 433,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/ApplicationDbContext.cs",
+    "linea": 436,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/AuthEntities.cs",
+    "linea": 8,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/AuthEntities.cs",
+    "linea": 19,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Entities/AuthEntities.cs",
+    "linea": 58,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/AccountingRepository.cs",
+    "linea": 51,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/AccountingRepository.cs",
+    "linea": 57,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/AccountingRepository.cs",
+    "linea": 142,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/AccountingRepository.cs",
+    "linea": 148,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/AccountingRepository.cs",
+    "linea": 166,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CashRepository.cs",
+    "linea": 14,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CashRepository.cs",
+    "linea": 15,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CashRepository.cs",
+    "linea": 26,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CashRepository.cs",
+    "linea": 34,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CustomerRepository.cs",
+    "linea": 16,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CustomerRepository.cs",
+    "linea": 17,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CustomerRepository.cs",
+    "linea": 18,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CustomerRepository.cs",
+    "linea": 30,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CustomerRepository.cs",
+    "linea": 31,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/CustomerRepository.cs",
+    "linea": 32,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/DiscountRepository.cs",
+    "linea": 15,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/DiscountRepository.cs",
+    "linea": 16,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/DiscountRepository.cs",
+    "linea": 17,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 17,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 18,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 19,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 41,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 42,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 50,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 57,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 58,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 59,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 62,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 69,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 70,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 77,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 106,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 112,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/InvoiceRepository.cs",
+    "linea": 120,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/PurchaseRepository.cs",
+    "linea": 16,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/PurchaseRepository.cs",
+    "linea": 17,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/PurchaseRepository.cs",
+    "linea": 18,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/PurchaseRepository.cs",
+    "linea": 30,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/PurchaseRepository.cs",
+    "linea": 31,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/PurchaseRepository.cs",
+    "linea": 32,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/ReservationRepository.cs",
+    "linea": 18,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/ReservationRepository.cs",
+    "linea": 19,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/ReservationRepository.cs",
+    "linea": 20,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/ReservationRepository.cs",
+    "linea": 37,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/ReservationRepository.cs",
+    "linea": 38,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoleRepository.cs",
+    "linea": 22,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoleRepository.cs",
+    "linea": 24,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoleRepository.cs",
+    "linea": 29,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoleRepository.cs",
+    "linea": 44,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoleRepository.cs",
+    "linea": 57,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoleRepository.cs",
+    "linea": 58,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoomRepository.cs",
+    "linea": 15,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoomRepository.cs",
+    "linea": 16,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoomRepository.cs",
+    "linea": 17,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoomRepository.cs",
+    "linea": 46,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoomRepository.cs",
+    "linea": 47,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/RoomRepository.cs",
+    "linea": 48,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/SettingsRepository.cs",
+    "linea": 50,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/UserRepository.cs",
+    "linea": 53,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/UserRepository.cs",
+    "linea": 59,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Database/Repositories/UserRepository.cs",
+    "linea": 68,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/Auth/AuthDtos.cs",
+    "linea": 17,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Dtos/Auth/AuthDtos.cs",
+    "linea": 35,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.Designer.cs",
+    "linea": 1502,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.Designer.cs",
+    "linea": 1536,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.Designer.cs",
+    "linea": 1883,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.Designer.cs",
+    "linea": 2118,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.Designer.cs",
+    "linea": 2121,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.Designer.cs",
+    "linea": 2303,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+    "linea": 408,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+    "linea": 717,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+    "linea": 730,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+    "linea": 732,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+    "linea": 1137,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+    "linea": 1138,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+    "linea": 1143,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+    "linea": 1144,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/20260820161833_InitialPostgresCreate.cs",
+    "linea": 1252,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/ApplicationDbContextModelSnapshot.cs",
+    "linea": 1499,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/ApplicationDbContextModelSnapshot.cs",
+    "linea": 1533,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/ApplicationDbContextModelSnapshot.cs",
+    "linea": 1880,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/ApplicationDbContextModelSnapshot.cs",
+    "linea": 2115,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/ApplicationDbContextModelSnapshot.cs",
+    "linea": 2118,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Migrations/ApplicationDbContextModelSnapshot.cs",
+    "linea": 2300,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 77,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 127,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 245,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 275,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 284,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 296,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 306,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 311,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 318,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 325,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 342,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 352,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 359,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Program.cs",
+    "linea": 363,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Properties/launchSettings.json",
+    "linea": 2,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Properties/launchSettings.json",
+    "linea": 8,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AccountingService.cs",
+    "linea": 79,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AccountingService.cs",
+    "linea": 82,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AccountingService.cs",
+    "linea": 98,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AccountingService.cs",
+    "linea": 147,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AccountingService.cs",
+    "linea": 157,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 52,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 77,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 96,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 109,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 115,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 117,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 121,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 127,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 133,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 135,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 136,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 138,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 140,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 153,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 160,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 166,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 169,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 173,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 175,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 179,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 180,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 206,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 236,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 238,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 240,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 241,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 248,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 258,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 264,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 267,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 273,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 276,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 281,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 284,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 286,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 298,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/AuthService.cs",
+    "linea": 301,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 45,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 53,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 83,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 90,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 96,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 105,
+    "categoria": "ejecucion_procesos"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 120,
+    "categoria": "ejecucion_procesos"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 121,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 128,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 143,
+    "categoria": "ejecucion_procesos"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 148,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/DatabaseBackupService.cs",
+    "linea": 152,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/EscPosService.cs",
+    "linea": 12,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/EscPosService.cs",
+    "linea": 255,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/EscPosService.cs",
+    "linea": 334,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/FiscalAuthorizationService.cs",
+    "linea": 28,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/FiscalAuthorizationService.cs",
+    "linea": 34,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/FiscalAuthorizationService.cs",
+    "linea": 35,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/FiscalAuthorizationService.cs",
+    "linea": 40,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/FiscalAuthorizationService.cs",
+    "linea": 47,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/FiscalAuthorizationService.cs",
+    "linea": 48,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/FiscalAuthorizationService.cs",
+    "linea": 54,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/Interfaces/IAuthService.cs",
+    "linea": 10,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/Interfaces/IAuthService.cs",
+    "linea": 20,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/Interfaces/IAuthService.cs",
+    "linea": 21,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/Interfaces/IAuthService.cs",
+    "linea": 22,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/PostgresCorrelativeLock.cs",
+    "linea": 18,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/PostgresCorrelativeLock.cs",
+    "linea": 21,
+    "categoria": "sql_manual"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/PostgresCorrelativeLock.cs",
+    "linea": 24,
+    "categoria": "sql_manual"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/PostgresCorrelativeLock.cs",
+    "linea": 25,
+    "categoria": "sql_manual"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/PostgresCorrelativeLock.cs",
+    "linea": 31,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/PostgresCorrelativeLock.cs",
+    "linea": 34,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/PostgresCorrelativeLock.cs",
+    "linea": 36,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/PostgresCorrelativeLock.cs",
+    "linea": 37,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/RawPrinterHelper.cs",
+    "linea": 97,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/RawPrinterHelper.cs",
+    "linea": 127,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/RawPrinterHelper.cs",
+    "linea": 139,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/RawPrinterHelper.cs",
+    "linea": 144,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/RawPrinterHelper.cs",
+    "linea": 153,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/RawPrinterHelper.cs",
+    "linea": 155,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/RawPrinterHelper.cs",
+    "linea": 160,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/RawPrinterHelper.cs",
+    "linea": 165,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/Services/RawPrinterHelper.cs",
+    "linea": 170,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/appsettings.Development.json",
+    "linea": 13,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/appsettings.Development.json",
+    "linea": 17,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/appsettings.json",
+    "linea": 14,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/appsettings.json",
+    "linea": 18,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/hotel-erp.Api.http",
+    "linea": 1,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/favicon.svg",
+    "linea": 1,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "backend/src/hotel-erp.Api/wwwroot/icons.svg",
+    "linea": 1,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "docker/backend/Dockerfile",
+    "linea": 21,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "docker/docker-compose.yml",
+    "linea": 8,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "docker/docker-compose.yml",
+    "linea": 26,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "docker/docker-compose.yml",
+    "linea": 28,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "docker/nginx/nginx.conf",
+    "linea": 22,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "linea": 28,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "linea": 52,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "linea": 53,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "linea": 88,
+    "categoria": "transacciones"
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "linea": 153,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "linea": 154,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "linea": 157,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "linea": 173,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "linea": 175,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "linea": 176,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "docs/QA_FIX_PLAN.md",
+    "linea": 324,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "docs/auditoria/Auditoria_Frontend_2026-08-23.md",
+    "linea": 47,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/README.md",
+    "linea": 7,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/README.md",
+    "linea": 8,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/README.md",
+    "linea": 12,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/README.md",
+    "linea": 46,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 44,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 59,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 69,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 95,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 100,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 117,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 134,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 144,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 158,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 176,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 186,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 196,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 206,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 220,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 236,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 251,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 270,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 284,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 295,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 305,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 315,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 326,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 334,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 342,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 347,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 357,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 372,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 385,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 398,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 406,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 419,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 429,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 443,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 455,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 468,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 483,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 493,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 502,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 507,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 516,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 521,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 531,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 541,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 550,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 556,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 566,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 575,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 584,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 588,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 593,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 609,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 625,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 641,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 657,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 673,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 689,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 705,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 721,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 737,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 753,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 769,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 785,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 803,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 819,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 835,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 841,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 847,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 862,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 885,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 901,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 917,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 933,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 949,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 965,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 981,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 997,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1013,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1029,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1058,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1074,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1090,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1104,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1109,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1114,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1122,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1130,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1140,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1147,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1154,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1161,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1171,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1181,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1191,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1210,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1220,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1230,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1246,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1255,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1269,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1277,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1290,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1295,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1304,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1312,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1328,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1337,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1346,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1351,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1371,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1379,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1392,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1407,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1416,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1429,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1434,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1460,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1473,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1483,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1495,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1507,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1512,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1518,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1530,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1540,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1553,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1566,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1572,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1576,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1580,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1600,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1613,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1619,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1623,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1627,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1634,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1641,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1646,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1655,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1667,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1674,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1682,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1687,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1702,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1709,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1726,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1733,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1742,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1751,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1765,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1772,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1785,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1794,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1803,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1815,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1830,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1840,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1848,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1853,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1896,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1909,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1929,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1939,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1953,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1958,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1966,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1971,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1984,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 1989,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2002,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2015,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2025,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2035,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2042,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2049,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2056,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2073,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2086,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2098,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2103,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2117,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2124,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2129,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2144,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2160,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2174,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2178,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2183,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2193,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2212,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2217,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2230,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2243,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2251,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2256,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2263,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2268,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2274,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2281,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2286,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2296,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2301,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2313,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2320,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2330,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2343,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2353,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2363,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2373,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2386,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2393,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2402,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2409,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2422,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2429,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2436,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2443,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2456,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2466,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2480,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2491,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2509,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2524,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2529,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2544,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2549,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2564,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2569,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2584,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2589,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2604,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2609,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2624,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2629,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2644,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2649,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2664,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2669,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2684,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2689,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2704,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2709,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2724,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2729,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2740,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2745,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2755,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2764,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2773,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2782,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2791,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2803,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2814,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2819,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2825,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2830,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2843,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2850,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2857,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2875,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2886,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2891,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2902,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2907,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2917,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2927,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2933,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2940,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2945,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2950,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2954,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2958,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2973,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2983,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 2992,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3002,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3011,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3023,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3031,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3039,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3061,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3077,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3110,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3116,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3126,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3132,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3145,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3155,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3164,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3169,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3174,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3180,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3188,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3193,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3204,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3209,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3222,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3229,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3242,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3256,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3271,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3280,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3287,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3293,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3297,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3301,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3318,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3328,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3345,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3405,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3421,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3431,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3438,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3446,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3451,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3455,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3460,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/package-lock.json",
+    "linea": 3473,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/public/favicon.svg",
+    "linea": 1,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/public/icons.svg",
+    "linea": 1,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/src/assets/react.svg",
+    "linea": 1,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/src/assets/react.svg",
+    "linea": 1,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/assets/vite.svg",
+    "linea": 1,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/src/assets/vite.svg",
+    "linea": 1,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/components/ui/ConfirmDialog.tsx",
+    "linea": 34,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/components/ui/ConfirmDialog.tsx",
+    "linea": 47,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/components/ui/ConfirmDialog.tsx",
+    "linea": 48,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/components/ui/ConfirmDialog.tsx",
+    "linea": 49,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/components/ui/InlineAlert.tsx",
+    "linea": 45,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/components/ui/InlineAlert.tsx",
+    "linea": 62,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/hooks/useTaxRates.ts",
+    "linea": 21,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/hooks/useTaxRates.ts",
+    "linea": 24,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/index.css",
+    "linea": 1,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/src/lib/axios.ts",
+    "linea": 64,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/lib/axios.ts",
+    "linea": 70,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "frontend/src/lib/axios.ts",
+    "linea": 72,
+    "categoria": "datos_sensibles_config"
+  },
+  {
+    "archivo": "frontend/src/lib/axios.ts",
+    "linea": 79,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/lib/axios.ts",
+    "linea": 88,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/ChartOfAccountsPage.tsx",
+    "linea": 135,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/ChartOfAccountsPage.tsx",
+    "linea": 137,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/ChartOfAccountsPage.tsx",
+    "linea": 157,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/ChartOfAccountsPage.tsx",
+    "linea": 174,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/ChartOfAccountsPage.tsx",
+    "linea": 186,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/ChartOfAccountsPage.tsx",
+    "linea": 248,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/ChartOfAccountsPage.tsx",
+    "linea": 259,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/ChartOfAccountsPage.tsx",
+    "linea": 270,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/ChartOfAccountsPage.tsx",
+    "linea": 309,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 80,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 129,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 131,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 248,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 250,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 545,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 557,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 573,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 588,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 603,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 611,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/JournalEntriesPage.tsx",
+    "linea": 623,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/accounting/TrialBalancePage.tsx",
+    "linea": 20,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/admin/AuditLogsPage.tsx",
+    "linea": 67,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/admin/AuditLogsPage.tsx",
+    "linea": 69,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/admin/AuditLogsPage.tsx",
+    "linea": 94,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/admin/AuditLogsPage.tsx",
+    "linea": 96,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/admin/AuditLogsPage.tsx",
+    "linea": 133,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/auth/LoginPage.tsx",
+    "linea": 32,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/auth/LoginPage.tsx",
+    "linea": 38,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/auth/LoginPage.tsx",
+    "linea": 60,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/auth/LoginPage.tsx",
+    "linea": 71,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/backups/BackupsPage.tsx",
+    "linea": 25,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/backups/BackupsPage.tsx",
+    "linea": 28,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/backups/BackupsPage.tsx",
+    "linea": 55,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/backups/BackupsPage.tsx",
+    "linea": 57,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/cash/CashRegistersPage.tsx",
+    "linea": 34,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/cash/CashRegistersPage.tsx",
+    "linea": 45,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/cash/CashRegistersPage.tsx",
+    "linea": 47,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/cash/CashRegistersPage.tsx",
+    "linea": 62,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/cash/CashRegistersPage.tsx",
+    "linea": 80,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/cash/CashRegistersPage.tsx",
+    "linea": 97,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/cash/CashRegistersPage.tsx",
+    "linea": 135,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/cash/CashRegistersPage.tsx",
+    "linea": 146,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/cash/CashRegistersPage.tsx",
+    "linea": 242,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/cash/CashRegistersPage.tsx",
+    "linea": 274,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 65,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 67,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 127,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 129,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 142,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 144,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 214,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 224,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 234,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 244,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 253,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 262,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 274,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 283,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 297,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 306,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 315,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 325,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/customers/CustomersPage.tsx",
+    "linea": 334,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/dashboard/DashboardPage.tsx",
+    "linea": 50,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/dashboard/DashboardPage.tsx",
+    "linea": 52,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 38,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 60,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 88,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 108,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 151,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 162,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 173,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 186,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 198,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 211,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 222,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/discounts/DiscountsPage.tsx",
+    "linea": 241,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/folios/FoliosPage.tsx",
+    "linea": 21,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/folios/FoliosPage.tsx",
+    "linea": 31,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/folios/FoliosPage.tsx",
+    "linea": 45,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/folios/FoliosPage.tsx",
+    "linea": 108,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/folios/FoliosPage.tsx",
+    "linea": 109,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/folios/FoliosPage.tsx",
+    "linea": 110,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/folios/FoliosPage.tsx",
+    "linea": 111,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/folios/FoliosPage.tsx",
+    "linea": 116,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/folios/FoliosPage.tsx",
+    "linea": 121,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 73,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 75,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 104,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 106,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 145,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 147,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 224,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 234,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 244,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 257,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 267,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 276,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 285,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 294,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 305,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 314,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 324,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 337,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/guests/GuestsPage.tsx",
+    "linea": 359,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 70,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 72,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 109,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 111,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 130,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 132,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 158,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 160,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 188,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 190,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 211,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 213,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 318,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 330,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 339,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 356,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 367,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 377,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 386,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 397,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 531,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 541,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 598,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 616,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 630,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/inventory/InventoryPage.tsx",
+    "linea": 643,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/AuthorizationsPage.tsx",
+    "linea": 106,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/AuthorizationsPage.tsx",
+    "linea": 142,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/AuthorizationsPage.tsx",
+    "linea": 148,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/AuthorizationsPage.tsx",
+    "linea": 153,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/AuthorizationsPage.tsx",
+    "linea": 158,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/AuthorizationsPage.tsx",
+    "linea": 163,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/AuthorizationsPage.tsx",
+    "linea": 168,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/AuthorizationsPage.tsx",
+    "linea": 173,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoiceEditPage.tsx",
+    "linea": 30,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoiceEditPage.tsx",
+    "linea": 61,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoiceEditPage.tsx",
+    "linea": 63,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoiceEditPage.tsx",
+    "linea": 79,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoiceEditPage.tsx",
+    "linea": 80,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoiceEditPage.tsx",
+    "linea": 87,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoiceEditPage.tsx",
+    "linea": 88,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoiceEditPage.tsx",
+    "linea": 89,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoiceEditPage.tsx",
+    "linea": 90,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 87,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 110,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 112,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 143,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 155,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 167,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 202,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 204,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 242,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 244,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 286,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 303,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 313,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 323,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 596,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 607,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 647,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 707,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 719,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/invoices/InvoicesPage.tsx",
+    "linea": 731,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+    "linea": 110,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+    "linea": 120,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+    "linea": 122,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+    "linea": 132,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+    "linea": 134,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+    "linea": 144,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+    "linea": 146,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reports/ReportsPage.tsx",
+    "linea": 166,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckInPage.tsx",
+    "linea": 103,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckInPage.tsx",
+    "linea": 114,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckInPage.tsx",
+    "linea": 126,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 91,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 93,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 115,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 117,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 147,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 216,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 226,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 236,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 241,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 260,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 262,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 272,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 481,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 491,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 501,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 514,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 594,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 609,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 620,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 630,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 644,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 691,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/CheckOutPage.tsx",
+    "linea": 701,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/ReservationsPage.tsx",
+    "linea": 31,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/ReservationsPage.tsx",
+    "linea": 43,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/ReservationsPage.tsx",
+    "linea": 53,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/reservations/ReservationsPage.tsx",
+    "linea": 69,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/FloorMapPage.tsx",
+    "linea": 42,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/FloorMapPage.tsx",
+    "linea": 45,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomTypesPage.tsx",
+    "linea": 36,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomTypesPage.tsx",
+    "linea": 52,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomTypesPage.tsx",
+    "linea": 69,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomTypesPage.tsx",
+    "linea": 71,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomTypesPage.tsx",
+    "linea": 95,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomTypesPage.tsx",
+    "linea": 96,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomTypesPage.tsx",
+    "linea": 98,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomTypesPage.tsx",
+    "linea": 101,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomsPage.tsx",
+    "linea": 44,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomsPage.tsx",
+    "linea": 46,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomsPage.tsx",
+    "linea": 56,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomsPage.tsx",
+    "linea": 82,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomsPage.tsx",
+    "linea": 94,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomsPage.tsx",
+    "linea": 164,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomsPage.tsx",
+    "linea": 175,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomsPage.tsx",
+    "linea": 186,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/rooms/RoomsPage.tsx",
+    "linea": 203,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 68,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 76,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 77,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 80,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 102,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 103,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 109,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 115,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 126,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 142,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 146,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 150,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 154,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 158,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 162,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 166,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 170,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 197,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 206,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 236,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 258,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 265,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 273,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 280,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/settings/SettingsPage.tsx",
+    "linea": 288,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 76,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 78,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 113,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 115,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 142,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 144,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 164,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 166,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 179,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 408,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 420,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 435,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 447,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 462,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 485,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 544,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 554,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 566,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 585,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 592,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/pages/users/UsersPage.tsx",
+    "linea": 654,
+    "categoria": "a11y"
+  },
+  {
+    "archivo": "frontend/src/store/authStore.ts",
+    "linea": 12,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/store/authStore.ts",
+    "linea": 22,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/src/store/authStore.ts",
+    "linea": 69,
+    "categoria": "errores"
+  },
+  {
+    "archivo": "frontend/vite.config.ts",
+    "linea": 21,
+    "categoria": "red_o_url"
+  },
+  {
+    "archivo": "frontend/vite.config.ts",
+    "linea": 25,
+    "categoria": "red_o_url"
+  }
+]

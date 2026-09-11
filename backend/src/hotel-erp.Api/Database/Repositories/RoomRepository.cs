@@ -39,7 +39,9 @@ namespace hotel_erp.Api.Database.Repositories
 
             return await _context.Rooms
                 .Include(r => r.RoomType)
-                .Where(r => !occupiedRoomIds.Contains(r.Id) && r.Status == RoomStatus.Libre)
+                .Where(r => !occupiedRoomIds.Contains(r.Id)
+                    && r.Status != RoomStatus.Mantenimiento
+                    && r.Status != RoomStatus.Bloqueada)
                 .ToListAsync();
         }
 
@@ -48,4 +50,3 @@ namespace hotel_erp.Api.Database.Repositories
         public async Task DeleteAsync(Guid id) { var r = await _context.Rooms.FindAsync(id); if (r != null) { r.IsDeleted = true; await _context.SaveChangesAsync(); } }
     }
 }
-

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import api from '@/lib/axios'
 import type { RoomType } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -27,16 +27,19 @@ export default function RoomTypesPage() {
   const [alertInfo, setAlertInfo] = useState<{ variant: 'error' | 'success' | 'info'; message: string } | null>(null)
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
 
-  useEffect(() => { load() }, [])
-
-  const load = async () => {
+  const load = useCallback(async () => {
     try {
       const { data } = await api.get<RoomType[]>('/room-types')
       setTypes(data)
-    } catch (err) {
+    } catch {
       setAlertInfo({ variant: 'error', message: 'Error al cargar tipos de habitación' })
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void load(), 0)
+    return () => window.clearTimeout(timer)
+  }, [load])
 
   const save = async () => {
     try {
@@ -49,7 +52,7 @@ export default function RoomTypesPage() {
       setForm({ name: '', description: '', pricePerNight: 0, capacity: 1 })
       load()
       setAlertInfo({ variant: 'success', message: 'Tipo de habitación guardado correctamente' })
-    } catch (err) {
+    } catch {
       setAlertInfo({ variant: 'error', message: 'Error al guardar tipo de habitación' })
     }
   }
@@ -66,7 +69,7 @@ export default function RoomTypesPage() {
       await api.delete(`/room-types/${confirmDeleteId}`)
       load()
       setAlertInfo({ variant: 'success', message: 'Tipo de habitación eliminado correctamente' })
-    } catch (err) {
+    } catch {
       setAlertInfo({ variant: 'error', message: 'Error al eliminar tipo de habitación' })
     } finally {
       setConfirmDeleteId(null)

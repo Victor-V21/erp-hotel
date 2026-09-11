@@ -1,0 +1,48 @@
+{
+  "base_facturas": 10,
+  "antes": [
+    {
+      "ms": 16.21,
+      "bytes": 10082,
+      "status": 200
+    },
+    {
+      "ms": 9.79,
+      "bytes": 10082,
+      "status": 200
+    },
+    {
+      "ms": 8.26,
+      "bytes": 10082,
+      "status": 200
+    }
+  ],
+  "despues_facturas": 5010,
+  "despues": [
+    {
+      "ms": 562.03,
+      "bytes": 4998975,
+      "status": 200
+    },
+    {
+      "ms": 397.27,
+      "bytes": 4998975,
+      "status": 200
+    },
+    {
+      "ms": 505.46,
+      "bytes": 4998975,
+      "status": 200
+    }
+  ],
+  "advertencia": "Tres lecturas locales por escenario, cach\u00e9 caliente; no es benchmark del hardware del hotel. R\u00e9plicas sin l\u00edneas y sin asientos; no usar para validar contabilidad."
+}
+Hash matching: ['2026-09-07T05:35:04.9015318Z']
+Seq Scan on "Invoices"  (cost=0.00..1077.15 rows=24 width=1567) (actual time=0.584..5.232 rows=24.00 loops=1)
+  Filter: ((NOT "IsDeleted") AND ("InvoiceDate" >= '2020-02-01 00:00:00'::timestamp without time zone) AND ("InvoiceDate" < '2020-02-02 00:00:00'::timestamp without time zone))
+  Rows Removed by Filter: 4986
+  Buffers: shared hit=1002
+Planning:
+  Buffers: shared hit=260
+Planning Time: 0.837 ms
+Execution Time: 5.340 ms

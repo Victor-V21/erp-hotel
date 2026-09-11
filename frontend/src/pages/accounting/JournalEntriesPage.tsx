@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import api from '@/lib/axios'
+import { getApiErrorMessage } from '@/lib/errors'
 import type { AccountingEntry, AccountingAccount } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,7 +17,6 @@ import {
   AlertTriangle,
   RefreshCw,
   Search,
-  Calendar,
   Scale,
 } from 'lucide-react'
 
@@ -134,15 +134,9 @@ export default function JournalEntriesPage() {
   }, [])
 
   useEffect(() => {
-    loadData()
+    const timer = window.setTimeout(() => void loadData(), 0)
+    return () => window.clearTimeout(timer)
   }, [loadData])
-
-  // Flattened accounts map for quick name lookup
-  const accountMap = useMemo(() => {
-    const map = new Map<string, AccountingAccount>()
-    accounts.forEach((a) => map.set(a.id, a))
-    return map
-  }, [accounts])
 
   // Calculation for Double Entry Live Balance
   const formTotals = useMemo(() => {
@@ -245,8 +239,8 @@ export default function JournalEntriesPage() {
         { accountId: '', debit: '', credit: '', description: '' },
       ])
       loadData()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'Error al registrar el asiento contable.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al registrar el asiento contable.') })
     } finally {
       setActionLoading(false)
     }

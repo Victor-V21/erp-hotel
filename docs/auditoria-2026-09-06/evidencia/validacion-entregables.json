@@ -1,0 +1,12 @@
+{
+  "hallazgos": 64,
+  "prioridades": {
+    "P0": 6,
+    "P1": 42,
+    "P2": 16
+  },
+  "archivos_iniciales_sin_cambio": 430,
+  "archivos_iniciales_cambiados": [],
+  "errores_referencias": [],
+  "fuentes_no_modificadas": true
+}

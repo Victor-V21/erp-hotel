@@ -4,6 +4,12 @@ namespace hotel_erp.Api.Services
 {
     public static class RawPrinterHelper
     {
+        private static void EnsureWindows()
+        {
+            if (!OperatingSystem.IsWindows())
+                throw new PlatformNotSupportedException("La impresión ESC/POS directa requiere Windows y el servicio de cola de impresión.");
+        }
+
         [DllImport("winspool.drv", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern bool OpenPrinter(string pPrinterName, out IntPtr phPrinter, IntPtr pDefault);
 
@@ -67,6 +73,7 @@ namespace hotel_erp.Api.Services
 
         public static string[] GetInstalledPrinters()
         {
+            EnsureWindows();
             const int level = 2;
             int cbNeeded = 0, cReturned = 0;
 
@@ -102,6 +109,7 @@ namespace hotel_erp.Api.Services
 
         public static (bool Success, string Message) TestPrinterConnection(string printerName)
         {
+            EnsureWindows();
             if (!OpenPrinter(printerName, out var hPrinter, IntPtr.Zero))
             {
                 var err = Marshal.GetLastWin32Error();
@@ -121,6 +129,7 @@ namespace hotel_erp.Api.Services
 
         public static bool SendBytesToPrinter(string printerName, byte[] data)
         {
+            EnsureWindows();
             if (!OpenPrinter(printerName, out var hPrinter, IntPtr.Zero))
             {
                 var err = Marshal.GetLastWin32Error();
@@ -176,4 +185,3 @@ namespace hotel_erp.Api.Services
         }
     }
 }
-

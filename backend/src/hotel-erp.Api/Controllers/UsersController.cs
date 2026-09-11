@@ -8,12 +8,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using hotel_erp.Api.Authorization;
 
 namespace hotel_erp.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Policy = PermissionNames.ManageUsers)]
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -52,7 +53,6 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<UserDto>> Create([FromBody] CreateUserRequest request)
         {
             var existingUser = await _userRepository.GetByUsernameAsync(request.Username);
@@ -63,6 +63,23 @@ namespace hotel_erp.Api.Controllers
             if (existingUser != null)
                 return BadRequest(new { message = "El correo electrónico ya está registrado" });
 
+            // Assign roles if provided, otherwise default to "Recepcion"
+            var roleNames = request.Roles != null && request.Roles.Any()
+                ? request.Roles
+                : new List<string> { "Recepcion" };
+
+            var allRoles = await _context.Roles.Where(role => !role.IsDeleted).ToListAsync();
+            var selectedRoles = roleNames
+                .Select(roleName => allRoles.FirstOrDefault(role =>
+                    role.NormalizedName == SecurityCatalogSeeder.NormalizeRoleName(roleName)))
+                .ToList();
+
+            if (selectedRoles.Any(role => role is null))
+                return BadRequest(new { message = "Uno o más roles solicitados no existen" });
+
+            if (!await CanAssignRolesAsync(selectedRoles.OfType<Role>()))
+                return Forbid();
+
             var user = new User
             {
                 Username = request.Username.Trim(),
@@ -70,24 +87,15 @@ namespace hotel_erp.Api.Controllers
                 FirstName = request.FirstName.Trim(),
                 LastName = request.LastName.Trim(),
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                IsActive = true
+                IsActive = true,
+                MustChangePassword = true
             };
 
-            await _userRepository.AddAsync(user);
+            await _context.Users.AddAsync(user);
 
-            // Assign roles if provided, otherwise default to "Recepcion"
-            var roleNames = request.Roles != null && request.Roles.Any()
-                ? request.Roles
-                : new List<string> { "Recepcion" };
-
-            var allRoles = await _context.Roles.ToListAsync();
-            foreach (var roleName in roleNames)
+            foreach (var role in selectedRoles.OfType<Role>())
             {
-                var role = allRoles.FirstOrDefault(r => string.Equals(r.Name, roleName, StringComparison.OrdinalIgnoreCase));
-                if (role != null)
-                {
-                    await _context.UserRoles.AddAsync(new UserRole { UserId = user.Id, RoleId = role.Id });
-                }
+                await _context.UserRoles.AddAsync(new UserRole { UserId = user.Id, RoleId = role.Id });
             }
 
             await _context.SaveChangesAsync();
@@ -97,7 +105,6 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<UserDto>> Update(Guid id, [FromBody] UpdateUserRequest request)
         {
             var user = await _context.Users
@@ -105,6 +112,10 @@ namespace hotel_erp.Api.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null) return NotFound("Usuario no encontrado");
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (request.IsActive == false && Guid.TryParse(currentUserId, out var actorId) && actorId == id)
+                return BadRequest(new { message = "No puede desactivar su propia cuenta" });
 
             if (!string.IsNullOrWhiteSpace(request.Email) && !string.Equals(user.Email, request.Email, StringComparison.OrdinalIgnoreCase))
             {
@@ -125,20 +136,28 @@ namespace hotel_erp.Api.Controllers
 
             if (request.Roles != null)
             {
+                var allRoles = await _context.Roles.Where(role => !role.IsDeleted).ToListAsync();
+                var selectedRoles = request.Roles
+                    .Select(roleName => allRoles.FirstOrDefault(role =>
+                        role.NormalizedName == SecurityCatalogSeeder.NormalizeRoleName(roleName)))
+                    .ToList();
+
+                if (selectedRoles.Any(role => role is null))
+                    return BadRequest(new { message = "Uno o más roles solicitados no existen" });
+
+                if (!await CanAssignRolesAsync(selectedRoles.OfType<Role>()))
+                    return Forbid();
+
                 // Remove existing user roles
                 _context.UserRoles.RemoveRange(user.UserRoles);
 
-                var allRoles = await _context.Roles.ToListAsync();
-                foreach (var roleName in request.Roles)
+                foreach (var role in selectedRoles.OfType<Role>())
                 {
-                    var role = allRoles.FirstOrDefault(r => string.Equals(r.Name, roleName, StringComparison.OrdinalIgnoreCase));
-                    if (role != null)
-                    {
-                        await _context.UserRoles.AddAsync(new UserRole { UserId = user.Id, RoleId = role.Id });
-                    }
+                    await _context.UserRoles.AddAsync(new UserRole { UserId = user.Id, RoleId = role.Id });
                 }
             }
 
+            user.SecurityVersion++;
             await _context.SaveChangesAsync();
             await _jwtService.RevokeAllRefreshTokensAsync(id);
 
@@ -147,13 +166,14 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost("{id}/reset-password")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> ResetPassword(Guid id, [FromBody] AdminResetPasswordRequest request)
         {
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null) return NotFound("Usuario no encontrado");
 
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+            user.MustChangePassword = true;
+            user.SecurityVersion++;
             user.FailedLoginAttempts = 0;
             user.LockoutEnd = null;
 
@@ -164,7 +184,6 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(Guid id)
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -176,7 +195,20 @@ namespace hotel_erp.Api.Controllers
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null) return NotFound("Usuario no encontrado");
 
+            var removesAdministrator = user.UserRoles.Any(userRole =>
+                userRole.Role.SystemKey == SystemRoleKeys.Administrator);
+            if (removesAdministrator)
+            {
+                var activeAdministrators = await _context.UserRoles.CountAsync(userRole =>
+                    userRole.Role.SystemKey == SystemRoleKeys.Administrator
+                    && userRole.User.IsActive
+                    && !userRole.User.IsDeleted);
+                if (activeAdministrators <= 1)
+                    return BadRequest(new { message = "No puede desactivar al último administrador activo" });
+            }
+
             user.IsActive = false;
+            user.SecurityVersion++;
             await _userRepository.UpdateAsync(user);
             await _jwtService.RevokeAllRefreshTokensAsync(id);
 
@@ -184,7 +216,6 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost("{userId}/roles/{roleId}")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> AssignRole(Guid userId, Guid roleId)
         {
             var user = await _userRepository.GetByIdAsync(userId);
@@ -193,20 +224,37 @@ namespace hotel_erp.Api.Controllers
             var role = await _roleRepository.GetByIdAsync(roleId);
             if (role == null) return NotFound("Rol no encontrado");
 
+            if (!await CanAssignRolesAsync([role]))
+                return Forbid();
+
             var userRoles = await _userRepository.GetUserRolesAsync(userId);
             if (userRoles.Any(r => r.Id == roleId))
                 return BadRequest("El usuario ya tiene este rol");
 
             var userRole = new UserRole { UserId = userId, RoleId = roleId };
             await _context.UserRoles.AddAsync(userRole);
+            user.SecurityVersion++;
             await _context.SaveChangesAsync();
             await _jwtService.RevokeAllRefreshTokensAsync(userId);
 
             return Ok(new { message = "Rol asignado exitosamente" });
         }
+
+        private async Task<bool> CanAssignRolesAsync(IEnumerable<Role> roles)
+        {
+            var actorPermissions = User.FindAll(SecurityClaimTypes.Permission)
+                .Select(claim => claim.Value)
+                .ToHashSet(StringComparer.Ordinal);
+            var roleIds = roles.Select(role => role.Id).Distinct().ToList();
+            var requiredPermissions = await _context.RolePermissions
+                .Where(rolePermission => roleIds.Contains(rolePermission.RoleId) && !rolePermission.Permission.IsDeleted)
+                .Select(rolePermission => rolePermission.Permission.Name)
+                .Distinct()
+                .ToListAsync();
+
+            return requiredPermissions.All(actorPermissions.Contains);
+        }
     }
 }
-
-
 
 

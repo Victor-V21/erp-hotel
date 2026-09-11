@@ -1,11 +1,13 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import api from '@/lib/axios'
+import { getApiErrorMessage } from '@/lib/errors'
 import type { Customer } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { InlineAlert } from '@/components/ui/InlineAlert'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { Pagination } from '@/components/ui/Pagination'
+import { useAuthStore } from '@/store/authStore'
 import { Building2, Plus, Search, Edit2, Trash2, Loader2, RefreshCw, X } from 'lucide-react'
 
 const defaultForm = {
@@ -43,6 +45,7 @@ function sanitize(form: typeof defaultForm) {
 }
 
 export default function CustomersPage() {
+  const canManageReservations = useAuthStore((state) => state.hasPermission('manage_reservations'))
   const [customers, setCustomers] = useState<Customer[]>([])
   const [search, setSearch] = useState('')
   const [showForm, setShowForm] = useState(false)
@@ -70,7 +73,8 @@ export default function CustomersPage() {
   }, [search])
 
   useEffect(() => {
-    load()
+    const timer = window.setTimeout(() => void load(), 0)
+    return () => window.clearTimeout(timer)
   }, [load])
 
   const startCreate = () => {
@@ -124,8 +128,8 @@ export default function CustomersPage() {
       setEditingId(null)
       setForm(defaultForm)
       load()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'Error al guardar el cliente.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al guardar el cliente.') })
     } finally {
       setActionLoading(false)
     }
@@ -139,8 +143,8 @@ export default function CustomersPage() {
       setAlertInfo({ variant: 'success', message: 'Cliente eliminado correctamente.' })
       setDeleteTarget(null)
       load()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'No se puede eliminar un cliente con facturas asociadas.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'No se puede eliminar un cliente con facturas asociadas.') })
     } finally {
       setActionLoading(false)
     }
@@ -182,10 +186,12 @@ export default function CustomersPage() {
             <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
             Actualizar
           </Button>
-          <Button onClick={startCreate} className="gap-1.5">
-            <Plus size={16} />
-            Nuevo Cliente / Empresa
-          </Button>
+          {canManageReservations && (
+            <Button onClick={startCreate} className="gap-1.5">
+              <Plus size={16} />
+              Nuevo Cliente / Empresa
+            </Button>
+          )}
         </div>
       </div>
 
@@ -194,7 +200,7 @@ export default function CustomersPage() {
       )}
 
       {/* Form Card */}
-      {showForm && (
+      {showForm && canManageReservations && (
         <form onSubmit={save} className="border border-border rounded-xl p-5 bg-card space-y-4 shadow-sm animate-in fade-in">
           <div className="flex items-center justify-between border-b border-border pb-3">
             <h3 className="font-bold text-sm text-foreground">
@@ -414,24 +420,30 @@ export default function CustomersPage() {
                     <td className="p-3.5 font-mono text-muted-foreground">{customer.phone || '—'}</td>
                     <td className="p-3.5 text-muted-foreground">{customer.email || '—'}</td>
                     <td className="p-3.5 text-right space-x-1">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => startEdit(customer)}
-                        className="h-7 w-7 p-0"
-                        title="Editar cliente"
-                      >
-                        <Edit2 size={12} />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => setDeleteTarget(customer)}
-                        className="h-7 w-7 p-0"
-                        title="Eliminar"
-                      >
-                        <Trash2 size={12} />
-                      </Button>
+                      {canManageReservations ? (
+                        <>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => startEdit(customer)}
+                            className="h-7 w-7 p-0"
+                            title="Editar cliente"
+                          >
+                            <Edit2 size={12} />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => setDeleteTarget(customer)}
+                            className="h-7 w-7 p-0"
+                            title="Eliminar"
+                          >
+                            <Trash2 size={12} />
+                          </Button>
+                        </>
+                      ) : (
+                        <span className="text-[10px] text-muted-foreground">Solo lectura</span>
+                      )}
                     </td>
                   </tr>
                 ))}

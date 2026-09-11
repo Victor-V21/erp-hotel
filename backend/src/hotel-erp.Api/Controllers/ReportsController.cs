@@ -1,4 +1,5 @@
 using ClosedXML.Excel;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Services;
 using hotel_erp.Api.Database.Entities;
@@ -46,7 +47,7 @@ namespace hotel_erp.Api.Controllers
 
     [ApiController]
     [Route("api/reports")]
-    [Authorize]
+    [Authorize(Policy = PermissionNames.ViewReports)]
     public class ReportsController : ControllerBase
     {
         private readonly IInvoiceRepository _invoiceRepo;

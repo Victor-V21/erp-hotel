@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, useCallback } from 'react'
 import api from '@/lib/axios'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -7,10 +7,8 @@ import {
   BarChart3,
   FileSpreadsheet,
   Download,
-  Calendar,
   TrendingUp,
   Scale,
-  DollarSign,
   Loader2,
   CheckCircle2,
   Receipt,
@@ -112,7 +110,7 @@ export default function ReportsPage() {
     }
   }
 
-  const fetchTaxSummary = async () => {
+  const fetchTaxSummary = useCallback(async () => {
     setLoading(true)
     try {
       const { data } = await api.get<TaxSummary>(`/reports/tax-summary?from=${from}&to=${to}`)
@@ -122,9 +120,9 @@ export default function ReportsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [from, to])
 
-  const fetchIncomeStatement = async () => {
+  const fetchIncomeStatement = useCallback(async () => {
     setLoading(true)
     try {
       const { data } = await api.get<IncomeStatement>(`/reports/financial/income-statement?from=${from}&to=${to}`)
@@ -134,9 +132,9 @@ export default function ReportsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [from, to])
 
-  const fetchBalanceSheet = async () => {
+  const fetchBalanceSheet = useCallback(async () => {
     setLoading(true)
     try {
       const { data } = await api.get<BalanceSheet>(`/reports/financial/balance-sheet?asOfDate=${asOfDate}`)
@@ -146,13 +144,16 @@ export default function ReportsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [asOfDate])
 
   useEffect(() => {
-    if (activeTab === 'sar' || activeTab === 'dmr1') fetchTaxSummary()
-    else if (activeTab === 'income') fetchIncomeStatement()
-    else if (activeTab === 'balance') fetchBalanceSheet()
-  }, [activeTab])
+    const timer = window.setTimeout(() => {
+      if (activeTab === 'sar' || activeTab === 'dmr1') void fetchTaxSummary()
+      else if (activeTab === 'income') void fetchIncomeStatement()
+      else if (activeTab === 'balance') void fetchBalanceSheet()
+    }, 0)
+    return () => window.clearTimeout(timer)
+  }, [activeTab, fetchBalanceSheet, fetchIncomeStatement, fetchTaxSummary])
 
   const exportSarBook = async (kind: 'sales' | 'purchases') => {
     setExportBusy(kind)

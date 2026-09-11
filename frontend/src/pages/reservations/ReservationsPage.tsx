@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import api from '@/lib/axios'
 import type { Reservation } from '@/types'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { InlineAlert } from '@/components/ui/InlineAlert'
+import { getApiErrorMessage } from '@/lib/errors'
 
 const statusColors: Record<string, string> = {
   Pendiente: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300',
@@ -20,38 +21,48 @@ export default function ReservationsPage() {
   const navigate = useNavigate()
 
   const [alertInfo, setAlertInfo] = useState<{ variant: 'error' | 'success', message: string } | null>(null)
-  const [confirmCancelId, setConfirmCancelId] = useState<string | null>(null)
+  const [reservationToCancel, setReservationToCancel] = useState<Reservation | null>(null)
+  const [cancelReason, setCancelReason] = useState('')
 
-  useEffect(() => { load() }, [statusFilter])
-
-  const load = async () => {
+  const load = useCallback(async () => {
     try {
       const { data } = await api.get<Reservation[]>('/reservations', { params: { status: statusFilter || undefined } })
       setReservations(data)
-    } catch (err) {
+    } catch {
       setAlertInfo({ variant: 'error', message: 'Error al cargar reservaciones' })
     }
-  }
+  }, [statusFilter])
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void load(), 0)
+    return () => window.clearTimeout(timer)
+  }, [load])
 
   const handleCancelReservation = async () => {
-    if (!confirmCancelId) return
+    if (!reservationToCancel || cancelReason.trim().length < 3) return
     try {
-      await api.post(`/reservations/${confirmCancelId}/cancel`)
-      setConfirmCancelId(null)
-      load()
+      await api.post(`/reservations/${reservationToCancel.id}/cancel`, {
+        expectedVersion: reservationToCancel.version,
+        reason: cancelReason.trim(),
+      })
+      setReservationToCancel(null)
+      setCancelReason('')
+      await load()
       setAlertInfo({ variant: 'success', message: 'Reservación cancelada' })
-    } catch (err) {
-      setAlertInfo({ variant: 'error', message: 'Error al cancelar reservación' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al cancelar reservación') })
+      await load()
     }
   }
 
-  const confirmReservation = async (id: string) => {
+  const confirmReservation = async (reservation: Reservation) => {
     try {
-      await api.post(`/reservations/${id}/confirm`)
-      load()
+      await api.post(`/reservations/${reservation.id}/confirm`, { expectedVersion: reservation.version })
+      await load()
       setAlertInfo({ variant: 'success', message: 'Reservación confirmada' })
-    } catch (err) {
-      setAlertInfo({ variant: 'error', message: 'Error al confirmar reservación' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al confirmar reservación') })
+      await load()
     }
   }
 
@@ -66,7 +77,7 @@ export default function ReservationsPage() {
               const url = window.URL.createObjectURL(new Blob([data]))
               const link = document.createElement('a'); link.href = url; link.setAttribute('download', 'reservaciones.xlsx')
               document.body.appendChild(link); link.click(); document.body.removeChild(link); window.URL.revokeObjectURL(url)
-            } catch (err) {
+            } catch {
               setAlertInfo({ variant: 'error', message: 'Error al exportar reservaciones' })
             }
           }}>Exportar XLSX</Button>
@@ -109,10 +120,10 @@ export default function ReservationsPage() {
                 <td className="p-3">{r.checkOutDate}</td>
                 <td className="p-3"><span className={`px-2 py-0.5 rounded text-xs font-medium ${statusColors[r.status] || ''}`}>{r.status}</span></td>
                 <td className="p-3 space-x-1">
-                  {r.status === 'Pendiente' && <Button size="sm" onClick={() => confirmReservation(r.id)}>Confirmar</Button>}
-                  {r.status === 'Confirmada' && <Button size="sm" onClick={() => navigate('/checkin')}>Check-In</Button>}
-                  {r.status === 'CheckIn' && <Button size="sm" onClick={() => navigate('/checkout')}>Check-Out</Button>}
-                  {(r.status === 'Pendiente' || r.status === 'Confirmada') && <Button size="sm" variant="destructive" onClick={() => setConfirmCancelId(r.id)}>Cancelar</Button>}
+                  {r.status === 'Pendiente' && <Button size="sm" onClick={() => void confirmReservation(r)}>Confirmar</Button>}
+                  {r.status === 'Confirmada' && <Button size="sm" onClick={() => navigate(`/checkin?reservationId=${r.id}`)}>Check-In</Button>}
+                  {r.status === 'CheckIn' && <Button size="sm" onClick={() => navigate(`/checkout?reservationId=${r.id}`)}>Check-Out</Button>}
+                  {(r.status === 'Pendiente' || r.status === 'Confirmada') && <Button size="sm" variant="destructive" onClick={() => { setReservationToCancel(r); setCancelReason('') }}>Cancelar</Button>}
                 </td>
               </tr>
             ))}
@@ -122,13 +133,34 @@ export default function ReservationsPage() {
       </div>
       
       <ConfirmDialog
-        isOpen={!!confirmCancelId}
+        isOpen={!!reservationToCancel}
         title="Cancelar Reservación"
-        description="¿Está seguro de que desea cancelar esta reservación? Esta acción no se puede deshacer."
+        description={(
+          <div className="space-y-3">
+            <p>Indique por qué se cancela la reservación. El motivo quedará en la bitácora de auditoría.</p>
+            <div>
+              <label htmlFor="cancel-reason" className="mb-1 block font-medium text-foreground">Motivo *</label>
+              <textarea
+                id="cancel-reason"
+                value={cancelReason}
+                onChange={event => setCancelReason(event.target.value)}
+                rows={3}
+                maxLength={500}
+                autoFocus
+                className="w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                placeholder="Ej. El huésped modificó su itinerario"
+              />
+              {cancelReason.trim().length > 0 && cancelReason.trim().length < 3 && (
+                <p className="mt-1 text-xs text-destructive">Escriba al menos 3 caracteres.</p>
+              )}
+            </div>
+          </div>
+        )}
         confirmText="Sí, cancelar"
         cancelText="No, volver"
+        confirmDisabled={cancelReason.trim().length < 3}
         onConfirm={handleCancelReservation}
-        onCancel={() => setConfirmCancelId(null)}
+        onCancel={() => { setReservationToCancel(null); setCancelReason('') }}
       />
     </div>
   )

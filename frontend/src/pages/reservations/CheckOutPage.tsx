@@ -1,17 +1,17 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
+import axios from 'axios'
 import api from '@/lib/axios'
+import { getApiErrorMessage } from '@/lib/errors'
 import type {
   Reservation,
   Folio,
   CAI,
-  DocumentAuthorization,
   Discount,
   CashRegister,
 } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { InlineAlert } from '@/components/ui/InlineAlert'
 import {
   UserMinus,
@@ -25,15 +25,31 @@ import {
   Building,
   CheckCircle2,
   Loader2,
-  Calendar,
   Sparkles,
   ArrowRight,
   RefreshCw,
   Clock,
 } from 'lucide-react'
 
+const invoiceIntentStorageKey = (reservationId: string) =>
+  `hotel-erp:invoice-intent:${reservationId}`
+
+const getOrCreateInvoiceIntent = (reservationId: string) => {
+  const storageKey = invoiceIntentStorageKey(reservationId)
+  const existingKey = window.sessionStorage.getItem(storageKey)
+  if (existingKey) return existingKey
+
+  const newKey = crypto.randomUUID()
+  window.sessionStorage.setItem(storageKey, newKey)
+  return newKey
+}
+
+const clearInvoiceIntent = (reservationId: string) =>
+  window.sessionStorage.removeItem(invoiceIntentStorageKey(reservationId))
+
 export default function CheckOutPage() {
-  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const requestedReservationId = searchParams.get('reservationId')
   const [checkIns, setCheckIns] = useState<Reservation[]>([])
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null)
   const [folio, setFolio] = useState<Folio | null>(null)
@@ -59,10 +75,15 @@ export default function CheckOutPage() {
   // Payment Form
   const [paymentMethod, setPaymentMethod] = useState<'Efectivo' | 'Tarjeta' | 'Transferencia'>('Efectivo')
   const [cashGiven, setCashGiven] = useState('')
+  const [paymentReference, setPaymentReference] = useState('')
   const [customerRtn, setCustomerRtn] = useState('')
   const [customerName, setCustomerName] = useState('')
-  const [customerAddress, setCustomerAddress] = useState('')
   const [taxpayerType, setTaxpayerType] = useState('ConsumidorFinal')
+  const [exonerationOrderNumber, setExonerationOrderNumber] = useState('')
+  const [sefinCertificateNumber, setSefinCertificateNumber] = useState('')
+  const [sagRegistryNumber, setSagRegistryNumber] = useState('')
+  const [isIsvExempt, setIsIsvExempt] = useState(true)
+  const [isTouristTaxExempt, setIsTouristTaxExempt] = useState(true)
 
   // Completion & Print Preview
   const [completedInvoiceId, setCompletedInvoiceId] = useState<string | null>(null)
@@ -70,7 +91,6 @@ export default function CheckOutPage() {
   const [printLogo, setPrintLogo] = useState<string | null>(null)
   const [actionLoading, setActionLoading] = useState(false)
   const [alertInfo, setAlertInfo] = useState<{ variant: 'error' | 'success' | 'info'; message: string } | null>(null)
-  const [confirmReleaseOnly, setConfirmReleaseOnly] = useState(false)
 
   // Load active checkins and auxiliary data
   const loadCheckIns = useCallback(async () => {
@@ -83,11 +103,16 @@ export default function CheckOutPage() {
         api.get<CashRegister[]>('/cash-registers'),
       ])
       setCheckIns(resRes.data)
-      setCaiList(caiRes.data)
-      if (caiRes.data.length > 0) setSelectedCaiId(caiRes.data[0].id)
-      setDiscounts(discRes.data.filter((d) => d.isActive))
-      setCashRegisters(cashRes.data.filter((c) => c.isActive))
-      if (cashRes.data.length > 0) setSelectedCashRegisterId(cashRes.data[0].id)
+      const activeCais = caiRes.data.filter((cai) => cai.status === 'Activo')
+      const percentageDiscounts = discRes.data.filter(
+        (discount) => discount.isActive && discount.discountType === 'Porcentaje'
+      )
+      const activeRegisters = cashRes.data.filter((register) => register.isActive && register.isOpen)
+      setCaiList(activeCais)
+      setSelectedCaiId((current) => activeCais.some((cai) => cai.id === current) ? current : activeCais[0]?.id ?? '')
+      setDiscounts(percentageDiscounts)
+      setCashRegisters(activeRegisters)
+      setSelectedCashRegisterId((current) => activeRegisters.some((register) => register.id === current) ? current : activeRegisters[0]?.id ?? '')
     } catch {
       setAlertInfo({ variant: 'error', message: 'Error al consultar huéspedes con Check-In activo.' })
     } finally {
@@ -96,17 +121,27 @@ export default function CheckOutPage() {
   }, [])
 
   useEffect(() => {
-    loadCheckIns()
+    const timer = window.setTimeout(() => void loadCheckIns(), 0)
+    return () => window.clearTimeout(timer)
   }, [loadCheckIns])
 
   // When a reservation is selected, fetch its folio
-  const handleSelectReservation = async (reservation: Reservation) => {
+  const handleSelectReservation = useCallback(async (reservation: Reservation) => {
     setSelectedReservation(reservation)
     setCustomerName(reservation.guestName)
     setLoadingFolio(true)
     setFolio(null)
     setCompletedInvoiceId(null)
     setPrintPreview(null)
+    setSelectedDiscountId('')
+    setPaymentReference('')
+    setCustomerRtn('')
+    setTaxpayerType('ConsumidorFinal')
+    setExonerationOrderNumber('')
+    setSefinCertificateNumber('')
+    setSagRegistryNumber('')
+    setIsIsvExempt(true)
+    setIsTouristTaxExempt(true)
 
     try {
       const { data } = await api.get<Folio>(`/folios/by-reservation/${reservation.id}`)
@@ -117,7 +152,20 @@ export default function CheckOutPage() {
     } finally {
       setLoadingFolio(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    if (!requestedReservationId || selectedReservation || checkIns.length === 0) return
+    const timer = window.setTimeout(() => {
+      const requestedReservation = checkIns.find(reservation => reservation.id === requestedReservationId)
+      if (requestedReservation) {
+        void handleSelectReservation(requestedReservation)
+      } else if (!loadingList) {
+        setAlertInfo({ variant: 'error', message: 'La reservación seleccionada ya no tiene un Check-In activo.' })
+      }
+    }, 0)
+    return () => window.clearTimeout(timer)
+  }, [checkIns, handleSelectReservation, loadingList, requestedReservationId, selectedReservation])
 
   // Add extra charge to folio
   const handleAddFolioCharge = async (e: React.FormEvent) => {
@@ -153,19 +201,30 @@ export default function CheckOutPage() {
   const activeDiscountObj = discounts.find((d) => d.id === selectedDiscountId)
   const discountPercent = activeDiscountObj ? activeDiscountObj.value : 0
   const subtotalGross = folio?.items.reduce((sum, item) => sum + item.lineTotal, 0) ?? 0
-  const discountAmount = (subtotalGross * discountPercent) / 100
-  const subtotalNet = subtotalGross - discountAmount
-  const isvAmount = folio?.items.reduce((sum, item) => {
-    if (item.isExempt) return sum
-    const itemNet = item.lineTotal * (1 - discountPercent / 100)
-    return sum + itemNet * (item.isvRate || 0.15)
-  }, 0) ?? 0
-  const touristTaxAmount = folio?.items.reduce((sum, item) => {
-    if (!item.isTouristTaxable) return sum
-    const itemNet = item.lineTotal * (1 - discountPercent / 100)
-    return sum + itemNet * 0.04
-  }, 0) ?? 0
-  const finalTotal = subtotalNet + isvAmount + touristTaxAmount
+  const roundMoney = (amount: number) => Math.round((amount + Number.EPSILON) * 100) / 100
+  const settlementEstimate = folio?.items.reduce((totals, item) => {
+    const gross = roundMoney(item.quantity * item.unitPrice)
+    const effectiveDiscount = 100 - ((100 - item.discountPercentage) * (100 - discountPercent) / 100)
+    const lineDiscount = roundMoney(gross * effectiveDiscount / 100)
+    const net = roundMoney(gross - lineDiscount)
+    const isv = item.isExempt || (taxpayerType === 'Exonerado' && isIsvExempt)
+      ? 0
+      : roundMoney(net * item.isvRate)
+    const touristTax = item.isTouristTaxable && !(taxpayerType === 'Exonerado' && isTouristTaxExempt)
+      ? roundMoney(net * 0.04)
+      : 0
+    return {
+      subtotal: totals.subtotal + net,
+      discount: totals.discount + lineDiscount,
+      isv: totals.isv + isv,
+      touristTax: totals.touristTax + touristTax,
+    }
+  }, { subtotal: 0, discount: 0, isv: 0, touristTax: 0 }) ?? { subtotal: 0, discount: 0, isv: 0, touristTax: 0 }
+  const discountAmount = roundMoney(settlementEstimate.discount)
+  const subtotalNet = roundMoney(settlementEstimate.subtotal)
+  const isvAmount = roundMoney(settlementEstimate.isv)
+  const touristTaxAmount = roundMoney(settlementEstimate.touristTax)
+  const finalTotal = roundMoney(subtotalNet + isvAmount + touristTaxAmount)
   const changeDue = Math.max(0, (Number(cashGiven) || 0) - finalTotal)
 
   // Full Check-out & Invoicing execution
@@ -175,50 +234,51 @@ export default function CheckOutPage() {
       setAlertInfo({ variant: 'error', message: 'Debe seleccionar una autorización CAI activa para facturar.' })
       return
     }
+    if (paymentMethod === 'Efectivo' && !selectedCashRegisterId) {
+      setAlertInfo({ variant: 'error', message: 'Debe seleccionar una caja activa y abierta para cobrar en efectivo.' })
+      return
+    }
+    if (paymentMethod === 'Efectivo' && (Number(cashGiven) || 0) < finalTotal) {
+      setAlertInfo({ variant: 'error', message: 'El efectivo recibido no cubre el total de la factura.' })
+      return
+    }
+    if (paymentMethod !== 'Efectivo' && paymentReference.trim().length < 3) {
+      setAlertInfo({ variant: 'error', message: 'Ingrese una referencia de tarjeta o transferencia de al menos 3 caracteres.' })
+      return
+    }
+    if (taxpayerType === 'Exonerado' && (!exonerationOrderNumber.trim() || !sefinCertificateNumber.trim())) {
+      setAlertInfo({ variant: 'error', message: 'La exoneración requiere O.C. Exenta y Constancia SEFIN.' })
+      return
+    }
 
+    const invoiceIntentId = getOrCreateInvoiceIntent(selectedReservation.id)
     setActionLoading(true)
     try {
-      // 1. Create SAR Invoice
       const invoicePayload = {
         caiId: selectedCaiId,
+        folioId: folio.id,
         guestId: selectedReservation.guestId,
         customerName: customerName.trim() || selectedReservation.guestName,
         rtnCliente: customerRtn.trim() || null,
-        customerAddress: customerAddress.trim() || 'Santa Rosa de Copán',
-        taxpayerType: customerRtn.trim() ? 'Empresa' : taxpayerType,
+        customerAddress: null,
+        taxpayerType: customerRtn.trim() && taxpayerType === 'ConsumidorFinal' ? 'Gravado' : taxpayerType,
         paymentMethod: paymentMethod,
-        items: folio.items.map((it) => ({
-          description: it.description,
-          quantity: it.quantity,
-          unitPrice: it.unitPrice,
-          isExempt: it.isExempt,
-          isvRate: it.isvRate || 0.15,
-          isTouristTaxable: it.isTouristTaxable,
-          discountPercentage: discountPercent,
-        })),
+        paymentReference: paymentMethod === 'Efectivo' ? null : paymentReference.trim(),
+        discountId: selectedDiscountId || null,
+        cashRegisterId: paymentMethod === 'Efectivo' ? selectedCashRegisterId : null,
+        cashReceived: paymentMethod === 'Efectivo' ? Number(cashGiven) : null,
+        exonerationOrderNumber: taxpayerType === 'Exonerado' ? exonerationOrderNumber.trim() : null,
+        sefinExonerationCertificateNumber: taxpayerType === 'Exonerado' ? sefinCertificateNumber.trim() : null,
+        sagRegistryNumber: taxpayerType === 'Exonerado' ? sagRegistryNumber.trim() || null : null,
+        isIsvExempt: taxpayerType === 'Exonerado' && isIsvExempt,
+        isTouristTaxExempt: taxpayerType === 'Exonerado' && isTouristTaxExempt,
       }
 
-      const invoiceRes = await api.post('/invoices', invoicePayload)
+      const invoiceRes = await api.post('/invoices', invoicePayload, {
+        headers: { 'Idempotency-Key': invoiceIntentId },
+      })
       const createdInvoice = invoiceRes.data
 
-      // 2. Execute reservation checkout to free room and set to Limpieza
-      await api.post(`/reservations/checkout/${selectedReservation.id}`)
-
-      // 3. Register cash movement if paid in cash and cash register is selected
-      if (paymentMethod === 'Efectivo' && selectedCashRegisterId) {
-        try {
-          await api.post(`/cash-registers/${selectedCashRegisterId}/movements`, {
-            cashRegisterId: selectedCashRegisterId,
-            movementType: 'Ingreso',
-            amount: finalTotal,
-            description: `Cobro Check-Out Hab. #${selectedReservation.roomNumber} - Factura ${createdInvoice.correlativeNumber}`,
-          })
-        } catch (e) {
-          console.warn('Could not record cash movement', e)
-        }
-      }
-
-      // 4. Fetch Print Preview
       try {
         const previewRes = await api.get(`/print/invoice/${createdInvoice.id}/preview`)
         setPrintPreview(previewRes.data.text)
@@ -232,33 +292,20 @@ export default function CheckOutPage() {
         variant: 'success',
         message: `Check-out completado. Factura ${createdInvoice.correlativeNumber} emitida y habitación #${selectedReservation.roomNumber} liberada.`,
       })
+      clearInvoiceIntent(selectedReservation.id)
       loadCheckIns()
-    } catch (err: any) {
+    } catch (error: unknown) {
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        [400, 401, 403, 404, 422].includes(error.response.status)
+      ) {
+        clearInvoiceIntent(selectedReservation.id)
+      }
       setAlertInfo({
         variant: 'error',
-        message: err.response?.data?.message || err.message || 'Error durante el proceso de facturación y Check-Out.',
+        message: getApiErrorMessage(error, 'Error durante el proceso de facturación y check-out.'),
       })
-    } finally {
-      setActionLoading(false)
-    }
-  }
-
-  // Release Room without Invoicing
-  const handleReleaseOnly = async () => {
-    if (!selectedReservation) return
-    setActionLoading(true)
-    try {
-      await api.post(`/reservations/checkout/${selectedReservation.id}`)
-      setAlertInfo({
-        variant: 'success',
-        message: `Habitación #${selectedReservation.roomNumber} liberada correctamente y enviada a limpieza.`,
-      })
-      setConfirmReleaseOnly(false)
-      setSelectedReservation(null)
-      setFolio(null)
-      loadCheckIns()
-    } catch {
-      setAlertInfo({ variant: 'error', message: 'Error al liberar la habitación.' })
     } finally {
       setActionLoading(false)
     }
@@ -269,8 +316,8 @@ export default function CheckOutPage() {
     try {
       const { data } = await api.post(`/print/invoice/${completedInvoiceId}`)
       setAlertInfo({ variant: 'success', message: data.message || 'Factura enviada a imprimir con éxito.' })
-    } catch (e: any) {
-      setAlertInfo({ variant: 'error', message: 'Error al imprimir: ' + (e.response?.data?.message || e.message) })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'No se pudo imprimir la factura.') })
     }
   }
 
@@ -341,7 +388,7 @@ export default function CheckOutPage() {
                       onClick={() => handleSelectReservation(r)}
                       className={`p-3.5 cursor-pointer transition-colors flex items-center justify-between gap-3 ${
                         isSelected
-                          ? 'bg-[#C69C4B]/15 border-l-4 border-l-[#C69C4B]'
+                          ? 'bg-[#C69C4B]/15'
                           : 'hover:bg-accent/40'
                       }`}
                     >
@@ -437,34 +484,14 @@ export default function CheckOutPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setShowAddCharge(!showAddCharge)}
-                    className="gap-1.5 text-xs"
-                  >
-                    <Plus size={13} /> Agregar Cargo Extra
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => {
-                      if (finalTotal > 0) {
-                        setAlertInfo({ 
-                          variant: 'error', 
-                          message: `Acción denegada: El folio tiene un saldo pendiente de L ${finalTotal.toFixed(2)}. Debe facturar y cobrar para poder liberar la habitación.`
-                        })
-                        return
-                      }
-                      setConfirmReleaseOnly(true)
-                    }}
-                    className="text-xs"
-                    title={finalTotal > 0 ? "No se puede liberar con saldo pendiente" : "Liberar habitación (Sin saldo)"}
-                  >
-                    Liberar sin Facturar
-                  </Button>
-                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setShowAddCharge(!showAddCharge)}
+                  className="gap-1.5 text-xs"
+                >
+                  <Plus size={13} /> Agregar Cargo Extra
+                </Button>
               </div>
 
               {/* Add Extra Item Inline Form */}
@@ -569,7 +596,7 @@ export default function CheckOutPage() {
                             L {item.unitPrice.toFixed(2)}
                           </td>
                           <td className="p-3 text-right font-mono text-muted-foreground">
-                            {item.isExempt ? 'Exento' : `${((item.isvRate || 0.15) * 100).toFixed(0)}%`}
+                            {item.isExempt ? 'Exento' : `${(item.isvRate * 100).toFixed(0)}%`}
                           </td>
                           <td className="p-3 text-right font-mono font-bold text-foreground">
                             L {item.lineTotal.toFixed(2)}
@@ -620,7 +647,7 @@ export default function CheckOutPage() {
                       <label className="text-xs text-muted-foreground">RTN Cliente (Opcional)</label>
                       <Input
                         value={customerRtn}
-                        onChange={(e) => setCustomerRtn(e.target.value)}
+                        onChange={(e) => setCustomerRtn(e.target.value.replace(/\D/g, '').slice(0, 14))}
                         placeholder="08011990123456"
                         maxLength={14}
                         className="text-xs mt-1 font-mono"
@@ -634,11 +661,41 @@ export default function CheckOutPage() {
                         className="w-full border border-input rounded-md px-2.5 py-1.5 text-xs bg-background mt-1"
                       >
                         <option value="ConsumidorFinal">Consumidor Final</option>
-                        <option value="Empresa">Empresa / Crédito Fiscal</option>
+                        <option value="Gravado">Contribuyente gravado</option>
                         <option value="Exonerado">Exonerado Dipl./SEFIN</option>
                       </select>
                     </div>
                   </div>
+
+                  {taxpayerType === 'Exonerado' && (
+                    <div className="rounded-lg border border-border bg-muted/20 p-3 space-y-3">
+                      <p className="text-xs font-semibold">Documentación de exoneración</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-xs text-muted-foreground">O.C. Exenta *</label>
+                          <Input value={exonerationOrderNumber} onChange={(e) => setExonerationOrderNumber(e.target.value)} maxLength={50} className="text-xs mt-1" />
+                        </div>
+                        <div>
+                          <label className="text-xs text-muted-foreground">Constancia SEFIN *</label>
+                          <Input value={sefinCertificateNumber} onChange={(e) => setSefinCertificateNumber(e.target.value)} maxLength={50} className="text-xs mt-1" />
+                        </div>
+                        <div className="sm:col-span-2">
+                          <label className="text-xs text-muted-foreground">Registro SAG (si aplica)</label>
+                          <Input value={sagRegistryNumber} onChange={(e) => setSagRegistryNumber(e.target.value)} maxLength={50} className="text-xs mt-1" />
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-4 text-xs">
+                        <label className="flex items-center gap-2">
+                          <input type="checkbox" checked={isIsvExempt} onChange={(e) => setIsIsvExempt(e.target.checked)} />
+                          Exonerar ISV
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input type="checkbox" checked={isTouristTaxExempt} onChange={(e) => setIsTouristTaxExempt(e.target.checked)} />
+                          Exonerar tasa turística
+                        </label>
+                      </div>
+                    </div>
+                  )}
 
                   <div>
                     <label className="text-xs text-muted-foreground">Descuento Aplicable</label>
@@ -686,7 +743,20 @@ export default function CheckOutPage() {
                     </div>
 
                     {paymentMethod === 'Efectivo' && (
-                      <div className="grid grid-cols-2 gap-2 p-3 bg-muted/20 rounded-lg border border-border/80">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-3 bg-muted/20 rounded-lg border border-border/80">
+                        <div className="sm:col-span-2">
+                          <label className="text-[11px] font-semibold text-muted-foreground">Caja abierta *</label>
+                          <select
+                            value={selectedCashRegisterId}
+                            onChange={(e) => setSelectedCashRegisterId(e.target.value)}
+                            className="w-full border border-input rounded-md px-2.5 py-1.5 text-xs bg-background mt-1"
+                          >
+                            <option value="">Seleccione una caja</option>
+                            {cashRegisters.map((register) => (
+                              <option key={register.id} value={register.id}>{register.name}</option>
+                            ))}
+                          </select>
+                        </div>
                         <div>
                           <label className="text-[11px] font-semibold text-muted-foreground">Efectivo Recibido (L)</label>
                           <Input
@@ -703,6 +773,21 @@ export default function CheckOutPage() {
                             L {changeDue.toFixed(2)}
                           </p>
                         </div>
+                      </div>
+                    )}
+                    {paymentMethod !== 'Efectivo' && (
+                      <div className="p-3 bg-muted/20 rounded-lg border border-border/80">
+                        <label className="text-[11px] font-semibold text-muted-foreground" htmlFor="checkout-payment-reference">
+                          Referencia de {paymentMethod.toLowerCase()} *
+                        </label>
+                        <Input
+                          id="checkout-payment-reference"
+                          value={paymentReference}
+                          onChange={(event) => setPaymentReference(event.target.value)}
+                          maxLength={100}
+                          placeholder={paymentMethod === 'Tarjeta' ? 'Voucher o autorización' : 'Comprobante o referencia bancaria'}
+                          className="text-xs mt-1"
+                        />
                       </div>
                     )}
                   </div>
@@ -765,17 +850,6 @@ export default function CheckOutPage() {
         </div>
       </div>
 
-      {/* Confirm Release Only Dialog */}
-      <ConfirmDialog
-        isOpen={confirmReleaseOnly}
-        title="Liberar Habitación sin Facturar"
-        description={`¿Está seguro de que desea realizar el Check-Out de la habitación #${selectedReservation?.roomNumber} (${selectedReservation?.guestName}) sin emitir factura fiscal SAR?`}
-        confirmText="Liberar Habitación"
-        cancelText="Cancelar"
-        variant="destructive"
-        onConfirm={handleReleaseOnly}
-        onCancel={() => setConfirmReleaseOnly(false)}
-      />
     </div>
   )
 }

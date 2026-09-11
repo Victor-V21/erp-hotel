@@ -1,0 +1,22 @@
+[
+  {
+    "fondo": "#C69C4B",
+    "texto": "#ffffff",
+    "ratio": 2.543
+  },
+  {
+    "fondo": "#22c55e",
+    "texto": "#ffffff",
+    "ratio": 2.279
+  },
+  {
+    "fondo": "#eab308",
+    "texto": "#ffffff",
+    "ratio": 1.918
+  },
+  {
+    "fondo": "#ef4444",
+    "texto": "#ffffff",
+    "ratio": 3.763
+  }
+]

@@ -1,4 +1,5 @@
 using AutoMapper;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Database.Entities;
 using hotel_erp.Api.Dtos.Accounting;
 using hotel_erp.Api.Services.Interfaces;
@@ -9,7 +10,7 @@ namespace hotel_erp.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Policy = PermissionNames.ManageAccounting)]
     public class AccountsController : ControllerBase
     {
         private readonly IAccountingRepository _repo;
@@ -136,7 +137,6 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost("journal-entries")]
-        [Authorize(Roles = "Admin,Contador,Contabilidad")]
         public async Task<ActionResult<AccountingEntryDto>> CreateJournalEntry([FromBody] CreateAccountingEntryRequest request)
         {
             if (request.Items == null || request.Items.Count < 2)

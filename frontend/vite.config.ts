@@ -1,17 +1,17 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import path from 'path'
+import path from 'node:path'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
-    outDir: path.resolve(__dirname, '../backend/src/hotel-erp.Api/wwwroot'),
+    outDir: path.resolve(import.meta.dirname, '../backend/src/hotel-erp.Api/wwwroot'),
     emptyOutDir: true,
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(import.meta.dirname, './src'),
     },
   },
   server: {

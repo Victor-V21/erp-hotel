@@ -1,4 +1,5 @@
 using ClosedXML.Excel;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ namespace hotel_erp.Api.Controllers
 {
     [ApiController]
     [Route("api/data/export")]
-    [Authorize]
+    [Authorize(Policy = PermissionNames.ExportData)]
     public class DataExportController : ControllerBase
     {
         private readonly IGuestRepository _guestRepo;
@@ -230,4 +231,3 @@ namespace hotel_erp.Api.Controllers
         }
     }
 }
-

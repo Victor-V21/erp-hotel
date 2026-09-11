@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import api from '@/lib/axios'
+import { getApiErrorMessage } from '@/lib/errors'
 import type { Guest } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { InlineAlert } from '@/components/ui/InlineAlert'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { Pagination } from '@/components/ui/Pagination'
-import { Users, Plus, Search, Edit2, Trash2, Loader2, RefreshCw, X, CheckCircle2 } from 'lucide-react'
+import { useAuthStore } from '@/store/authStore'
+import { Users, Plus, Search, Edit2, Trash2, Loader2, RefreshCw, X } from 'lucide-react'
 
 function sanitize(g: typeof defaultForm) {
   return {
@@ -51,6 +53,7 @@ const defaultForm = {
 }
 
 export default function GuestsPage() {
+  const canManageReservations = useAuthStore((state) => state.hasPermission('manage_reservations'))
   const [guests, setGuests] = useState<Guest[]>([])
   const [search, setSearch] = useState('')
   const [showForm, setShowForm] = useState(false)
@@ -78,7 +81,8 @@ export default function GuestsPage() {
   }, [search])
 
   useEffect(() => {
-    load()
+    const timer = window.setTimeout(() => void load(), 0)
+    return () => window.clearTimeout(timer)
   }, [load])
 
   const save = async (e: React.FormEvent) => {
@@ -101,8 +105,8 @@ export default function GuestsPage() {
       setEditingId(null)
       setForm(defaultForm)
       load()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'Error al guardar el huésped.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'Error al guardar el huésped.') })
     } finally {
       setActionLoading(false)
     }
@@ -142,8 +146,8 @@ export default function GuestsPage() {
       setAlertInfo({ variant: 'success', message: 'Ficha de huésped eliminada correctamente.' })
       setDeleteTarget(null)
       load()
-    } catch (err: any) {
-      setAlertInfo({ variant: 'error', message: err.response?.data?.message || 'No se puede eliminar un huésped con reservaciones activas.' })
+    } catch (error: unknown) {
+      setAlertInfo({ variant: 'error', message: getApiErrorMessage(error, 'No se puede eliminar un huésped con reservaciones activas.') })
     } finally {
       setActionLoading(false)
     }
@@ -185,17 +189,19 @@ export default function GuestsPage() {
             <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
             Actualizar
           </Button>
-          <Button
-            onClick={() => {
-              setEditingId(null)
-              setForm(defaultForm)
-              setShowForm(true)
-            }}
-            className="gap-1.5"
-          >
-            <Plus size={16} />
-            Nuevo Huésped
-          </Button>
+          {canManageReservations && (
+            <Button
+              onClick={() => {
+                setEditingId(null)
+                setForm(defaultForm)
+                setShowForm(true)
+              }}
+              className="gap-1.5"
+            >
+              <Plus size={16} />
+              Nuevo Huésped
+            </Button>
+          )}
         </div>
       </div>
 
@@ -204,7 +210,7 @@ export default function GuestsPage() {
       )}
 
       {/* Form Card */}
-      {showForm && (
+      {showForm && canManageReservations && (
         <form onSubmit={save} className="border border-border rounded-xl p-5 bg-card space-y-4 shadow-sm animate-in fade-in">
           <div className="flex items-center justify-between border-b border-border pb-3">
             <h3 className="font-bold text-sm text-foreground">
@@ -452,24 +458,30 @@ export default function GuestsPage() {
                       </span>
                     </td>
                     <td className="p-3.5 text-right space-x-1">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => startEdit(g)}
-                        className="h-7 w-7 p-0"
-                        title="Editar ficha"
-                      >
-                        <Edit2 size={12} />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => setDeleteTarget(g)}
-                        className="h-7 w-7 p-0"
-                        title="Eliminar"
-                      >
-                        <Trash2 size={12} />
-                      </Button>
+                      {canManageReservations ? (
+                        <>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => startEdit(g)}
+                            className="h-7 w-7 p-0"
+                            title="Editar ficha"
+                          >
+                            <Edit2 size={12} />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => setDeleteTarget(g)}
+                            className="h-7 w-7 p-0"
+                            title="Eliminar"
+                          >
+                            <Trash2 size={12} />
+                          </Button>
+                        </>
+                      ) : (
+                        <span className="text-[10px] text-muted-foreground">Solo lectura</span>
+                      )}
                     </td>
                   </tr>
                 ))}

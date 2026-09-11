@@ -1,4 +1,5 @@
 using System.Text;
+using hotel_erp.Api.Authorization;
 using hotel_erp.Api.Services.Interfaces;
 using hotel_erp.Api.Services;
 using hotel_erp.Api.Database.Entities;
@@ -27,15 +28,19 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpGet("printers")]
+        [Authorize(Policy = PermissionNames.ManageSettings)]
         public ActionResult GetPrinters()
         {
+            if (!OperatingSystem.IsWindows()) return PrinterPlatformUnavailable();
             var printers = RawPrinterHelper.GetInstalledPrinters();
             return Ok(printers);
         }
 
         [HttpGet("test")]
+        [Authorize(Policy = PermissionNames.ManageSettings)]
         public ActionResult TestPrinter([FromQuery] string name)
         {
+            if (!OperatingSystem.IsWindows()) return PrinterPlatformUnavailable();
             if (string.IsNullOrWhiteSpace(name))
                 return BadRequest(new { message = "Especifique el nombre de la impresora" });
 
@@ -44,6 +49,7 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpGet("test-preview")]
+        [Authorize(Policy = PermissionNames.ManageSettings)]
         public async Task<ActionResult> GetTestPreview([FromQuery] int? width)
         {
             var settings = await _settingsRepo.GetAsync() ?? new BusinessSettings();
@@ -55,8 +61,10 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost("test-print")]
+        [Authorize(Policy = PermissionNames.ManageSettings)]
         public async Task<ActionResult> PrintTest([FromQuery] int? width)
         {
+            if (!OperatingSystem.IsWindows()) return PrinterPlatformUnavailable();
             var settings = await _settingsRepo.GetAsync();
             if (settings == null)
                 return BadRequest(new { message = "Configure los datos del negocio" });
@@ -78,8 +86,10 @@ namespace hotel_erp.Api.Controllers
         }
 
         [HttpPost("test-ruler")]
+        [Authorize(Policy = PermissionNames.ManageSettings)]
         public async Task<ActionResult> GetTestRuler()
         {
+            if (!OperatingSystem.IsWindows()) return PrinterPlatformUnavailable();
             var settings = await _settingsRepo.GetAsync();
             if (settings == null || string.IsNullOrWhiteSpace(settings.PrintPrinterName))
                 return BadRequest(new { message = "Configure la impresora primero" });
@@ -158,6 +168,7 @@ namespace hotel_erp.Api.Controllers
         [HttpPost("invoice/{id}")]
         public async Task<ActionResult> PrintInvoice(Guid id)
         {
+            if (!OperatingSystem.IsWindows()) return PrinterPlatformUnavailable();
             var invoice = await _invoiceRepo.GetByIdAsync(id);
             if (invoice == null) return NotFound(new { message = "Factura no encontrada" });
 
@@ -196,6 +207,11 @@ namespace hotel_erp.Api.Controllers
                 return BadRequest(new { message = msg });
             }
         }
+
+        private ObjectResult PrinterPlatformUnavailable()
+            => StatusCode(StatusCodes.Status501NotImplemented, new
+            {
+                message = "La impresión ESC/POS directa requiere ejecutar el backend en Windows con acceso al servicio de impresión."
+            });
     }
 }
-

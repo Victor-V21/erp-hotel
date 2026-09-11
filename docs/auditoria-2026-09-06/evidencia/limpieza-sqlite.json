@@ -1,0 +1,13 @@
+{
+  "retirados": [
+    {
+      "archivo": "backend/src/hotel-erp.Api/Data/hotel.db-wal",
+      "bytes": 0
+    },
+    {
+      "archivo": "backend/src/hotel-erp.Api/Data/hotel.db-shm",
+      "bytes": 32768
+    }
+  ],
+  "motivo": "Archivos auxiliares creados al abrir SQLite en lectura. WAL vac\u00edo, sin procesos usando archivos; base original sin cambios seg\u00fan SHA256."
+}

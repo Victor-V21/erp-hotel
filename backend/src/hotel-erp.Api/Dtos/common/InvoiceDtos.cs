@@ -21,13 +21,13 @@ namespace hotel_erp.Api.Dtos.Common
         public string DocumentType { get; set; } = string.Empty;
         public string CAINumber { get; set; } = string.Empty;
         public DateOnly IssueDate { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateOnly DueDate { get; set; }
         public string InitialRange { get; set; } = string.Empty;
         public string FinalRange { get; set; } = string.Empty;
         public string CurrentCorrelative { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public bool IsExpiringSoon { get; set; }
-        public string? AttachmentPath { get; set; }
+        public bool HasAttachment { get; set; }
     }
 
     public record CreateDocumentAuthorizationRequest(
@@ -77,6 +77,8 @@ namespace hotel_erp.Api.Dtos.Common
         public string CorrelativeNumber { get; set; } = string.Empty;
         public DateTime InvoiceDate { get; set; }
         public Guid? CustomerId { get; set; }
+        public Guid? GuestId { get; set; }
+        public Guid? FolioId { get; set; }
         public string CustomerName { get; set; } = string.Empty;
         public string? RTNCliente { get; set; }
         public string? CustomerAddress { get; set; }
@@ -86,7 +88,13 @@ namespace hotel_erp.Api.Dtos.Common
         public decimal ISV18Amount { get; set; }
         public decimal TouristTaxAmount { get; set; }
         public decimal DiscountsAmount { get; set; }
+        public Guid? AppliedDiscountId { get; set; }
+        public string? AppliedDiscountNameSnapshot { get; set; }
+        public decimal? AppliedDiscountPercentageSnapshot { get; set; }
         public decimal TotalAmount { get; set; }
+        public decimal PaidAmount { get; set; }
+        public decimal CreditedAmount { get; set; }
+        public decimal BalanceDue { get; set; }
         public decimal TaxableAmount { get; set; }
         public decimal ExemptAmount { get; set; }
         public decimal ExoneratedAmount { get; set; }
@@ -101,18 +109,29 @@ namespace hotel_erp.Api.Dtos.Common
         public string? Reason { get; set; }
         public string DocumentType { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
+        public string? PaymentMethod { get; set; }
+        public decimal? CashReceived { get; set; }
+        public decimal? CashChange { get; set; }
         public List<InvoiceItemDto> Items { get; set; } = new();
     }
 
     public record InvoiceItemDto
     {
+        public Guid Id { get; set; }
+        public Guid? OriginalInvoiceItemId { get; set; }
+        public Guid? FolioItemId { get; set; }
+        [Required, StringLength(300)]
         public string Description { get; set; } = string.Empty;
+        [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
+        [Range(typeof(decimal), "0", "999999999")]
         public decimal UnitPrice { get; set; }
         public decimal LineTotal { get; set; }
         public bool IsExempt { get; set; }
+        [Range(typeof(decimal), "0", "1")]
         public decimal ISVRate { get; set; }
         public bool IsTouristTaxable { get; set; }
+        [Range(typeof(decimal), "0", "100")]
         public decimal DiscountPercentage { get; set; }
     }
 
@@ -122,12 +141,22 @@ namespace hotel_erp.Api.Dtos.Common
         public Guid? DocumentAuthorizationId { get; set; }
         public Guid? CustomerId { get; set; }
         public Guid? GuestId { get; set; }
+        public Guid? FolioId { get; set; }
+        public Guid? DiscountId { get; set; }
+        public Guid? CashRegisterId { get; set; }
+        [Range(typeof(decimal), "0", "999999999")]
+        public decimal? CashReceived { get; set; }
         [RegularExpression("^\\d{14}$", ErrorMessage = "El RTN debe tener 14 dígitos numéricos")]
         public string? RTNCliente { get; set; }
         [Required, StringLength(200)]
         public string CustomerName { get; set; } = string.Empty;
         [StringLength(300)]
         public string? CustomerAddress { get; set; }
+        [RegularExpression("^(Efectivo|Tarjeta|Transferencia)$")]
+        public string PaymentMethod { get; set; } = "Efectivo";
+        [StringLength(100)]
+        public string? PaymentReference { get; set; }
+        [RegularExpression("^Factura$")]
         public string DocumentType { get; set; } = "Factura";
         [RegularExpression("^(ConsumidorFinal|Gravado|Exonerado)$")]
         public string? TaxpayerType { get; set; }
@@ -142,18 +171,17 @@ namespace hotel_erp.Api.Dtos.Common
         public Guid? OriginalInvoiceId { get; set; }
         [StringLength(250)]
         public string? Reason { get; set; }
-        [Required, MinLength(1)]
         public List<InvoiceItemDto> Items { get; set; } = new();
     }
 
     public record CreateCreditNoteRequest(
-        [Required] Guid CAIId,
-        Guid? DocumentAuthorizationId,
-        [Required] Guid OriginalInvoiceId,
+        [Required, NotEmptyGuid] Guid CAIId,
+        [Required, NotEmptyGuid] Guid? DocumentAuthorizationId,
+        [Required, NotEmptyGuid] Guid OriginalInvoiceId,
         [Required, StringLength(250)]
         string Reason,
         [Required, MinLength(1)]
-        List<InvoiceItemDto> Items)
+        List<CreditNoteItemRequest> Items)
     {
         public Guid? GuestId { get; set; }
         public string DocumentType { get; set; } = "NotaCredito";
@@ -162,9 +190,9 @@ namespace hotel_erp.Api.Dtos.Common
     }
 
     public record CreateDebitNoteRequest(
-        [Required] Guid CAIId,
-        Guid? DocumentAuthorizationId,
-        [Required] Guid OriginalInvoiceId,
+        [Required, NotEmptyGuid] Guid CAIId,
+        [Required, NotEmptyGuid] Guid? DocumentAuthorizationId,
+        [Required, NotEmptyGuid] Guid OriginalInvoiceId,
         [Required, StringLength(250)]
         string Reason,
         [Required, MinLength(1)]
@@ -175,6 +203,10 @@ namespace hotel_erp.Api.Dtos.Common
         [RegularExpression("^(ConsumidorFinal|Gravado|Exonerado)$")]
         public string? TaxpayerType { get; set; }
     }
+
+    public record CreditNoteItemRequest(
+        [Required, NotEmptyGuid] Guid OriginalInvoiceItemId,
+        [Range(1, int.MaxValue)] int Quantity);
 
     public record TaxConfigurationDto
     {
@@ -191,4 +223,3 @@ namespace hotel_erp.Api.Dtos.Common
         bool IsActive,
         [StringLength(100)] string? ApplicableTo);
 }
-

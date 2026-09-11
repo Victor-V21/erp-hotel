@@ -15,6 +15,7 @@ namespace hotel_erp.Api.Database
         public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+        public DbSet<IdempotencyRecord> IdempotencyRecords => Set<IdempotencyRecord>();
 
         // Customers
         public DbSet<Customer> Customers => Set<Customer>();
@@ -38,6 +39,12 @@ namespace hotel_erp.Api.Database
         // Cash
         public DbSet<CashRegister> CashRegisters => Set<CashRegister>();
         public DbSet<CashMovement> CashMovements => Set<CashMovement>();
+        public DbSet<Payment> Payments => Set<Payment>();
+        public DbSet<PaymentApplication> PaymentApplications => Set<PaymentApplication>();
+        public DbSet<Refund> Refunds => Set<Refund>();
+        public DbSet<RefundApplication> RefundApplications => Set<RefundApplication>();
+        public DbSet<CardSettlement> CardSettlements => Set<CardSettlement>();
+        public DbSet<CardSettlementApplication> CardSettlementApplications => Set<CardSettlementApplication>();
 
         // Inventory
         public DbSet<Product> Products => Set<Product>();
@@ -122,12 +129,21 @@ namespace hotel_erp.Api.Database
                 .HasIndex(al => al.Hash)
                 .IsUnique();
 
+            modelBuilder.Entity<IdempotencyRecord>().HasKey(record => record.Id);
+            modelBuilder.Entity<IdempotencyRecord>().Property(record => record.Scope).HasMaxLength(64);
+            modelBuilder.Entity<IdempotencyRecord>().Property(record => record.Key).HasMaxLength(64);
+            modelBuilder.Entity<IdempotencyRecord>().Property(record => record.RequestHash).HasMaxLength(64);
+            modelBuilder.Entity<IdempotencyRecord>()
+                .HasIndex(record => new { record.UserId, record.Scope, record.Key })
+                .IsUnique();
+
             // User unique indexes
             modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
             modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
 
             // Role/Permission unique indexes
-            modelBuilder.Entity<Role>().HasIndex(r => r.Name).IsUnique();
+            modelBuilder.Entity<Role>().HasIndex(r => r.NormalizedName).IsUnique();
+            modelBuilder.Entity<Role>().HasIndex(r => r.SystemKey).IsUnique();
             modelBuilder.Entity<Permission>().HasIndex(p => p.Name).IsUnique();
 
             // Customer
@@ -168,6 +184,9 @@ namespace hotel_erp.Api.Database
                 .HasConversion<string>()
                 .HasMaxLength(50);
             modelBuilder.Entity<Reservation>()
+                .Property(r => r.Version)
+                .IsConcurrencyToken();
+            modelBuilder.Entity<Reservation>()
                 .HasOne(r => r.Guest)
                 .WithMany(g => g.Reservations)
                 .HasForeignKey(r => r.GuestId);
@@ -197,6 +216,7 @@ namespace hotel_erp.Api.Database
                 .HasOne(f => f.Room)
                 .WithMany(r => r.Folios)
                 .HasForeignKey(f => f.RoomId);
+            modelBuilder.Entity<Folio>().HasQueryFilter(f => !f.IsDeleted);
 
             // FolioItem
             modelBuilder.Entity<FolioItem>()
@@ -204,6 +224,7 @@ namespace hotel_erp.Api.Database
                 .WithMany(f => f.FolioItems)
                 .HasForeignKey(fi => fi.FolioId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<FolioItem>().HasQueryFilter(item => !item.IsDeleted);
 
             // CAI
             modelBuilder.Entity<CAI>().HasIndex(c => c.CAINumber).IsUnique();
@@ -274,8 +295,22 @@ namespace hotel_erp.Api.Database
                 .HasForeignKey(i => i.GuestId)
                 .OnDelete(DeleteBehavior.SetNull);
             modelBuilder.Entity<Invoice>()
-                .HasOne(i => i.OriginalInvoice)
+                .HasOne(i => i.Folio)
+                .WithOne(f => f.SettlementInvoice)
+                .HasForeignKey<Invoice>(i => i.FolioId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Invoice>()
+                .HasIndex(i => i.FolioId)
+                .IsUnique()
+                .HasFilter("\"FolioId\" IS NOT NULL AND NOT \"IsDeleted\"");
+            modelBuilder.Entity<Invoice>()
+                .HasOne(i => i.AppliedDiscount)
                 .WithMany()
+                .HasForeignKey(i => i.AppliedDiscountId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Invoice>()
+                .HasOne(i => i.OriginalInvoice)
+                .WithMany(i => i.CreditNotes)
                 .HasForeignKey(i => i.OriginalInvoiceId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Invoice>().HasQueryFilter(i => !i.IsDeleted);
@@ -286,6 +321,22 @@ namespace hotel_erp.Api.Database
                 .WithMany(i => i.InvoiceItems)
                 .HasForeignKey(ii => ii.InvoiceId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<InvoiceItem>()
+                .HasOne(ii => ii.OriginalInvoiceItem)
+                .WithMany()
+                .HasForeignKey(ii => ii.OriginalInvoiceItemId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<InvoiceItem>()
+                .HasIndex(ii => ii.OriginalInvoiceItemId);
+            modelBuilder.Entity<InvoiceItem>()
+                .HasOne(ii => ii.FolioItem)
+                .WithOne(fi => fi.InvoiceItem)
+                .HasForeignKey<InvoiceItem>(ii => ii.FolioItemId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<InvoiceItem>()
+                .HasIndex(ii => ii.FolioItemId)
+                .IsUnique()
+                .HasFilter("\"FolioItemId\" IS NOT NULL AND NOT \"IsDeleted\"");
             modelBuilder.Entity<InvoiceItem>().HasQueryFilter(ii => !ii.IsDeleted);
 
             // CashMovement
@@ -293,6 +344,17 @@ namespace hotel_erp.Api.Database
                 .Property(cm => cm.MovementType)
                 .HasConversion<string>()
                 .HasMaxLength(20);
+            modelBuilder.Entity<CashMovement>().Property(cm => cm.Amount).HasPrecision(18, 2);
+            modelBuilder.Entity<CashMovement>().Property(cm => cm.BalanceAfter).HasPrecision(18, 2);
+            modelBuilder.Entity<CashMovement>().Property(cm => cm.ExpectedAmount).HasPrecision(18, 2);
+            modelBuilder.Entity<CashMovement>().Property(cm => cm.CountedAmount).HasPrecision(18, 2);
+            modelBuilder.Entity<CashMovement>().Property(cm => cm.Difference).HasPrecision(18, 2);
+            modelBuilder.Entity<CashMovement>().Property(cm => cm.Notes).HasMaxLength(500);
+            modelBuilder.Entity<CashMovement>().ToTable(table =>
+            {
+                table.HasCheckConstraint("CK_CashMovements_Amount_NonNegative", "\"Amount\" >= 0");
+                table.HasCheckConstraint("CK_CashMovements_Balance_NonNegative", "\"BalanceAfter\" >= 0");
+            });
             modelBuilder.Entity<CashMovement>()
                 .HasOne(cm => cm.CashRegister)
                 .WithMany(cr => cr.CashMovements)
@@ -301,10 +363,213 @@ namespace hotel_erp.Api.Database
                 .HasOne(cm => cm.User)
                 .WithMany(u => u.CashMovements)
                 .HasForeignKey(cm => cm.UserId);
+            modelBuilder.Entity<CashMovement>()
+                .HasIndex(cm => cm.ReferenceId)
+                .IsUnique()
+                .HasFilter("\"ReferenceId\" IS NOT NULL AND NOT \"IsDeleted\"");
+            modelBuilder.Entity<CashMovement>()
+                .HasIndex(cm => new { cm.CashRegisterId, cm.CreatedAt, cm.Id });
             modelBuilder.Entity<CashMovement>().HasQueryFilter(cm => !cm.IsDeleted);
 
             // CashRegister
+            modelBuilder.Entity<CashRegister>().Property(cr => cr.Name).HasMaxLength(50);
+            modelBuilder.Entity<CashRegister>().Property(cr => cr.Description).HasMaxLength(250);
+            modelBuilder.Entity<CashRegister>()
+                .HasIndex(cr => cr.Name)
+                .IsUnique()
+                .HasFilter("NOT \"IsDeleted\"");
             modelBuilder.Entity<CashRegister>().HasQueryFilter(cr => !cr.IsDeleted);
+
+            // Payments and document applications
+            modelBuilder.Entity<Payment>().Property(payment => payment.PaymentNumber).HasMaxLength(50);
+            modelBuilder.Entity<Payment>().Property(payment => payment.Method).HasConversion<string>().HasMaxLength(20);
+            modelBuilder.Entity<Payment>().Property(payment => payment.Status).HasConversion<string>().HasMaxLength(30);
+            modelBuilder.Entity<Payment>().Property(payment => payment.Currency).HasMaxLength(3);
+            modelBuilder.Entity<Payment>().Property(payment => payment.ExternalReference).HasMaxLength(100);
+            modelBuilder.Entity<Payment>().Property(payment => payment.Amount).HasPrecision(18, 2);
+            modelBuilder.Entity<Payment>().Property(payment => payment.CashReceived).HasPrecision(18, 2);
+            modelBuilder.Entity<Payment>().Property(payment => payment.CashChange).HasPrecision(18, 2);
+            modelBuilder.Entity<Payment>()
+                .HasIndex(payment => payment.PaymentNumber)
+                .IsUnique()
+                .HasFilter("NOT \"IsDeleted\"");
+            modelBuilder.Entity<Payment>().HasIndex(payment => payment.PaymentDate);
+            modelBuilder.Entity<Payment>()
+                .HasOne(payment => payment.RecordedByUser)
+                .WithMany()
+                .HasForeignKey(payment => payment.RecordedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Payment>()
+                .HasOne(payment => payment.CashRegister)
+                .WithMany()
+                .HasForeignKey(payment => payment.CashRegisterId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Payment>()
+                .HasOne(payment => payment.AccountingEntry)
+                .WithOne()
+                .HasForeignKey<Payment>(payment => payment.AccountingEntryId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Payment>().ToTable(table =>
+            {
+                table.HasCheckConstraint("CK_Payments_Amount_Positive", "\"Amount\" > 0");
+                table.HasCheckConstraint("CK_Payments_Currency_HNL", "\"Currency\" = 'HNL'");
+                table.HasCheckConstraint(
+                    "CK_Payments_MethodFields",
+                    "(\"Method\" = 'Efectivo' AND \"CashRegisterId\" IS NOT NULL AND \"CashReceived\" IS NOT NULL AND \"CashReceived\" >= \"Amount\" AND \"CashChange\" = \"CashReceived\" - \"Amount\" AND \"ExternalReference\" = '') OR " +
+                    "(\"Method\" IN ('Tarjeta', 'Transferencia') AND \"CashRegisterId\" IS NULL AND \"CashReceived\" IS NULL AND \"CashChange\" IS NULL AND length(btrim(\"ExternalReference\")) >= 3)");
+                table.HasCheckConstraint(
+                    "CK_Payments_Status",
+                    "\"Status\" IN ('Confirmado', 'Anulado', 'ParcialmenteReembolsado', 'Reembolsado')");
+            });
+            modelBuilder.Entity<Payment>().HasQueryFilter(payment => !payment.IsDeleted);
+
+            modelBuilder.Entity<PaymentApplication>().Property(application => application.Amount).HasPrecision(18, 2);
+            modelBuilder.Entity<PaymentApplication>()
+                .HasOne(application => application.Payment)
+                .WithMany(payment => payment.Applications)
+                .HasForeignKey(application => application.PaymentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PaymentApplication>()
+                .HasOne(application => application.Invoice)
+                .WithMany(invoice => invoice.PaymentApplications)
+                .HasForeignKey(application => application.InvoiceId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PaymentApplication>()
+                .HasIndex(application => new { application.PaymentId, application.InvoiceId })
+                .IsUnique()
+                .HasFilter("NOT \"IsDeleted\"");
+            modelBuilder.Entity<PaymentApplication>().HasIndex(application => application.InvoiceId);
+            modelBuilder.Entity<PaymentApplication>().ToTable(table =>
+            {
+                table.HasCheckConstraint("CK_PaymentApplications_Amount_Positive", "\"Amount\" > 0");
+            });
+            modelBuilder.Entity<PaymentApplication>().HasQueryFilter(application => !application.IsDeleted);
+
+            modelBuilder.Entity<Refund>().Property(refund => refund.RefundNumber).HasMaxLength(50);
+            modelBuilder.Entity<Refund>().Property(refund => refund.Method).HasConversion<string>().HasMaxLength(20);
+            modelBuilder.Entity<Refund>().Property(refund => refund.Status).HasConversion<string>().HasMaxLength(20);
+            modelBuilder.Entity<Refund>().Property(refund => refund.Currency).HasMaxLength(3);
+            modelBuilder.Entity<Refund>().Property(refund => refund.ExternalReference).HasMaxLength(100);
+            modelBuilder.Entity<Refund>().Property(refund => refund.Reason).HasMaxLength(500);
+            modelBuilder.Entity<Refund>().Property(refund => refund.Amount).HasPrecision(18, 2);
+            modelBuilder.Entity<Refund>()
+                .HasIndex(refund => refund.RefundNumber)
+                .IsUnique()
+                .HasFilter("NOT \"IsDeleted\"");
+            modelBuilder.Entity<Refund>().HasIndex(refund => refund.RefundDate);
+            modelBuilder.Entity<Refund>()
+                .HasOne(refund => refund.Payment)
+                .WithMany(payment => payment.Refunds)
+                .HasForeignKey(refund => refund.PaymentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Refund>()
+                .HasOne(refund => refund.RecordedByUser)
+                .WithMany()
+                .HasForeignKey(refund => refund.RecordedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Refund>()
+                .HasOne(refund => refund.CashRegister)
+                .WithMany()
+                .HasForeignKey(refund => refund.CashRegisterId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Refund>()
+                .HasOne(refund => refund.AccountingEntry)
+                .WithOne()
+                .HasForeignKey<Refund>(refund => refund.AccountingEntryId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Refund>().ToTable(table =>
+            {
+                table.HasCheckConstraint("CK_Refunds_Amount_Positive", "\"Amount\" > 0");
+                table.HasCheckConstraint("CK_Refunds_Currency_HNL", "\"Currency\" = 'HNL'");
+                table.HasCheckConstraint(
+                    "CK_Refunds_MethodFields",
+                    "(\"Method\" = 'Efectivo' AND \"CashRegisterId\" IS NOT NULL AND \"ExternalReference\" = '') OR " +
+                    "(\"Method\" IN ('Tarjeta', 'Transferencia') AND \"CashRegisterId\" IS NULL AND length(btrim(\"ExternalReference\")) >= 3)");
+                table.HasCheckConstraint("CK_Refunds_Status", "\"Status\" IN ('Confirmado', 'Anulado')");
+            });
+            modelBuilder.Entity<Refund>().HasQueryFilter(refund => !refund.IsDeleted);
+
+            modelBuilder.Entity<RefundApplication>().Property(application => application.Amount).HasPrecision(18, 2);
+            modelBuilder.Entity<RefundApplication>()
+                .HasOne(application => application.Refund)
+                .WithMany(refund => refund.Applications)
+                .HasForeignKey(application => application.RefundId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<RefundApplication>()
+                .HasOne(application => application.CreditNote)
+                .WithMany(note => note.RefundApplications)
+                .HasForeignKey(application => application.CreditNoteId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<RefundApplication>()
+                .HasIndex(application => new { application.RefundId, application.CreditNoteId })
+                .IsUnique()
+                .HasFilter("NOT \"IsDeleted\"");
+            modelBuilder.Entity<RefundApplication>().HasIndex(application => application.CreditNoteId);
+            modelBuilder.Entity<RefundApplication>().ToTable(table =>
+            {
+                table.HasCheckConstraint("CK_RefundApplications_Amount_Positive", "\"Amount\" > 0");
+            });
+            modelBuilder.Entity<RefundApplication>().HasQueryFilter(application => !application.IsDeleted);
+
+            modelBuilder.Entity<CardSettlement>().Property(settlement => settlement.SettlementNumber).HasMaxLength(50);
+            modelBuilder.Entity<CardSettlement>().Property(settlement => settlement.Currency).HasMaxLength(3);
+            modelBuilder.Entity<CardSettlement>().Property(settlement => settlement.Status).HasConversion<string>().HasMaxLength(20);
+            modelBuilder.Entity<CardSettlement>().Property(settlement => settlement.ExternalReference).HasMaxLength(100);
+            modelBuilder.Entity<CardSettlement>().Property(settlement => settlement.GrossAmount).HasPrecision(18, 2);
+            modelBuilder.Entity<CardSettlement>().Property(settlement => settlement.BankDepositAmount).HasPrecision(18, 2);
+            modelBuilder.Entity<CardSettlement>().Property(settlement => settlement.CommissionAmount).HasPrecision(18, 2);
+            modelBuilder.Entity<CardSettlement>().Property(settlement => settlement.WithholdingAmount).HasPrecision(18, 2);
+            modelBuilder.Entity<CardSettlement>()
+                .HasIndex(settlement => settlement.SettlementNumber)
+                .IsUnique()
+                .HasFilter("NOT \"IsDeleted\"");
+            modelBuilder.Entity<CardSettlement>()
+                .HasIndex(settlement => settlement.ExternalReference)
+                .IsUnique()
+                .HasFilter("NOT \"IsDeleted\"");
+            modelBuilder.Entity<CardSettlement>().HasIndex(settlement => settlement.SettlementDate);
+            modelBuilder.Entity<CardSettlement>()
+                .HasOne(settlement => settlement.RecordedByUser)
+                .WithMany()
+                .HasForeignKey(settlement => settlement.RecordedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<CardSettlement>()
+                .HasOne(settlement => settlement.AccountingEntry)
+                .WithOne()
+                .HasForeignKey<CardSettlement>(settlement => settlement.AccountingEntryId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<CardSettlement>().ToTable(table =>
+            {
+                table.HasCheckConstraint("CK_CardSettlements_GrossAmount_Positive", "\"GrossAmount\" > 0");
+                table.HasCheckConstraint("CK_CardSettlements_Components_NonNegative", "\"BankDepositAmount\" >= 0 AND \"CommissionAmount\" >= 0 AND \"WithholdingAmount\" >= 0");
+                table.HasCheckConstraint("CK_CardSettlements_Components_Total", "\"BankDepositAmount\" + \"CommissionAmount\" + \"WithholdingAmount\" = \"GrossAmount\"");
+                table.HasCheckConstraint("CK_CardSettlements_Currency_HNL", "\"Currency\" = 'HNL'");
+                table.HasCheckConstraint("CK_CardSettlements_Reference", "length(btrim(\"ExternalReference\")) >= 3");
+                table.HasCheckConstraint("CK_CardSettlements_Status", "\"Status\" IN ('Confirmado', 'Anulado')");
+            });
+            modelBuilder.Entity<CardSettlement>().HasQueryFilter(settlement => !settlement.IsDeleted);
+
+            modelBuilder.Entity<CardSettlementApplication>().Property(application => application.Amount).HasPrecision(18, 2);
+            modelBuilder.Entity<CardSettlementApplication>()
+                .HasOne(application => application.CardSettlement)
+                .WithMany(settlement => settlement.Applications)
+                .HasForeignKey(application => application.CardSettlementId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<CardSettlementApplication>()
+                .HasOne(application => application.Payment)
+                .WithMany(payment => payment.CardSettlementApplications)
+                .HasForeignKey(application => application.PaymentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<CardSettlementApplication>()
+                .HasIndex(application => new { application.CardSettlementId, application.PaymentId })
+                .IsUnique()
+                .HasFilter("NOT \"IsDeleted\"");
+            modelBuilder.Entity<CardSettlementApplication>().HasIndex(application => application.PaymentId);
+            modelBuilder.Entity<CardSettlementApplication>().ToTable(table =>
+            {
+                table.HasCheckConstraint("CK_CardSettlementApplications_Amount_Positive", "\"Amount\" > 0");
+            });
+            modelBuilder.Entity<CardSettlementApplication>().HasQueryFilter(application => !application.IsDeleted);
 
             // Product
             modelBuilder.Entity<Product>().HasIndex(p => p.SKU).IsUnique();
@@ -353,6 +618,10 @@ namespace hotel_erp.Api.Database
                 .Property(ae => ae.EntryType)
                 .HasConversion<string>()
                 .HasMaxLength(20);
+            modelBuilder.Entity<AccountingEntry>()
+                .HasIndex(ae => ae.ReferenceId)
+                .IsUnique()
+                .HasFilter("\"ReferenceId\" IS NOT NULL AND NOT \"IsDeleted\"");
             modelBuilder.Entity<AccountingEntry>().HasQueryFilter(ae => !ae.IsDeleted);
 
             // EntryItem
@@ -402,6 +671,14 @@ namespace hotel_erp.Api.Database
                 .HasForeignKey(pii => pii.PurchaseInvoiceId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<PurchaseInvoiceItem>().HasQueryFilter(pii => !pii.IsDeleted);
+
+            // Fiscal profile
+            modelBuilder.Entity<BusinessSettings>()
+                .Property(settings => settings.FiscalProfileStatus)
+                .HasConversion<string>()
+                .HasMaxLength(20);
+            modelBuilder.Entity<BusinessSettings>()
+                .HasIndex(settings => settings.FiscalProfileStatus);
 
             // BackupLog
             modelBuilder.Entity<BackupLog>()
@@ -457,71 +734,9 @@ namespace hotel_erp.Api.Database
                     if (entity.IsDeleted && entity.DeletedAt == null)
                     {
                         entity.DeletedAt = DateTime.UtcNow;
-                        CascadeSoftDelete(entity);
                     }
                 }
             }
         }
-
-        private void CascadeSoftDelete(BaseEntity entity)
-        {
-            var now = DateTime.UtcNow;
-
-            void SoftDelete(BaseEntity child)
-            {
-                child.IsDeleted = true;
-                child.DeletedAt = now;
-                child.UpdatedAt = now;
-            }
-
-            switch (entity)
-            {
-                case Customer customer:
-                    foreach (var invoice in Invoices.Where(i => i.CustomerId == customer.Id).ToList())
-                        SoftDelete(invoice);
-                    break;
-
-                case Guest guest:
-                    foreach (var reservation in Reservations.Where(r => r.GuestId == guest.Id).ToList())
-                        SoftDelete(reservation);
-                    foreach (var folio in Folios.Where(f => f.GuestId == guest.Id).ToList())
-                        SoftDelete(folio);
-                    foreach (var invoice in Invoices.Where(i => i.GuestId == guest.Id).ToList())
-                        SoftDelete(invoice);
-                    break;
-
-                case Room room:
-                    foreach (var reservation in Reservations.Where(r => r.RoomId == room.Id).ToList())
-                        SoftDelete(reservation);
-                    foreach (var folio in Folios.Where(f => f.RoomId == room.Id).ToList())
-                        SoftDelete(folio);
-                    break;
-
-                case Supplier supplier:
-                    foreach (var purchaseInvoice in PurchaseInvoices.Where(pi => pi.SupplierId == supplier.Id).ToList())
-                        SoftDelete(purchaseInvoice);
-                    break;
-
-                case CAI cai:
-                    foreach (var invoice in Invoices.Where(i => i.CAIId == cai.Id).ToList())
-                        SoftDelete(invoice);
-                    break;
-
-                case Reservation reservation:
-                    var folios = Folios.Where(f => f.ReservationId == reservation.Id).ToList();
-                    foreach (var folio in folios)
-                        SoftDelete(folio);
-                    var folioIds = folios.Select(f => f.Id).ToList();
-                    foreach (var folioItem in FolioItems.Where(fi => folioIds.Contains(fi.FolioId)).ToList())
-                        SoftDelete(folioItem);
-                    break;
-
-                case Folio folio:
-                    foreach (var folioItem in FolioItems.Where(fi => fi.FolioId == folio.Id).ToList())
-                        SoftDelete(folioItem);
-                    break;
-            }
-        }
     }
 }
-
