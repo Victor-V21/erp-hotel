@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:05,262
+En Caja verifique el fondo, los movimientos y el efectivo contado.
+
+2
+00:00:05,212 --> 00:00:10,545
+Explique cualquier diferencia y cierre siempre su sesión al terminar el turno.
+

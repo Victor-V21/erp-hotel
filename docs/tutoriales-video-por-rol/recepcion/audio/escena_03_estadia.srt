@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:04,797
+Durante la estadía, el folio agrupa hospedaje y consumos.
+
+2
+00:00:04,747 --> 00:00:09,640
+Revise cada cargo y evite duplicados antes de iniciar el Check-Out.
+

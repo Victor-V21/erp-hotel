@@ -1,0 +1,46 @@
+[
+  {
+    "scene": "escena_00_acceso",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_00_acceso.webm",
+    "final_url": "http://127.0.0.1:5174/dashboard",
+    "errors": [
+      "console:error:Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    ],
+    "audio_seconds": 10.608
+  },
+  {
+    "scene": "escena_01_turno",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_01_turno.webm",
+    "final_url": "http://127.0.0.1:5174/reservations",
+    "errors": [],
+    "audio_seconds": 12.264
+  },
+  {
+    "scene": "escena_02_ingreso",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_02_ingreso.webm",
+    "final_url": "http://127.0.0.1:5174/rooms",
+    "errors": [],
+    "audio_seconds": 11.376
+  },
+  {
+    "scene": "escena_03_estadia",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_03_estadia.webm",
+    "final_url": "http://127.0.0.1:5174/checkout",
+    "errors": [],
+    "audio_seconds": 9.696
+  },
+  {
+    "scene": "escena_04_facturacion",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_04_facturacion.webm",
+    "final_url": "http://127.0.0.1:5174/invoices",
+    "errors": [],
+    "audio_seconds": 11.4
+  },
+  {
+    "scene": "escena_05_caja",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_05_caja.webm",
+    "final_url": "http://127.0.0.1:5174/login",
+    "errors": [],
+    "audio_seconds": 10.608
+  }
+]

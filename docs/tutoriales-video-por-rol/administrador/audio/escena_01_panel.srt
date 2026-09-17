@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:06,552
+El panel reúne ocupación, llegadas, salidas, ventas, caja y alertas.
+
+2
+00:00:06,502 --> 00:00:12,234
+Pulse Actualizar al iniciar el turno y abra las tareas desde los accesos rápidos.
+

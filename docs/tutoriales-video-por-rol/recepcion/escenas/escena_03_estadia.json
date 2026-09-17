@@ -1,0 +1,33 @@
+{
+  "id": "escena_03_estadia",
+  "narracion": "Durante la estadía, el folio agrupa hospedaje y consumos. Revise cada cargo y evite duplicados antes de iniciar el Check-Out.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/folios"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1200
+    },
+    {
+      "action": "scroll",
+      "dy": 420
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/checkout']",
+      "settle_ms": 1300
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1300
+    }
+  ]
+}

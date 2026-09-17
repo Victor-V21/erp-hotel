@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:06,020
+Revise comprobantes en Facturación SAR y concilie lotes en Liquidaciones de Tarjeta.
+
+2
+00:00:05,970 --> 00:00:11,210
+Compare monto bruto, comisión, retención y depósito bancario.
+

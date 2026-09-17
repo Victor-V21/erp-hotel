@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:06,273
+En Check-In busque al huésped, confirme identidad, fechas, tarifa y habitación.
+
+2
+00:00:06,223 --> 00:00:11,303
+Consulte huéspedes y habitaciones antes de completar un ingreso dudoso.
+

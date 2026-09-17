@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:05,768
+Supervise la operación desde el mapa de habitaciones y la agenda de reservaciones.
+
+2
+00:00:05,718 --> 00:00:11,728
+Revise disponibilidad, estados y fechas antes de autorizar cambios importantes.
+

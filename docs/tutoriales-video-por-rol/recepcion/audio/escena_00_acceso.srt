@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:03,374
+Comenzamos con el acceso de recepción.
+
+2
+00:00:03,324 --> 00:00:10,545
+Use su cuenta personal para que reservaciones, cargos y cobros queden asociados correctamente a su turno.
+

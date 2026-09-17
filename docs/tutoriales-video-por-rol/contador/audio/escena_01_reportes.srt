@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:04,823
+El panel resume la actividad reciente y las alertas fiscales.
+
+2
+00:00:04,773 --> 00:00:10,731
+En Reportes SAR seleccione el período correcto antes de revisar o exportar información.
+

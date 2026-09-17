@@ -36,6 +36,7 @@ Una tarea solo se marca cuando pasan sus comprobaciones. Si una prueba descubre 
 
 - [Registro de ejecución](evidencia/registro.md)
 - [Ejecución local de QA](ejecucion-qa-local.md)
+- [Configuración local de la API](configuracion-api-local.md)
 - [Sesión y transporte seguro en la LAN](sesion-y-transporte-lan.md)
 - [PostgreSQL con privilegio mínimo](postgresql-minimo-privilegio.md)
 - [Decisiones pendientes del hotel](00-base-y-perfil.md#decisiones-del-hotel)

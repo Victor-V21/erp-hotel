@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:03,547
+El catálogo ordena las cuentas activas.
+
+2
+00:00:03,497 --> 00:00:10,824
+Los asientos registran débitos y créditos, mientras el balance comprueba igualdad antes del cierre contable.
+

@@ -1,0 +1,46 @@
+[
+  {
+    "scene": "escena_00_acceso",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_00_acceso.webm",
+    "final_url": "http://127.0.0.1:5174/dashboard",
+    "errors": [
+      "console:error:Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    ],
+    "audio_seconds": 11.448
+  },
+  {
+    "scene": "escena_01_reportes",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_01_reportes.webm",
+    "final_url": "http://127.0.0.1:5174/reports",
+    "errors": [],
+    "audio_seconds": 10.8
+  },
+  {
+    "scene": "escena_02_cai",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_02_cai.webm",
+    "final_url": "http://127.0.0.1:5174/authorizations",
+    "errors": [],
+    "audio_seconds": 12.864
+  },
+  {
+    "scene": "escena_03_contabilidad",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_03_contabilidad.webm",
+    "final_url": "http://127.0.0.1:5174/accounting/trial-balance",
+    "errors": [],
+    "audio_seconds": 10.896
+  },
+  {
+    "scene": "escena_04_conciliacion",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_04_conciliacion.webm",
+    "final_url": "http://127.0.0.1:5174/card-settlements",
+    "errors": [],
+    "audio_seconds": 11.28
+  },
+  {
+    "scene": "escena_05_revision",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_05_revision.webm",
+    "final_url": "http://127.0.0.1:5174/login",
+    "errors": [],
+    "audio_seconds": 11.328
+  }
+]

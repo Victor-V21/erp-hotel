@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:04,252
+El panel muestra el estado general y el acceso a Caja.
+
+2
+00:00:04,202 --> 00:00:10,013
+Revise el fondo inicial, saldo esperado y movimientos antes de recibir pagos.
+

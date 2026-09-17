@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:04,943
+Al cerrar, cuente el efectivo real y compárelo con el sistema.
+
+2
+00:00:04,893 --> 00:00:11,263
+Documente diferencias, complete el arqueo y cierre sesión sin compartir credenciales.
+

@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:05,741
+Administre cuentas con permisos mínimos y revise la bitácora periódicamente.
+
+2
+00:00:05,691 --> 00:00:12,486
+Verifique respaldos y configuración, luego cierre sesión para proteger el acceso administrativo.
+

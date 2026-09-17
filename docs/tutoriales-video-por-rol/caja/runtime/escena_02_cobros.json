@@ -1,0 +1,41 @@
+{
+  "id": "escena_02_cobros",
+  "narracion": "En Facturación SAR busque el comprobante correcto antes de cobrar. Confirme cliente, total, saldo pendiente y medio de pago antes de registrar.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/invoices"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1100
+    },
+    {
+      "action": "scroll",
+      "dy": 480
+    },
+    {
+      "action": "wait",
+      "seconds": 1.2
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/folios']",
+      "settle_ms": 1300
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1200
+    },
+    {
+      "action": "wait",
+      "seconds": 1.15
+    }
+  ]
+}

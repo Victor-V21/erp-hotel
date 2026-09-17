@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>hotel_erp.Api</RootNamespace>
     <NoWarn>NU1903</NoWarn>
+    <UserSecretsId>6242404e-a6e2-4f70-be48-df55667bc687</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

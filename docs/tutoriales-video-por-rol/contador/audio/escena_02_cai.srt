@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:04,438
+Autorizaciones CAI centraliza rangos y vencimientos.
+
+2
+00:00:04,388 --> 00:00:12,792
+Verifique tipo documental, establecimiento, punto de emisión, fechas y disponibilidad contra el documento del SAR.
+

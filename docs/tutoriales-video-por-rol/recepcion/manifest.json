@@ -1,0 +1,38 @@
+{
+  "workdir": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/build",
+  "scenes": [
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_00_acceso.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_00_acceso.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_00_acceso.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_01_turno.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_01_turno.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_01_turno.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_02_ingreso.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_02_ingreso.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_02_ingreso.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_03_estadia.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_03_estadia.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_03_estadia.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_04_facturacion.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_04_facturacion.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_04_facturacion.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/video/escena_05_caja.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_05_caja.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/audio/escena_05_caja.srt"
+    }
+  ],
+  "intro": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/assets/intro.mp4",
+  "outro": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/assets/outro.mp4",
+  "out": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/hotel_erp_tutorial_recepcion_es.mp4"
+}

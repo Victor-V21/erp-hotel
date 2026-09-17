@@ -1,0 +1,37 @@
+{
+  "id": "escena_04_conciliacion",
+  "narracion": "Revise comprobantes en Facturación SAR y concilie lotes en Liquidaciones de Tarjeta. Compare monto bruto, comisión, retención y depósito bancario.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/invoices"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1100
+    },
+    {
+      "action": "scroll",
+      "dy": 430
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/card-settlements']",
+      "settle_ms": 1400
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1200
+    },
+    {
+      "action": "wait",
+      "seconds": 2.61
+    }
+  ]
+}

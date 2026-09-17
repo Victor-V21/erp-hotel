@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:04,837
+En Facturación SAR busque el comprobante correcto antes de cobrar.
+
+2
+00:00:04,787 --> 00:00:10,864
+Confirme cliente, total, saldo pendiente y medio de pago antes de registrar.
+

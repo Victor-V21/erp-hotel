@@ -1,0 +1,33 @@
+{
+  "id": "escena_01_panel",
+  "narracion": "El panel reúne ocupación, llegadas, salidas, ventas, caja y alertas. Pulse Actualizar al iniciar el turno y abra las tareas desde los accesos rápidos.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/dashboard"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 900
+    },
+    {
+      "action": "click",
+      "role": "button",
+      "name": "Actualizar",
+      "settle_ms": 1400
+    },
+    {
+      "action": "scroll",
+      "dy": 520
+    },
+    {
+      "action": "wait",
+      "seconds": 1.2
+    }
+  ]
+}

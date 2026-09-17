@@ -1,0 +1,310 @@
+{
+  "generated_at": "2026-09-14T06:13:08.303158+00:00",
+  "standard": "MP4, H.264/AAC, 1920x1080, 25 fps, narración y subtítulos en español",
+  "music": "No incluida; la narración queda limpia y sin competencia de volumen.",
+  "visual_review": {
+    "status": "Aprobada",
+    "evidence": "Hojas de contacto revisadas para los cuatro roles.",
+    "checks": [
+      "Portada y cierre completos y consistentes con la marca.",
+      "Interfaz real visible y legible en las escenas operativas.",
+      "Cursor de atención visible durante la interacción.",
+      "Subtítulos legibles, dentro del cuadro y alineados con la narración.",
+      "No se observan credenciales expuestas ni cortes visuales defectuosos."
+    ]
+  },
+  "all_automatic_checks_passed": true,
+  "videos": [
+    {
+      "role": "Administrador",
+      "file": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/hotel_erp_tutorial_administrador_es.mp4",
+      "size_bytes": 4485244,
+      "duration_seconds": 87.0,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "frame_rate": "25/1"
+      },
+      "audio": {
+        "codec": "aac",
+        "sample_rate": "24000",
+        "channels": 2
+      },
+      "full_decode_ok": true,
+      "scene_checks": [
+        {
+          "scene": "escena_00_acceso",
+          "video_seconds": 17.72,
+          "audio_seconds": 13.248,
+          "subtitle_last_end_seconds": 13.178,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_01_panel",
+          "video_seconds": 19.44,
+          "audio_seconds": 12.288,
+          "subtitle_last_end_seconds": 12.234,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_02_operacion",
+          "video_seconds": 29.08,
+          "audio_seconds": 11.784,
+          "subtitle_last_end_seconds": 11.728,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_03_fiscal",
+          "video_seconds": 18.8,
+          "audio_seconds": 12.984,
+          "subtitle_last_end_seconds": 12.912,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_04_finanzas",
+          "video_seconds": 24.44,
+          "audio_seconds": 12.96,
+          "subtitle_last_end_seconds": 12.898,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_05_control",
+          "video_seconds": 25.04,
+          "audio_seconds": 12.552,
+          "subtitle_last_end_seconds": 12.486,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        }
+      ],
+      "expected_environment_messages": [
+        {
+          "message": "console:error:Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "reason": "La aplicación comprueba la sesión anterior antes de mostrar el formulario de acceso."
+        },
+        {
+          "message": "console:error:Failed to load resource: the server responded with a status of 501 (Not Implemented)",
+          "reason": "La detección de impresoras no está disponible en el entorno Linux usado para grabar."
+        }
+      ],
+      "unexpected_console_errors": [],
+      "contact_sheet": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/control-calidad/contacto-administrador.jpg",
+      "automatic_checks_passed": true
+    },
+    {
+      "role": "Recepción",
+      "file": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/hotel_erp_tutorial_recepcion_es.mp4",
+      "size_bytes": 2915392,
+      "duration_seconds": 76.88,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "frame_rate": "25/1"
+      },
+      "audio": {
+        "codec": "aac",
+        "sample_rate": "24000",
+        "channels": 2
+      },
+      "full_decode_ok": true,
+      "scene_checks": [
+        {
+          "scene": "escena_00_acceso",
+          "video_seconds": 18.12,
+          "audio_seconds": 10.608,
+          "subtitle_last_end_seconds": 10.545,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_01_turno",
+          "video_seconds": 20.2,
+          "audio_seconds": 12.264,
+          "subtitle_last_end_seconds": 12.207,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_02_ingreso",
+          "video_seconds": 26.2,
+          "audio_seconds": 11.376,
+          "subtitle_last_end_seconds": 11.303,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_03_estadia",
+          "video_seconds": 21.6,
+          "audio_seconds": 9.696,
+          "subtitle_last_end_seconds": 9.64,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_04_facturacion",
+          "video_seconds": 24.52,
+          "audio_seconds": 11.4,
+          "subtitle_last_end_seconds": 11.343,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_05_caja",
+          "video_seconds": 24.92,
+          "audio_seconds": 10.608,
+          "subtitle_last_end_seconds": 10.545,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        }
+      ],
+      "expected_environment_messages": [
+        {
+          "message": "console:error:Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "reason": "La aplicación comprueba la sesión anterior antes de mostrar el formulario de acceso."
+        }
+      ],
+      "unexpected_console_errors": [],
+      "contact_sheet": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/control-calidad/contacto-recepcion.jpg",
+      "automatic_checks_passed": true
+    },
+    {
+      "role": "Caja",
+      "file": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/hotel_erp_tutorial_caja_es.mp4",
+      "size_bytes": 1933114,
+      "duration_seconds": 49.763,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "frame_rate": "25/1"
+      },
+      "audio": {
+        "codec": "aac",
+        "sample_rate": "24000",
+        "channels": 2
+      },
+      "full_decode_ok": true,
+      "scene_checks": [
+        {
+          "scene": "escena_00_acceso",
+          "video_seconds": 19.44,
+          "audio_seconds": 9.792,
+          "subtitle_last_end_seconds": 9.734,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_01_turno",
+          "video_seconds": 15.04,
+          "audio_seconds": 10.08,
+          "subtitle_last_end_seconds": 10.013,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_02_cobros",
+          "video_seconds": 13.84,
+          "audio_seconds": 10.92,
+          "subtitle_last_end_seconds": 10.864,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_03_cierre",
+          "video_seconds": 15.28,
+          "audio_seconds": 11.328,
+          "subtitle_last_end_seconds": 11.263,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        }
+      ],
+      "expected_environment_messages": [],
+      "unexpected_console_errors": [],
+      "contact_sheet": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/control-calidad/contacto-caja.jpg",
+      "automatic_checks_passed": true
+    },
+    {
+      "role": "Contador",
+      "file": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/hotel_erp_tutorial_contador_es.mp4",
+      "size_bytes": 3875575,
+      "duration_seconds": 76.64,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "frame_rate": "25/1"
+      },
+      "audio": {
+        "codec": "aac",
+        "sample_rate": "24000",
+        "channels": 2
+      },
+      "full_decode_ok": true,
+      "scene_checks": [
+        {
+          "scene": "escena_00_acceso",
+          "video_seconds": 17.56,
+          "audio_seconds": 11.448,
+          "subtitle_last_end_seconds": 11.396,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_01_reportes",
+          "video_seconds": 16.08,
+          "audio_seconds": 10.8,
+          "subtitle_last_end_seconds": 10.731,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_02_cai",
+          "video_seconds": 16.28,
+          "audio_seconds": 12.864,
+          "subtitle_last_end_seconds": 12.792,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_03_contabilidad",
+          "video_seconds": 19.32,
+          "audio_seconds": 10.896,
+          "subtitle_last_end_seconds": 10.824,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_04_conciliacion",
+          "video_seconds": 16.52,
+          "audio_seconds": 11.28,
+          "subtitle_last_end_seconds": 11.21,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        },
+        {
+          "scene": "escena_05_revision",
+          "video_seconds": 21.72,
+          "audio_seconds": 11.328,
+          "subtitle_last_end_seconds": 11.263,
+          "audio_has_recording_margin": true,
+          "subtitles_fit_audio": true
+        }
+      ],
+      "expected_environment_messages": [
+        {
+          "message": "console:error:Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "reason": "La aplicación comprueba la sesión anterior antes de mostrar el formulario de acceso."
+        }
+      ],
+      "unexpected_console_errors": [],
+      "contact_sheet": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/control-calidad/contacto-contador.jpg",
+      "automatic_checks_passed": true
+    }
+  ]
+}

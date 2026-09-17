@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:05,940
+Caja, inventario y contabilidad concentran los controles financieros del hotel.
+
+2
+00:00:05,890 --> 00:00:12,898
+Consulte movimientos, existencias, reportes y asientos antes de aprobar cierres o ajustes.
+

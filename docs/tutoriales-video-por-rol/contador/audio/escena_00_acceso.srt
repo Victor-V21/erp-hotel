@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:03,560
+Comenzamos con el acceso de contabilidad.
+
+2
+00:00:03,510 --> 00:00:11,396
+Use su cuenta personal para que revisiones fiscales, exportaciones y consultas queden correctamente registradas.
+

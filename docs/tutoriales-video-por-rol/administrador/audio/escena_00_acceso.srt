@@ -1,0 +1,12 @@
+1
+00:00:00,100 --> 00:00:03,587
+Comenzamos con el acceso del administrador.
+
+2
+00:00:03,537 --> 00:00:08,550
+Ingrese siempre con su cuenta personal y nunca comparta la contraseña.
+
+3
+00:00:08,550 --> 00:00:13,178
+Al entrar, confirme su nombre y el rol mostrado en el menú.
+

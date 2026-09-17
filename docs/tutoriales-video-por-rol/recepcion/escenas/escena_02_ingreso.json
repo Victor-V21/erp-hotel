@@ -1,0 +1,39 @@
+{
+  "id": "escena_02_ingreso",
+  "narracion": "En Check-In busque al huésped, confirme identidad, fechas, tarifa y habitación. Consulte huéspedes y habitaciones antes de completar un ingreso dudoso.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/checkin"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1100
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/guests']",
+      "settle_ms": 1200
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 900
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/rooms']",
+      "settle_ms": 1200
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1100
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:03,121
+Comenzamos con el acceso de caja.
+
+2
+00:00:03,071 --> 00:00:09,734
+Ingrese con su cuenta personal para conservar la trazabilidad de cada cobro y movimiento del turno.
+

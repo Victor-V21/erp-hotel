@@ -1,0 +1,55 @@
+{
+  "id": "escena_05_control",
+  "narracion": "Administre cuentas con permisos mínimos y revise la bitácora periódicamente. Verifique respaldos y configuración, luego cierre sesión para proteger el acceso administrativo.",
+  "allows_login_redirect": true,
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/users"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 900
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/audit-logs']",
+      "settle_ms": 1200
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 900
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/backups']",
+      "settle_ms": 1200
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/settings']",
+      "settle_ms": 1200
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 900
+    },
+    {
+      "action": "click",
+      "role": "button",
+      "name": "Cerrar Sesión",
+      "settle_ms": 1400
+    },
+    {
+      "action": "wait",
+      "seconds": 0.8
+    }
+  ]
+}

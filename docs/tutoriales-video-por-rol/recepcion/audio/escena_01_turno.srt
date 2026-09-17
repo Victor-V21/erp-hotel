@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:06,127
+Al iniciar el turno, revise llegadas, salidas y habitaciones disponibles.
+
+2
+00:00:06,077 --> 00:00:12,207
+El mapa muestra rápidamente qué cuartos están libres, ocupados o fuera de servicio.
+

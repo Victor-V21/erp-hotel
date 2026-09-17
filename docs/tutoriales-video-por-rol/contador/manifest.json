@@ -1,0 +1,38 @@
+{
+  "workdir": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/build",
+  "scenes": [
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_00_acceso.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_00_acceso.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_00_acceso.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_01_reportes.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_01_reportes.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_01_reportes.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_02_cai.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_02_cai.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_02_cai.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_03_contabilidad.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_03_contabilidad.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_03_contabilidad.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_04_conciliacion.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_04_conciliacion.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_04_conciliacion.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/video/escena_05_revision.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_05_revision.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/audio/escena_05_revision.srt"
+    }
+  ],
+  "intro": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/assets/intro.mp4",
+  "outro": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/assets/outro.mp4",
+  "out": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/hotel_erp_tutorial_contador_es.mp4"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "escena_03_fiscal",
+  "narracion": "Facturación SAR permite buscar, revisar e imprimir comprobantes. En Autorizaciones CAI controle rangos, fechas, disponibilidad y documentos fiscales antes de emitir.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/invoices"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1100
+    },
+    {
+      "action": "scroll",
+      "dy": 420
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/authorizations']",
+      "settle_ms": 1300
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1300
+    }
+  ]
+}

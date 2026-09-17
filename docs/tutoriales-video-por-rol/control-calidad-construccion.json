@@ -1,0 +1,33 @@
+{
+  "generated_at": "2026-09-14T06:08:10.017230+00:00",
+  "videos": [
+    {
+      "role": "Administrador",
+      "file": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/hotel_erp_tutorial_administrador_es.mp4",
+      "duration_seconds": 87.0,
+      "scenes": 6,
+      "recording_console_errors": 2
+    },
+    {
+      "role": "Recepción",
+      "file": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/recepcion/hotel_erp_tutorial_recepcion_es.mp4",
+      "duration_seconds": 76.88,
+      "scenes": 6,
+      "recording_console_errors": 1
+    },
+    {
+      "role": "Caja",
+      "file": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/hotel_erp_tutorial_caja_es.mp4",
+      "duration_seconds": 49.763,
+      "scenes": 4,
+      "recording_console_errors": 0
+    },
+    {
+      "role": "Contador",
+      "file": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/contador/hotel_erp_tutorial_contador_es.mp4",
+      "duration_seconds": 76.64,
+      "scenes": 6,
+      "recording_console_errors": 1
+    }
+  ]
+}

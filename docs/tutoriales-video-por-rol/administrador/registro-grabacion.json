@@ -1,0 +1,48 @@
+[
+  {
+    "scene": "escena_00_acceso",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_00_acceso.webm",
+    "final_url": "http://127.0.0.1:5174/dashboard",
+    "errors": [
+      "console:error:Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    ],
+    "audio_seconds": 13.248
+  },
+  {
+    "scene": "escena_01_panel",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_01_panel.webm",
+    "final_url": "http://127.0.0.1:5174/dashboard",
+    "errors": [],
+    "audio_seconds": 12.288
+  },
+  {
+    "scene": "escena_02_operacion",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_02_operacion.webm",
+    "final_url": "http://127.0.0.1:5174/rooms",
+    "errors": [],
+    "audio_seconds": 11.784
+  },
+  {
+    "scene": "escena_03_fiscal",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_03_fiscal.webm",
+    "final_url": "http://127.0.0.1:5174/authorizations",
+    "errors": [],
+    "audio_seconds": 12.984
+  },
+  {
+    "scene": "escena_04_finanzas",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_04_finanzas.webm",
+    "final_url": "http://127.0.0.1:5174/accounting/journal-entries",
+    "errors": [],
+    "audio_seconds": 12.96
+  },
+  {
+    "scene": "escena_05_control",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_05_control.webm",
+    "final_url": "http://127.0.0.1:5174/login",
+    "errors": [
+      "console:error:Failed to load resource: the server responded with a status of 501 (Not Implemented)"
+    ],
+    "audio_seconds": 12.552
+  }
+]

@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:04,065
+Clientes conserva los datos fiscales del receptor.
+
+2
+00:00:04,015 --> 00:00:11,343
+En Facturación SAR localice el comprobante, revise su estado y registre pagos desde la opción autorizada.
+

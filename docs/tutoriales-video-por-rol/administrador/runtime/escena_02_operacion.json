@@ -1,0 +1,44 @@
+{
+  "id": "escena_02_operacion",
+  "narracion": "Supervise la operación desde el mapa de habitaciones y la agenda de reservaciones. Revise disponibilidad, estados y fechas antes de autorizar cambios importantes.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/dashboard"
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/rooms/map']",
+      "settle_ms": 1200
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1000
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/reservations']",
+      "settle_ms": 1200
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1000
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/rooms']",
+      "settle_ms": 1200
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1100
+    },
+    {
+      "action": "wait",
+      "seconds": 0.8
+    }
+  ]
+}

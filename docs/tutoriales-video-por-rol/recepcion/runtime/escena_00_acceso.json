@@ -1,0 +1,45 @@
+{
+  "id": "escena_00_acceso",
+  "narracion": "Comenzamos con el acceso de recepción. Use su cuenta personal para que reservaciones, cargos y cobros queden asociados correctamente a su turno.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/login"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.2
+    },
+    {
+      "action": "click",
+      "selector": "input[type='text']"
+    },
+    {
+      "action": "type",
+      "value_key": "username"
+    },
+    {
+      "action": "click",
+      "selector": "input[type='password']"
+    },
+    {
+      "action": "type",
+      "value_key": "password",
+      "char_delay_ms": 45
+    },
+    {
+      "action": "click",
+      "selector": "button[type='submit']",
+      "settle_ms": 1800
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1300
+    },
+    {
+      "action": "wait",
+      "seconds": 0.8
+    }
+  ]
+}

@@ -416,3 +416,9 @@ Una segunda matriz terminó con `MATRIZ_SESION_OK`: contraseña débil 400, reut
 - `scripts/qa.sh` terminó con código 0: backend con 0 advertencias y 0 errores; 76 pruebas unitarias y 4 integraciones PostgreSQL aprobadas; `npm ci`; `npm audit` con 0 vulnerabilidades; ESLint limpio; TypeScript/Vite compiló 2.098 módulos y la validación de espacios/conflictos fue aprobada.
 - No quedaron bases `hotel_erp_it_%`/`hotel_erp_provision_it_%`, roles `hotel_erp_*_it_%`, procesos de API ni directorios temporales de adjuntos.
 - SEC11 queda aprobado técnicamente. Antes de la instalación real faltan inventario/respaldo de la base oficial, custodia de ambas contraseñas, ejecución del instalador en Windows 11 y firma del revisor independiente. La cuenta de respaldo y el procedimiento de rotación pertenecen al trabajo operativo restante de G1/G6.
+
+## 2026-09-13 — corrección del arranque local seguro
+
+- `hotel-erp.Api.csproj` ahora declara `UserSecretsId`, por lo que Development puede resolver la conexión PostgreSQL, la clave JWT y el administrador inicial desde el almacén local estándar de .NET sin restaurar secretos en `appsettings.json`.
+- Se configuró el almacén de la máquina de desarrollo con valores sintéticos externos al repositorio. `dotnet run` aplicó las migraciones, sincronizó roles/permisos y `GET http://127.0.0.1:5084/health` respondió `200 OK` con estado `healthy`.
+- El procedimiento reproducible para Windows 11 y Linux, la verificación y los fallos habituales se documentan en [configuración local de la API](../configuracion-api-local.md). Production conserva el fallo seguro si operación no suministra sus secretos externos.

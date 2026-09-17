@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:05,249
+Consulte clientes, huéspedes y folios para sustentar diferencias.
+
+2
+00:00:05,199 --> 00:00:11,263
+Revise la bitácora, conserve la evidencia necesaria y cierre sesión al terminar.
+

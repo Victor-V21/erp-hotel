@@ -1,0 +1,41 @@
+{
+  "id": "escena_00_acceso",
+  "narracion": "Comenzamos con el acceso del administrador. Ingrese siempre con su cuenta personal y nunca comparta la contraseña. Al entrar, confirme su nombre y el rol mostrado en el menú.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/login"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.2
+    },
+    {
+      "action": "click",
+      "selector": "input[type='text']"
+    },
+    {
+      "action": "type",
+      "value_key": "username"
+    },
+    {
+      "action": "click",
+      "selector": "input[type='password']"
+    },
+    {
+      "action": "type",
+      "value_key": "password",
+      "char_delay_ms": 45
+    },
+    {
+      "action": "click",
+      "selector": "button[type='submit']",
+      "settle_ms": 1800
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1300
+    }
+  ]
+}

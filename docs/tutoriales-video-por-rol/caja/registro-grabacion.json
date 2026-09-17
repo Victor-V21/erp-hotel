@@ -1,0 +1,30 @@
+[
+  {
+    "scene": "escena_00_acceso",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/video/escena_00_acceso.webm",
+    "final_url": "conservada de la grabación anterior",
+    "errors": [],
+    "audio_seconds": 9.792
+  },
+  {
+    "scene": "escena_01_turno",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/video/escena_01_turno.webm",
+    "final_url": "conservada de la grabación anterior",
+    "errors": [],
+    "audio_seconds": 10.08
+  },
+  {
+    "scene": "escena_02_cobros",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/video/escena_02_cobros.webm",
+    "final_url": "conservada de la grabación anterior",
+    "errors": [],
+    "audio_seconds": 10.92
+  },
+  {
+    "scene": "escena_03_cierre",
+    "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/video/escena_03_cierre.webm",
+    "final_url": "conservada de la grabación anterior",
+    "errors": [],
+    "audio_seconds": 11.328
+  }
+]

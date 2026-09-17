@@ -1,0 +1,38 @@
+{
+  "id": "escena_03_cierre",
+  "narracion": "Al cerrar, cuente el efectivo real y compárelo con el sistema. Documente diferencias, complete el arqueo y cierre sesión sin compartir credenciales.",
+  "allows_login_redirect": true,
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/cash"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1100
+    },
+    {
+      "action": "scroll",
+      "dy": 520
+    },
+    {
+      "action": "wait",
+      "seconds": 1.4
+    },
+    {
+      "action": "click",
+      "role": "button",
+      "name": "Cerrar Sesión",
+      "settle_ms": 1400
+    },
+    {
+      "action": "wait",
+      "seconds": 3.11
+    }
+  ]
+}

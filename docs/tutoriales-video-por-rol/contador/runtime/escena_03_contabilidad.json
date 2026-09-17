@@ -1,0 +1,43 @@
+{
+  "id": "escena_03_contabilidad",
+  "narracion": "El catálogo ordena las cuentas activas. Los asientos registran débitos y créditos, mientras el balance comprueba igualdad antes del cierre contable.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/accounting/chart-of-accounts"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1000
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/accounting/journal-entries']",
+      "settle_ms": 1300
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 900
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/accounting/trial-balance']",
+      "settle_ms": 1300
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1100
+    },
+    {
+      "action": "wait",
+      "seconds": 0.8
+    }
+  ]
+}

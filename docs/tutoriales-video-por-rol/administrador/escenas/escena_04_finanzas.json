@@ -1,0 +1,49 @@
+{
+  "id": "escena_04_finanzas",
+  "narracion": "Caja, inventario y contabilidad concentran los controles financieros del hotel. Consulte movimientos, existencias, reportes y asientos antes de aprobar cierres o ajustes.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/cash"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 900
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/inventory']",
+      "settle_ms": 1200
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 900
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/reports']",
+      "settle_ms": 1200
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 900
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/accounting/journal-entries']",
+      "settle_ms": 1200
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1000
+    }
+  ]
+}

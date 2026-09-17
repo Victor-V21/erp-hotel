@@ -1,0 +1,38 @@
+{
+  "workdir": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/build",
+  "scenes": [
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_00_acceso.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_00_acceso.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_00_acceso.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_01_panel.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_01_panel.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_01_panel.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_02_operacion.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_02_operacion.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_02_operacion.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_03_fiscal.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_03_fiscal.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_03_fiscal.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_04_finanzas.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_04_finanzas.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_04_finanzas.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/video/escena_05_control.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_05_control.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/audio/escena_05_control.srt"
+    }
+  ],
+  "intro": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/assets/intro.mp4",
+  "outro": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/assets/outro.mp4",
+  "out": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/administrador/hotel_erp_tutorial_administrador_es.mp4"
+}

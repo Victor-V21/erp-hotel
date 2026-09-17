@@ -1,0 +1,27 @@
+{
+  "id": "escena_02_cai",
+  "narracion": "Autorizaciones CAI centraliza rangos y vencimientos. Verifique tipo documental, establecimiento, punto de emisión, fechas y disponibilidad contra el documento del SAR.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/authorizations"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1200
+    },
+    {
+      "action": "scroll",
+      "dy": 460
+    },
+    {
+      "action": "wait",
+      "seconds": 1.3
+    }
+  ]
+}

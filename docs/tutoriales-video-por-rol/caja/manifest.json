@@ -1,0 +1,28 @@
+{
+  "workdir": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/build",
+  "scenes": [
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/video/escena_00_acceso.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/audio/escena_00_acceso.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/audio/escena_00_acceso.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/video/escena_01_turno.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/audio/escena_01_turno.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/audio/escena_01_turno.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/video/escena_02_cobros.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/audio/escena_02_cobros.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/audio/escena_02_cobros.srt"
+    },
+    {
+      "video": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/video/escena_03_cierre.webm",
+      "audio": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/audio/escena_03_cierre.mp3",
+      "srt": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/audio/escena_03_cierre.srt"
+    }
+  ],
+  "intro": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/assets/intro.mp4",
+  "outro": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/assets/outro.mp4",
+  "out": "/home/vm/Projects/erp-hotel/docs/tutoriales-video-por-rol/caja/hotel_erp_tutorial_caja_es.mp4"
+}

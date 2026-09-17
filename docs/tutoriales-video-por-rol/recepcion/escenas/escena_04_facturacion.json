@@ -1,0 +1,37 @@
+{
+  "id": "escena_04_facturacion",
+  "narracion": "Clientes conserva los datos fiscales del receptor. En Facturación SAR localice el comprobante, revise su estado y registre pagos desde la opción autorizada.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/customers"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1100
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/invoices']",
+      "settle_ms": 1300
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1100
+    },
+    {
+      "action": "scroll",
+      "dy": 420
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    }
+  ]
+}

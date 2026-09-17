@@ -1,0 +1,37 @@
+{
+  "id": "escena_01_reportes",
+  "narracion": "El panel resume la actividad reciente y las alertas fiscales. En Reportes SAR seleccione el período correcto antes de revisar o exportar información.",
+  "steps": [
+    {
+      "action": "goto",
+      "url": "http://127.0.0.1:5174/dashboard"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.0
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 900
+    },
+    {
+      "action": "click",
+      "selector": "a[href='/reports']",
+      "settle_ms": 1400
+    },
+    {
+      "action": "hover",
+      "selector": "h1",
+      "hold_ms": 1200
+    },
+    {
+      "action": "scroll",
+      "dy": 430
+    },
+    {
+      "action": "wait",
+      "seconds": 2.33
+    }
+  ]
+}
